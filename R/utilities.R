@@ -14,4 +14,3 @@ calComDat<-function(data1, species, year, abundance){
   comdat[year]<-NULL
   return(comdat)
 }
-
