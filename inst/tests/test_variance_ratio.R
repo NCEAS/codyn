@@ -19,5 +19,9 @@ test_that("calVR function returns correct result", {
     expect_that(sum(myresults2$VR), equals(sum(myresults$VR)))
     
     #test that it works even if there are additional unused columns
-    
+    knz_001d3<-knz_001d
+    knz_001d3$site<-"KNZ"
+    myresults3<-calVRs(knz_001d3, "subplot", "species", "year", "abundance")
+    expect_that(myresults3, is_identical_to(myresults))
+  
     })

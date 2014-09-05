@@ -30,7 +30,7 @@ calVR2<-function(data1, species, year, abundance){
 
 #' A function to calculate the variance ratio within multiple replicates
 #'
-#' calVRx a dataframe of replicates with their variance ratio values
+#' calVRs a dataframe of replicates with their variance ratio values
 #' @param data1 A dataframe containing year, rep, species and abundance columns
 #' @param year The name of the year column from data1
 #' @param rep The name of the replicate column from data1
