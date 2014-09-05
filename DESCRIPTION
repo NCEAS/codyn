@@ -1,0 +1,8 @@
+Package: codyn
+Title: Community dynamics metrics
+Version: 0.1
+Authors@R: "Sydney Jones <syd@sevilleta.unm.edu> [aut, cre]", "Andrew Macdonald <aammacdonald@gmail.com> [aut, cre]"
+Description: A toolbox of longterm ecological data analysis metrics
+Depends: R (>= 3.1.1)
+License: Apache License (== 2.0)
+LazyData: true
