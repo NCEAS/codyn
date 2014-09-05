@@ -14,6 +14,20 @@ calVR<-function(comdat){
   return(var.ratio)
 }
 
+#' A function to calculate the variance ratio from a longform dataframe
+#'
+#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param year The name of the year column from data1
+#' @param rep The name of the replicate column from data1
+#' @param species The name of the species column from data1
+#' @param abundance The name of the abundance column from data1
+#' @return var.ratio The variance ratio of the community
+calVR2<-function(data1, species, year, abundance){
+  com.use<-calComDat(data1, species, year, abundance)
+  var.ratio<-calVR(com.use)
+  return(var.ratio)
+}
+
 #' A function to calculate the variance ratio within multiple replicates
 #'
 #' calVRx a dataframe of replicates with their variance ratio values

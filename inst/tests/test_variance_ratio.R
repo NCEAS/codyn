@@ -18,6 +18,6 @@ test_that("calVR function returns correct result", {
     myresults2<-calVRs(knz_001d2, "sub", "sp", "yr", "abund")
     expect_that(sum(myresults2$VR), equals(sum(myresults$VR)))
     
-    #test that it works even if there are additional unused columsn
+    #test that it works even if there are additional unused columns
     
     })
