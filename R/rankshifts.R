@@ -7,15 +7,28 @@
 #' @return the Truth
 
 
+getintersect <- function(d1, d2, dataname = "species"){
+  commspp <- intersect(d1[[dataname]], d2[[dataname]])
+  names(d1)[-1] <- paste0(names(d1)[-1],"1")
+  names(d2)[-1] <- paste0(names(d2)[-1],"2")
+  merge(x = d1[d1[[dataname]] %in% commspp, ],
+        y = d2[d2[[dataname]] %in% commspp, ])
+}
+
 meanrank <- function(comm_data = dat, timevar = "year", speciesvar = "species"){
   ## split data by year
-  yearlist <- split(as.character(dat[["species"]]), dat[["year"]])
+  yearlist <- split(dat, dat[["year"]])
   ## Compare consecutive pairs of years
-  y2 <- yearlist[-length(yearlist)]
-  y1 <- yearlist[-1]
+  y1 <- yearlist[-length(yearlist)]
+  y2 <- yearlist[-1]
 
-  Map(intersect, y1, y2)
-  ## compare two years
+  commonspp <- Map(getintersect, y1, y2)
+  combineddata <- do.call(rbind, commonspp)
+
+  ## generate names to be combined
+
+  transform(combineddata, tipepair = paste0("year1"
+
 }
 
 
