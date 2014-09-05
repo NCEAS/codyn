@@ -45,3 +45,18 @@ calrealVR <- function(data1, year, sitesubplot, species, abundance){
   }
   return(output)
 }
+
+#' A function to generate a community dataframe with a random start time for each species
+#'
+#' @param comdat A community dataframe
+#' @return rand.use A randomized community dataframe
+genRand<-function(comdat){
+  comdat2<-rbind(comdat, comdat)
+  rand.comdat<-matrix(NA, nrow(comdat), ncol(comdat)) 
+  for(i in 1:ncol(comdat)){  
+    rand.start<-sample(1:nrow(comdat), 1)
+    rand.comdat[,i]<-comdat2[rand.start:(rand.start+nrow(comdat)-1), i]
+  }
+  rand.use<-rand.comdat[1:nrow(rand.comdat), 2:ncol(rand.comdat)]
+  return(rand.use)
+}
