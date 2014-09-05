@@ -31,3 +31,9 @@ ggplot(dat, aes(x,value,color=variable)) + geom_line() + coord_polar() + theme_b
 
 ```
 
+## Figure 3
+
+```{r}
+
+```
+
