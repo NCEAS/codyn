@@ -6,7 +6,7 @@ Authors@R: c( person("Lauren", "Hallett", email="lauren.hallett@berkeley.edu", r
     person("Andrew", "MacDonald", email="aammacdonald@gmail.com", role=c("aut", "cre")), 
     person("Matthew", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")), 
     person("Julie", "Ripplinger", email="julie.ripplinger@asu.edu", role=c("aut", "cre")), 
-    person("Scott", "Collins", email="scollins@sevilletta.unm.edu", role=c("aut")))
+    person("Scott", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")))
 Description: A toolbox of longterm ecological data analysis metrics
 Depends:
     R (>= 3.1.0)
