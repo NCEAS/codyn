@@ -61,3 +61,40 @@ genRand<-function(comdat){
   rand.use<-rand.comdat[1:nrow(rand.comdat), 2:ncol(rand.comdat)]
   return(rand.use)
 }
+
+#' A function to calculate a null variance ratio from longform data using a temporal modification of the Torus translation
+#'
+#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param species The name of the species column from data1
+#' @param year The name of the year column from data1
+#' @param abundance The name of the abundance column from data1
+#' @return randVR A variance ratio calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
+calnullVR<-function(data1, species, year, abundance){
+  comdat<-calComDat(data1, species, year, abundance)
+  rand.dat<-genRand(comdat)
+  var.ratio<-calVR(rand.dat)
+  randVR <-data.frame(VR=var.ratio)
+  return(randVR)
+}
+
+#' A function to generate lower 2.5\% CI, upper 97.5\% CI and mean null VR values
+#'
+#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param species The name of the species column from data1
+#' @param year The name of the year column from data1
+#' @param abundance The name of the abundance column from data1
+#' @return output A dataframe containing nullVRCIlow, nullVRCIhigh and nullVRmean
+#'          low is the lower 0.025
+nullVRCI<-function(data1, species, year, abundance, bootnumber){
+  out<-replicate(bootnumber, callnullVR(data1, species, year, abundance))
+  bootout<-(as.data.frame(unlist(out)))
+  names(bootout)<-c("nullVR")
+  nullVRlow <- quantile(bootout$nullVR, (.025))
+  nullVRhigh<-quantile(bootout$nullVR, 0.975)
+  nullVRmean<-mean(bootout$nullVR)
+  output<-cbind(nullVRlow, nullVRhigh, nullVRmean)
+  row.names(output)<-NULL
+  return(output)
+}
+
+
