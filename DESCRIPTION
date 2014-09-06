@@ -15,7 +15,9 @@ Depends:
 Imports:
     reshape
 Suggests:
-    testthat
+    testthat,
+    knitr
 License: Apache License (== 2.0)
 BugReports: https://github.com/laurenmh/codyn/issues
 LazyData: true
+VignetteBuilder: knitr
