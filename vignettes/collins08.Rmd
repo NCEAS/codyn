@@ -1,3 +1,15 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r}
 library(ggplot2)
 library(reshape2)
 
@@ -16,4 +28,12 @@ ggplot(dat, aes(x,value,color=variable)) + geom_line()
 ggplot(dat, aes(x,value,color=variable)) + geom_line() + coord_polar() + theme_bw() 
 
 
+
+```
+
+## Figure 3
+
+```{r}
+
+```
 

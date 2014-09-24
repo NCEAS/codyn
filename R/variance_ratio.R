@@ -14,35 +14,36 @@ calVR<-function(comdat){
   return(var.ratio)
 }
 
-#' A function to calculate the variance ratio within multiple replicates
+#' A function to calculate the variance ratio from a longform dataframe
 #'
-#' calrealVR a dataframe of replicates with their variance ratio values
-#' @param data1 A dataframe containing year, sitesubplot, species and abundance columns
+#' @param data1 A dataframe containing year, rep, species and abundance columns
 #' @param year The name of the year column from data1
-#' @param sitesubplot The name of the replicate column from data1
+#' @param rep The name of the replicate column from data1
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
-#' @return output A dataframe containing sitesubplot and VR (the variance ratio)
+#' @return var.ratio The variance ratio of the community
+calVR2<-function(data1, species, year, abundance){
+  com.use<-calComDat(data1, species, year, abundance)
+  var.ratio<-calVR(com.use)
+  return(var.ratio)
+}
+
+#' A function to calculate the variance ratio within multiple replicates
+#'
+#' calVRs a dataframe of replicates with their variance ratio values
+#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param year The name of the year column from data1
+#' @param rep The name of the replicate column from data1
+#' @param species The name of the species column from data1
+#' @param abundance The name of the abundance column from data1
+#' @return output A dataframe containing rep and VR (the variance ratio)
 #' @export
-
-
-calrealVR <- function(data1, year, sitesubplot, species, abundance){
-  plotnames<-as.numeric (unique(data1$sitesubplot))
-  site<-data.frame(cbind(VR=NA, sitesubplot=NA))
-  for(i in 1:length(plotnames)){
-    current.plot<-plotnames[i]
-    subber<-data1[as.numeric(data1$sitesubplot)==current.plot, ]
-    melt.all <-melt(subber, id=c("species", "year", "abundance"))
-    melt.all$value <- melt.all$variable <-NULL
-    comdat<-as.data.frame(cast(melt.all, year ~ species, value="abundance", fill=0))
-    com.use<-comdat
-    com.use$year<-NULL
-    var.ratio<-calVR(com.use)
-    calvarbind <-data.frame(VR=var.ratio)
-    calvarbind$sitesubplot<-unique(subber$sitesubplot)
-    site <-rbind(site, calvarbind)
-    output<-site[which(is.na(site$VR)==FALSE),]
-  }
+calVRs<-function(data1, rep, species, year, abundance){
+  X <- split(data1, data1[rep])
+  out<-lapply(X, FUN=calVR2, species, year, abundance)
+  output<-cbind((names(out)), as.data.frame(unlist(out)))
+  names(output)<-c(rep, "VR")
+  row.names(output)<-NULL
   return(output)
 }
 
@@ -60,3 +61,40 @@ genRand<-function(comdat){
   rand.use<-rand.comdat[1:nrow(rand.comdat), 2:ncol(rand.comdat)]
   return(rand.use)
 }
+
+#' A function to calculate a null variance ratio from longform data using a temporal modification of the Torus translation
+#'
+#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param species The name of the species column from data1
+#' @param year The name of the year column from data1
+#' @param abundance The name of the abundance column from data1
+#' @return randVR A variance ratio calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
+calnullVR<-function(data1, species, year, abundance){
+  comdat<-calComDat(data1, species, year, abundance)
+  rand.dat<-genRand(comdat)
+  var.ratio<-calVR(rand.dat)
+  randVR <-data.frame(VR=var.ratio)
+  return(randVR)
+}
+
+#' A function to generate lower 2.5\% CI, upper 97.5\% CI and mean null VR values
+#'
+#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param species The name of the species column from data1
+#' @param year The name of the year column from data1
+#' @param abundance The name of the abundance column from data1
+#' @return output A dataframe containing nullVRCIlow, nullVRCIhigh and nullVRmean
+#'          low is the lower 0.025
+nullVRCI<-function(data1, species, year, abundance, bootnumber){
+  out<-replicate(bootnumber, callnullVR(data1, species, year, abundance))
+  bootout<-(as.data.frame(unlist(out)))
+  names(bootout)<-c("nullVR")
+  nullVRlow <- quantile(bootout$nullVR, (.025))
+  nullVRhigh<-quantile(bootout$nullVR, 0.975)
+  nullVRmean<-mean(bootout$nullVR)
+  output<-cbind(nullVRlow, nullVRhigh, nullVRmean)
+  row.names(output)<-NULL
+  return(output)
+}
+
+
