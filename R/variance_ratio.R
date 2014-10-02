@@ -28,24 +28,7 @@ calVR2<-function(data1, species, year, abundance){
   return(var.ratio)
 }
 
-#' A function to calculate the variance ratio within multiple replicates
-#'
-#' calVRs a dataframe of replicates with their variance ratio values
-#' @param data1 A dataframe containing year, rep, species and abundance columns
-#' @param year The name of the year column from data1
-#' @param rep The name of the replicate column from data1
-#' @param species The name of the species column from data1
-#' @param abundance The name of the abundance column from data1
-#' @return output A dataframe containing rep and VR (the variance ratio)
-#' @export
-calVRs<-function(data1, rep, species, year, abundance){
-  X <- split(data1, data1[rep])
-  out<-lapply(X, FUN=calVR2, species, year, abundance)
-  output<-cbind((names(out)), as.data.frame(unlist(out)))
-  names(output)<-c(rep, "VR")
-  row.names(output)<-NULL
-  return(output)
-}
+
 
 #' A function to generate a community dataframe with a random start time for each species
 #'
@@ -83,10 +66,11 @@ calnullVR<-function(data1, species, year, abundance){
 #' @param species The name of the species column from data1
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
+#' @param bootnumber The number of null model iterations used to calculated CIs
 #' @return output A dataframe containing nullVRCIlow, nullVRCIhigh and nullVRmean
-#'          low is the lower 0.025
+#'          nullVRCIow is the 0.025 CI and nullVRCIhigh is the 0.975 CI 
 nullVRCI<-function(data1, species, year, abundance, bootnumber){
-  out<-replicate(bootnumber, callnullVR(data1, species, year, abundance))
+  out<-replicate(bootnumber, calnullVR(data1, species, year, abundance))
   bootout<-(as.data.frame(unlist(out)))
   names(bootout)<-c("nullVR")
   nullVRlow <- quantile(bootout$nullVR, (.025))
@@ -97,4 +81,43 @@ nullVRCI<-function(data1, species, year, abundance, bootnumber){
   return(output)
 }
 
+#' A function to calculate both the real and mean null variance ratio along with lower 2.5\% CI, upper 97.5\% CI using a temporal modification of the Torus translation
+#'
+#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param species The name of the species column from data1
+#' @param year The name of the year column from data1
+#' @param abundance The name of the abundance column from data1
+#' @param bootnumber The number of null model iterations used to calculated CIs
+#' @return output A dataframe containing VR  nullVRCIlow, nullVRCIhigh and nullVRmean
+#'          VR is the actual variance ratio
+#'          nullVRCIow is the 0.025 CI 
+#'          nullVRCIhigh is the 0.975 CI 
+#'          nullVRmean is the mean variance ratio calculated on null communities
+calVRrealnull<-function(data1, species, year, abundance, bootnumber){
+  VR<-calVR2(data1, species, year, abundance)
+  nullVR<-nullVRCI(data1, species, year, abundance, bootnumber)
+  out<-cbind(VR, nullVR)
+  return(out)
+}
 
+#' A function to calculate the variance ratio and null model mean and CIs within multiple replicates
+#'
+#' @param data1 A dataframe containing rep, species, year and abundance columns
+#' @param rep The name of the replicate column from data1
+#' @param species The name of the species column from data1
+#' @param year The name of the year column from data1
+#' @param abundance The name of the abundance column from data1
+#' @param bootnumber The number of null model iterations used to calculated CIs
+#' @return output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
+#'          VR is the actual variance ratio
+#'          nullVRCIow is the 0.025 CI 
+#'          nullVRCIhigh is the 0.975 CI 
+#'          nullVRmean is the mean variance ratio calculated on null communities
+#' @export
+VR<-function(data1, rep, species, year, abundance, bootnumber){
+  X <- split(data1, data1[rep])
+  out<-lapply(X, FUN=calVRrealnull, species, year, abundance, bootnumber)
+  reps<-unique(data1[rep])
+  output<-cbind(reps, do.call("rbind", out))
+  return(output)
+}
