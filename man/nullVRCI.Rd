@@ -13,10 +13,12 @@ nullVRCI(data1, species, year, abundance, bootnumber)
 \item{year}{The name of the year column from data1}
 
 \item{abundance}{The name of the abundance column from data1}
+
+\item{bootnumber}{The number of null model iterations used to calculated CIs}
 }
 \value{
 output A dataframe containing nullVRCIlow, nullVRCIhigh and nullVRmean
-         low is the lower 0.025
+         nullVRCIow is the 0.025 CI and nullVRCIhigh is the 0.975 CI
 }
 \description{
 A function to generate lower 2.5\% CI, upper 97.5\% CI and mean null VR values
