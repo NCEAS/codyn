@@ -8,8 +8,9 @@ require(vegan)
 #' @return linear model coefficients
 
 # creating distance matrix from species matrix
-DM <- vegdist(comm_data, method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
-DM <- as.matrix(DM)
+# DM <- vegdist(comm_data, method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
+# DM <- as.matrix(DM)
+
 # get the lags from distance matrix
 get_lags = function(DM){
     # label each row and each column.
@@ -29,10 +30,11 @@ get_lags = function(DM){
     # squash all the lags from the list into one long-form matrix
     do.call(rbind, lag_list)
 }
+
 # final: matrix converted to long-form
-DM.long <- data.frame(get_lags(DM))
+# DM.long <- data.frame(get_lags(DM))
 # regression
-lm(value ~ lag, data=DM.long)
+# lm(value ~ lag, data=DM.long)
 
 
 
