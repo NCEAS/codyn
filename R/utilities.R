@@ -1,4 +1,3 @@
-library(reshape)
 #' A function to covert from a longform abundance dataframe to a year x species dataframe
 #'
 #' @param data1 A dataframe containing year, species and abundance columns
@@ -6,6 +5,7 @@ library(reshape)
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return comdat A dataframe of species abundances x year
+#' @import reshape
 calComDat<-function(data1, species, year, abundance){
   data1<-data1[order(data1[year]),]
   fstr<-(paste(year, "~", species, sep=""))
@@ -23,7 +23,8 @@ calComDat<-function(data1, species, year, abundance){
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return comdat A dataframe of species abundances x year
-calComMat<-function(data1, species, year, abundance){
+#' @import reshape
+calComTS<-function(data1, species, year, abundance){
   data1 <- data1[order(data1[year]), ]
   fstr <- paste(species, "~", year, sep="")
   f <- as.formula(fstr)
