@@ -5,6 +5,7 @@ library(reshape)
 #'
 #' @param comdat A community dataframe
 #' @return var.ratio The variance ratio of the community
+#' @export
 calVR<-function(comdat){
   all.cov <- cov(comdat, use="pairwise.complete.obs")
   col.var<-apply(comdat, 2, var)
@@ -22,18 +23,18 @@ calVR<-function(comdat){
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return var.ratio The variance ratio of the community
+#' @export
 calVR2<-function(data1, species, year, abundance){
   com.use<-calComDat(data1, species, year, abundance)
   var.ratio<-calVR(com.use)
   return(var.ratio)
 }
 
-
-
 #' A function to generate a community dataframe with a random start time for each species
 #'
 #' @param comdat A community dataframe
 #' @return rand.use A randomized community dataframe
+#' @export
 genRand<-function(comdat){
   comdat2<-rbind(comdat, comdat)
   rand.comdat<-matrix(NA, nrow(comdat), ncol(comdat)) 
@@ -52,6 +53,7 @@ genRand<-function(comdat){
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return randVR A variance ratio calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
+#' @export
 calnullVR<-function(data1, species, year, abundance){
   comdat<-calComDat(data1, species, year, abundance)
   rand.dat<-genRand(comdat)
@@ -68,7 +70,8 @@ calnullVR<-function(data1, species, year, abundance){
 #' @param abundance The name of the abundance column from data1
 #' @param bootnumber The number of null model iterations used to calculated CIs
 #' @return output A dataframe containing nullVRCIlow, nullVRCIhigh and nullVRmean
-#'          nullVRCIow is the 0.025 CI and nullVRCIhigh is the 0.975 CI 
+#'          nullVRCIow is the 0.025 CI and nullVRCIhigh is the 0.975 CI
+#' @export
 nullVRCI<-function(data1, species, year, abundance, bootnumber){
   out<-replicate(bootnumber, calnullVR(data1, species, year, abundance))
   bootout<-(as.data.frame(unlist(out)))
@@ -93,6 +96,7 @@ nullVRCI<-function(data1, species, year, abundance, bootnumber){
 #'          nullVRCIow is the 0.025 CI 
 #'          nullVRCIhigh is the 0.975 CI 
 #'          nullVRmean is the mean variance ratio calculated on null communities
+#' @export
 calVRrealnull<-function(data1, species, year, abundance, bootnumber){
   VR<-calVR2(data1, species, year, abundance)
   nullVR<-nullVRCI(data1, species, year, abundance, bootnumber)
