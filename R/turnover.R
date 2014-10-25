@@ -7,6 +7,7 @@
 #' @param abundance The name of the abundance column from data1
 #' @return turnover The species turnover (appearances + disappearances) relative to the total species richness observed across both years
 #' @import reshape
+#' @export
 pairwise_turnover<-function(data1, rep, species, year, abundance){
   d1<-data1[which(data1["abundance"]>0),]
   fstr<-(paste(species, "+", rep, "~", year, sep=""))
