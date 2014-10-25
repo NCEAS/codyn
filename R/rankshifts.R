@@ -18,9 +18,9 @@ getintersect <- function(d1, d2, dataname = "species"){
 #'
 #' This is a function that calculates mean rank shifts
 #' @param comm_data Community dataset. Must be in 'long' format.
-#' @param timevar The time variable
-#' @param speciesvar The species variable
-#' @param abdvar The abundance variable
+#' @param year The time variable
+#' @param species The species variable
+#' @param abundance The abundance variable
 #' @return a dataframe, showing years compared
 #' @export
 meanrank <- function(comm_data = dat, year = "year",

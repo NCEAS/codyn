@@ -16,7 +16,6 @@ calVR<-function(comdat){
 #'
 #' @param data1 A dataframe containing year, rep, species and abundance columns
 #' @param year The name of the year column from data1
-#' @param rep The name of the replicate column from data1
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return var.ratio The variance ratio of the community

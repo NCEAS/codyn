@@ -13,8 +13,6 @@ calVR2(data1, species, year, abundance)
 \item{year}{The name of the year column from data1}
 
 \item{abundance}{The name of the abundance column from data1}
-
-\item{rep}{The name of the replicate column from data1}
 }
 \value{
 var.ratio The variance ratio of the community

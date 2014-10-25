@@ -9,11 +9,11 @@ meanrank(comm_data = dat, year = "year", species = "species",
 \arguments{
 \item{comm_data}{Community dataset. Must be in 'long' format.}
 
-\item{timevar}{The time variable}
+\item{year}{The time variable}
 
-\item{speciesvar}{The species variable}
+\item{species}{The species variable}
 
-\item{abdvar}{The abundance variable}
+\item{abundance}{The abundance variable}
 }
 \value{
 a dataframe, showing years compared
