@@ -1,5 +1,15 @@
 context("variance ratio")
 
+# Utility function to run calVR2 on multiple segments of a data frame
+calVRs<-function(data1, rep, species, year, abundance){
+    X <- split(data1, data1[rep])
+    out<-lapply(X, FUN=calVR2, species, year, abundance)
+    output<-cbind((names(out)), as.data.frame(unlist(out)))
+    names(output)<-c(rep, "VR")
+    row.names(output)<-NULL
+    return(output)
+}
+
 test_that("calVR function returns correct result", {
     # Ensure that tests 
     expect_that(length("a"), equals(1))
