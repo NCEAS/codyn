@@ -1,6 +1,3 @@
-library(reshape)
-
-
 #' A function to calculate the variance ratio 
 #'
 #' @param comdat A community dataframe
