@@ -132,5 +132,5 @@ VR<-function(data1, rep, species, year, abundance, bootnumber, averagereps=TRUE)
     reps<-unique(data1[rep])
     output<-cbind(reps, do.call("rbind", out))
   }
-  return(output)
+  return(as.data.frame(output))
 }
