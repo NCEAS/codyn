@@ -8,13 +8,13 @@
 #' @return turnover The species turnover (appearances + disappearances) relative to the total species richness observed across both years
 #' @import reshape
 #' @export
-pairwise_turnover<-function(data1, rep, species, year, abundance){
+pairwise_turnover<-function(data1,  species, year, abundance, metric="turnover"){
   d1<-data1[which(data1["abundance"]>0),]
-  fstr<-(paste(species, "+", rep, "~", year, sep=""))
+  fstr<-(paste(species, "~", year, sep=""))
   f<-as.formula(fstr)
   d2<-as.data.frame(cast(d1, f, value=abundance, fill=0))
-  d2["disapp"]<-ifelse(d2[3]>0 & d2[4]==0, 1, 0)
-  d2["app"]<-ifelse(d2[3]==0 & d2[4]>0, 1, 0)
+  d2["disapp"]<-ifelse(d2[2]>0 & d2[3]==0, 1, 0)
+  d2["app"]<-ifelse(d2[2]==0 & d2[3]>0, 1, 0)
   disapp<-sum(d2["disapp"])
   app<-sum(d2["app"])
   sppchange<-sum(disapp, app)
@@ -22,6 +22,15 @@ pairwise_turnover<-function(data1, rep, species, year, abundance){
   reldis<-disapp/totspp
   relapp<-app/totspp
   turnover<-sppchange/totspp
-  return(turnover)
+  if(metric=="turnover"){
+    return(turnover)} else {
+      if(metric=="appearance"){
+        return(relapp)} else{
+          if(metric=="disappearance"){
+            return(reldis)
+          }
+        }
+    }
 }
+
 
