@@ -8,7 +8,7 @@
 #' @return output The degree of species synchrony, where 1 is perfect synchrony and 0 is perfect asynchrony
 #' @import reshape
 #' @export
-synchrony<-function(data1, rep, species, year, abundance){
+synchrony<-function(data1, rep, species, year, abundance) {
     X <- split(data1, data1[rep])
     out<-lapply(X, FUN=synch_onerep, species, year, abundance)
     reps<-unique(data1[rep])
