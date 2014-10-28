@@ -3,7 +3,7 @@
 \alias{meanrank}
 \title{Function for calculating mean rank shifts}
 \usage{
-meanrank(comm_data = dat, year = "year", species = "species",
+meanrank(comm_data, year = "year", species = "species",
   abundance = "abundance")
 }
 \arguments{

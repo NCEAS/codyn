@@ -23,10 +23,10 @@ getintersect <- function(d1, d2, dataname = "species"){
 #' @param abundance The abundance variable
 #' @return a dataframe, showing years compared
 #' @export
-meanrank <- function(comm_data = dat, year = "year",
+meanrank <- function(comm_data, year = "year",
                      species = "species", abundance = "abundance"){
   ## split data by year
-  yearlist <- split(dat, dat[[year]])
+  yearlist <- split(comm_data, comm_data[[year]])
   ## Compare consecutive pairs of years
   y1 <- yearlist[-length(yearlist)]
   y2 <- yearlist[-1]
