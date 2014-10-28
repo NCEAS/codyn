@@ -3,10 +3,12 @@
 \alias{get_lags}
 \title{Get the lags from a distance matrix.}
 \usage{
-get_lags(DM)
+get_lags(DM, comm_data)
 }
 \arguments{
 \item{DM}{distance matrix to be used for lag calculations}
+
+\item{comm_data}{community data frame}
 }
 \value{
 matrix of lag values
