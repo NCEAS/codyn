@@ -44,7 +44,7 @@ genRand<-function(comdat){
 
 #' A function to calculate a null variance ratio from longform data using a temporal modification of the Torus translation
 #'
-#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param data1 A dataframe containing year, species and abundance columns
 #' @param species The name of the species column from data1
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
@@ -60,7 +60,7 @@ calnullVR<-function(data1, species, year, abundance){
 
 #' A function to generate lower 2.5\% CI, upper 97.5\% CI and mean null VR values
 #'
-#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param data1 A dataframe containing year, species and abundance columns
 #' @param species The name of the species column from data1
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
@@ -82,7 +82,7 @@ nullVRCI<-function(data1, species, year, abundance, bootnumber){
 
 #' A function to calculate both the real and mean null variance ratio along with lower 2.5\% CI, upper 97.5\% CI using a temporal modification of the Torus translation
 #'
-#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param data1 A dataframe containing year, species and abundance columns
 #' @param species The name of the species column from data1
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
