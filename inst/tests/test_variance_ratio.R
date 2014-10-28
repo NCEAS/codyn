@@ -16,7 +16,7 @@ test_that("calVR function returns correct result", {
     
     # Load our example data set
     # data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
-    knz_001d <- read.csv("../../data/knz_001d.csv", sep=",", header=TRUE)
+    knz_001d <- read.csv(system.file("data", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
     expect_that(names(knz_001d)[4], equals("abundance"))
     myresults<-calVRs(knz_001d, "subplot", "species", "year", "abundance")
     expect_that(class(myresults), equals("data.frame"))
@@ -33,5 +33,4 @@ test_that("calVR function returns correct result", {
     knz_001d3$site<-"KNZ"
     myresults3<-calVRs(knz_001d3, "subplot", "species", "year", "abundance")
     expect_that(myresults3, is_identical_to(myresults))
-  
-    })
+})
