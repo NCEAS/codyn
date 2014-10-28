@@ -3,7 +3,7 @@
 \alias{VR}
 \title{A function to calculate the variance ratio and null model mean and CIs within multiple replicates}
 \usage{
-VR(data1, rep, species, year, abundance, bootnumber)
+VR(data1, rep, species, year, abundance, bootnumber, averagereps = TRUE)
 }
 \arguments{
 \item{data1}{A dataframe containing rep, species, year and abundance columns}
@@ -17,6 +17,9 @@ VR(data1, rep, species, year, abundance, bootnumber)
 \item{abundance}{The name of the abundance column from data1}
 
 \item{bootnumber}{The number of null model iterations used to calculated CIs}
+
+\item{averagereps}{If true returns VR and CI averaged across reps; if false returns VR and CI for each rep
+If true, null VR are calculated within each rep, averaged, and the repeated for length of bootnumber}
 }
 \value{
 output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean

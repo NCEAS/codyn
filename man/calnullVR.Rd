@@ -6,7 +6,7 @@
 calnullVR(data1, species, year, abundance)
 }
 \arguments{
-\item{data1}{A dataframe containing year, rep, species and abundance columns}
+\item{data1}{A dataframe containing year, species and abundance columns}
 
 \item{species}{The name of the species column from data1}
 
