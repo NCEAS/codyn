@@ -29,8 +29,9 @@ timelag <- function(comm_data) {
 #' Get the lags from a distance matrix.
 #' 
 #' @param DM distance matrix to be used for lag calculations
+#' @param comm_data community data frame
 #' @return matrix of lag values
-get_lags = function(DM) {
+get_lags = function(DM, comm_data) {
     # label each row and each column.
     rownums = row(DM)
     colnums = col(DM)

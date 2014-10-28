@@ -37,7 +37,8 @@ meanrank <- function(comm_data, year = "year",
     
     abdname1 <- paste0(abundance,"1")
     abdname2 <- paste0(abundance,"2")
-    
+    rank1 <- ""   # Note: initialized rank1 and rank2 simply to eliminate R CMD check NOTE
+    rank2 <- ""
     ranknames <- lapply(commonspp, function(x) cbind(x,
                                                      rank1 = rank(x[[abdname1]]),
                                                      rank2 = rank(x[[abdname2]])
