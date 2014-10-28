@@ -20,4 +20,13 @@ test_that("rankshifts loads and returns correct result", {
     expect_that(nrow(result), equals(23))
     expect_that(result[[1,2]], equals(332.9921, tolerance=.00001))
     expect_that(result[[23,2]], equals(670.6388, tolerance=.00001))
+    
+    # Test with a data frame that uses different variable names, and contains extra columns
+    knz_001d2 <- knz_001d
+    names(knz_001d2) <- c("spp", "yr", "quadrat", "cnt")
+    result2 <- meanrank(knz_001d2, species="spp", year="yr", abundance="cnt")
+    expect_that(result2, is_identical_to(result))
+    
+    # TODO: test error handling when data inputs are bad or unexpected data types
+    
 })
