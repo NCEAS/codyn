@@ -44,7 +44,7 @@ genRand<-function(comdat){
 
 #' A function to calculate a null variance ratio from longform data using a temporal modification of the Torus translation
 #'
-#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param data1 A dataframe containing year, species and abundance columns
 #' @param species The name of the species column from data1
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
@@ -60,7 +60,7 @@ calnullVR<-function(data1, species, year, abundance){
 
 #' A function to generate lower 2.5\% CI, upper 97.5\% CI and mean null VR values
 #'
-#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param data1 A dataframe containing year, species and abundance columns
 #' @param species The name of the species column from data1
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
@@ -82,7 +82,7 @@ nullVRCI<-function(data1, species, year, abundance, bootnumber){
 
 #' A function to calculate both the real and mean null variance ratio along with lower 2.5\% CI, upper 97.5\% CI using a temporal modification of the Torus translation
 #'
-#' @param data1 A dataframe containing year, rep, species and abundance columns
+#' @param data1 A dataframe containing year, species and abundance columns
 #' @param species The name of the species column from data1
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
@@ -108,16 +108,29 @@ calVRrealnull<-function(data1, species, year, abundance, bootnumber){
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
 #' @param bootnumber The number of null model iterations used to calculated CIs
+#' @param averagereps If true returns VR and CI averaged across reps; if false returns VR and CI for each rep
+#'          If true, null VR are calculated within each rep, averaged, and the repeated for length of bootnumber
 #' @return output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
 #'          VR is the actual variance ratio
 #'          nullVRCIow is the 0.025 CI 
 #'          nullVRCIhigh is the 0.975 CI 
 #'          nullVRmean is the mean variance ratio calculated on null communities
 #' @export
-VR<-function(data1, rep, species, year, abundance, bootnumber){
-  X <- split(data1, data1[rep])
-  out<-lapply(X, FUN=calVRrealnull, species, year, abundance, bootnumber)
-  reps<-unique(data1[rep])
-  output<-cbind(reps, do.call("rbind", out))
-  return(output)
+VR<-function(data1, rep, species, year, abundance, bootnumber, averagereps=TRUE){
+  if(averagereps==TRUE){
+    X<-split(data1, data1[rep])
+    out<-replicate(bootnumber, mean(unlist(lapply(X, FUN=calnullVR, species, year, abundance)))) 
+    nullVRlow <- quantile(out, (.025))
+    nullVRhigh<-quantile(out, 0.975)
+    nullVRmean<-mean(out)
+    VR<-mean(unlist(lapply(X, FUN=calVR2, species, year, abundance)))
+    output<-cbind(VR, nullVRlow, nullVRhigh, nullVRmean)
+    row.names(output)<-NULL
+  } else{
+    X <- split(data1, data1[rep])
+    out<-lapply(X, FUN=calVRrealnull, species, year, abundance, bootnumber)
+    reps<-unique(data1[rep])
+    output<-cbind(reps, do.call("rbind", out))
+  }
+  return(as.data.frame(output))
 }
