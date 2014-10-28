@@ -8,6 +8,6 @@ test_that("timelag loads and returns correct result", {
     
     # Load our example data set
     # data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
-    knz_001d <- read.csv(system.file("data", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+    knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
     expect_that(names(knz_001d)[4], equals("abundance"))
 })
