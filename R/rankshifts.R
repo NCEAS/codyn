@@ -30,11 +30,11 @@ meanrank <- function(comm_data, year = "year",
     ## Compare consecutive pairs of years
     y1 <- yearlist[-length(yearlist)]
     y2 <- yearlist[-1]
-    
-    commonspp <- Map(getintersect, y1, y2)
-    
+
+    commonspp <- Map(getintersect, y1, y2, dataname = species)
+
     names(commonspp) <- Map(function(x, y) paste0(x, "-", y), names(y1), names(y2))
-    
+
     abdname1 <- paste0(abundance,"1")
     abdname2 <- paste0(abundance,"2")
     rank1 <- ""   # Note: initialized rank1 and rank2 simply to eliminate R CMD check NOTE
@@ -43,12 +43,12 @@ meanrank <- function(comm_data, year = "year",
                                                      rank1 = rank(x[[abdname1]]),
                                                      rank2 = rank(x[[abdname2]])
     ))
-    
+
     rankdiff <- lapply(ranknames,
                        function(x) transform(x, abs_ch_rank = abs(rank2 - rank1)))
-    
+
     MRS <- sapply(rankdiff, function(x) mean(x$abs_ch_rank))
-    
+
     data.frame(year_pair = names(MRS), MRS, row.names = NULL)
 }
 
