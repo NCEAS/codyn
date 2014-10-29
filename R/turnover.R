@@ -32,8 +32,8 @@ getturnover <- function(d1, d2, species = "species", metric="turnover"){
 #' A function to calculate species turnover between years
 #'
 #' @param data1 A dataframe containing year,species and abundance columns
-#' @param year The name of the year column from data1
 #' @param species The name of the species column from data1
+#' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
 #' @param metric The turnover metric to return; the default, turnover, returns summed appearances and disappearances relative to total species richness across both years
 #'          appearance returns the number of appearances in the second year relative to total species richness across both years
