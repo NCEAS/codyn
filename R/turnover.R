@@ -39,7 +39,6 @@ getturnover <- function(d1, d2, species = "species", metric="turnover"){
 #'          appearance returns the number of appearances in the second year relative to total species richness across both years
 #'          disappearance returns the number of disappearances in the second year relative to the total species richness across both years
 #' @return output A dataframe containing the specificed turnover metric and year
-#' @import reshape
 #' @export
 turnover_allyears<-function(data1, species, year, abundance, metric="turnover"){
   data1<-data1[order(data1[year]),]
