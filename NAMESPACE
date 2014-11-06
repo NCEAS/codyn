@@ -2,7 +2,6 @@
 
 export(VR)
 export(meanrank)
-export(synch_onerep)
 export(synchrony)
 export(timelag)
 export(turnover)
