@@ -1,8 +1,51 @@
+#' A function to calculate the variance ratio and null model mean and CIs within multiple replicates
+#'
+#' @param data1 A dataframe containing rep, species, year and abundance columns
+#' @param rep The name of the replicate column from data1
+#' @param species The name of the species column from data1
+#' @param year The name of the year column from data1
+#' @param abundance The name of the abundance column from data1
+#' @param bootnumber The number of null model iterations used to calculated CIs
+#' @param averagereps If true returns VR and CI averaged across reps; if false returns VR and CI for each rep
+#'          If true, null VR are calculated within each rep, averaged, and the repeated for length of bootnumber
+#' @return output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
+#'          VR is the actual variance ratio
+#'          nullVRCIow is the 0.025 CI 
+#'          nullVRCIhigh is the 0.975 CI 
+#'          nullVRmean is the mean variance ratio calculated on null communities
+#' @export
+VR<-function(data1, rep="rep", species="species", year='year', abundance="abundance", bootnumber, averagereps=TRUE){
+  if(averagereps==TRUE){
+    X<-split(data1, data1[rep])
+    out<-replicate(bootnumber, mean(unlist(lapply(X, FUN=calnullVR, species, year, abundance)))) 
+    nullVRlow <- quantile(out, (.025))
+    nullVRhigh<-quantile(out, 0.975)
+    nullVRmean<-mean(out)
+    VR<-mean(unlist(lapply(X, FUN=calVR2, species, year, abundance)))
+    output<-cbind(VR, nullVRlow, nullVRhigh, nullVRmean)
+    row.names(output)<-NULL
+  } else{
+    X <- split(data1, data1[rep])
+    out<-lapply(X, FUN=calVRrealnull, species, year, abundance, bootnumber)
+    reps<-unique(data1[rep])
+    output<-cbind(reps, do.call("rbind", out))
+  }
+  return(as.data.frame(output))
+}
+
+
+############################################################################
+#
+# Private functions: these are internal functions not intended for reuse.  
+# Future package releases may change these without notice. External callers
+# should not use them.
+#
+############################################################################
+
 #' A function to calculate the variance ratio 
 #'
 #' @param comdat A community dataframe
 #' @return var.ratio The variance ratio of the community
-#' @export
 calVR<-function(comdat){
   all.cov <- cov(comdat, use="pairwise.complete.obs")
   col.var<-apply(comdat, 2, var)
@@ -19,7 +62,6 @@ calVR<-function(comdat){
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return var.ratio The variance ratio of the community
-#' @export
 calVR2<-function(data1, species, year, abundance){
   com.use<-calComDat(data1, species, year, abundance)
   var.ratio<-calVR(com.use)
@@ -30,7 +72,6 @@ calVR2<-function(data1, species, year, abundance){
 #'
 #' @param comdat A community dataframe
 #' @return rand.use A randomized community dataframe
-#' @export
 genRand<-function(comdat){
   comdat2<-rbind(comdat, comdat)
   rand.comdat<-matrix(NA, nrow(comdat), ncol(comdat)) 
@@ -49,7 +90,6 @@ genRand<-function(comdat){
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return randVR A variance ratio calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
-#' @export
 calnullVR<-function(data1, species, year, abundance){
   comdat<-calComDat(data1, species, year, abundance)
   rand.dat<-genRand(comdat)
@@ -67,7 +107,6 @@ calnullVR<-function(data1, species, year, abundance){
 #' @param bootnumber The number of null model iterations used to calculated CIs
 #' @return output A dataframe containing nullVRCIlow, nullVRCIhigh and nullVRmean
 #'          nullVRCIow is the 0.025 CI and nullVRCIhigh is the 0.975 CI
-#' @export
 nullVRCI<-function(data1, species, year, abundance, bootnumber){
   out<-replicate(bootnumber, calnullVR(data1, species, year, abundance))
   bootout<-(as.data.frame(unlist(out)))
@@ -92,7 +131,6 @@ nullVRCI<-function(data1, species, year, abundance, bootnumber){
 #'          nullVRCIow is the 0.025 CI 
 #'          nullVRCIhigh is the 0.975 CI 
 #'          nullVRmean is the mean variance ratio calculated on null communities
-#' @export
 calVRrealnull<-function(data1, species, year, abundance, bootnumber){
   VR<-calVR2(data1, species, year, abundance)
   nullVR<-nullVRCI(data1, species, year, abundance, bootnumber)
@@ -100,37 +138,3 @@ calVRrealnull<-function(data1, species, year, abundance, bootnumber){
   return(out)
 }
 
-#' A function to calculate the variance ratio and null model mean and CIs within multiple replicates
-#'
-#' @param data1 A dataframe containing rep, species, year and abundance columns
-#' @param rep The name of the replicate column from data1
-#' @param species The name of the species column from data1
-#' @param year The name of the year column from data1
-#' @param abundance The name of the abundance column from data1
-#' @param bootnumber The number of null model iterations used to calculated CIs
-#' @param averagereps If true returns VR and CI averaged across reps; if false returns VR and CI for each rep
-#'          If true, null VR are calculated within each rep, averaged, and the repeated for length of bootnumber
-#' @return output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
-#'          VR is the actual variance ratio
-#'          nullVRCIow is the 0.025 CI 
-#'          nullVRCIhigh is the 0.975 CI 
-#'          nullVRmean is the mean variance ratio calculated on null communities
-#' @export
-VR<-function(data1, rep, species, year, abundance, bootnumber, averagereps=TRUE){
-  if(averagereps==TRUE){
-    X<-split(data1, data1[rep])
-    out<-replicate(bootnumber, mean(unlist(lapply(X, FUN=calnullVR, species, year, abundance)))) 
-    nullVRlow <- quantile(out, (.025))
-    nullVRhigh<-quantile(out, 0.975)
-    nullVRmean<-mean(out)
-    VR<-mean(unlist(lapply(X, FUN=calVR2, species, year, abundance)))
-    output<-cbind(VR, nullVRlow, nullVRhigh, nullVRmean)
-    row.names(output)<-NULL
-  } else{
-    X <- split(data1, data1[rep])
-    out<-lapply(X, FUN=calVRrealnull, species, year, abundance, bootnumber)
-    reps<-unique(data1[rep])
-    output<-cbind(reps, do.call("rbind", out))
-  }
-  return(as.data.frame(output))
-}
