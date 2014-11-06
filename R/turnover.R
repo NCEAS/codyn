@@ -10,7 +10,7 @@
 #'          disappearance returns the number of disappearances in the second year relative to the total species richness across both years
 #' @return output A dataframe containing the specificed turnover metric and year
 #' @export
-turnover<-function(data1, rep, species, year, abundance, metric="turnover") {
+turnover<-function(data1, rep="rep", species="species", year="year", abundance="abundance", metric="turnover") {
   X <- split(data1, data1[rep])
   out<-lapply(X, FUN=turnover_allyears, species, year, abundance, metric)
   ID<-unique(names(out))
@@ -19,6 +19,14 @@ turnover<-function(data1, rep, species, year, abundance, metric="turnover") {
   output<-do.call("rbind", out)
   return(output)
 }
+
+############################################################################
+#
+# Private functions: these are internal functions not intended for reuse.  
+# Future package releases may change these without notice. External callers
+# should not use them.
+#
+############################################################################
 
 
 #' A function to calculate species turnover between two years 
@@ -30,7 +38,6 @@ turnover<-function(data1, rep, species, year, abundance, metric="turnover") {
 #'          appearance returns the number of appearances in the second year relative to total species richness across both years
 #'          disappearance returns the number of disappearances in the second year relative to the total species richness across both years
 #' @return output The specificed turnover metric
-#' @export
 getturnover <- function(d1, d2, species = "species", metric="turnover"){
   d1spp<-as.character(unique(d1[[species]]))
   d2spp<-as.character(unique(d2[[species]]))
@@ -62,7 +69,6 @@ getturnover <- function(d1, d2, species = "species", metric="turnover"){
 #'          appearance returns the number of appearances in the second year relative to total species richness across both years
 #'          disappearance returns the number of disappearances in the second year relative to the total species richness across both years
 #' @return output A dataframe containing the specificed turnover metric and year
-#' @export
 turnover_allyears<-function(data1, species, year, abundance, metric="turnover"){
   data1<-data1[order(data1[year]),]
   data1<-data1[which(data1[[abundance]]>0),]
