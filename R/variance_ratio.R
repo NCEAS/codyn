@@ -14,7 +14,7 @@
 #'          nullVRCIhigh is the 0.975 CI 
 #'          nullVRmean is the mean variance ratio calculated on null communities
 #' @export
-VR<-function(data1, rep="rep", species="species", year='year', abundance="abundance", bootnumber, averagereps=TRUE){
+varianceratio<-function(data1, rep="rep", species="species", year='year', abundance="abundance", bootnumber, averagereps=TRUE){
   if(averagereps==TRUE){
     X<-split(data1, data1[rep])
     out<-replicate(bootnumber, mean(unlist(lapply(X, FUN=calnullVR, species, year, abundance)))) 
