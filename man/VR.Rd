@@ -3,7 +3,8 @@
 \alias{VR}
 \title{A function to calculate the variance ratio and null model mean and CIs within multiple replicates}
 \usage{
-VR(data1, rep, species, year, abundance, bootnumber, averagereps = TRUE)
+VR(data1, rep = "rep", species = "species", year = "year",
+  abundance = "abundance", bootnumber, averagereps = TRUE)
 }
 \arguments{
 \item{data1}{A dataframe containing rep, species, year and abundance columns}
