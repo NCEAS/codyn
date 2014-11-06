@@ -17,6 +17,17 @@ synchrony<-function(data1, rep, species, year, abundance) {
     return(output)
 }
 
+
+############################################################################
+#
+# Private functions: these are internal functions not intended for reuse.  
+# Future package releases may change these without notice. External callers
+# should not use them.
+#
+############################################################################
+
+
+
 #' A function to calculate species synchrony over time within one replicate
 #'
 #' @param data1 A dataframe containing rep, year, species and abundance columns
@@ -25,7 +36,6 @@ synchrony<-function(data1, rep, species, year, abundance) {
 #' @param abundance The name of the abundance column from data1
 #' @return output The degree of species synchrony, where 1 is perfect synchrony and 0 is perfect asynchrony
 #' @import reshape
-#' @export
 synch_onerep<-function(data1, species, year, abundance) {
     #fill in 0s
     fill0formula<-as.formula(paste(species, "~", year))
