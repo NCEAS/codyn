@@ -3,7 +3,8 @@
 \alias{turnover}
 \title{A function to calculate species turnover between years}
 \usage{
-turnover(data1, rep, species, year, abundance, metric = "turnover")
+turnover(data1, rep = "rep", species = "species", year = "year",
+  abundance = "abundance", metric = "turnover")
 }
 \arguments{
 \item{data1}{A dataframe containing year,species and abundance columns}
