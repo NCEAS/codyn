@@ -2,12 +2,13 @@
 #'
 #' This is a function that calculates the slope of directional change.
 #' @param comm_data Community dataset. Must be in 'wide' format
+#' @param year Year variable. Must be the first column of comm_data
 #' @return linear model coefficients
 #' @export
 #' @import vegan
 timelag <- function(comm_data) {
     # creating distance matrix from species matrix
-    DM <- vegdist(comm_data, method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
+    DM <- vegdist(comm_data[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
     DM <- as.matrix(DM)
     
     # final: matrix converted to long-form
