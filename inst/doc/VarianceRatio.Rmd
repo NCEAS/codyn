@@ -1,0 +1,88 @@
+---
+title: "The temporal variance ratio for time series data"
+author: "Andrew MacDonald"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+bibliography: biblio.bib
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r message=FALSE}
+library(codyn)
+
+library(knitr)
+library(dplyr)
+```
+  
+
+There are several ways to look at community data over time.
+
+```{r results='asis'}
+knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+kable(head(knz_001d))
+```
+
+## The Variance Ratio
+
+Community variance of total biomass will be
+
+$$ Var(x_1 + x_2 + \dotsb + x_N)  = \sum_{i = 1}^{N} Var(x_i) + 2\left(\sum_{i = 1}^{N - 1} \sum_{j = i + 1}^{N} Covar(x_i, x_j)\right)$$ 
+
+Which gives us the covariance ratio [@Grman2010]:
+
+$$ vr = \frac{var\left(\sum_{i}^{N} x_i \right)}{\sum_{i}^{N} var(x_i)} $$
+
+The variance ratio measures the amount of covariance between species.  If species are overall uncorrelated (i.e. $Covar(x_i, x_j) = 0$) then the ratio's value will be close to 1. If species have a negative covariance then the ratio will be < 1, and if species have a positive covariance then it's value is > 1.
+
+## Caluculating the variance ratio
+We have a function for calculating the variance ratio:
+
+```{r results='asis'}
+myresults<-varianceratio(knz_001d, "subplot", "species", "year", "abundance", 1)
+kable(myresults)
+```
+
+## Testing Variance ratios against a null distribution
+
+Calculating the $vr$ as above is all very well -- but what does it mean? A certain amount of variability in populations is expected, and will cause the covariances of independent species to vary from 0 by chance alone.  How much does this stochastiticy influence the variance ratio? We need a null model for species variation over time:
+
+There are several null models in the literature
+
+### Torus 
+
+### Phase scrambling
+
+
+We have a nice function for transforming a long dataframe into a matrix of year x species
+
+```{r results='asis'}
+one_matrix <- knz_001d %>%
+  filter(subplot == "A_1") %>%
+  select(-subplot) %>%
+  codyn:::calComDat("species", "year", "abundance")
+
+kable(one_matrix[1:5, 1:5])
+```
+
+We also need to do this for time series.
+
+```{r}
+one_ts <- knz_001d %>%
+  filter(subplot == "A_1") %>%
+  select(-subplot) %>%
+  codyn:::calComTS("species", "year", "abundance")
+
+kable(one_ts[1:5, 1:5])
+```
+
+
+Hm. what else might be returned by  `varianceratio`? a list which also includes the null simulations?
+
+I think we should export the `varianceratio` test too
+
+## citations
+
+
