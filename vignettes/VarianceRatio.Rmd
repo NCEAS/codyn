@@ -1,0 +1,25 @@
+---
+title: "Time series data"
+author: "Andrew MacDonald"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r echo=FALSE, message=FALSE}
+library(knitr)
+```
+  
+
+There are several ways to look at community data over time.
+
+```{r results='asis'}
+knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+kable(head(knz_001d))
+```
+
+
+
