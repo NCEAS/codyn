@@ -10,8 +10,11 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-```{r echo=FALSE, message=FALSE}
+```{r message=FALSE}
+library(codyn)
+
 library(knitr)
+library(dplyr)
 ```
   
 
@@ -37,7 +40,48 @@ The variance ratio measures the amount of covariance between species.  If specie
 ## Caluculating the variance ratio
 We have a function for calculating the variance ratio:
 
+```{r results='asis'}
+myresults<-varianceratio(knz_001d, "subplot", "species", "year", "abundance", 1)
+kable(myresults)
+```
 
+## Testing Variance ratios against a null distribution
+
+Calculating the $vr$ as above is all very well -- but what does it mean? A certain amount of variability in populations is expected, and will cause the covariances of independent species to vary from 0 by chance alone.  How much does this stochastiticy influence the variance ratio? We need a null model for species variation over time:
+
+There are several null models in the literature
+
+### Torus 
+
+### Phase scrambling
+
+
+We have a nice function for transforming a long dataframe into a matrix of year x species
+
+```{r results='asis'}
+one_matrix <- knz_001d %>%
+  filter(subplot == "A_1") %>%
+  select(-subplot) %>%
+  codyn:::calComDat("species", "year", "abundance")
+
+kable(one_matrix[1:5, 1:5])
+```
+
+We also need to do this for time series.
+
+```{r}
+one_ts <- knz_001d %>%
+  filter(subplot == "A_1") %>%
+  select(-subplot) %>%
+  codyn:::calComTS("species", "year", "abundance")
+
+kable(one_ts[1:5, 1:5])
+```
+
+
+Hm. what else might be returned by  `varianceratio`? a list which also includes the null simulations?
+
+I think we should export the `varianceratio` test too
 
 ## citations
 
