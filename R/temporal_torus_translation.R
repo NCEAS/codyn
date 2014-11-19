@@ -5,11 +5,10 @@
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
 #' @param FUN A function to calculate on the null community
-#' @param bootnumber The number of null model replications
 #' @return a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
 #' @export
-temporal_torus_translation<-function(data1, species, year, abundance, FUN, bootnumber){
-  out<-replicate(bootnumber, FUN(genRand(calComDat(data1, species, year, abundance))))
+temporal_torus_translation<-function(data1, species, year, abundance, FUN){
+  out<-FUN(genRand(calComDat(data1, species, year, abundance)))
   bootout<-unlist(out)
   return(bootout)
 }
@@ -28,7 +27,7 @@ temporal_torus_translation<-function(data1, species, year, abundance, FUN, bootn
 #' @return output A dataframe containing lowerCI, upperCI and nullmean value of the test statistic
 #' @export
 temporal_torus_translation_CI<-function(data1, species, year, abundance, FUN, bootnumber, li=0.025, ui=0.975){
-  out<-temporal_torus_translation(data1, species, year, abundance, FUN, bootnumber)
+  out<-replicate(bootnumber, temporal_torus_translation(data1, species, year, abundance, FUN))
   lowerCI <- quantile(out, li)
   upperCI<-quantile(out, ui)
   nullmean<-mean(out)
