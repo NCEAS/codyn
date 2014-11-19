@@ -23,7 +23,7 @@ varianceratio<-function(data1, rep="rep", species="species", year="year", abunda
     lowerCI <- quantile(out, li)
     upperCI <-quantile(out, ui)
     nullmean<-mean(out)
-    VR<-mean(unlist(lapply(X, FUN=calVR2, species, year, abundance)))
+    VR<-mean(unlist(lapply(X, FUN=calVR_longformdata, species, year, abundance)))
     output<-cbind(VR, lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
   } else{
