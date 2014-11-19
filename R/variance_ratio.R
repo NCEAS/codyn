@@ -7,6 +7,8 @@
 #' @param abundance The name of the abundance column from data1
 #' @param bootnumber The number of null model iterations used to calculated CIs
 #' @param averagereps If true returns VR and CI averaged across reps; if false returns VR and CI for each rep
+#' @param li The lower confidence interval, defaults to lowest 2.5\% CI
+#' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
 #'          If true, null VR are calculated within each rep, averaged, and the repeated for length of bootnumber
 #' @return output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
 #'          VR is the actual variance ratio
@@ -14,15 +16,15 @@
 #'          nullVRCIhigh is the 0.975 CI 
 #'          nullVRmean is the mean variance ratio calculated on null communities
 #' @export
-varianceratio<-function(data1, rep="rep", species="species", year='year', abundance="abundance", bootnumber, averagereps=TRUE){
+varianceratio<-function(data1, rep="rep", species="species", year="year", abundance="abundance", bootnumber, li=0.025, ui=0.975, averagereps=TRUE){
   if(averagereps==TRUE){
     X<-split(data1, data1[rep])
-    out<-replicate(bootnumber, mean(unlist(lapply(X, FUN=calnullVR, species, year, abundance)))) 
-    nullVRlow <- quantile(out, (.025))
-    nullVRhigh<-quantile(out, 0.975)
-    nullVRmean<-mean(out)
+    out<-replicate(bootnumber, mean(unlist(lapply(X, FUN=temporal_torus_translation, species, year, abundance, calVR)))) 
+    lowerCI <- quantile(out, li)
+    upperCI <-quantile(out, ui)
+    nullmean<-mean(out)
     VR<-mean(unlist(lapply(X, FUN=calVR2, species, year, abundance)))
-    output<-cbind(VR, nullVRlow, nullVRhigh, nullVRmean)
+    output<-cbind(VR, lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
   } else{
     X <- split(data1, data1[rep])
@@ -62,61 +64,10 @@ calVR<-function(comdat){
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return var.ratio The variance ratio of the community
-calVR2<-function(data1, species, year, abundance){
+calVR_longformdata<-function(data1, species, year, abundance){
   com.use<-calComDat(data1, species, year, abundance)
   var.ratio<-calVR(com.use)
   return(var.ratio)
-}
-
-#' A function to generate a community dataframe with a random start time for each species
-#'
-#' @param comdat A community dataframe
-#' @return rand.use A randomized community dataframe
-genRand<-function(comdat){
-  comdat2<-rbind(comdat, comdat)
-  rand.comdat<-matrix(NA, nrow(comdat), ncol(comdat)) 
-  for(i in 1:ncol(comdat)){  
-    rand.start<-sample(1:nrow(comdat), 1)
-    rand.comdat[,i]<-comdat2[rand.start:(rand.start+nrow(comdat)-1), i]
-  }
-  rand.use<-rand.comdat[1:nrow(rand.comdat), 2:ncol(rand.comdat)]
-  return(rand.use)
-}
-
-#' A function to calculate a null variance ratio from longform data using a temporal modification of the Torus translation
-#'
-#' @param data1 A dataframe containing year, species and abundance columns
-#' @param species The name of the species column from data1
-#' @param year The name of the year column from data1
-#' @param abundance The name of the abundance column from data1
-#' @return randVR A variance ratio calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
-calnullVR<-function(data1, species, year, abundance){
-  comdat<-calComDat(data1, species, year, abundance)
-  rand.dat<-genRand(comdat)
-  var.ratio<-calVR(rand.dat)
-  randVR <-data.frame(VR=var.ratio)
-  return(randVR)
-}
-
-#' A function to generate lower 2.5\% CI, upper 97.5\% CI and mean null VR values
-#'
-#' @param data1 A dataframe containing year, species and abundance columns
-#' @param species The name of the species column from data1
-#' @param year The name of the year column from data1
-#' @param abundance The name of the abundance column from data1
-#' @param bootnumber The number of null model iterations used to calculated CIs
-#' @return output A dataframe containing nullVRCIlow, nullVRCIhigh and nullVRmean
-#'          nullVRCIow is the 0.025 CI and nullVRCIhigh is the 0.975 CI
-nullVRCI<-function(data1, species, year, abundance, bootnumber){
-  out<-replicate(bootnumber, calnullVR(data1, species, year, abundance))
-  bootout<-(as.data.frame(unlist(out)))
-  names(bootout)<-c("nullVR")
-  nullVRlow <- quantile(bootout$nullVR, (.025))
-  nullVRhigh<-quantile(bootout$nullVR, 0.975)
-  nullVRmean<-mean(bootout$nullVR)
-  output<-cbind(nullVRlow, nullVRhigh, nullVRmean)
-  row.names(output)<-NULL
-  return(output)
 }
 
 #' A function to calculate both the real and mean null variance ratio along with lower 2.5\% CI, upper 97.5\% CI using a temporal modification of the Torus translation
@@ -126,14 +77,16 @@ nullVRCI<-function(data1, species, year, abundance, bootnumber){
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
 #' @param bootnumber The number of null model iterations used to calculated CIs
-#' @return output A dataframe containing VR  nullVRCIlow, nullVRCIhigh and nullVRmean
+#' @param li The lower confidence interval, defaults to lowest 2.5\% CI
+#' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
+#' @return output A dataframe 
 #'          VR is the actual variance ratio
-#'          nullVRCIow is the 0.025 CI 
-#'          nullVRCIhigh is the 0.975 CI 
-#'          nullVRmean is the mean variance ratio calculated on null communities
-calVRrealnull<-function(data1, species, year, abundance, bootnumber){
-  VR<-calVR2(data1, species, year, abundance)
-  nullVR<-nullVRCI(data1, species, year, abundance, bootnumber)
+#'          lowerCI defaults to the 0.025 CI 
+#'          upperCI defaults to the 0.975 CI 
+#'          nullmean is the mean variance ratio calculated on null communities
+calVRrealnull<-function(data1, species, year, abundance, bootnumber, li=0.025, ui=0.975){
+  VR<-calVR_longformdata(data1, species, year, abundance)
+  nullVR<-temporal_torus_translation_CI(data1, species, year, abundance, FUN=calVR, bootnumber=bootnumber, li=li, ui=ui)
   out<-cbind(VR, nullVR)
   return(out)
 }
