@@ -3,7 +3,8 @@
 \alias{calVRrealnull}
 \title{A function to calculate both the real and mean null variance ratio along with lower 2.5\% CI, upper 97.5\% CI using a temporal modification of the Torus translation}
 \usage{
-calVRrealnull(data1, species, year, abundance, bootnumber)
+calVRrealnull(data1, species, year, abundance, bootnumber, li = 0.025,
+  ui = 0.975)
 }
 \arguments{
 \item{data1}{A dataframe containing year, species and abundance columns}
@@ -15,13 +16,17 @@ calVRrealnull(data1, species, year, abundance, bootnumber)
 \item{abundance}{The name of the abundance column from data1}
 
 \item{bootnumber}{The number of null model iterations used to calculated CIs}
+
+\item{li}{The lower confidence interval, defaults to lowest 2.5\% CI}
+
+\item{ui}{The upper confidence interval, defaults to upper 97.5\% CI}
 }
 \value{
-output A dataframe containing VR  nullVRCIlow, nullVRCIhigh and nullVRmean
+output A dataframe
          VR is the actual variance ratio
-         nullVRCIow is the 0.025 CI
-         nullVRCIhigh is the 0.975 CI
-         nullVRmean is the mean variance ratio calculated on null communities
+         lowerCI defaults to the 0.025 CI
+         upperCI defaults to the 0.975 CI
+         nullmean is the mean variance ratio calculated on null communities
 }
 \description{
 A function to calculate both the real and mean null variance ratio along with lower 2.5\% CI, upper 97.5\% CI using a temporal modification of the Torus translation

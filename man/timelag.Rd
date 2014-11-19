@@ -7,6 +7,8 @@ timelag(comm_data)
 }
 \arguments{
 \item{comm_data}{Community dataset. Must be in 'wide' format}
+
+\item{year}{Year variable. Must be the first column of comm_data}
 }
 \value{
 linear model coefficients

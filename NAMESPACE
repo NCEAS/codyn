@@ -2,6 +2,8 @@
 
 export(meanrank)
 export(synchrony)
+export(temporal_torus_translation)
+export(temporal_torus_translation_CI)
 export(timelag)
 export(turnover)
 export(varianceratio)

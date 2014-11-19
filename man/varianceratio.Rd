@@ -4,7 +4,8 @@
 \title{A function to calculate the variance ratio and null model mean and CIs within multiple replicates}
 \usage{
 varianceratio(data1, rep = "rep", species = "species", year = "year",
-  abundance = "abundance", bootnumber, averagereps = TRUE)
+  abundance = "abundance", bootnumber, li = 0.025, ui = 0.975,
+  averagereps = TRUE)
 }
 \arguments{
 \item{data1}{A dataframe containing rep, species, year and abundance columns}
@@ -19,8 +20,12 @@ varianceratio(data1, rep = "rep", species = "species", year = "year",
 
 \item{bootnumber}{The number of null model iterations used to calculated CIs}
 
-\item{averagereps}{If true returns VR and CI averaged across reps; if false returns VR and CI for each rep
+\item{li}{The lower confidence interval, defaults to lowest 2.5\% CI}
+
+\item{ui}{The upper confidence interval, defaults to upper 97.5\% CI
 If true, null VR are calculated within each rep, averaged, and the repeated for length of bootnumber}
+
+\item{averagereps}{If true returns VR and CI averaged across reps; if false returns VR and CI for each rep}
 }
 \value{
 output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
