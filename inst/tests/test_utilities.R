@@ -11,12 +11,15 @@ test_that("utilities loads and returns correct result", {
     knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
     expect_that(names(knz_001d)[4], equals("abundance"))
 
-    # Does calComDat correctly transform a long dataframe into a matrix?
+    #take a subset
     dat1 <- subset(knz_001d, knz_001d$subplot=="A_1")
-    time_matrix <- codyn:::calComDat(data1 = dat1, "species", "year", "abundance")
+
+    # Does calComDat correctly transform a long dataframe into a matrix?
+    time_matrix <- calComDat(data1 = dat1, "species", "year", "abundance")
     expect_true(is.data.frame(time_matrix))
-#     knz_001d %>%
-#       filter(subplot == "A_1") %>%
-#       select(-subplot) %>%
-#       codyn:::calComDat("species", "year", "abundance")
+    # rownames should be timevar
+    expect_true(all(as.numeric(rownames(time_matrix)) %in% dat1[["year"]]))
+    # colnames should be species
+    expect_true(all(colnames(time_matrix) %in% dat1[["species"]]))
+
 })
