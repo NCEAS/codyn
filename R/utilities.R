@@ -22,12 +22,12 @@ calComDat<-function(data1, species, year, abundance){
 #' @param abundance The name of the abundance column from data1
 #' @return comdat A dataframe of species abundances x year
 calComTS<-function(data1, species, year, abundance){
-  data1<-data1[order(data1[year], data1[species]),]
-  comdat<-(tapply(data1[[abundance]], list(data1[[species]], as.vector(data1[[year]])), sum))
-  comdat[is.na(comdat)]<-0  
-  comdat<-comdat[which(rowSums(comdat)>0),]
-  start_time <- min(as.numeric(colnames(comdat)))
-  end_time <- max(as.numeric(colnames(comdat)))
-  comdat <- as.ts(comdat, start = start_time, end = end_time)
+  transposed_data <- calComDat(data1, species, year, abundance)
+  # remove years with no data
+  comdat <- transposed_data[which(rowSums(transposed_data) > 0), ]
+  timevector <- as.numeric(rownames(comdat))
+  start_time <- min(timevector)
+  end_time <- max(timevector)
+  comdat_ts <- ts(comdat, start = start_time, end = end_time)
   return(comdat)
 }
