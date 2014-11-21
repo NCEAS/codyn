@@ -21,15 +21,11 @@ calComDat<-function(data1, species, year, abundance){
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return comdat A dataframe of species abundances x year
-#' @import reshape
 calComTS<-function(data1, species, year, abundance){
-  data1 <- data1[order(data1[year]), ]
-  fstr <- paste(species, "~", year, sep="")
-  f <- as.formula(fstr)
-  comdat <- as.data.frame(cast(data1, f, value = abundance, fill=0))
-  rownames(comdat) <- comdat[[species]]
-  comdat[species] <- NULL
-  comdat <- as.matrix(comdat)
+  data1<-data1[order(data1[year], data1[species]),]
+  comdat<-(tapply(data1[[abundance]], list(data1[[species]], as.vector(data1[[year]])), sum))
+  comdat[is.na(comdat)]<-0  
+  comdat<-comdat[which(rowSums(comdat)>0),]
   start_time <- min(as.numeric(colnames(comdat)))
   end_time <- max(as.numeric(colnames(comdat)))
   comdat <- as.ts(comdat, start = start_time, end = end_time)
