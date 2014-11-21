@@ -22,4 +22,6 @@ test_that("utilities loads and returns correct result", {
     # colnames should be species
     expect_true(all(colnames(time_matrix) %in% dat1[["species"]]))
 
+    # does calComTS return a correct time series?
+
 })
