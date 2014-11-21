@@ -5,13 +5,11 @@
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return comdat A dataframe of species abundances x year
-#' @import reshape
 calComDat<-function(data1, species, year, abundance){
-  data1<-data1[order(data1[year]),]
-  fstr<-(paste(year, "~", species, sep=""))
-  f<-as.formula(fstr)
-  comdat<-as.data.frame(cast(data1, f, value=abundance, fill=0))
-  comdat[year]<-NULL
+  data1<-data1[order(data1[year], data1[species]),]
+  comdat<-tapply(data1[[abundance]], list(data1[[year]], as.vector(data1[[species]])), sum)
+  comdat[is.na(comdat)]<-0
+  comdat<-as.data.frame(comdat)
   return(comdat)
 }
 
