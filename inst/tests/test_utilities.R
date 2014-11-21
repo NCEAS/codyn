@@ -15,13 +15,14 @@ test_that("utilities loads and returns correct result", {
     dat1 <- subset(knz_001d, knz_001d$subplot=="A_1")
 
     # Does calComDat correctly transform a long dataframe into a matrix?
-    time_matrix <- calComDat(data1 = dat1, "species", "year", "abundance")
-    expect_true(is.data.frame(time_matrix))
+    com_wide_df <- calComDat(data1 = dat1, "species", "year", "abundance")
+    expect_true(is.data.frame(com_wide_df))
     # rownames should be timevar
-    expect_true(all(as.numeric(rownames(time_matrix)) %in% dat1[["year"]]))
+    expect_true(all(as.numeric(rownames(com_wide_df)) %in% dat1[["year"]]))
     # colnames should be species
-    expect_true(all(colnames(time_matrix) %in% dat1[["species"]]))
+    expect_true(all(colnames(com_wide_df) %in% dat1[["species"]]))
 
     # does calComTS return a correct time series?
+
 
 })
