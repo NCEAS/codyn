@@ -3,14 +3,14 @@
 \alias{varianceratio}
 \title{A function to calculate the variance ratio and null model mean and CIs within multiple replicates}
 \usage{
-varianceratio(data1, rep = "rep", species = "species", year = "year",
-  abundance = "abundance", bootnumber, li = 0.025, ui = 0.975,
-  averagereps = TRUE)
+varianceratio(data1, replicate = "replicate", species = "species",
+  year = "year", abundance = "abundance", bootnumber, li = 0.025,
+  ui = 0.975, averagereps = TRUE)
 }
 \arguments{
-\item{data1}{A dataframe containing rep, species, year and abundance columns}
+\item{data1}{A dataframe containing replicate, species, year and abundance columns}
 
-\item{rep}{The name of the replicate column from data1}
+\item{replicate}{The name of the replicate column from data1}
 
 \item{species}{The name of the species column from data1}
 

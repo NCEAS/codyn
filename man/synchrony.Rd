@@ -3,18 +3,19 @@
 \alias{synchrony}
 \title{A function to calculate species synchrony over time within multiple replicates}
 \usage{
-synchrony(data1, rep, species, year, abundance)
+synchrony(data1, replicate = "replicate", species = "species",
+  year = "year", abundance = "abundance")
 }
 \arguments{
-\item{data1}{A dataframe containing rep, year, species and abundance columns}
-
-\item{rep}{The name of the replicate column from data1}
+\item{data1}{A dataframe containing replicate, year, species and abundance columns}
 
 \item{species}{The name of the species column from data1}
 
 \item{year}{The name of the year column from data1}
 
 \item{abundance}{The name of the abundance column from data1}
+
+\item{rep}{The name of the replicate column from data1}
 }
 \value{
 output The degree of species synchrony, where 1 is perfect synchrony and 0 is perfect asynchrony
