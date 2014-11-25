@@ -1,7 +1,7 @@
 #' A function to calculate the variance ratio and null model mean and CIs within multiple replicates
 #'
-#' @param data1 A dataframe containing rep, species, year and abundance columns
-#' @param rep The name of the replicate column from data1
+#' @param data1 A dataframe containing replicate, species, year and abundance columns
+#' @param replicate The name of the replicate column from data1
 #' @param species The name of the species column from data1
 #' @param year The name of the year column from data1
 #' @param abundance The name of the abundance column from data1
@@ -16,9 +16,9 @@
 #'          nullVRCIhigh is the 0.975 CI 
 #'          nullVRmean is the mean variance ratio calculated on null communities
 #' @export
-varianceratio<-function(data1, rep="rep", species="species", year="year", abundance="abundance", bootnumber, li=0.025, ui=0.975, averagereps=TRUE){
+varianceratio<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance", bootnumber, li=0.025, ui=0.975, averagereps=TRUE){
   if(averagereps==TRUE){
-    X<-split(data1, data1[rep])
+    X<-split(data1, data1[replicate])
     out<-replicate(bootnumber, mean(unlist(lapply(X, FUN=temporal_torus_translation, species, year, abundance, calVR)))) 
     lowerCI <- quantile(out, li)
     upperCI <-quantile(out, ui)
@@ -27,9 +27,9 @@ varianceratio<-function(data1, rep="rep", species="species", year="year", abunda
     output<-cbind(VR, lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
   } else{
-    X <- split(data1, data1[rep])
+    X <- split(data1, data1[replicate])
     out<-lapply(X, FUN=calVRrealnull, species, year, abundance, bootnumber)
-    reps<-unique(data1[rep])
+    reps<-unique(data1[replicate])
     output<-cbind(reps, do.call("rbind", out))
   }
   return(as.data.frame(output))
