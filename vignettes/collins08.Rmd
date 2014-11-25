@@ -1,13 +1,23 @@
 ---
-title: "Vignette Title"
+title: "Rank shifts between species"
 author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+bibliography: biblio.bib
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---
+
+## Species rank orders often reshuffle over time
+[Some text developing this idea?]
+
+## Rank clocks: visualizing species rank shifts
+
+Rank clocks plot the rank order of abundance of each species over time in a circle (like a clock!), starting with a vertical axis at 12 o'clock. They are useful to visualize the degree to which species fluctuate over time [@Collins2008]. 
+
+To illustrate, let's first generate some sample data:
 
 ```{r}
 library(ggplot2)
@@ -22,18 +32,30 @@ y3 = .2*sin(x) + rnorm(length(x), 0, .1) + .01*x + 30
 # Reshape the data: year, variable (y1,y2,y3), value
 dat = melt(data.frame(x, y1, y2, y3), "x")
 
-# graph: linear version 
+```
+
+
+A traditional, linear depiction of species rank shifts can be cluttered and visually confusing:
+```{r}
 ggplot(dat, aes(x,value,color=variable)) + geom_line()
-# graph: final circular version 
+```
+
+
+In contrast, a rank clock visualization highlights differences in the stability of species:
+```{r}
 ggplot(dat, aes(x,value,color=variable)) + geom_line() + coord_polar() + theme_bw() 
-
-
 
 ```
 
-## Figure 3
+## rankshifts: A function to quantify shifts in species rank order
+[text explaining what the function does, with example data]
+
+
+
+## Visualizing mean species rank shifts
 
 ```{r}
 
 ```
 
+## Citations
