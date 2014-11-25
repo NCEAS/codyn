@@ -35,14 +35,16 @@ synchrony<-function(data1, rep, species, year, abundance) {
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return output The degree of species synchrony, where 1 is perfect synchrony and 0 is perfect asynchrony
-#' @import reshape
 synch_onerep<-function(data1, species, year, abundance) {
+    #remove any species that were never present
+    data1<-subset(data1, abundance>0)
     #fill in 0s
-    fill0formula<-as.formula(paste(species, "~", year))
-    datacast<-cast(species~year, value=abundance, data=data1, fill=0)
-    data2<-melt(datacast)
-    names(data2)=c(species, abundance, year)
-    
+    spplist<-(unique(data1[species]))
+    yearlist<-(unique(data1[year]))
+    fulllist<-expand.grid(species=spplist[[species]], year=yearlist[[year]])
+    data2<-merge(data1[c(species, year, abundance)], fulllist, all=T)
+    data2[is.na(data2)]<-0  
+  
     #calculate community variance
     XTformula<-as.formula(paste(abundance, "~", year, sep=""))
     XT<-aggregate(XTformula, data=data2, sum )
