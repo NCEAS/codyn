@@ -19,19 +19,15 @@
 varianceratio<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance", bootnumber, li=0.025, ui=0.975, averagereps=TRUE){
   if(averagereps==TRUE){
     X<-split(data1, data1[replicate])
-    out<-replicate(bootnumber, mean(unlist(lapply(X, FUN=temporal_torus_translation, species, year, abundance, calVR)))) 
-    lowerCI <- quantile(out, li)
-    upperCI <-quantile(out, ui)
-    nullmean<-mean(out)
+    nullout<-temporal_torus_translation_CI(data1, replicate, species, year, abundance, FUN=calVR, bootnumber, li, ui, averagereps=TRUE) 
     VR<-mean(unlist(lapply(X, FUN=calVR_longformdata, species, year, abundance)))
-    output<-cbind(VR, lowerCI, upperCI, nullmean)
-    row.names(output)<-NULL
-  } else{
+    } else{
     X <- split(data1, data1[replicate])
-    out<-lapply(X, FUN=calVRrealnull, species, year, abundance, bootnumber)
-    reps<-unique(data1[replicate])
-    output<-cbind(reps, do.call("rbind", out))
+    nullout<-temporal_torus_translation_CI(data1, replicate, species, year, abundance, FUN=calVR, bootnumber, li, ui, averagereps=FALSE)
+    VR<-do.call("rbind", lapply(X, FUN=calVR_longformdata, species, year, abundance))
   }
+  output<-cbind(nullout, VR)
+  row.names(output)<-NULL
   return(as.data.frame(output))
 }
 
@@ -69,25 +65,3 @@ calVR_longformdata<-function(data1, species, year, abundance){
   var.ratio<-calVR(com.use)
   return(var.ratio)
 }
-
-#' A function to calculate both the real and mean null variance ratio along with lower 2.5\% CI, upper 97.5\% CI using a temporal modification of the Torus translation
-#'
-#' @param data1 A dataframe containing year, species and abundance columns
-#' @param species The name of the species column from data1
-#' @param year The name of the year column from data1
-#' @param abundance The name of the abundance column from data1
-#' @param bootnumber The number of null model iterations used to calculated CIs
-#' @param li The lower confidence interval, defaults to lowest 2.5\% CI
-#' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
-#' @return output A dataframe 
-#'          VR is the actual variance ratio
-#'          lowerCI defaults to the 0.025 CI 
-#'          upperCI defaults to the 0.975 CI 
-#'          nullmean is the mean variance ratio calculated on null communities
-calVRrealnull<-function(data1, species, year, abundance, bootnumber, li=0.025, ui=0.975){
-  VR<-calVR_longformdata(data1, species, year, abundance)
-  nullVR<-temporal_torus_translation_CI(data1, species, year, abundance, FUN=calVR, bootnumber=bootnumber, li=li, ui=ui)
-  out<-cbind(VR, nullVR)
-  return(out)
-}
-
