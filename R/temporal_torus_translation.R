@@ -29,6 +29,14 @@ temporal_torus_translation<-function(data1, species, year, abundance, FUN){
 #' @return output A dataframe containing lowerCI, upperCI and nullmean value of the test statistic
 #' @export
 temporal_torus_translation_CI<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance", FUN, bootnumber, li=0.025, ui=0.975, averagereps=TRUE){
+  if(is.na(replicate)==TRUE){
+    out<-replicate(bootnumber, temporal_torus_translation(data1, species, year, abundance, FUN))
+    lowerCI <- quantile(out, li)
+    upperCI <-quantile(out, ui)
+    nullmean<-mean(out)
+    output<-cbind(lowerCI, upperCI, nullmean)
+    row.names(output)<-NULL
+  }else{
   if(averagereps==TRUE){
     X<-split(data1, data1[replicate])
     out<-replicate(bootnumber, mean(unlist(lapply(X, temporal_torus_translation, species, year, abundance, FUN)))) 
@@ -47,6 +55,7 @@ temporal_torus_translation_CI<-function(data1, replicate="replicate", species="s
     output<-cbind(reps, lowerCI, upperCI, nullmean)
     names(output)[2:3]=c("lowerCI", "upperCI")
   }
+  }
   return(as.data.frame(output))
 }
 
@@ -61,6 +70,9 @@ temporal_torus_translation_CI<-function(data1, replicate="replicate", species="s
 #
 ############################################################################
 
+comdat <- calComDat(data1 = dat1, "species", "year", "abundance")
+
+
 #' A function to generate a community dataframe with a random start time for each species
 #'
 #' @param comdat A community dataframe
@@ -72,7 +84,7 @@ genRand<-function(comdat){
     rand.start<-sample(1:nrow(comdat), 1)
     rand.comdat[,i]<-comdat2[rand.start:(rand.start+nrow(comdat)-1), i]
   }
-  rand.use<-rand.comdat[1:nrow(rand.comdat), 2:ncol(rand.comdat)]
+  rand.use<-rand.comdat[1:nrow(rand.comdat), 1:ncol(rand.comdat)]
   return(rand.use)
 }
 
