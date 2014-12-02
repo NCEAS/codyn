@@ -6,6 +6,7 @@ test_that("temporal_torus_translation loads and returns correct result", {
   
   library(codyn)
   
+
   # Load our example data set
   # data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
   knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
@@ -31,8 +32,8 @@ test_that("temporal_torus_translation loads and returns correct result", {
   dat4<-subset(knz_001d, subplot=="A_1"|subplot=="A_2")
   
   #make a species matrix
-  datmat<-calComDat(dat1, "species", "year", "abundance")
   
+  datmat<-calComDat(dat1, "species", "year", "abundance")
   
 
   

@@ -70,7 +70,6 @@ temporal_torus_translation_CI<-function(data1, replicate="replicate", species="s
 #
 ############################################################################
 
-comdat <- calComDat(data1 = dat1, "species", "year", "abundance")
 
 
 #' A function to generate a community dataframe with a random start time for each species
