@@ -1,12 +1,11 @@
 #' A function to calculate species synchrony over time within multiple replicates
 #'
 #' @param data1 A dataframe containing replicate, year, species and abundance columns
-#' @param rep The name of the replicate column from data1
+#' @param replicate The name of the replicate column from data1
 #' @param year The name of the year column from data1
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return output The degree of species synchrony, where 1 is perfect synchrony and 0 is perfect asynchrony
-#' @import reshape
 #' @export
 synchrony<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance") {
     X <- split(data1, data1[replicate])
