@@ -1,12 +1,12 @@
-#' Function for time-lag analysis or directional change in temporal Community composition data.
+#' Function quantifying the temporal rate and pattern of change in community composition.
 #'
-#' This is a function that calculates the slope of directional change.
+#' This is an analysis of differences in species composition between samples at increasing time lags. It measures the rate of directional change in community composition. First, a triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean distance values are plotted against time lags. For example, a data set with 6 time intervals will have 5 one-year time lags (year 1 vs year 2, year 2 vs year 3 ...) and 4 two-year time lags (year 1 vs year 3, year 2 vs year 4 ...). Finally, distance values are regressed against time lag. The slope of the regression line indicates the rate and direction of change, and the regression coefficient is a measure of signal verses noise.     
 #' @param comm_data Community dataset. Must be in 'wide' format
 #' @param year Year variable. Must be the first column of comm_data
 #' @return linear model coefficients
 #' @export
 #' @import vegan
-timelag <- function(comm_data) {
+rate_change <- function(comm_data) {
     # creating distance matrix from species matrix
     DM <- vegdist(comm_data[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
     DM <- as.matrix(DM)
@@ -16,7 +16,7 @@ timelag <- function(comm_data) {
     
     # regression
     lm_coefficents <- lm(value ~ lag, data=DM.long)
-    return(lm_coefficents)
+		return(summary(lm_coefficents))
 }
 
 ############################################################################
@@ -37,7 +37,6 @@ get_lags = function(DM, comm_data) {
     rownums = row(DM)
     colnums = col(DM)
 
-    # TODO: embedding a function in another is bad form; refactor this
     # A function to get all the elements that are lagged by i time steps,
     # then put them into a long-form matrix with i in the first column and
     # the matrix value in the second column.
