@@ -1,4 +1,4 @@
-#' A function to calculate species synchrony over time within one replicate
+#' A function to calculate community stability over time
 #' @param replicate The name of the replicate column from data1
 #' @param year The name of the year column from data1
 #' @param species The name of the species column from data1
@@ -6,18 +6,24 @@
 #' @return output The stability of community abundance, calculated as mean/standard deviation
 #' @export
 community_stability<-function(data1, replicate="replicate", year="year", abundance="abundance"){
+ if(is.na(replicate)==FALSE){
   #sum abundance within a replicate and year
   aggform<-as.formula(paste(abundance, "~", replicate, "+", year, sep=""))
   data2<-aggregate(aggform, data=data1, sum)
-  #calculate stability within each replicate
-  out<-by(data2, data2[replicate], FUN=stability_onerep, abundance)
-  #bind output as a dataframe
-  outvals<-cbind(out)
-  outnames<-cbind(names(out))
-  output<-as.data.frame(cbind(outnames, outvals))
+  X<-split(data2, data2[replicate])
+  out<-lapply(X, stability_onerep, abundance)
+  reps<-unique(data2[replicate])
+  output<-cbind(reps, do.call("rbind", out))
   names(output)=c(replicate, "stability")
+  output<-subset(output, is.na(stability)==F)} 
+  else{
+    #sum abundance within a year
+    aggform<-as.formula(paste(abundance, "~", year, sep=""))
+    data2<-aggregate(aggform, data=data1, sum)
+    output<-stability_onerep(data2, abundance)
+  }
   row.names(output)<-NULL
-  return(output)
+ return(output)
 }
 
 
