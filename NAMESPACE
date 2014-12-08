@@ -2,10 +2,10 @@
 
 export(community_stability)
 export(meanrank)
+export(rate_change)
 export(synchrony)
 export(temporal_torus_translation)
 export(temporal_torus_translation_CI)
-export(timelag)
 export(turnover)
 export(varianceratio)
 import(vegan)
