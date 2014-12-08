@@ -74,7 +74,7 @@ test_that("temporal_torus_translation loads and returns correct result", {
   
   ##TO DO: Decide how to handle replicates that are factors with missing levels
   #For example, this:
-  myresults2<-temporal_torus_translation_CI(dat1, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
+ myresults2<-temporal_torus_translation_CI(dat1, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
   #Versus this:
   dat5<-dat4
   dat5$subplot<-as.character(dat5$subplot)
