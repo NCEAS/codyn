@@ -1,4 +1,15 @@
-meanrankshifts <- function(data1, replicate="replicate", year = "year",
+#' Function for calculating mean rank shifts
+#'
+#'
+#' This is a function that calculates mean rank shifts
+#' @param data1 Community dataset. Must be in 'long' format.
+#' @param replicate The replication variable
+#' @param year The time variable
+#' @param species The species variable
+#' @param abundance The abundance variable
+#' @return a dataframe, showing years compared
+#' @export
+meanrankshift <- function(data1, replicate="replicate", year = "year",
                      species = "species", abundance = "abundance"){
   if(is.na(replicate)==TRUE){
     output<-meanrank(data1, species, year, abundance)}else{
@@ -34,7 +45,6 @@ return(output)
 #' @param species The species variable
 #' @param abundance The abundance variable
 #' @return a dataframe, showing years compared
-#' @export
 meanrank <- function(comm_data, year = "year",
                      species = "species", abundance = "abundance"){
     ## split data by year
