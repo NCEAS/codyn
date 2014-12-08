@@ -1,16 +1,28 @@
-#' Create intersected data frames
-#'
-#' Create intersections.
-#' @param d1 A dataframe
-#' @param d2 A dataframe
-#' @param dataname The name of the column on which the two datasets will be joined and intersected
-getintersect <- function(d1, d2, dataname = "species"){
-    commspp <- intersect(d1[[dataname]], d2[[dataname]])
-    names(d1)[-1] <- paste0(names(d1)[-1],"1")
-    names(d2)[-1] <- paste0(names(d2)[-1],"2")
-    merge(x = d1[d1[[dataname]] %in% commspp, ],
-          y = d2[d2[[dataname]] %in% commspp, ])
+meanrankshifts <- function(data1, replicate="replicate", year = "year",
+                     species = "species", abundance = "abundance"){
+  if(is.na(replicate)==TRUE){
+    output<-meanrank(data1, species, year, abundance)}else{
+        data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
+        X<-split(data1, data1[replicate])
+        out<-(lapply(X, FUN=meanrank, year, species, abundance))
+        ID<-unique(names(out))
+        out<-mapply(function(x, y) "[<-"(x, replicate, value = y) ,
+                    out, ID, SIMPLIFY = FALSE)
+        output<-do.call("rbind", out)
+      }
+return(output)
 }
+  
+  
+
+############################################################################
+#
+# Private functions: these are internal functions not intended for reuse.  
+# Future package releases may change these without notice. External callers
+# should not use them.
+#
+############################################################################
+
 
 
 #' Function for calculating mean rank shifts
@@ -50,6 +62,21 @@ meanrank <- function(comm_data, year = "year",
     MRS <- sapply(rankdiff, function(x) mean(x$abs_ch_rank))
 
     data.frame(year_pair = names(MRS), MRS, row.names = NULL)
+}
+
+
+#' Create intersected data frames
+#'
+#' Create intersections.
+#' @param d1 A dataframe
+#' @param d2 A dataframe
+#' @param dataname The name of the column on which the two datasets will be joined and intersected
+getintersect <- function(d1, d2, dataname = "species"){
+  commspp <- intersect(d1[[dataname]], d2[[dataname]])
+  names(d1)[-1] <- paste0(names(d1)[-1],"1")
+  names(d2)[-1] <- paste0(names(d2)[-1],"2")
+  merge(x = d1[d1[[dataname]] %in% commspp, ],
+        y = d2[d2[[dataname]] %in% commspp, ])
 }
 
 
