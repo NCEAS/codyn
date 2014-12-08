@@ -6,13 +6,13 @@
 #' @return linear model coefficients
 #' @export
 #' @import vegan
-rate_change <- function(comm_data) {
+rate_change <- function(comm_data, year="year") {
     # creating distance matrix from species matrix
     DM <- vegdist(comm_data[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
     DM <- as.matrix(DM)
     
     # final: matrix converted to long-form
-    DM.long <- data.frame(get_lags(DM))
+    DM.long <- data.frame(get_lags(DM, comm_data, year))
     
     # regression
     lm_coefficents <- lm(value ~ lag, data=DM.long)
@@ -31,8 +31,9 @@ rate_change <- function(comm_data) {
 #' 
 #' @param DM distance matrix to be used for lag calculations
 #' @param comm_data community data frame
+#' @param year The year column in comm_data 
 #' @return matrix of lag values
-get_lags = function(DM, comm_data) {
+get_lags = function(DM, comm_data, year) {
     # label each row and each column.
     rownums = row(DM)
     colnums = col(DM)
@@ -47,7 +48,7 @@ get_lags = function(DM, comm_data) {
     # apply get_lag_i to all lags from 1 to n-1
     # replace n with number of columns 
     lag_list = lapply(
-        1:(length(unique(comm_data$year))-1),
+        1:(length(unique(comm_data[year]))-1),
         get_lag_i)
     # squash all the lags from the list into one long-form matrix
     result <- do.call(rbind, lag_list)
