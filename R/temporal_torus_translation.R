@@ -37,8 +37,7 @@ temporal_torus_translation_CI<-function(data1, replicate="replicate", species="s
     output<-cbind(lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
   }else{
-    data1[[replicate]]<- ifelse(is.factor(data1[[replicate]]==T),
-   factor(data1[[replicate]]), data1[[replicate]])
+    data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
     if(averagereps==TRUE){
     X<-split(data1, data1[replicate])
     out<-replicate(bootnumber, mean(unlist(lapply(X, temporal_torus_translation, species, year, abundance, FUN)))) 

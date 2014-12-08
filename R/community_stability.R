@@ -6,7 +6,8 @@
 #' @return output The stability of community abundance, calculated as mean/standard deviation
 #' @export
 community_stability<-function(data1, replicate="replicate", year="year", abundance="abundance"){
- if(is.na(replicate)==FALSE){
+  if(is.na(replicate)==FALSE){
+    data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
   #sum abundance within a replicate and year
   aggform<-as.formula(paste(abundance, "~", replicate, "+", year, sep=""))
   data2<-aggregate(aggform, data=data1, sum)
@@ -25,6 +26,7 @@ community_stability<-function(data1, replicate="replicate", year="year", abundan
   row.names(output)<-NULL
  return(output)
 }
+
 
 
 ############################################################################
