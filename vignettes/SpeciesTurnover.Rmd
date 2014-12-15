@@ -1,0 +1,58 @@
+---
+title: "Species turnover metrics"
+author: "Lauren Hallett"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+bibliography: biblio.bib
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+  
+  
+---
+Species richness (i.e., the number of species present) is a common metric to characterize ecological communities. However, species richness may be a poor indicator of community change if there is turnover in the identity but not the number of species present over time [@Collins2008]. 
+
+[A growing number of syntheses studies have documented high turnover in communities with static species richness, highlighting the need to utilize turnover metrics in tandem with diversity metrics to understand ecological community dynamics.] 
+
+##turnover: A function to characterize shifts in species identity over time
+The function `turnover` calculates three metrics of species turnover: total turnover, appearances, and disappearances.
+[Also include proportional persistence? This is the number in common between time point t and t+1 scaled to the number of species in t+1 [@Collins2008]]
+
+###Turnover
+The default metric, "turnover," calculates the proportion of species that differ between timepoints as:
+
+([number of species gained] + [number of species lost])/(total number of species observed in both timepoints)
+
+(Rusch and van der Maarel 1992, Cleland et al. 2013). It was introduced by MacArthur and Wilson (1963) and modified by Diamond (1969) to be expressed as a proportion in order to compare turnover between sites that differ in species richness.
+
+`turnover` requires a dataframe with species, year and abundance columns. Additionally, specifying a replicate column will calculate turnover within replicates. For example:
+
+```{r results='asis'}
+library(codyn)
+library(knitr)
+knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+kable(head(knz_001d))
+```
+
+
+Here we calculate total turnover for an annually burned Konza Prairie site using `turnover`: 
+
+```{r results='asis'}
+    myresults<-turnover(knz_001d, "subplot", "species", "year", "abundance")
+    kable(head(myresults))
+```
+
+As a point of comparison, we also calculate richness over time at the same site:
+```{r results='asis'}
+
+```
+
+Need to include a richness over time metric, then graph it out!!!
+
+###Appearance and disapperance
+Sometimes the cause of 
+
+
+
+
