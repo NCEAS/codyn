@@ -9,7 +9,6 @@
 #' @param averagereps If true returns VR and CI averaged across reps; if false returns VR and CI for each rep
 #' @param li The lower confidence interval, defaults to lowest 2.5\% CI
 #' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
-#'          If true, null VR are calculated within each rep, averaged, and the repeated for length of bootnumber
 #' @return output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
 #'          VR is the actual variance ratio
 #'          nullVRCIow is the 0.025 CI 
