@@ -3,7 +3,7 @@
 \alias{rate_change}
 \title{Function quantifying the temporal rate and pattern of change in community composition.}
 \usage{
-rate_change(comm_data)
+rate_change(comm_data, year = "year")
 }
 \arguments{
 \item{comm_data}{Community dataset. Must be in 'wide' format}
