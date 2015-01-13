@@ -22,8 +22,7 @@ varianceratio(data1, replicate = "replicate", species = "species",
 
 \item{li}{The lower confidence interval, defaults to lowest 2.5\% CI}
 
-\item{ui}{The upper confidence interval, defaults to upper 97.5\% CI
-If true, null VR are calculated within each rep, averaged, and the repeated for length of bootnumber}
+\item{ui}{The upper confidence interval, defaults to upper 97.5\% CI}
 
 \item{averagereps}{If true returns VR and CI averaged across reps; if false returns VR and CI for each rep}
 }

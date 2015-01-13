@@ -11,13 +11,18 @@
 #' @return output A dataframe containing the specificed turnover metric and year
 #' @export
 turnover<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance", metric="turnover") {
+  if(is.na(replicate)==TRUE){
+    output<-turnover_allyears(data1, species, year, abundance)}else{
+    data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
   X <- split(data1, data1[replicate])
   out<-lapply(X, FUN=turnover_allyears, species, year, abundance, metric)
   ID<-unique(names(out))
   out<-mapply(function(x, y) "[<-"(x, replicate, value = y) ,
               out, ID, SIMPLIFY = FALSE)
   output<-do.call("rbind", out)
+  row.names(output)<-NULL
   return(output)
+}
 }
 
 ############################################################################

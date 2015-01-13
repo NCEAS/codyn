@@ -5,13 +5,13 @@
 #' @return linear model coefficients
 #' @export
 #' @import vegan
-rate_change <- function(comm_data) {
+rate_change <- function(comm_data, year="year") {
     # creating distance matrix from species matrix
     DM <- vegdist(comm_data[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
     DM <- as.matrix(DM)
     
     # final: matrix converted to long-form
-    DM.long <- data.frame(get_lags(DM))
+    DM.long <- data.frame(get_lags(DM, comm_data, year))
     
     # regression
     lm_coefficents <- lm(value ~ lag, data=DM.long)
@@ -31,8 +31,9 @@ rate_change <- function(comm_data) {
 #' This is an analysis of differences in species composition between samples at increasing time lags. It measures the rate of directional change in community composition. First, a triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean distance values are plotted against time lags. For example, a data set with 6 time intervals will have 5 one-year time lags (year 1 vs year 2, year 2 vs year 3 ...) and 4 two-year time lags (year 1 vs year 3, year 2 vs year 4 ...). Finally, distance values are regressed against time lag. The slope of the regression line indicates the rate and direction of change, and the regression coefficient is a measure of signal verses noise.
 #' @param DM distance matrix to be used for lag calculations
 #' @param comm_data community data frame
+#' @param year The year column in comm_data 
 #' @return matrix of lag values
-get_lags = function(DM, comm_data) {
+get_lags = function(DM, comm_data, year) {
     # label each row and each column.
     rownums = row(DM)
     colnums = col(DM)
@@ -47,7 +48,7 @@ get_lags = function(DM, comm_data) {
     # apply get_lag_i to all lags from 1 to n-1
     # replace n with number of columns 
     lag_list = lapply(
-        1:(length(unique(comm_data$year))-1),
+        1:(length(unique(comm_data[year]))-1),
         get_lag_i)
     # squash all the lags from the list into one long-form matrix
     result <- do.call(rbind, lag_list)

@@ -74,7 +74,7 @@ test_that("temporal_torus_translation loads and returns correct result", {
   
   ##TO DO: Decide how to handle replicates that are factors with missing levels
   #For example, this:
-  myresults2<-temporal_torus_translation_CI(dat1, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
+ myresults2<-temporal_torus_translation_CI(dat1, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
   #Versus this:
   dat5<-dat4
   dat5$subplot<-as.character(dat5$subplot)
@@ -82,7 +82,8 @@ test_that("temporal_torus_translation loads and returns correct result", {
   
   #TO DO: Test both options for "averagereps"
   myresults4<-temporal_torus_translation_CI(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=TRUE)
-  myresults5<-temporal_torus_translation_CI(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
-
-  
+  expect_that(nrow(myresults4), equals(1))
+ myresults5<-temporal_torus_translation_CI(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
+ expect_that(nrow(myresults5), equals(length(unique(knz_001d$subplot))))
+ 
 })

@@ -9,29 +9,31 @@
 #' @param averagereps If true returns VR and CI averaged across reps; if false returns VR and CI for each rep
 #' @param li The lower confidence interval, defaults to lowest 2.5\% CI
 #' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
-#'          If true, null VR are calculated within each rep, averaged, and the repeated for length of bootnumber
 #' @return output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
 #'          VR is the actual variance ratio
 #'          nullVRCIow is the 0.025 CI 
 #'          nullVRCIhigh is the 0.975 CI 
 #'          nullVRmean is the mean variance ratio calculated on null communities
 #' @export
-varianceratio<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance", bootnumber, li=0.025, ui=0.975, averagereps=TRUE){
-  if(averagereps==TRUE){
-    X<-split(data1, data1[replicate])
-    nullout<-temporal_torus_translation_CI(data1, replicate, species, year, abundance, FUN=calVR, bootnumber, li, ui, averagereps=TRUE) 
-    VR<-mean(unlist(lapply(X, FUN=calVR_longformdata, species, year, abundance)))
-    } else{
-    X <- split(data1, data1[replicate])
-    nullout<-temporal_torus_translation_CI(data1, replicate, species, year, abundance, FUN=calVR, bootnumber, li, ui, averagereps=FALSE)
-    VR<-do.call("rbind", lapply(X, FUN=calVR_longformdata, species, year, abundance))
+varianceratio<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance",  bootnumber, li=0.025, ui=0.975, averagereps=TRUE){
+if(is.na(replicate)==TRUE){
+  VR<-calVR_longformdata(data1, species, year, abundance)}else{
+    data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
+    if(averagereps==TRUE){
+      X<-split(data1, data1[replicate])
+      VR<-mean(unlist(lapply(X, FUN=calVR_longformdata, species, year, abundance)))}else{
+        X <- split(data1, data1[replicate])
+        VR<-do.call("rbind", lapply(X, FUN=calVR_longformdata, species, year, abundance))
+      }
   }
-  output<-cbind(nullout, VR)
-  row.names(output)<-NULL
-  return(as.data.frame(output))
-}
-
-
+nullout<-temporal_torus_translation_CI(data1, replicate, species, year, abundance,calVR, bootnumber, li, ui, averagereps)
+output<-(cbind(nullout, VR))
+row.names(output)<-NULL
+return(as.data.frame(output)) 
+      }
+      
+      
+      
 ############################################################################
 #
 # Private functions: these are internal functions not intended for reuse.  
