@@ -11,7 +11,8 @@ vignette: >
 ---
 
 ## Species rank orders often reshuffle over time
-[Some text developing this idea?]
+
+Species communities are temporally dynamic due to environmental drivers leading to reordering of species abundances over time. Quantifying within-community reordering is a means of evaluating community stability without masking informative temporal shifts in internal dynamics [@Collins2008]. 
 
 ## Rank clocks: visualizing species rank shifts
 
@@ -48,14 +49,21 @@ ggplot(dat, aes(x,value,color=variable)) + geom_line() + coord_polar() + theme_b
 ```
 
 ## rankshifts: A function to quantify shifts in species rank order
-[text explaining what the function does, with example data]
 
+This function quantifies relative changes in species rank abundances by taking the sum difference of species ranks of consecutive pairs of years. 
 
 
 ## Visualizing mean species rank shifts
 
 ```{r}
 
+data(collins08)
+
+dat <- meanrank(collins08)
+
+ggplot(dat, aes(year_pair, MRS)) + geom_line()
+
+  
 ```
 
 ## Citations
