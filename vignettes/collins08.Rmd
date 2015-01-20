@@ -30,7 +30,7 @@ y1 = .3*sin(x) + rnorm(length(x), 0, .1) + -.05*x + 150
 y2 = .2*sin(x) + rnorm(length(x), 0, .1) + -.01*x + 70
 y3 = .2*sin(x) + rnorm(length(x), 0, .1) + .01*x + 30
 
-# Reshape the data: year, variable (y1,y2,y3), value
+## Reshape the data: year, variable (y1,y2,y3), value
 dat = melt(data.frame(x, y1, y2, y3), "x")
 
 ```
@@ -56,12 +56,14 @@ This function quantifies relative changes in species rank abundances by taking t
 ## Visualizing mean species rank shifts
 
 ```{r}
+##reading in data from Collins08
+collins08 <- read.csv("collins08.csv")
 
-data(collins08)
+##running mean rank shift function 
+dat <- meanrankshift(collins08)
 
-dat <- meanrank(collins08)
-
-ggplot(dat, aes(year_pair, MRS)) + geom_line()
+##plotting
+ggplot(dat, aes(year_pair, MRS, color=replicate)) + geom_line()
 
   
 ```
