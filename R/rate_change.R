@@ -33,8 +33,8 @@ rate_change <- function(data1, replicate="replicate", year="year", species="spec
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return a slope of year lags by species distances
-get_slope = function(data1) {
-		data1 <- calComTS(data1)
+get_slope = function(data1, year="year", species="species", abundance="abundance") {
+		data1 <- calComTS(data1, species, year, abundance)
 		DM <- vegdist(data1[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
     DM <- as.matrix(DM)
 	
