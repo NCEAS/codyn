@@ -60,7 +60,7 @@ This function quantifies relative changes in species rank abundances by taking t
 collins08 <- read.csv("collins08.csv")
 
 ##running mean rank shift function 
-dat <- meanrankshift(collins08)
+dat <- meanrankshift(collins08, replicate, year, species, abundance)
 
 ##plotting
 ggplot(dat, aes(year_pair, MRS, color=replicate)) + geom_line()
