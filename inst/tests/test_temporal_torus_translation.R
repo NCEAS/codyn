@@ -17,6 +17,10 @@ test_that("temporal_torus_translation loads and returns correct result", {
   knz_001d2 <- knz_001d
   names(knz_001d2)=c("sp", "yr", "sub", "abund")
   
+  #add a random character and factor column
+  knz_001d2$randcharacter<-"rchar"
+  knz_001d2$randfactor<-as.factor(knz_001d2$randcharacter)
+  
   #take a subset
   dat1 <- subset(knz_001d, knz_001d$subplot=="A_1")
   
@@ -72,18 +76,41 @@ test_that("temporal_torus_translation loads and returns correct result", {
   #Test the temporal_torus_translation_CI function
   myresults<-temporal_torus_translation_CI(dat1, replicate=NA, species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
   
-  ##TO DO: Decide how to handle replicates that are factors with missing levels
-  #For example, this:
- myresults2<-temporal_torus_translation_CI(dat1, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
-  #Versus this:
+  #Test that returns an error when abundance is a character or factor column
+  expect_error(temporal_torus_translation_CI(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randcharacter", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE))
+  expect_error(temporal_torus_translation_CI(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randfactor", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE))
+  
+  
+  
+  ##Test that missing levels in a factor replicate are dropped (so that the same number of subplots if run as a character
+  #or as a factor with additional, missing levels)
+  
+  #For example that this:
+  myresults2<-temporal_torus_translation_CI(dat1, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
+  expect_that(is.factor(myresults2$subplot), equals(TRUE))
+  
+  myresults2b<-temporal_torus_translation_CI(dat3, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
+  expect_that(is.character(myresults2b$subplot), equals(TRUE))
+  
+  expect_that(as.character(myresults2$subplot), equals(myresults2b$subplot))
+  
+  myresults2b<-temporal_torus_translation_CI(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
+  
+  #Test that is correct for whether "averagereps" is true or false
   dat5<-dat4
   dat5$subplot<-as.character(dat5$subplot)
   myresults3<-temporal_torus_translation_CI(dat5, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=TRUE)
+  myresults4<-temporal_torus_translation_CI(dat5, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
+ 
+  #expect that subplot names are the same between input and output
+  expect_that(unique(dat5$subplot), equals(myresults4$subplot))
   
-  #TO DO: Test both options for "averagereps"
+
+  
+  #Test both options for "averagereps"
   myresults4<-temporal_torus_translation_CI(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=TRUE)
   expect_that(nrow(myresults4), equals(1))
- myresults5<-temporal_torus_translation_CI(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
- expect_that(nrow(myresults5), equals(length(unique(knz_001d$subplot))))
+  myresults5<-temporal_torus_translation_CI(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
+  expect_that(nrow(myresults5), equals(length(unique(knz_001d$subplot))))
  
 })
