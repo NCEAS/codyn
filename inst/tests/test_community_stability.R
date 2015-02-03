@@ -15,6 +15,9 @@ test_that("community_stability loads and returns correct result", {
   knz_001d2 <- knz_001d
   names(knz_001d2)=c("sp", "yr", "sub", "abund")
   
+  #add a random character and factor column
+  knz_001d2$randcharacter<-"rchar"
+  knz_001d2$randfactor<-as.factor(knz_001d2$randcharacter)
   
   #take a subset
   dat1 <- subset(knz_001d, knz_001d$subplot=="A_1")
@@ -36,6 +39,9 @@ test_that("community_stability loads and returns correct result", {
   dat2agg<-aggregate(abund~yr + sub, data=dat2, sum)
   myresults2<-stability_onerep(dat2agg, "abund")
   expect_that(myresults, equals(myresults2))
+   myresultsNA<-stability_onerep(dat2agg, "subplot")
+  #test that gives a warning if running on factor instead of numeric
+  expect_that(stability_onerep(dat2agg, "subplot"), gives_warning())
   
   
   #test the community_stability function
@@ -61,5 +67,13 @@ test_that("community_stability loads and returns correct result", {
   myresults8<-community_stability(knz_001d2, replicate="sub", year="yr", abundance="abund")
   expect_that(myresults7[1,2], equals(myresults8[1,2]))
   
+  #test that gives error when abundance column is a character or factor
+  expect_error(community_stability(knz_001d2, replicate="sub", year="yr", abundance="randcharacter"))
+  expect_error(community_stability(knz_001d2, replicate="sub", year="yr", abundance="randfactor"))
   
-})
+  
+  
+  
+  
+  
+  })
