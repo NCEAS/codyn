@@ -113,4 +113,5 @@ test_that("temporal_torus_translation loads and returns correct result", {
   myresults5<-temporal_torus_translation_CI(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", FUN=calVR, bootnumber=2, li=0.025, ui=0.975, averagereps=FALSE)
   expect_that(nrow(myresults5), equals(length(unique(knz_001d$subplot))))
  
-})})
+})
+
