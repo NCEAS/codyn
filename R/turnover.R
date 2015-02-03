@@ -20,9 +20,9 @@ turnover<-function(data1, replicate="replicate", species="species", year="year",
   out<-mapply(function(x, y) "[<-"(x, replicate, value = y) ,
               out, ID, SIMPLIFY = FALSE)
   output<-do.call("rbind", out)
-  row.names(output)<-NULL
-  return(output)
 }
+row.names(output)<-NULL
+return(as.data.frame(output))
 }
 
 ############################################################################
