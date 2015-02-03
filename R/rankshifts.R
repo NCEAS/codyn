@@ -12,7 +12,7 @@
 meanrankshift <- function(data1, replicate="replicate", year = "year",
                      species = "species", abundance = "abundance"){
   if(is.na(replicate)==TRUE){
-    output<-meanrank(data1, species, year, abundance)}else{
+    output<-meanrank(data1, year, species, abundance)}else{
         data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
         X<-split(data1, data1[replicate])
         out<-(lapply(X, FUN=meanrank, year, species, abundance))
