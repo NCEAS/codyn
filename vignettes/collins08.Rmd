@@ -23,6 +23,7 @@ To illustrate, let's first generate some sample data:
 ```{r}
 library(ggplot2)
 library(reshape2)
+library(codyn)
 
 ## Generate some sample data 
 x = 1977:2003
@@ -56,14 +57,13 @@ This function quantifies relative changes in species rank abundances by taking t
 ## Visualizing mean species rank shifts
 
 ```{r}
-##reading in data from Collins08
-collins08 <- read.csv(system.file("extdata", "collins.csv", package="codyn"), sep=",", header=TRUE)
-
+##reading in data from Konza
+knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
 ##running mean rank shift function 
-#dat <- meanrankshift(collins08, replicate, year, species, abundance)
-
+dat <- meanrankshift(knz_001d, "subplot", "year", "species", "abundance")
+dat$year<-as.numeric(substr(dat$year_pair, 6,9))
 ##plotting
-#ggplot(dat, aes(year_pair, MRS, color=replicate)) + geom_line()
+ggplot(dat, aes(year, MRS, color=subplot)) + geom_line()
 
   
 ```
