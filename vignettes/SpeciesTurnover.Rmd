@@ -31,6 +31,8 @@ The default metric, "turnover," calculates the proportion of species that differ
 ```{r results='asis'}
 library(codyn)
 library(knitr)
+library(plyr)
+library(ggplot2)
 knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
 kable(head(knz_001d))
 ```
@@ -40,11 +42,15 @@ Here we calculate total turnover for an annually burned Konza Prairie site using
 
 ```{r results='asis'}
     myresults<-turnover(knz_001d, "subplot", "species", "year", "abundance")
-    kable(head(myresults))
+    row.names(myresults)<-NULL
+    kable(head(myresults[c("subplot", "year", "turnover")]))
 ```
 
 As a point of comparison, we also calculate richness over time at the same site:
 ```{r results='asis'}
+    myrich<-ddply(subset(knz_001d, abundance>0), .(subplot, year), "nrow")
+    names(myrich)[3]="richness"
+    kable(head(myrich))
 
 ```
 
