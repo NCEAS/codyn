@@ -83,8 +83,19 @@ meanrank <- function(comm_data, year = "year",
 #' @param dataname The name of the column on which the two datasets will be joined and intersected
 getintersect <- function(d1, d2, dataname = "species"){
   commspp <- intersect(d1[[dataname]], d2[[dataname]])
-  names(d1)[-1] <- paste0(names(d1)[-1],"1")
-  names(d2)[-1] <- paste0(names(d2)[-1],"2")
+  ## select out the dataname columsn from d1 and d2
+  d1dataname<-data.frame(d1[[dataname]])
+  names(d1dataname)=dataname
+  d2dataname<-data.frame(d2[[dataname]])
+  names(d2dataname)=dataname
+  ## rename d1 and d2 columns
+  d1[[dataname]]<-NULL
+  d2[[dataname]]<-NULL
+  names(d1) <- paste0(names(d1),"1")
+  names(d2) <- paste0(names(d2),"2")
+
+  d1<-cbind(d1, d1dataname)
+  d2<-cbind(d2, d2dataname)
   merge(x = d1[d1[[dataname]] %in% commspp, ],
         y = d2[d2[[dataname]] %in% commspp, ])
 }
