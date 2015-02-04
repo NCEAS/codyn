@@ -1,7 +1,7 @@
 #' Function for calculating mean rank shifts
 #'
-#'
 #' This is a function that calculates mean rank shifts
+#' 
 #' @param data1 Community dataset. Must be in 'long' format.
 #' @param replicate The replication variable
 #' @param year The time variable
