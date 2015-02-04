@@ -21,9 +21,11 @@ Rank clocks plot the rank order of abundance of each species over time in a circ
 To illustrate, let's first generate some sample data:
 
 ```{r}
+library(devtools)
+load_all()
+library(codyn)
 library(ggplot2)
 library(reshape2)
-library(codyn)
 
 ## Generate some sample data 
 x = 1977:2003
@@ -58,12 +60,14 @@ This function quantifies relative changes in species rank abundances by taking t
 
 ```{r}
 ##reading in data from Konza
-knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+collins08 <- read.csv(system.file("extdata", "collins08.csv", package="codyn"), sep=",", header=TRUE)
+
 ##running mean rank shift function 
-dat <- meanrankshift(knz_001d, "subplot", "year", "species", "abundance")
+dat <- meanrankshift(collins08, "replicate", "year", "species", "abundance")
 dat$year<-as.numeric(substr(dat$year_pair, 6,9))
+
 ##plotting
-ggplot(dat, aes(year, MRS, color=subplot)) + geom_line()
+ggplot(dat, aes(year, MRS, color=replicate)) + geom_line()
 
   
 ```
