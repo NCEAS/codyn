@@ -6,13 +6,14 @@
 #' @param year The name of the year column from data1
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
+#' @import vegan
 #' @return output The rate of community change
 rate_change <- function(data1, replicate="replicate", year="year", species="species", abundance="abundance") {
 		X <- split(data1, data1[replicate])
 		out <- lapply(X, FUN=get_slope)
 		reps <- unique(data1[replicate])
 		output <- cbind(reps, do.call("rbind", out))
-		names(output)=c(replicate, "rate change")
+		names(output)=c(replicate, "rate_change")
 		return(output)
 }
 
@@ -32,9 +33,10 @@ rate_change <- function(data1, replicate="replicate", year="year", species="spec
 #' @param year The name of the year column from data1
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
+#' @import vegan
 #' @return a slope of year lags by species distances
 get_slope = function(data1, year="year", species="species", abundance="abundance") {
-		data1 <- calComTS(data1, species, year, abundance)
+		data1 <- calComDat(data1, species, year, abundance)
 		DM <- vegdist(data1[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
     DM <- as.matrix(DM)
 	
@@ -46,7 +48,7 @@ get_slope = function(data1, year="year", species="species", abundance="abundance
     }
 
     lag_list = lapply(
-        1:(length(unique(data1$year))-1),
+        1:(nrow(data1)-1),
         get_lag_i)
 
     results <- data.frame(do.call(rbind, lag_list))
