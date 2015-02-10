@@ -19,7 +19,7 @@ library(dplyr)
 
 There are several ways to look at community data over time. In this Vignette we use data generously provided by [Emily Grman](http://www.emich.edu/biology/faculty/grman.php). This data is from @Grman2010.
 
-```{r results='asis'}
+```{r results='asis', eval=FALSE}
 KBS <- count.fields(system.file("extdata", 
                             "knz_001d.csv", 
                             package="codyn"), 
@@ -44,7 +44,7 @@ The variance ratio measures the amount of covariance between species.  If specie
 ## Caluculating the variance ratio
 We have a function for calculating the variance ratio:
 
-```{r results='asis'}
+```{r results='asis', eval=FALSE}
 myresults<-varianceratio(knz_001d, "subplot", "species", "year", "abundance", 1)
 kable(myresults)
 ```
@@ -62,7 +62,7 @@ There are several null models in the literature
 
 We have a nice function for transforming a long dataframe into a matrix of year x species
 
-```{r results='asis'}
+```{r results='asis', eval=FALSE}
 one_matrix <- knz_001d %>%
   filter(subplot == "A_1") %>%
   select(-subplot) %>%
@@ -73,7 +73,7 @@ kable(one_matrix[1:5, 1:5])
 
 We also need to do this for time series.
 
-```{r}
+```{r, eval=FALSE}
 one_ts <- knz_001d %>%
   filter(subplot == "A_1") %>%
   select(-subplot) %>%
