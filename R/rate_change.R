@@ -9,11 +9,15 @@
 #' @import vegan
 #' @return output The rate of community change
 rate_change <- function(data1, replicate="replicate", year="year", species="species", abundance="abundance") {
+	if(is.na(replicate)==TRUE){
+    output<-get_slope(data1, year, species, abundance)}else{
+        data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
 		X <- split(data1, data1[replicate])
 		out <- lapply(X, FUN=get_slope)
 		reps <- unique(data1[replicate])
 		output <- cbind(reps, do.call("rbind", out))
 		names(output)=c(replicate, "rate_change")
+    }
 		return(output)
 }
 
