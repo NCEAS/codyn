@@ -24,7 +24,7 @@ rate_change <- function(data1, replicate="replicate", year="year", species="spec
 
 ############################################################################
 #
-# Private functions: these are internal functions not intended for reuse.  
+# Private functions: these are internal functions not intended for reuse.
 # Future package releases may change these without notice. External callers
 # should not use them.
 #
@@ -33,17 +33,17 @@ rate_change <- function(data1, replicate="replicate", year="year", species="spec
 
 
 #' A function that returns the slope of community change within one replicate.
-#' 
+#'
 #' @param year The name of the year column from data1
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @import vegan
 #' @return a slope of year lags by species distances
 get_slope = function(data1, year="year", species="species", abundance="abundance") {
-		data1 <- calComDat(data1, species, year, abundance)
+		data1 <- codyn:::calComDat(data1, species, year, abundance)
 		DM <- vegdist(data1[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
     DM <- as.matrix(DM)
-	
+
     rownums = row(DM)
     colnums = col(DM)
 
