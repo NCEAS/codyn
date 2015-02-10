@@ -1,22 +1,24 @@
 #' A function to calculate species synchrony over time within multiple replicates
 #'
-#' @param data1 A dataframe containing rep, year, species and abundance columns
-#' @param rep The name of the replicate column from data1
+#' @param data1 A dataframe containing replicate, year, species and abundance columns
+#' @param replicate The name of the replicate column from data1
 #' @param year The name of the year column from data1
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return output The degree of species synchrony, where 1 is perfect synchrony and 0 is perfect asynchrony
-#' @import reshape
 #' @export
-synchrony<-function(data1, rep, species, year, abundance) {
-    X <- split(data1, data1[rep])
+synchrony<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance") {
+  if(is.na(replicate)==TRUE){
+    output<-synch_onerep(data1, species, year, abundance)}else{
+    data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
+    X <- split(data1, data1[replicate])
     out<-lapply(X, FUN=synch_onerep, species, year, abundance)
-    reps<-unique(data1[rep])
+    reps<-unique(data1[replicate])
     output<-cbind(reps, do.call("rbind", out))
-    names(output)=c(rep, "synchrony")
+    names(output)=c(replicate, "synchrony")
     return(output)
 }
-
+}
 
 ############################################################################
 #
@@ -35,14 +37,16 @@ synchrony<-function(data1, rep, species, year, abundance) {
 #' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return output The degree of species synchrony, where 1 is perfect synchrony and 0 is perfect asynchrony
-#' @import reshape
 synch_onerep<-function(data1, species, year, abundance) {
+    #remove any species that were never present
+    data1<-subset(data1, abundance>0)
     #fill in 0s
-    fill0formula<-as.formula(paste(species, "~", year))
-    datacast<-cast(species~year, value=abundance, data=data1, fill=0)
-    data2<-melt(datacast)
-    names(data2)=c(species, abundance, year)
-    
+    spplist<-(unique(data1[species]))
+    yearlist<-(unique(data1[year]))
+    fulllist<-expand.grid(species=spplist[[species]], year=yearlist[[year]])
+    data2<-merge(data1[c(species, year, abundance)], fulllist, all=T)
+    data2[is.na(data2)]<-0  
+  
     #calculate community variance
     XTformula<-as.formula(paste(abundance, "~", year, sep=""))
     XT<-aggregate(XTformula, data=data2, sum )
