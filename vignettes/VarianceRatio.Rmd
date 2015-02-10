@@ -20,8 +20,13 @@ library(dplyr)
 There are several ways to look at community data over time. In this Vignette we use data generously provided by [Emily Grman](http://www.emich.edu/biology/faculty/grman.php). This data is from @Grman2010.
 
 ```{r results='asis'}
-knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
-kable(head(knz_001d))
+KBS <- count.fields(system.file("extdata", 
+                            "knz_001d.csv", 
+                            package="codyn"), 
+                sep=",",
+                header=TRUE,
+                colClasses=c(NA, NA, NA, NA, 'NULL', NA, NA))
+kable(head(KBS))
 ```
 
 ## The Variance Ratio
