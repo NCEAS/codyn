@@ -29,5 +29,5 @@ calComTS<-function(data1, species, year, abundance){
   start_time <- min(timevector)
   end_time <- max(timevector)
   comdat_ts <- ts(comdat, start = start_time, end = end_time)
-  return(comdat)
+  return(comdat_ts)
 }
