@@ -12,13 +12,12 @@ vignette: >
 
 ```{r message=FALSE}
 library(codyn)
-
 library(knitr)
 library(dplyr)
 ```
   
 
-There are several ways to look at community data over time.
+There are several ways to look at community data over time. In this Vignette we use data generously provided by [Emily Grman](http://www.emich.edu/biology/faculty/grman.php). This data is from @Grman2010.
 
 ```{r results='asis'}
 knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
@@ -82,6 +81,11 @@ kable(one_ts[1:5, 1:5])
 Hm. what else might be returned by  `varianceratio`? a list which also includes the null simulations?
 
 I think we should export the `varianceratio` test too
+
+## Figures from Grman et al. 2010
+
+
+
 
 ## citations
 
