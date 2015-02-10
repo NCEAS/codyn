@@ -22,7 +22,7 @@ To illustrate, let's first generate some sample data:
 
 ```{r}
 library(devtools)
-load_all()
+#load_all()
 library(codyn)
 library(ggplot2)
 library(reshape2)
