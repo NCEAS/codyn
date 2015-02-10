@@ -60,11 +60,25 @@ test_that("rate_change loads and returns correct result", {
   
   #test that works with multiple replicates
   myresults7<-rate_change(knz_001d, replicate="subplot", year="year", species="species", abundance="abundance")
-  expect_that(myresults6[1,2], equals(myresults7[1,2]))  
+  expect_that(myresults6[1,2], equals(myresults7[1,2]))
+	
+	#test that works regardless of whether parameter is specified or just ordered
+  myresults8<-rate_change(knz_001d, "subplot", "year", "species", "abundance")    
+  expect_that(myresults8, is_identical_to(myresults7))
+	
+	#test that works with different column orders if names specified
+  myresults9<-rate_change(knz_001d, abundance="abundance", replicate="subplot", species="species", year="year")
+  expect_that(myresults9, is_identical_to(myresults7))
   
   #test that works with different column names
-  myresults8<-rate_change(knz_001d2, replicate="sub", year="yr", species="sp", abundance="abund")
-  expect_that(myresults7[1,2], equals(myresults8[1,2]))
+  myresults10<-rate_change(knz_001d2, replicate="sub", year="yr", species="sp", abundance="abund")
+  expect_that(myresults10[1,2], equals(myresults7[1,2]))
+	
+	#test that it works even if there are additional unused columns
+  knz_001d3<-knz_001d
+  knz_001d3$site<-"KNZ"
+  myresults11<-rate_change(knz_001d3, "subplot", "year", "species", "abundance")
+  expect_that(myresults11, is_identical_to(myresults7))
   
   #test that gives error when abundance column is a character or factor
   expect_error(rate_change(knz_001d2, replicate="sub", year="yr", species="sp", abundance="randcharacter"))
