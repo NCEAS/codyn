@@ -13,7 +13,7 @@ rate_change <- function(data1, replicate="replicate", year="year", species="spec
     output<-get_slope(data1, year, species, abundance)}else{
         data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
 		X <- split(data1, data1[replicate])
-		out <- lapply(X, FUN=get_slope)
+		out <- lapply(X, FUN=get_slope, year, species, abundance)
 		reps <- unique(data1[replicate])
 		output <- cbind(reps, do.call("rbind", out))
 		names(output)=c(replicate, "rate_change")
