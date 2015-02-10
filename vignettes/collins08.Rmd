@@ -67,7 +67,7 @@ dat <- meanrankshift(collins08, "replicate", "year", "species", "abundance")
 dat$year<-as.numeric(substr(dat$year_pair, 6,9))
 
 ##plotting
-ggplot(dat, aes(year, MRS, color=replicate)) + geom_line()
+ggplot(dat, aes(year, MRS, color=replicate)) + geom_line() + theme_bw()
 
   
 ```
