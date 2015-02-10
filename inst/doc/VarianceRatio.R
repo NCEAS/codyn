@@ -1,6 +1,5 @@
 ## ----message=FALSE-------------------------------------------------------
 library(codyn)
-
 library(knitr)
 library(dplyr)
 
