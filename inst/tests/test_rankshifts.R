@@ -21,12 +21,69 @@ test_that("rankshifts loads and returns correct result", {
     expect_that(result[[1,2]], equals(332.9921, tolerance=.00001))
     expect_that(result[[23,2]], equals(670.6388, tolerance=.00001))
     
-    # Test with a data frame that uses different variable names, and contains extra columns
-    knz_001d2 <- knz_001d
-    names(knz_001d2) <- c("spp", "yr", "quadrat", "cnt")
-    result2 <- meanrank(knz_001d2, species="spp", year="yr", abundance="cnt")
-    expect_that(result2, is_identical_to(result))
-    
-    # TODO: test error handling when data inputs are bad or unexpected data types
+    #give new column names
+  	knz_001d2 <- knz_001d
+  	names(knz_001d2)=c("sp", "yr", "sub", "abund")
+  	#add a random character and factor column
+  	knz_001d2$randcharacter<-"rchar"
+  	knz_001d2$randfactor<-as.factor(knz_001d2$randcharacter)
+  	#take a subset
+  	dat1 <- subset(knz_001d, knz_001d$subplot=="A_1")
+  	#rename the subset
+  	dat2<-dat1
+  	names(dat2)=c("sp", "yr", "sub", "abund")
+  	#make subplot a character
+  	dat3<-dat1
+  	dat3$subplot<-as.character(dat3$subplot)
+	
+	
+		#test the get_slope function
+  	myresults<-meanrank(dat1, "year", "species", "abundance")
+  	expect_that(class(myresults[,2]), equals("numeric"))
+  	expect_that(length(myresults), equals(2))	
+  	#test that meanrank function works with different column names
+  	myresults2<-meanrank(dat2,  "yr", "sp", "abund")
+  	expect_that(myresults2, equals(myresults))
+  	#test that gives a warning if running on factor instead of numeric
+  	expect_error(meanrank(dat2, "yr", "sp", "subplot"))
+	
+		#test the meanrankshift function
+  	#test that works on a single replicate
+  	myresults3<-meanrankshift(dat1, replicate=NA, year="year", species="species", abundance="abundance")
+  	expect_that(myresults3, equals(myresults2))
+
+  	#test that works whether replicate is a character or factor
+  	myresults4<-meanrankshift(dat3, replicate="subplot", year="year", species="species", abundance="abundance")
+  	expect_that((myresults4[2,2]), equals(myresults3[2,2]))
+
+  	#test that works with multiple replicates
+  	myresults5<-meanrankshift(knz_001d, replicate="subplot", year="year", species="species", abundance="abundance")
+  	expect_that(myresults4[2,2], equals(myresults5[2,2]))
+
+    #test that works with different column names
+  	myresults6<-meanrankshift(knz_001d2, replicate="sub", year="yr", species="sp", abundance="abund")
+  	expect_that(myresults6[2,2], equals(myresults5[2,2]))
+
+		#test that works regardless of whether parameter is specified or just ordered
+  	myresults7<-meanrankshift(knz_001d, "subplot", "year", "species", "abundance")
+  	expect_that(myresults7, is_identical_to(myresults5))
+
+		#test that works with different column orders if names specified
+  	myresults8<-meanrankshift(knz_001d, abundance="abundance", replicate="subplot", species="species", year="year")
+  	expect_that(myresults8, is_identical_to(myresults5))
+
+  	#test that works with different column names
+  	myresults9<-meanrankshift(knz_001d2, replicate="sub", year="yr", species="sp", abundance="abund")
+  	expect_that(myresults9[2,2], equals(myresults5[2,2]))
+
+		#test that it works even if there are additional unused columns
+  	knz_001d3<-knz_001d
+  	knz_001d3$site<-"KNZ"
+  	myresults10<-meanrankshift(knz_001d3, "subplot", "year", "species", "abundance")
+  	expect_that(myresults10, is_identical_to(myresults5))
+
+  	#test that gives error when abundance column is a character or factor
+  	expect_error(meanrankshift(knz_001d2, replicate="sub", year="yr", species="sp", abundance="randcharacter"))
+  	expect_error(meanrankshift(knz_001d2, replicate="sub", year="yr", species="sp", abundance="randfactor"))
     
 })
