@@ -45,7 +45,7 @@ test_that("rankshifts loads and returns correct result", {
   	myresults2<-meanrank(dat2,  "yr", "sp", "abund")
   	expect_that(myresults2, equals(myresults))
   	#test that gives a warning if running on factor instead of numeric
-  	expect_warning(meanrank(dat2, "yr", "sp", "subplot"))
+  	expect_error(meanrank(dat2, "yr", "sp", "subplot"))
 
 		#test the meanrankshift function
   	#test that works on a single replicate
