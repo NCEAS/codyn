@@ -33,4 +33,13 @@ test_that("Name checking works", {
   expect_error(check_names(given = c("AAA", "year", "subplot", "abundance"),
                            data = knz_001d),
                  "data does not have name .*")
+  expect_error(check_names(given = c("species", "BBB", "subplot", "abundance"),
+                           data = knz_001d),
+               "data does not have name .*")
+  expect_error(check_names(given = c("species", "year", "CCC", "abundance"),
+                           data = knz_001d),
+               "data does not have name .*")
+  expect_error(check_names(given = c("species", "year", "subplot", "DDD"),
+                           data = knz_001d),
+               "data does not have name .*")
 })
