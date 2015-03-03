@@ -1,6 +1,6 @@
 ---
-title: "The temporal variance ratio for time series data"
-author: "Andrew MacDonald"
+title: "Community stability and species asynchrony"
+author: ""
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: biblio.bib
@@ -10,24 +10,36 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
+## Overview
+Ecologists have long debated the relationship between species diversity and stability. One key question in this debate is how the individual components of a community (e.g., species in species-rich communities) affect the stability of aggregate properties of the whole community (e.g., biomass production). For example, even unstable species populations may maintain stable community productivity if a decrease in one species is compensated by an increase in another. Analyzing time-series data of species composition is an increasingly common way to test whether species asynchrony may increase community stability. Methods to characterize species asynchrony have been highly debated. codyn includes a function to characterize community stability, `community_stability`, and three metrics to characterize species asynchrony:
+
+`variance_ratio` which compares the variance of the community as a whole relative to the sum of the individual population variances (Schluter 1984, Houlahan et al. 2007), and includes a null-modeling approach to test signficance (Hallett et al. 2014).
+
+`synchrony` which compares the variance of the community-level property with the variance of individual components (Loreau and de Mazancourt 2008)
+
+`GROSS et al 2014 METRIC` which compares the average correlation of each individual species with the rest of the aggregated community (Gross et al. 2014)
+
+
 ```{r message=FALSE}
 library(codyn)
 library(knitr)
 library(dplyr)
 ```
-  
 
-There are several ways to look at community data over time. In this Vignette we use data generously provided by [Emily Grman](http://www.emich.edu/biology/faculty/grman.php). This data is from @Grman2010.
-
+##Data 
+To illustrate each function, we will use a grassland species composition data from the Konza Prairie Long-term Ecological Research site in Manhattan, KS.
 ```{r results='asis', eval=FALSE}
-KBS <- count.fields(system.file("extdata", 
+KNZ <- count.fields(system.file("extdata", 
                             "knz_001d.csv", 
                             package="codyn"), 
                 sep=",",
                 header=TRUE,
                 colClasses=c(NA, NA, NA, NA, 'NULL', NA, NA))
-kable(head(KBS))
+kable(head(KNZ))
 ```
+
+##`community_stability`
+
 
 ## The Variance Ratio
 
@@ -35,7 +47,7 @@ Community variance of total biomass will be
 
 $$ Var(x_1 + x_2 + \dotsb + x_N)  = \sum_{i = 1}^{N} Var(x_i) + 2\left(\sum_{i = 1}^{N - 1} \sum_{j = i + 1}^{N} Covar(x_i, x_j)\right)$$ 
 
-Which gives us the covariance ratio [@Grman2010]:
+Which gives us the covariance ratio:
 
 $$ vr = \frac{var\left(\sum_{i}^{N} x_i \right)}{\sum_{i}^{N} var(x_i)} $$
 
