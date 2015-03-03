@@ -27,18 +27,30 @@ library(dplyr)
 ```
 
 ##Data 
-To illustrate each function, we will use a grassland species composition data from the Konza Prairie Long-term Ecological Research site in Manhattan, KS.
-```{r results='asis', eval=FALSE}
-KNZ <- count.fields(system.file("extdata", 
-                            "knz_001d.csv", 
-                            package="codyn"), 
-                sep=",",
-                header=TRUE,
-                colClasses=c(NA, NA, NA, NA, 'NULL', NA, NA))
+To illustrate each function, we will use a grassland species composition data from the Konza Prairie Long-term Ecological Research site in Manhattan, KS. The KNZ dataset spans 24 years and includes 20 replicate subplots.
+
+```{r results='asis'}
+KNZ <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
 kable(head(KNZ))
 ```
 
-##`community_stability`
+
+##Community stability
+The `community_stability` function aggregates species abundances within replicate and year, and used these values to calculate community stability as µ/σ (i.e.,the inverse of the coefficient of variation, Tilman 1999). It includes an argument to calculate community stabilty across multiple replicates:
+
+
+```{r results='asis'}
+KNZ_stability<-community_stability(KNZ, replicate="subplot", year="year", abundance="abundance")
+kable(head(KNZ_stability))
+```
+
+If the replicate argument is equal to NA, the function will aggregate all values within a year and return an integer value.
+```{r results='asis'}
+KNZ_A1<-subset(KNZ, subplot=="A_1")
+KNZ_A1_stability<-community_stability(KNZ_A1, replicate=NA, year="year", abundance="abundance")
+KNZ_A1_stability
+```
+
 
 
 ## The Variance Ratio
