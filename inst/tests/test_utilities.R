@@ -31,6 +31,6 @@ test_that("Name checking works", {
   knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"),
                        sep=",", header=TRUE)
   expect_error(check_names(given = c("AAA", "year", "subplot", "abundance"),
-                             found = knz_001d),
+                           data = knz_001d),
                  "data does not have name .*")
 })

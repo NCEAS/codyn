@@ -37,8 +37,8 @@ calComTS<-function(data1, species, year, abundance){
 #'
 #' @param given Vector of variable names as supplied by user
 #' @param data Data frame containing variables
-check_names<-function(given, found){
+check_names<-function(given, data){
   for (i in given){
-    assertthat::assert_that(data %has_name% i)
+    assertthat::assert_that(assertthat::has_name(data, i))
   }
 }
