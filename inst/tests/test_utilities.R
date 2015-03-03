@@ -30,7 +30,7 @@ test_that("utilities loads and returns correct result", {
 test_that("Name checking works", {
   knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"),
                        sep=",", header=TRUE)
-  expect_warning(check_names(given = c("AAA", "year", "subplot", "abundance"),
+  expect_error(check_names(given = c("AAA", "year", "subplot", "abundance"),
                              found = knz_001d),
-                 "Variable .* not found")
+                 "data does not have name .*")
 })

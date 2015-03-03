@@ -31,3 +31,14 @@ calComTS<-function(data1, species, year, abundance){
   comdat_ts <- ts(comdat, start = start_time, end = end_time)
   return(comdat_ts)
 }
+
+
+#' check names of data frames
+#'
+#' @param given Vector of variable names as supplied by user
+#' @param data Data frame containing variables
+check_names<-function(given, found){
+  for (i in given){
+    assert_that(data %has_name% i)
+  }
+}
