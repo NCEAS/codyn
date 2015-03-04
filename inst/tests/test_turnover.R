@@ -35,8 +35,8 @@ test_that("turnover loads and returns correct result", {
     dat4<-subset(knz_001d, subplot=="A_1"|subplot=="A_2")
     
     #test that works regardless of whether parameter is specified or just ordered
-    myresults<-turnover(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", metric="turnover")
-    myresults2<-turnover(knz_001d, "subplot", "species", "year", "abundance", metric="turnover")    
+    myresults<-turnover(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance", metric="total")
+    myresults2<-turnover(knz_001d, "subplot", "species", "year", "abundance", metric="total")    
     expect_that(myresults, is_identical_to(myresults2))  
     
     #test that turnover is the default metric
@@ -44,21 +44,21 @@ test_that("turnover loads and returns correct result", {
     expect_that(myresults, is_identical_to(myresults3))  
     
     #test that works with different column nmaes
-    myresults4<-turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="abund", metric="turnover")
+    myresults4<-turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="abund", metric="total")
     expect_that(sum(myresults$turnover), equals(sum(myresults4$turnover)))
     
     #test that works with different column orders if names specified
-    myresults5<-turnover(knz_001d2, abundance="abund",replicate="sub", species="sp", year="yr",  metric="turnover")
+    myresults5<-turnover(knz_001d2, abundance="abund",replicate="sub", species="sp", year="yr",  metric="total")
     expect_that(sum(myresults$turnover), equals(sum(myresults5$turnover)))
     
     #test that gives an error if abundance is a character or factor
-    myresults4<-turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randcharacter", metric="turnover")
+    myresults4<-turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randcharacter", metric="total")
     
     
     ##TODO: Decide how to handle factor and character abundance columns
     #Test that returns a warning when abundance is a character or factor column
-    #expect_error(turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randcharacter", metric="turnover"))
-    #expect_error(turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randfactor", metric="turnover"))
+    #expect_error(turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randcharacter", metric="total"))
+    #expect_error(turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randfactor", metric="total"))
     
     
 
