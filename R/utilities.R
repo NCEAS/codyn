@@ -1,4 +1,4 @@
-#' A function to covert from a longform abundance dataframe to a year x species dataframe
+#' Convert from a longform abundance dataframe to a year x species dataframe.
 #'
 #' @param data1 A dataframe containing year, species and abundance columns
 #' @param year The name of the year column from data1
@@ -14,7 +14,7 @@ calComDat<-function(data1, species, year, abundance){
 }
 
 
-#' A function to covert from a longform abundance dataframe to a species x year time series
+#' Convert from a longform abundance dataframe to a species x year time series.
 #'
 #' @param data1 A dataframe containing year, species and abundance columns
 #' @param year The name of the year column from data1
