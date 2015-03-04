@@ -16,7 +16,7 @@ synchrony<-function(data1, replicate="replicate", species="species", year="year"
     reps<-unique(data1[replicate])
     output<-cbind(reps, do.call("rbind", out))
     names(output)=c(replicate, "synchrony")
-    return(output)
+    return(output)    
 }
 }
 
