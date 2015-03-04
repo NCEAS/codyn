@@ -26,7 +26,6 @@ This metric goes hand-in-hand "rank clocks," a useful visualization tool of shif
 ```{r results='asis'}
 library(codyn)
 library(knitr)
-library(plyr)
 library(ggplot2)
 ```
 
@@ -43,21 +42,20 @@ kable(head(KNZ))
 The function `turnover` calculates three metrics of species turnover: total turnover, appearances, and disappearances.
 [Also include proportional persistence? This is the number in common between time point t and t+1 scaled to the number of species in t+1 [@Collins2008]]
 
-The default metric `turnover` refers to total turnover, which calculates the proportion of species that differ between timepoints as:
+The default metric `total` refers to total turnover, which calculates the proportion of species that differ between timepoints as:
 
-$$ turnover = \frac{Species gained + Species lost}{Total species observed in both timepoints} $$
+$$ total turnover = \frac{Species gained + Species lost}{Total species observed in both timepoints} $$
 
 The metric was introduced by MacArthur and Wilson (1963) and modified by Diamond (1969) to be expressed as a proportion in order to compare turnover between sites that differ in species richness.
 
 `turnover` requires a dataframe with columns for species, year and abundance, and includes an argument to specify a column for spatial replicates.
-
 ```{r results='asis'}
     KNZ_turnover<-turnover(KNZ, replicate="subplot", species="species", year="year", abundance="abundance")
     kable(head(KNZ_turnover))
 ```
 
 
-If there are no replicates in the dataset, specify `replicate=NA`. For example, we calculate turnover on a subset of the KNZ dataset that only includes one replicate subplot.
+If there are no replicates in the dataset, specify `replicate=NA`. To illustrate, calculate turnover on a subset of the KNZ dataset that only includes one replicate subplot.
 ```{r results='asis'}
 KNZ_A1<-subset(KNZ, subplot=="A_1")
 KNZ_A1_turnover<-turnover(KNZ_A1, replicate=NA, species="species", year="year", abundance="abundance")
@@ -71,26 +69,22 @@ Note that if `replicate=NA` but the dataset in fact includes replicates, `turnov
     kable(head(KNZ_turnover_agg))
 ```
 
-###Appearances and disapperances
+##Appearances and disapperances
 
-Total turnover incorporates both species appearances and disappearances. 
+Total turnover incorporates both species appearances and disappearances, but sometimes it is useful to parse their relative contribution. For example, a timepoint in which many species appear may tell a different ecological story than a timepoint in which many species drop from the system, but the total turnover in both scenarios may be similar. 
 
-
-
-As a point of comparison, we also calculate richness over time at Konza.
+Specifying `metric="appearance"` will return the proportion of species that appeared relative to the total number of species observed in both timepoints. As before, spatial replicates can be specified with the `replicate` argument; setting `replicate=NA` will calculate across the full dataset.
 ```{r results='asis'}
-    KNZ_rich<-ddply(subset(KNZ, abundance>0), .(subplot, year), "nrow")
-    names(KNZ_rich)[3]="richness"
-    kable(head(KNZ_rich))
+    KNZ_appearance<-turnover(KNZ, replicate="subplot", species="species", year="year", abundance="abundance", metric="appearance")
+    kable(head(KNZ_appearance))
 ```
 
-Richness remains relatively constant, whereas turnover values are dynamic and often high, suggesting frequent shifts in species identity.
+Similarly, specifying `metric="disappearance"` will return the proportion of species that disappeared relative to the total number of species observed in both timepoints. 
 ```{r results='asis'}
-    rich_turn<-merge(KNZ_turnover, KNZ_rich)
-    kable(head(rich_turn))
-ggplot(rich_turn, aes(x=year, y=richness, color=subplot)) + geom_point()
-ggplot(rich_turn, aes(x=year, y=turnover, color=subplot)) + geom_point()
+    KNZ_disappearance<-turnover(KNZ, replicate="subplot", species="species", year="year", abundance="abundance", metric="disappearance")
+kable(head(KNZ_disappearance))
 ```
+
 
 
 
