@@ -23,8 +23,14 @@ test_that("utilities loads and returns correct result", {
     expect_true(all(colnames(com_wide_df) %in% dat1[["species"]]))
 
     # does calComTS return a correct time series?
-
-
+    com_wide_ts <- calComTS(data1 = dat1, "species", "year", "abundance")
+    expect_true(is.ts(com_wide_ts))
+    # colnames should be species
+    expect_true(all(colnames(com_wide_ts) %in% dat1[["species"]]))
+    # check that some specific values are transformed properly; this test is data dependent, 
+    # and so it will fail if the test data set changes in content or sort order
+    expect_that(com_wide_ts[4,1], is_equivalent_to(dat1[1,4]))
+    expect_that(com_wide_ts[6,42], is_equivalent_to(dat1[388,4]))
 })
 
 test_that("Name checking works", {
