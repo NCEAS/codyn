@@ -39,7 +39,7 @@ test_that("turnover loads and returns correct result", {
     myresults2<-turnover(knz_001d, "subplot", "species", "year", "abundance", metric="total")    
     expect_that(myresults, is_identical_to(myresults2))  
     
-    #test that turnover is the default metric
+    #test that total is the default metric
     myresults3<-turnover(knz_001d, replicate="subplot", species="species", year="year", abundance="abundance")
     expect_that(myresults, is_identical_to(myresults3))  
     
