@@ -13,7 +13,6 @@ Description: A toolbox of longterm ecological data analysis metrics
 Depends:
     R (>= 3.1.0)
 Imports:
-    reshape,
     vegan,
     assertthat
 Suggests:
