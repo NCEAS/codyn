@@ -13,11 +13,11 @@ vignette: >
 #Overview
 Ecologists have long debated the relationship between species diversity and stability. One key question in this debate is how the individual components of a community (e.g., species in species-rich communities) affect the stability of aggregate properties of the whole community (e.g., biomass production). It is increasingly recognized that unstable species populations may still maintain stable community productivity if a decrease in one species is compensated by an increase in another. In time series analysis, this should be reflected by a pattern in which species negatively covarying or fluctuating asynchronously while total community stability remained relatively stable. `codyn` includes a function to characterize community stability, **`community_stability`**, and three metrics to characterize species covariance and asynchrony:
 
-**`variance_ratio`** which characterizes species covariance (Schluter 1984, Houlahan et al. 2007), and includes a null-modeling approach to test significance (Hallett et al. 2014).
+**`variance_ratio`** which characterizes species covariance [@schluter1984; @houlahan2007], and includes a null-modeling approach to test significance [@hallett2014].
 
-**`synchrony`** which compares the variance of the aggregated community with the variance of individual components (Loreau and de Mazancourt 2008).
+**`synchrony`** which compares the variance of the aggregated community with the variance of individual components [@loreau2008].
 
-**`GROSS et al 2014 METRIC`** which compares the average correlation of each individual species with the rest of the aggregated community (Gross et al. 2014).
+**`GROSS et al 2014 METRIC`** which compares the average correlation of each individual species with the rest of the aggregated community [@gross2014].
 
 
 ```{r message=FALSE}
@@ -36,7 +36,7 @@ kable(head(KNZ))
 
 
 #Community stability
-The `community_stability` function aggregates species abundances within replicate and year, and used these values to calculate community stability as µ/σ (i.e., the inverse of the coefficient of variation, Tilman 1999). It includes an argument to calculate community stabilty across multiple replicates, and will return a dataframe with the name of the replicate column and the stability value.
+The `community_stability` function aggregates species abundances within replicate and year, and used these values to calculate community stability as µ/σ (i.e., the inverse of the coefficient of variation) [@tilman1999]. It includes an argument to calculate community stabilty across multiple replicates, and will return a dataframe with the name of the replicate column and the stability value.
 ```{r results='asis'}
 KNZ_stability<-community_stability(KNZ, replicate="subplot", year="year", abundance="abundance")
 kable(head(KNZ_stability))
@@ -53,7 +53,7 @@ KNZ_A1_stability
 ## Variance Ratio
 
 ###Calculating the variance ratio
-The variance ratio was one of the first metrics to characterize patterns of species covariance (Schluter 1984) and was used in an early synthesis paper of species covariance in long time series (Houlahan et al. 2007). The metric compares the variance of the community ($C$) as a whole relative to the sum of the individual population ($x_i$) variances:
+The variance ratio was one of the first metrics to characterize patterns of species covariance [@schluter1984] and was used in an early synthesis paper of species covariance in long time series [@houlahan2007]. The metric compares the variance of the community ($C$) as a whole relative to the sum of the individual population ($x_i$) variances:
 
 
 $$ VR = \frac{Var(C)}{\sum_{i}^{N} Var(x_i)} $$
@@ -66,7 +66,7 @@ $$ Var(C)  = \sum_{i = 1}^{N} Var(x_i) + 2\left(\sum_{i = 1}^{N - 1} \sum_{j = i
 If species vary independently then the variance ratio will be close to 1. A variance ratio  < 1 indicates predominately negative species covariance, whereas a variance ratio > 1 indicates that species generally covary positivey. 
 
 ###Significance testing
-The variance ratio remains widely used but has subject to a number of criticisms. Importantly, early uses of the variance ratio either did not include significance tests, or tested significance by comparing observed values to those returned by scrambling each species' time series. Null models using fully-scrambled species time series can generate spurious null expectations of covariance because the process disrupts species autocorrelation. Phase-scrambling (Grman et al. 2010) and a temporal modification of the torus-translation (Hallett et al. 2014, adapting from Harms et al. 2001) have been used to address this issue. 
+The variance ratio remains widely used but has subject to a number of criticisms. Importantly, early uses of the variance ratio either did not include significance tests, or tested significance by comparing observed values to those returned by scrambling each species' time series. Null models using fully-scrambled species time series can generate spurious null expectations of covariance because the process disrupts species autocorrelation. Phase-scrambling [@Grman2010] and a temporal modification of the torus-translation [@hallett2014; adapted from @harms2001] have been used to address this issue. 
 
 `variance_ratio` uses the temporal torus-translation to conduct null modeling for significance tests. In this method a starting year is randomly selected for each species’ time series. This generates a null community matrix in which species abundances vary independently but within-species autocorrelation is maintained (for each species, the time series is disrupted only once). 
 
@@ -112,7 +112,7 @@ where:
 
 $$ x_T(t) = {\sum_{i=1}^{N} x_i(t))} $$
 
-This measure of synchrony is standardized between 0 (perfect asynchrony) and 1 (perfect synchrony). A virtue of this metric is that it can be applied across communities of variable species richness. It can also be applied not only to species abundance but also population size and per capita growth rate. However, unlike the variance ratio it does not lend itself to significance testing. In addition, it will return similar values for communities shaped by different processes -- for example, even if species vary independently, the synchrony metric will be affected by the number of species and individual species variances (Gross et al. 2014).
+This measure of synchrony is standardized between 0 (perfect asynchrony) and 1 (perfect synchrony). A virtue of this metric is that it can be applied across communities of variable species richness. It can also be applied not only to species abundance but also population size and per capita growth rate. However, unlike the variance ratio it does not lend itself to significance testing. In addition, it will return similar values for communities shaped by different processes -- for example, even if species vary independently, the synchrony metric will be affected by the number of species and individual species variances [@gross2014].
 
 In `codyn`, this metric is calculated with `synchrony` and can be easily calculated for each replicate in a dataset.
 ```{r results='asis'}
