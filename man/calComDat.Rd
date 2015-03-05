@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{calComDat}
 \alias{calComDat}
-\title{Convert from a longform abundance dataframe to a year x species dataframe.}
+\title{Convert from a longform abundance dataframe to a year by species dataframe.}
 \usage{
 calComDat(data1, species, year, abundance)
 }
@@ -19,6 +19,6 @@ calComDat(data1, species, year, abundance)
 comdat A dataframe of species abundances x year
 }
 \description{
-Convert from a longform abundance dataframe to a year x species dataframe.
+Convert from a longform abundance dataframe to a year by species dataframe.
 }
 
