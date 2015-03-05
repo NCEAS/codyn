@@ -20,6 +20,7 @@ meanrankshift <- function(data1, replicate="replicate", year = "year",
         out<-mapply(function(x, y) "[<-"(x, replicate, value = y) ,
                     out, ID, SIMPLIFY = FALSE)
         output<-do.call("rbind", out)
+        row.names(output)<-NULL
       }
 return(output)
 }

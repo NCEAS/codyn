@@ -1,5 +1,5 @@
 ---
-title: "Community stability and species covariance"
+title: "Community stability metrics"
 author: ""
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
