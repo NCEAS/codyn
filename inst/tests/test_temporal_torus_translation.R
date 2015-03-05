@@ -37,7 +37,7 @@ test_that("temporal_torus_translation loads and returns correct result", {
   
   #make a species matrix
   
-  datmat<-calComDat(dat1, "species", "year", "abundance")
+  datmat<-transpose_community(dat1, "species", "year", "abundance")
   
 
   

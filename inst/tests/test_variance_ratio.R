@@ -33,7 +33,7 @@ test_that("varianceratio function returns correct result", {
     
     
     #make a species matrix
-    datmat<-calComDat(dat1, "species", "year", "abundance")
+    datmat<-transpose_community(dat1, "species", "year", "abundance")
     
     #test the class returned with default settings
     myresults<-varianceratio(knz_001d, "subplot", "species", "year", "abundance", 1)

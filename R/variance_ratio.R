@@ -63,7 +63,7 @@ calVR<-function(comdat){
 #' @param abundance The name of the abundance column from data1
 #' @return var.ratio The variance ratio of the community
 calVR_longformdata<-function(data1, species, year, abundance){
-  com.use<-calComDat(data1, species, year, abundance)
+  com.use<-transpose_community(data1, species, year, abundance)
   var.ratio<-calVR(com.use)
   return(var.ratio)
 }

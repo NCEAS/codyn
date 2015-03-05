@@ -40,7 +40,7 @@ rate_change <- function(data1, replicate="replicate", year="year", species="spec
 #' @import vegan
 #' @return a slope of year lags by species distances
 get_slope = function(data1, year="year", species="species", abundance="abundance") {
-		data1 <- codyn:::calComDat(data1, species, year, abundance)
+		data1 <- codyn:::transpose_community(data1, species, year, abundance)
 		DM <- vegdist(data1[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
     DM <- as.matrix(DM)
 

@@ -8,7 +8,7 @@
 #' @return a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
 #' @export
 temporal_torus_translation<-function(data1, species, year, abundance, FUN){
-  out<-FUN(genRand(calComDat(data1, species, year, abundance)))
+  out<-FUN(genRand(transpose_community(data1, species, year, abundance)))
   bootout<-unlist(out)
   return(bootout)
 }
