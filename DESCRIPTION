@@ -19,7 +19,9 @@ Suggests:
     testthat,
     knitr,
     ggplot2,
-    reshape2
+    reshape2,
+    devtools,
+    dplyr
 License: Apache License (== 2.0)
 BugReports: https://github.com/laurenmh/codyn/issues
 LazyData: true

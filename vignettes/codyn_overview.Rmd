@@ -3,9 +3,11 @@ title: "codyn: An R package for analysis of long-term ecological community data"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{codyn: An R package for analysis of long-term ecological community data}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\SweaveUTF8
+  %\VignetteEncoding{UTF-8}
+  %\usepackage[utf8]{inputenc}
 ---
 From Collins08:
 Most well understood measures of community structure

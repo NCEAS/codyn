@@ -5,14 +5,16 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: biblio.bib
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Temporal diversity indices}
   %\VignetteEngine{knitr::rmarkdown}
+  %\SweaveUTF8
+  %\VignetteEncoding{UTF-8}
   %\usepackage[utf8]{inputenc}
   
   
 ---
 
-#Overview
+# Overview
 Many measures of community structure, such as diversity indices and rank-abundance curves, represent “snapshots in time” – which poorly capture the temporal dynamics of ecological systems. For example, species richness (i.e., the number of species present) is a common metric to characterize ecological communities. However, species richness may be a poor indicator of community change if there is turnover in the identity but not the number of species present over time [@Collins2008; @cleland2013]. Similarly, species rank abundances can reorder through time, even when the pool of species present remains relatively stable. Within-year rank abundance curves fail to capture this dynamic, and other tools are needed to quantify within-community reordering without masking informative temporal shifts in internal dynamics [@Collins2008]. `codyn` includes three functions to characterize temporal shifts in species identity and rank abundances over time:
 
 - **`turnover`** calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
@@ -36,8 +38,8 @@ names(KNZ_Collins)[1]="location"
 kable(head(KNZ_Collins))
 ```
 
-#Species turnover
-##Total turnover
+# Species turnover
+## Total turnover
 The function `turnover` calculates three metrics of species turnover: total turnover, appearances, and disappearances.
 
 The default metric `total` refers to total turnover, which calculates the proportion of species that differ between timepoints as:
@@ -74,7 +76,7 @@ KNZ_turnover_agg<-turnover(KNZ_Collins, replicate=NA, species="species", year="y
     kable(head(KNZ_turnover_agg))
 ```
 
-##Appearances and disappearances
+## Appearances and disappearances
 
 Total turnover incorporates both species appearances and disappearances, but sometimes it is useful to parse their relative contribution. For example, a timepoint in which many species appear may reflect a different ecological story than a timepoint in which many species drop from the system, but the total turnover in both scenarios may be similar. 
 
@@ -89,7 +91,7 @@ Similarly, specifying `metric="disappearance"` will return the proportion of spe
 KNZ_disappearance<-turnover(KNZ_Collins, replicate="location", species="species", year="year", abundance="abundance", metric="disappearance")
 ```
 
-##Turnover at Konza
+## Turnover at Konza
 Total turnover indicates that in general there was greater fluctuations in the species present in the unburned than burned location at Konza.
 
 ```{r echo=FALSE}
@@ -106,10 +108,10 @@ ggplot(KNZ_disappearance, aes(x=year, y=disappearance, color=location))+geom_lin
 ```
 
 
-#Species rankshifts
-##Rank clocks
+# Species rankshifts
+## Rank clocks
 
-##Rank shifts
+## Rank shifts
 Mean rank shifts are the relative change in species rank abundances, which provides an indication of shifts in relative abundance over time. It is calculated as:
 
 $$ MRS = {\sum_{i=1}^{N} (|R_i,t+1 - R_i,t|})/N $$
@@ -136,7 +138,7 @@ KNZ_rankshift_agg <- meanrankshift(KNZ_Collins, replicate=NA, year="year", speci
 KNZ_rankshift$year<-as.numeric(substr(KNZ_rankshift$year_pair, 6,9))
 ```
 
-##Rank shifts at Konza
+## Rank shifts at Konza
 Calculating mean rank shifts highlights the stability of communities diverged at Konza around 1992, with fewer rank shifts between species in the burned relative to the unburned area. 
 ```{r}
 ##plotting
@@ -144,6 +146,6 @@ ggplot(KNZ_rankshift, aes(year, MRS, color=location)) + geom_line() + theme_bw()
 ```
 
 
-##Citations
+## Citations
 
 
