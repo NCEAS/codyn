@@ -70,7 +70,7 @@ The variance ratio remains widely used but has been subject to a number of criti
 
 `variance_ratio` uses the temporal torus-translation to conduct null modeling for significance tests. In this method a starting year is randomly selected for each species’ time series. This generates a null community matrix in which species abundances vary independently but within-species autocorrelation is maintained (for each species, the time series is disrupted only once). 
 
-The default `variance_ratio` settings calculates a null variance ratio for each replicate in the dataset, averages these values, and repeats as many times as specified by `bootnumber`. This vector of averaged, null variance ratios is then sampled for lower and upper confidence intervals, which are returned along with the observed variance ratio. 
+The default `variance_ratio` setting calculates a null variance ratio for each replicate in the dataset, averages these values, and repeats as many times as specified by `bootnumber`. This vector of averaged, null variance ratios is then sampled for lower and upper confidence intervals, which are returned along with the observed variance ratio. 
 ```{r results='asis'}
 KNZ_varianceratio<-varianceratio(KNZ, replicate="subplot", species="species", year="year", abundance="abundance",  
                                  bootnumber=10)
