@@ -1,7 +1,7 @@
 #' A function to calculate community stability over time
+#' @param data1 the data frame to use in the calculation
 #' @param replicate The name of the replicate column from data1
 #' @param year The name of the year column from data1
-#' @param species The name of the species column from data1
 #' @param abundance The name of the abundance column from data1
 #' @return output The stability of community abundance, calculated as mean/standard deviation
 #' @export
