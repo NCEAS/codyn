@@ -18,9 +18,7 @@ Ecologists have long debated the relationship between species diversity and stab
 
 - **`variance_ratio`** characterizes species covariance [@schluter1984; @houlahan2007], and includes a null-modeling approach to test significance [@hallett2014].
 
-- **`synchrony`** compares the variance of the aggregated community with the variance of individual components [@loreau2008].
-
-- **`GROSS et al 2014 METRIC`** compares the average correlation of each individual species with the rest of the aggregated community [@gross2014].
+- **`synchrony`** has two options. The first compares the variance of the aggregated community with the variance of individual components [@loreau2008]. The second compares the average correlation of each individual species with the rest of the aggregated community [@gross2014].
 
 
 ```{r message=FALSE}
@@ -106,9 +104,9 @@ kable(KNZ_A1_varianceratio)
 `temporal_torus_translation_CI`
 
 ###Variance ratio and species richness
-A second criticism of the variance ratio is that it is sensitive to species richness. This is a particular concern when the metric is used to compare communities that have different levels of species richness. The most conservative approach is to restrict use of the variance ratio to two-species communities [@hector2010]. Two alternative metrics quantifying species asynchrony have been developed in part to respond to this issue.
+A second criticism of the variance ratio is that it is sensitive to species richness. This is a particular concern when the metric is used to compare communities that have different levels of species richness. The most conservative approach is to restrict use of the variance ratio to two-species communities [@hector2010]. Comparing the effect size of the observed versus null variance ratio can also account for richness differences between communities. Two alternative metrics that quantify species asynchrony have been developed in part to respond to this issue.
 
-## Synchrony Option 1
+## Synchrony Option 1: "Loreau"
 Loreau and de Mazancourt (2008) developed a metric of species synchrony that compares the variance of aggregated species abundances with the summed variance of individual species:
 
 $$ Synchrony = \frac{{σ_(x_T)}^{2}}{({\sum_{i} σ_(x_i)})^{2}}$$
@@ -119,9 +117,9 @@ $$ x_T(t) = {\sum_{i=1}^{N} x_i(t))} $$
 
 This measure of synchrony is standardized between 0 (perfect asynchrony) and 1 (perfect synchrony). A virtue of this metric is that it can be applied across communities of variable species richness. It can also be applied not only to species abundance but also population size and per capita growth rate. However, unlike the variance ratio it does not lend itself to significance testing. In addition, it will return similar values for communities shaped by different processes -- for example, even if species vary independently, the synchrony metric will be affected by the number of species and individual species variances [@gross2014].
 
-In `codyn`, this metric is calculated with `synchrony` and can be easily calculated for each replicate in a dataset.
+In `codyn`, this is the default metric for the `synchrony` function and can be easily calculated for each replicate in a dataset. 
 ```{r results='asis'}
-KNZ_synchrony<-synchrony(KNZ, replicate="subplot", species="species", year="year", abundance="abundance")
+KNZ_synchrony<-synchrony(KNZ, replicate="subplot", species="species", year="year", abundance="abundance", metric="Loreau")
 kable(head(KNZ_synchrony))
 ```
 
@@ -129,17 +127,32 @@ kable(head(KNZ_synchrony))
 If there are no replicates within the dataset, specify `replicate=NA`. 
 ```{r results='asis'}
 KNZ_A1<-subset(KNZ, subplot=="A_1")
-KNZ_A1_synchrony<-synchrony(KNZ_A1, replicate=NA, species="species", year="year", abundance="abundance")
+KNZ_A1_synchrony<-synchrony(KNZ_A1, replicate=NA, species="species", year="year", abundance="abundance", metric="Loreau")
 KNZ_A1_synchrony
 ```
 
 
-## Synchrony Option 2
+## Synchrony Option 2: "Gross"
 Gross et al. 2014 developed a metric of synchrony that compares the average correlation of each individual species with the rest of the aggregated community:
 
 $$ Synchrony = (1/N){{\sum_{i}Corr(x_i, \sum_{i≠j}{x_j})}}$$
 
-This measure of synchrony is standardized from -1 (perfect asynchrony) to 1 (perfect synchrony) and is centered at 0 when species fluctuate independently. 
+This measure of synchrony is standardized from -1 (perfect asynchrony) to 1 (perfect synchrony) and is centered at 0 when species fluctuate independently. A virtue of this metric is it not sensitive to richness and has the potential for null-model significance testing. It may under-perform on short time series because it is based on correlation, and care should be taken when applying it to communities that contain very stable species (i.e., whose abundances do not change throughout the time series).
+
+
+In `codyn`, this metric is calculated with the "Gross" option in the `synchrony` function and can be easily calculated for each replicate in a dataset.
+```{r results='asis'}
+KNZ_synchrony_2<-synchrony(KNZ, replicate="subplot", species="species", year="year", abundance="abundance", metric="Gross")
+kable(head(KNZ_synchrony))
+```
+
+
+If there are no replicates within the dataset, specify `replicate=NA`. 
+```{r results='asis'}
+KNZ_A1<-subset(KNZ, subplot=="A_1")
+KNZ_A1_synchrony_2<-synchrony(KNZ_A1, replicate=NA, species="species", year="year", abundance="abundance", metric="Gross")
+KNZ_A1_synchrony
+```
 
 
 
