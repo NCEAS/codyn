@@ -2,12 +2,12 @@ Package: codyn
 Title: Community dynamics metrics
 Version: 0.1
 Authors@R: c( person("Lauren", "Hallett", email="lauren.hallett@berkeley.edu",
-    role=c("aut", "cre")), person("Sydney", "Jones",
-    email="syd@sevilleta.unm.edu", role=c("aut", "cre")), person("Andrew",
-    "MacDonald", email="aammacdonald@gmail.com", role=c("aut", "cre")),
+    role=c("aut")), person("Sydney", "Jones",
+    email="syd@sevilleta.unm.edu", role=c("aut")), person("Andrew",
+    "MacDonald", email="aammacdonald@gmail.com", role=c("aut")),
     person("Matthew", "Jones", email="jones@nceas.ucsb.edu", role=c("aut",
     "cre")), person("Julie", "Ripplinger", email="julie.ripplinger@asu.edu",
-    role=c("aut", "cre")), person("Scott", "Collins",
+    role=c("aut")), person("Scott", "Collins",
     email="scollins@sevilleta.unm.edu", role=c("aut")))
 Description: A toolbox of longterm ecological data analysis metrics
 Depends:
