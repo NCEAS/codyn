@@ -4,7 +4,7 @@
 \alias{synch_onerep}
 \title{A function to calculate species synchrony over time within one replicate}
 \usage{
-synch_onerep(data1, species, year, abundance)
+synch_onerep(data1, species, year, abundance, metric = "Loreau")
 }
 \arguments{
 \item{data1}{A dataframe containing rep, year, species and abundance columns}
@@ -14,9 +14,13 @@ synch_onerep(data1, species, year, abundance)
 \item{year}{The name of the year column from data1}
 
 \item{abundance}{The name of the abundance column from data1}
+
+\item{metric}{The synchrony metric to return. The default, "Loreau", returns synchrony as calculated by Loreau and de Mazancourt 2008.
+The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014}
 }
 \value{
-output The degree of species synchrony, where 1 is perfect synchrony and 0 is perfect asynchrony
+output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony.
+       If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
 }
 \description{
 A function to calculate species synchrony over time within one replicate

@@ -8,13 +8,13 @@ community_stability(data1, replicate = "replicate", year = "year",
   abundance = "abundance")
 }
 \arguments{
+\item{data1}{the data frame to use in the calculation}
+
 \item{replicate}{The name of the replicate column from data1}
 
 \item{year}{The name of the year column from data1}
 
 \item{abundance}{The name of the abundance column from data1}
-
-\item{species}{The name of the species column from data1}
 }
 \value{
 output The stability of community abundance, calculated as mean/standard deviation

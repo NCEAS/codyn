@@ -8,6 +8,8 @@ get_slope(data1, year = "year", species = "species",
   abundance = "abundance")
 }
 \arguments{
+\item{data1}{data frame to compute the slope of community change for}
+
 \item{year}{The name of the year column from data1}
 
 \item{species}{The name of the species column from data1}
