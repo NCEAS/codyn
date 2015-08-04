@@ -7,8 +7,8 @@
 #' @export
 community_stability<-function(data1, replicate="replicate", year="year", abundance="abundance"){
   data1<-data1[which(data1[[abundance]]>0),]  
-  data1<-data1[order(data1[[replicate]]),]  
   if(is.na(replicate)==FALSE){
+    data1<-data1[order(data1[[replicate]]),]  
   data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
   #sum abundance within a replicate and year
   aggform<-as.formula(paste(abundance, "~", replicate, "+", year, sep=""))
