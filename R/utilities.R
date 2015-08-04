@@ -7,6 +7,8 @@
 #' @return comdat A dataframe of species abundances x year
 #' @export
 transpose_community <- function(data1, species, year, abundance) {
+    data1<-as.data.frame(data1)
+    data1[species]<-if(is.factor(data1[[species]])==TRUE){factor(data1[[species]])} else {data1[species]}  
     data1<-data1[order(data1[year], data1[species]),]
     comdat<-tapply(data1[[abundance]], list(data1[[year]], as.vector(data1[[species]])), sum)
     comdat[is.na(comdat)]<-0
