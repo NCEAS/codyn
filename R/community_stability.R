@@ -6,11 +6,14 @@
 #' @return output The stability of community abundance, calculated as mean/standard deviation
 #' @export
 community_stability<-function(data1, replicate="replicate", year="year", abundance="abundance"){
+  data1<-data1[which(data1[[abundance]]>0),]  
+  data1<-data1[order(data1[[replicate]]),]  
   if(is.na(replicate)==FALSE){
   data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
   #sum abundance within a replicate and year
   aggform<-as.formula(paste(abundance, "~", replicate, "+", year, sep=""))
   data2<-aggregate(aggform, data=data1, sum)
+  data2<-data2[order(data2[[replicate]]),]  
   X<-split(data2, data2[replicate])
   out<-lapply(X, stability_onerep, abundance)
   reps<-unique(data2[replicate])
@@ -44,7 +47,7 @@ community_stability<-function(data1, replicate="replicate", year="year", abundan
 #' @param data1 A dataframe containing x column
 #' @param x The column to calculate stability on
 #' @return Stability of x, calculated as the mean/sd
-stability_onerep<-function(data1, x){
-  return(mean(data1[[x]])/sd(data1[[x]]))
+stability_onerep<-function(data1,  x){
+  return(mean(data1[[x]], na.rm=T)/sd(data1[[x]], na.rm=T))
 }
 
