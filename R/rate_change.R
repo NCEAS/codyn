@@ -6,7 +6,6 @@
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
-#' @import vegan
 #' @return output The rate of community change
 rate_change <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
 	if(is.na(replicate.var)==TRUE){
