@@ -41,7 +41,7 @@ return(output)
 #'
 #'
 #' This is a function that calculates mean rank shifts
-#' @param comm_data Community dataset. Must be in 'long' format.
+#' @param comm_data dataframe of Community dataset. Must be in 'long' format.
 #' @param time.var The time variable
 #' @param species.var The species variable
 #' @param abundance.var The abundance variable
