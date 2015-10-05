@@ -4,31 +4,31 @@
 \alias{varianceratio}
 \title{A function to calculate the variance ratio and null model mean and CIs within multiple replicates}
 \usage{
-varianceratio(data1, replicate = "replicate", species = "species",
-  year = "year", abundance = "abundance", bootnumber, li = 0.025,
-  ui = 0.975, averagereps = TRUE)
+varianceratio(df, time.var = "year", species.var = "species",
+  abundance.var = "abundance", bootnumber, replicate.var = NA, li = 0.025,
+  ui = 0.975, average.replicates = TRUE)
 }
 \arguments{
-\item{data1}{A dataframe containing replicate, species, year and abundance columns}
+\item{df}{A dataframe containing replicate.var, species.var, time.var and abundance.var columns}
 
-\item{replicate}{The name of the replicate column from data1}
+\item{time.var}{The name of the time column from df}
 
-\item{species}{The name of the species column from data1}
+\item{species.var}{The name of the species column from df}
 
-\item{year}{The name of the year column from data1}
-
-\item{abundance}{The name of the abundance column from data1}
+\item{abundance.var}{The name of the abundance column from df}
 
 \item{bootnumber}{The number of null model iterations used to calculated CIs}
+
+\item{replicate.var}{The name of the replicate column from df}
 
 \item{li}{The lower confidence interval, defaults to lowest 2.5\% CI}
 
 \item{ui}{The upper confidence interval, defaults to upper 97.5\% CI}
 
-\item{averagereps}{If true returns VR and CI averaged across reps; if false returns VR and CI for each rep}
+\item{average.replicates}{If true returns VR and CI averaged across reps; if false returns VR and CI for each rep}
 }
 \value{
-output A dataframe containing the replicate name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
+output A dataframe containing the replicate.var name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
          VR is the actual variance ratio
          nullVRCIow is the 0.025 CI
          nullVRCIhigh is the 0.975 CI

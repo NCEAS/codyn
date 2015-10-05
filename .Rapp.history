@@ -1,0 +1,540 @@
+head(gr)
+gr[c("raw","adj2","gr")]
+cut(gr$adj2, #
+	breaks =  c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3)),#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10)))
+)
+LETTERS[4:1]
+rep(c("-","","+"),4)
+paste(LETTERS[4:1], rep(c("-","","+"),4))
+rep(LETTERS[4:1],3)
+sort(rep(LETTERS[4:1],3))
+paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+")
+)
+c(rep("F",3),paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""))
+gr$gr <- #
+	cut(gr$adj2, #
+	breaks =  c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3)),#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c(rep("F",3),paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""))#
+	)
+cut(gr$adj2, #
+	breaks =  c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3)),#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c(rep("F",3),paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""))#
+	)
+cut(gr$adj2, #
+	breaks =  c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3)),#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),
+)
+c(rep("F",3), paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""), "A+","A+")
+length(c(rep("F",3), paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""), "A+","A+"))
+gr$gr <- #
+	cut(gr$adj2, #
+	breaks =  c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3)),#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c(rep("F",3), paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""), "A+","A+")#
+	)
+c(rep("F",3), paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""), "A+","A+")
+gr[c("raw","adj2","gr")]
+hist(gr$gr)
+plot(gr$gr)
+gr$gr
+gr$gr <- as.factor(as.character(gr$gr))
+gr[c("raw","adj2","gr")]
+summary(gr)
+summary(gr$gr)
+gr$adj2 <- round((gr$Midterm+gr$midterm.extra)/43*100,1)+8#
+#
+summary(gr$adj2)#
+hist(gr$adj2)#
+#
+# convert to grades#
+#
+gr$gr <- #
+	cut(gr$adj2, #
+	breaks =  c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3)),#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c(rep("F",3), paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""), "A+","A+")#
+	)#
+gr$gr <- as.factor(as.character(gr$gr))#
+gr[c("raw","adj2","gr")]
+summary(gr$gr)
+summary(gr$Midterm)
+summary(gr$raw)
+gr$adj <- round(gr$Midterm/43*100,1)+8#
+#
+# Now add in extra credit#
+#
+gr$adj2 <- round((gr$Midterm+gr$midterm.extra)/43*100,1)+8#
+#
+summary(gr$adj2)#
+hist(gr$adj2)#
+#
+# convert to grades#
+#
+gr$gr <- #
+	cut(gr$adj2, #
+	breaks =  c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3)),#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c(rep("F",3), paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""), "A+","A+")#
+	)#
+gr$gr <- as.factor(as.character(gr$gr))#
+gr[c("raw","adj2","gr")]
+barplot(gr$gr)
+barplot(tapply(gr$gr, gr$gr, length))
+gr$gr
+levels(gr$gr)
+gr$gr <- #
+	cut(gr$adj2, #
+	breaks =  c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3)),#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c(rep("F",3), paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""), "A+","A+")#
+	)
+barplot(tapply(gr$gr, gr$gr, length))
+breaks <- c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3))
+breaks
+length(breaks)
+breaks <- c(50, 53, 57)+sort(rep(seq(0, 50, by = 10), 3))#
+breaks[1] = 40#
+breaks = breaks[1:16]#
+breaks[16] = 125
+breaks
+cut(gr$adj2, #
+	breaks =  ,#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),
+cut(gr$adj2, #
+	breaks =  breaks
+)
+cut(gr$adj2, #
+	breaks =  breaks)
+c(60,63, 67)+sort(rep(seq(0, 40, by = 10), 3))
+breaks <- c(60,63, 67)+sort(rep(seq(0, 40, by = 10), 3))
+breaks
+breaks = c(40, breaks)
+breaks[1:16]
+breaks = breaks[1:14]
+breaks[1:14]
+breaks[14] = 125
+breaks
+gr$gr <- #
+	cut(gr$adj2, #
+	breaks =  breaks,#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c("F", paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""))#
+	)
+gr[c("raw","adj2","gr")]
+barplot(tapply(gr$gr, gr$gr, length))
+gr$adj2 <- round((gr$Midterm+gr$midterm.extra)/43*100,1)+10#
+#
+summary(gr$adj2)#
+hist(gr$adj2)#
+#
+# convert to grades#
+breaks <- c(60,63, 67)+sort(rep(seq(0, 40, by = 10), 3))#
+breaks = c(40, breaks)#
+breaks = breaks[1:14]#
+breaks[14] = 125 #
+#
+gr$gr <- #
+	cut(gr$adj2, #
+	breaks =  breaks,#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c("F", paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""))#
+	)#
+gr[c("raw","adj2","gr")]#
+barplot(tapply(gr$gr, gr$gr, length))
+gr$adj2 <- round((gr$Midterm+gr$midterm.extra)/43*100,1)+9#
+#
+summary(gr$adj2)#
+hist(gr$adj2)#
+#
+# convert to grades#
+breaks <- c(60,63, 67)+sort(rep(seq(0, 40, by = 10), 3))#
+breaks = c(40, breaks)#
+breaks = breaks[1:14]#
+breaks[14] = 125 #
+#
+gr$gr <- #
+	cut(gr$adj2, #
+	breaks =  breaks,#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c("F", paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""))#
+	)#
+gr[c("raw","adj2","gr")]#
+barplot(tapply(gr$gr, gr$gr, length))
+summary(gr$gr)
+barplot(tapply(gr$gr, gr$gr, length), ylab = "Number of students")
+hist(gr$adj2)
+gr
+barplot(tapply(gr$gr, gr$gr, length), ylab = "Number of students")
+barplot(tapply(gr$gr, gr$gr, length), ylab = "Number of students",#
+	col = "lightblue")
+barplot(tapply(gr$gr, gr$gr, length), ylab = "Number of students",#
+	col = "lightblue",#
+	main = "BIOL 104 Midterm Summary")
+hist(gr$adj2)
+write.csv(gr, "~/Dropbox/Teaching/Simmons/Midterm/Midterm Graded.csv", row.names=F)
+gr$adj2 <- round((gr$Midterm+gr$midterm.extra)/43*100,1)+9
+round((24.5+2)/43*100,1)+9
+# simmons grades#
+#
+library(gdata)#
+gr <- read.xls("~/Dropbox/Teaching/Simmons/Grades.xlsx")#
+#
+gr <- gr[!is.na(gr$Midterm),]#
+#
+hist(gr$Midterm)#
+summary(gr$Midterm)#
+#
+# Raw pct#
+gr$raw <- round(gr$Midterm/43*100,1)#
+#
+# median raw 72; make this a B by adding 8 pct points#
+#
+gr$adj <- round(gr$Midterm/43*100,1)+10#
+#
+# Now add in extra credit#
+#
+gr$adj2 <- round((gr$Midterm+gr$midterm.extra)/43*100,1)+9
+summary(gr$adj2)#
+hist(gr$adj2)#
+#
+# convert to grades#
+breaks <- c(60,63, 67)+sort(rep(seq(0, 40, by = 10), 3))#
+breaks = c(40, breaks)#
+breaks = breaks[1:14]#
+breaks[14] = 125 #
+#
+gr$gr <- #
+	cut(gr$adj2, #
+	breaks =  breaks,#
+				#sort(c(seq(50, 99, by = 10), #
+				#seq(53, 103, by = 10), seq(57, 107, by = 10))),#
+	labels = c("F", paste(sort(rep(LETTERS[4:1],3),T), rep(c("-","","+"),4),sep=""))#
+	)#
+gr[c("raw","adj2","gr")]#
+#
+summary(gr$gr)#
+barplot(tapply(gr$gr, gr$gr, length), ylab = "Number of students",#
+	col = "lightblue",#
+	main = "BIOL 104 Midterm Summary")#
+hist(gr$adj2)#
+write.csv(gr, "~/Dropbox/Teaching/Simmons/Midterm/Midterm Graded.csv", row.names=F)
+summary(gr)
+# simmons grades#
+#
+library(gdata)#
+gr <- read.xls("~/Dropbox/Teaching/Simmons/Grades.xlsx")#
+#
+gr <- gr[!is.na(gr$Midterm),]#
+#
+hist(gr$Midterm)#
+summary(gr$Midterm)#
+#
+# Raw pct#
+gr$raw <- round(gr$Midterm/43*100,1)
+summary(gr)
+31.25/43
+31.25/43*100
+31.25/43*100+9
+gr$adj <- round(gr$Midterm/43*100,1)+9
+# simmons grades#
+#
+library(gdata)#
+gr <- read.xls("~/Dropbox/Teaching/Simmons/Grades.xlsx")#
+#
+gr <- gr[!is.na(gr$Midterm),]#
+#
+hist(gr$Midterm)#
+summary(gr$Midterm)#
+#
+# Raw pct#
+gr$raw <- round(gr$Midterm/43*100,1)#
+#
+# median raw 72; make this a B by adding 8 pct points#
+#
+gr$adj <- round(gr$Midterm/43*100,1)+9#
+#
+# Now add in extra credit
+gr$adj2 <- round((gr$Midterm+gr$midterm.extra)/43*100,1)+9
+summary(gr$adj)
+summary(gr$adj2)
+gr$adj2 <- round((gr$Midterm+gr$midterm.extra)/43*100,1)+9
+# Arb mapping#
+library(sp)#
+library(geoR)#
+library(rgl)#
+aa <- read.csv("~/Dropbox/Work/Arb Mapping/aa_plants_2015-03.csv", sep = "|")#
+#
+aaunmapped <- aa[aa$long == 0,]#
+#
+aa <- aa[aa$long != 0,]#
+#
+# 13635 of 16831 mapped#
+#
+plot(aa$lat, aa$long)#
+#
+library(sp)#
+#
+aa$Sp <- paste(aa$gen, aa$sp)#
+#
+# for some, need to collapse genus only and
+install.packages("geoR",dep=T)
+plot(aa$long, aa$lat)
+library(sp)#
+#
+aa$Sp <- paste(aa$gen, aa$sp)
+# or alternatively, S of the 10 nearest neighbors#
+library(FNN)
+aK <- get.knn(data.frame(aa$lat, aa$long), k = 25)
+library(FNN)
+install.packages("FNN",dep=T)
+library(FNN)#
+#
+aK <- get.knn(data.frame(aa$lat, aa$long), k = 25)
+ax <- aK$nn.index[1,]
+points(aa[ax,"long"], aa[ax,"lat"], col = "red", pch = 16)#
+points(aa[1,"long"], aa[1,"lat"], col = "blue", pch = 16)
+aS <- length(unique(aa[ax,]$Sp))#
+#
+aS <- vector()#
+for(i in 1:nrow(aa)){#
+	ax <- aK$nn.index[i,]#
+	aS <- c(aS, length(unique(aa[ax,]$Sp)))#
+	}#
+#
+aa$S10 <- aS
+Scol <- rev(heat.colors(25, alpha = 0.4))#
+head(aa$S10)#
+#
+plot(aa$lat, aa$long, xlab = "",ylab="", #
+	col = Scol[aa$S10],#
+	pch = 16, #
+	cex = 1)#
+title("Species richness of 10 Nearest Neighbors")
+dist(head(aa[c("lat","long")]))#
+#
+aa[1,c("lat","long")]
+head(aa)
+data.frame(aa$fam, aa$gen, aa$sp)
+ax <- data.frame(aa$fam, aa$gen, paste(aa$gen, aa$sp, sep = "_"))
+head(ax)
+write.csv(ax, file = "~/Dropbox/Work/Arb Mapping/aa4phylo.dat", sep = "/", row.names = F)
+write.table(ax, file = "~/Dropbox/Work/Arb Mapping/aa4phylo.dat", sep = "/", row.names = F)
+?write.table
+write.table(ax, file = "~/Dropbox/Work/Arb Mapping/aa4phylo.dat", sep = "/", row.names = F, col.names = F, quote = F, )
+write.table(ax, file = "~/Dropbox/Work/Arb Mapping/aa4phylo.dat", sep = "/", row.names = F, col.names = F, quote = F)
+ax <- data.frame(aa$fam, aa$gen, paste(aa$gen, aa$sp, sep = "_"))#
+#
+ax <- ax[!duplicated(ax[,3]),]
+dim(ax)
+dim(aa)
+ax <- ax[order(ax[,1],ax[,2],ax[,3]),]
+head(ax)
+tail(ax)
+write.table(ax, file = "~/Dropbox/Work/Arb Mapping/aa4phylo.dat", sep = "/", row.names = F, col.names = F, quote = F)
+mega <- read.tree("~/Dropbox/Work/Swiss BDM/smith2011.txt")
+phylom = ax
+keep <- na.omit(match(phylom$Species, mega$tip.label))
+library(ade4)
+mega <- read.tree("~/Dropbox/Work/Swiss BDM/smith2011.txt")
+library(picante)
+mega <- read.tree("~/Dropbox/Work/Swiss BDM/smith2011.txt")
+phylom = ax
+keep <- na.omit(match(phylom$Species, mega$tip.label))
+summary(keep)
+keep
+head(ax)
+names(phylom) = c("Family","Genus","Species")
+keep <- na.omit(match(phylom$Species, mega$tip.label))
+summary(keep)
+head(keep)
+length(keep); length(phylom$Species) # 1488 out of 2633 direct matches.
+dim(ax)
+nomatch <-  phylom[is.na(match(phylom$Species, mega$tip.label)),] # 1145 species
+nomatch
+nomatch <-  phylom[is.na(match(phylom$Species, mega$tip.label)),] # 1145 species
+dim(nomatch)
+summary(match(phylom$Species, mega$tip.label))
+keep <- na.omit(match(phylom$Species, mega$tip.label))
+length(keep); length(phylom$Species) # 1924, all matching!
+head(keep)
+dim(keep)
+length(keep)
+keep <- na.omit(match(phylom$Species, mega$tip.label))
+length(keep); length(phylom$Species) # 1924, all matching!
+nomatchgen = sort(unique(nomatch$Genus)) # length(nomatchgen) # 422 genera in the non-matching species
+# Find the congeners in the megatree. !! grep will find partial genus matches, need to look for exact matches! Use the _ to mark#
+gens <- sapply(nomatchgen, function(x) #
+  grep(paste(x, "_",sep=""), mega$tip.label)#
+               )
+unimodally distrubuted on the megatree, e.g. ulmus. hist(gens[['Ulmus']])#
+gens.name <- unlist(lapply(gens, function(x) #
+  x[which.min(x-median(x))]#
+               ))
+length(gens.name)
+nogen <- unlist(lapply(gens, function(x) length(x)<1))#
+# 145 taxa with no matches for species or genus. Check IPNI for synonomy.
+nogen
+summary(nogen)
+nonos <- phylom[!is.na(match(phylom$Genus, names(nogen[nogen==T]))),]
+nonos
+nogen <- unlist(lapply(gens, function(x) length(x)<1))
+nonos <- phylom[!is.na(match(phylom$Genus, names(nogen[nogen==T]))),]
+nonos
+nogen[nogen==T]
+nogen <- unlist(lapply(gens, function(x) length(x)<1))
+nogen
+gens
+nogen[nogen==T]
+gens
+gens[nogen]
+nogen
+gens
+gens[[nogen]]
+gens.naem
+gens.name
+nomatchgen
+nomatchgen = as.character(sort(unique(nomatch$Genus))) # length(nomatchgen) # 422 genera in the non-matching species
+nomatchgen
+gens <- sapply(nomatchgen, function(x) #
+  grep(paste(x, "_",sep=""), mega$tip.label)#
+               )
+gens
+gens.name <- unlist(lapply(gens, function(x) #
+  x[which.min(x-median(x))]#
+               ))
+gens.name
+length(gens.name) # 155 of these match.
+nogen <- unlist(lapply(gens, function(x) length(x)<1))
+nogen
+names(nogen)[nogen]
+match(phylom$Genus, names(nogen)[nogen])
+nonos <- phylom[!is.na(match(phylom$Genus, names(nogen)[nogen])),]
+nonos
+write.csv(nonos, "Nonmatching genus or sp.csv", row.names = F)
+keeps <- sort(unique(c(gens.name, keep)))#
+keeps <- keeps[!duplicated(keeps)]
+keeps.names <- mega$tip.label[keeps]#
+drops <- mega$tip.label[is.na(match(mega$tip.label, keeps.names))]
+keeps.names
+drops
+mega.sub <- drop.tip(mega, drops)
+genus.mark <- mega$tip.label[gens.name]#[!gens.name %in% keep]] # !! Now finding all marking taxa, including ones already which are actually in Swiss BDM
+genus.mark
+phylom[phylom$Genus== "Ulmus",]
+mega.sub$tip.label[grep("Ulmus",mega.sub$tip.label)]
+genus.mg = unlist(lapply(strsplit(genus.mark, "_"), function(x) x[[1]]))
+nosp.yesgen <- phylom[is.na(match(phylom$Species, mega$tip.label)) & !is.na(match(phylom$Genus, names(nogen[nogen==F]))),]
+addS <- tapply(nosp.yesgen$Genus, nosp.yesgen$Genus, length)
+forsplit <- data.frame(genus.mg, genus.mark, addS)
+forsplit
+addS
+forsplit <- data.frame(genus.mg, genus.mark, addS)
+source('~/Dropbox/Work/Phylogeny/Jena PNC/Scripts/add.tip.R')
+addS
+forsplit <- data.frame(genus.mg, genus.mark, addS)
+genus.mg
+genus.mark
+genus.mg
+addS
+addS[!is.na(addS)]
+length(addS[!is.na(addS)])
+forsplit <- data.frame(genus.mg, genus.mark, addS[!is.na(addS)])
+source('~/Dropbox/Work/Phylogeny/Jena PNC/Scripts/add.tip.R')
+mega.new <- add.tip(mega.sub, forsplit$genus.mark, forsplit$addS)
+mega.sub
+forsplit$genus.mark
+forsplit$addS
+mega.new <- add.tip(mega.sub, forsplit$genus.mark, forsplit$addS)
+mega.new <- collapse.singles(mega.new) # neccessary for addS = 1
+mega.sub
+write.tree(mega.sub, "~/Dropbox/Work/Arb Mapping/Arb.new")
+52 %/% 12
+53 %/% 12
+53 %% 12
+75 %% 12
+75 %/% 12
+library(Hmisc)
+veg <- mdb.get("~/Desktop/végétation.mdb")
+# Testing codyn#
+#
+knz_001d <- read.csv("~/Documents/git/codyn/inst/extdata/knz_001d.csv")#
+kable(head(knz_001d))#
+source('~/Documents/git/codyn/R/variance_ratio.R')#
+source('~/Documents/git/codyn/R/utilities.R')#
+source('~/Documents/git/codyn/R/community_stability.R')#
+source('~/Documents/git/codyn/R/rankshifts.R')
+??kable
+library(dplyr)
+library(knitr)
+knz_001d <- read.csv("~/Documents/git/codyn/inst/extdata/knz_001d.csv")#
+kable(head(knz_001d))
+source('~/Documents/git/codyn/R/variance_ratio.R')#
+source('~/Documents/git/codyn/R/utilities.R')#
+source('~/Documents/git/codyn/R/community_stability.R')#
+source('~/Documents/git/codyn/R/rankshifts.R')
+myresults<-varianceratio(knz_001d, "subplot", "species", "year", "abundance", 1)#
+kable(myresults)
+# Testing codyn#
+library(knitr)#
+library(dplyr)#
+#
+knz_001d <- read.csv("~/Documents/git/codyn/inst/extdata/knz_001d.csv")#
+kable(head(knz_001d))#
+#
+# codyn functions#
+source('~/Documents/git/codyn/R/community_stability.R')#
+source('~/Documents/git/codyn/R/rankshifts.R')#
+source('~/Documents/git/codyn/R/rate_change.R')#
+source('~/Documents/git/codyn/R/synchrony.R')#
+source('~/Documents/git/codyn/R/temporal_torus_translation.R')#
+source('~/Documents/git/codyn/R/turnover.R')#
+source('~/Documents/git/codyn/R/utilities.R')#
+source('~/Documents/git/codyn/R/variance_ratio.R')
+myresults<-varianceratio(knz_001d, "subplot", "species", "year", "abundance", 1)#
+kable(myresults)
+setwd("~/Documents/git/codyn/")
+# Testing codyn#
+library(knitr)#
+library(dplyr)#
+setwd("~/Documents/git/codyn/")#
+#
+knz_001d <- read.csv("inst/extdata/knz_001d.csv")#
+kable(head(knz_001d))#
+#
+# codyn functions#
+source('R/community_stability.R')#
+source('R/rankshifts.R')#
+source('R/rate_change.R')#
+source('R/synchrony.R')#
+source('R/temporal_torus_translation.R')#
+source('R/turnover.R')#
+source('R/utilities.R')#
+source('R/variance_ratio.R')
+# Variance ratio: variance of each species over time, plus the covariance between each pair of species. vr #
+myresults<-varianceratio(knz_001d, "subplot", "species", "year", "abundance", 1)#
+kable(myresults)
+one_matrix <- knz_001d %>%
+filter(subplot == "A_1") %>%
+select(-subplot) %>%
+codyn:::calComDat("species", "year", "abundance")
+calComDat("species", "year", "abundance")
+transpose_community("species", "year", "abundance")
+head(knz_001d)
+install.packages("install_github",dep=T)
+install.packages("install_github",dep=T, repos="http://cran.rstudio.com")
+??github

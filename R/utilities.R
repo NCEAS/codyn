@@ -1,16 +1,16 @@
-#' Convert from a longform abundance dataframe to a year by species dataframe.
+#' Convert from a longform abundance dataframe to a time by species dataframe.
 #'
-#' @param data1 A dataframe containing year, species and abundance columns
-#' @param year The name of the year column from data1
-#' @param species The name of the species column from data1
-#' @param abundance The name of the abundance column from data1
-#' @return comdat A dataframe of species abundances x year
+#' @param df A dataframe containing time.var, species.var and abundance.var columns
+#' @param time.var The name of the time column from df
+#' @param species.var The name of the species column from df
+#' @param abundance.var The name of the abundance column from df
+#' @return comdat A dataframe of species abundances x time
 #' @export
-transpose_community <- function(data1, species, year, abundance) {
-    data1<-as.data.frame(data1)
-    data1[species]<-if(is.factor(data1[[species]])==TRUE){factor(data1[[species]])} else {data1[species]}  
-    data1<-data1[order(data1[year], data1[species]),]
-    comdat<-tapply(data1[[abundance]], list(data1[[year]], as.vector(data1[[species]])), sum)
+transpose_community <- function(df, time.var, species.var, abundance.var) {
+    df<-as.data.frame(df)
+    df[species.var]<-if(is.factor(df[[species.var]])==TRUE){factor(df[[species.var]])} else {df[species.var]}  
+    df<-df[order(df[time.var], df[species.var]),]
+    comdat<-tapply(df[[abundance.var]], list(df[[time.var]], as.vector(df[[species.var]])), sum)
     comdat[is.na(comdat)]<-0
     comdat<-as.data.frame(comdat)
     return(comdat)

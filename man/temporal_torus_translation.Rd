@@ -4,16 +4,16 @@
 \alias{temporal_torus_translation}
 \title{A function to calculate a vector of null test statistics using a temporal modification of the Torus translation}
 \usage{
-temporal_torus_translation(data1, species, year, abundance, FUN)
+temporal_torus_translation(df, time.var, species.var, abundance.var, FUN)
 }
 \arguments{
-\item{data1}{A dataframe containing year, species and abundance columns}
+\item{df}{A dataframe containing time, species and abundance columns}
 
-\item{species}{The name of the species column from data1}
+\item{time.var}{The name of the time column from df}
 
-\item{year}{The name of the year column from data1}
+\item{species.var}{The name of the species column from df}
 
-\item{abundance}{The name of the abundance column from data1}
+\item{abundance.var}{The name of the abundance column from df}
 
 \item{FUN}{A function to calculate on the null community}
 }

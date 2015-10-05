@@ -4,17 +4,17 @@
 \alias{community_stability}
 \title{A function to calculate community stability over time}
 \usage{
-community_stability(data1, replicate = "replicate", year = "year",
-  abundance = "abundance")
+community_stability(df, time.var = "year", abundance.var = "abundance",
+  replicate.var = as.character(NA))
 }
 \arguments{
-\item{data1}{the data frame to use in the calculation}
+\item{df}{the data frame to use in the calculation}
 
-\item{replicate}{The name of the replicate column from data1}
+\item{time.var}{The name of the time column from df}
 
-\item{year}{The name of the year column from data1}
+\item{abundance.var}{The name of the abundance column from df}
 
-\item{abundance}{The name of the abundance column from data1}
+\item{replicate.var}{The name of the replicate column from df}
 }
 \value{
 output The stability of community abundance, calculated as mean/standard deviation

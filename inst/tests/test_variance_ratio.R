@@ -33,27 +33,28 @@ test_that("varianceratio function returns correct result", {
     
     
     #make a species matrix
-    datmat<-transpose_community(dat1, "species", "year", "abundance")
+    datmat<-transpose_community(dat1,"year",  "species", "abundance")
     
     #test the class returned with default settings
-    myresults<-varianceratio(knz_001d, "subplot", "species", "year", "abundance", 1)
+    myresults<-varianceratio(knz_001d, time.var="year", species.var="species", 
+                             abundance.var="abundance",  bootnumber=1, replicate="subplot")
     expect_that(class(myresults), equals("data.frame"))
     expect_that(nrow(myresults), equals(1))
     
     #test that it also works with alternate column names
     knz_001d2<-knz_001d
     names(knz_001d2)=c("sp", "yr", "sub", "abund")
-    myresults2<-varianceratio(knz_001d2, "sub", "sp", "yr", "abund", 1)
+    myresults2<-varianceratio(knz_001d2,"yr", "sp", "abund", 1, "sub")
     expect_that(sum(myresults2$VR), equals(sum(myresults$VR)))
-    myresults2.2<-varianceratio(knz_001d2, "sub", "sp", "yr", "abund", 1,averagereps=FALSE)
-    myresults2.3<-varianceratio(knz_001d2, NA, "sp", "yr", "abund", 1,averagereps=FALSE)
-    myresults2.4<-varianceratio(knz_001d2, NA, "sp", "yr", "abund", 1,averagereps=TRUE)
+    myresults2.2<-varianceratio(knz_001d2, "yr", "sp",  "abund", 1, "sub", average.replicates=FALSE)
+    myresults2.3<-varianceratio(knz_001d2, "yr", "sp",  "abund", 1,NA, average.replicates=FALSE)
+    myresults2.4<-varianceratio(knz_001d2,"yr", "sp",  "abund", 1, NA,average.replicates=TRUE)
     
     
     #test that it works even if there are additional unused columns
     knz_001d3<-knz_001d
     knz_001d3$site<-"KNZ"
-    myresults3<-varianceratio(knz_001d3, "subplot", "species", "year", "abundance", 1)
+    myresults3<-varianceratio(knz_001d3, "year", "species",  "abundance",1, "subplot")
     expect_that(myresults3$VR, is_identical_to(myresults$VR))
   
     
@@ -67,7 +68,7 @@ test_that("varianceratio function returns correct result", {
     myresults6<-varianceratio(dat3,replicate="subplot", bootnumber=10)
     
     #test that gives same for a single rep if average reps is false
-    myresults7<-varianceratio(dat3,replicate="subplot", bootnumber=10,averagereps=FALSE)
+    myresults7<-varianceratio(dat3, bootnumber=1, replicate="subplot", average.replicates=FALSE)
     
     #test that all give the same VR value
     expect_that(myresults4$VR, is_identical_to(myresults5$VR))
@@ -75,15 +76,15 @@ test_that("varianceratio function returns correct result", {
     expect_that(myresults4$VR, is_identical_to(myresults7$VR))
     
     
-    ##test calVR
-    calVRresults<-calVR(datmat)
+    ##test varianceratio_matrixdata
+    calVRresults<-varianceratio_matrixdata(datmat)
     expect_that(calVRresults, equals(myresults7$VR))
     expect_true(calVRresults>=0)
     expect_true(is.numeric(calVRresults))
     
   
-    ##test calVR_longformdata
-    lfresults<-calVR_longformdata(dat1, species="species", year="year", abundance="abundance")
+    ##test varianceratio_longformdata
+    lfresults<-varianceratio_longformdata(dat1,  time.var="year",species.var="species", abundance.var="abundance")
     expect_that(lfresults, equals(myresults7$VR))
     expect_true(lfresults>=0)
     expect_true(is.numeric(lfresults))

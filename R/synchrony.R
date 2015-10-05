@@ -1,24 +1,24 @@
 #' A function to calculate species synchrony over time within multiple replicates
 #'
-#' @param data1 A dataframe containing replicate, year, species and abundance columns
-#' @param replicate The name of the replicate column from data1
-#' @param year The name of the year column from data1
-#' @param species The name of the species column from data1
-#' @param abundance The name of the abundance column from data1
+#' @param df A dataframe containing replicate, time, species and abundance columns
+#' @param replicate.var The name of the replicate column from df
+#' @param time.var The name of the time column from df
+#' @param species.var The name of the species column from df
+#' @param abundance.var The name of the abundance column from df
 #' @param metric The synchrony metric to return. The default, "Loreau", returns synchrony as calculated by Loreau and de Mazancourt 2008.
 #'        The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014
 #' @return output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony. 
 #'        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
 #' @export
-synchrony<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance", metric="Loreau") {
-  if(is.na(replicate)==TRUE){
-    output<-synch_onerep(data1, species, year, abundance, metric)}else{
-    data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
-    X <- split(data1, data1[replicate])
-    out<-lapply(X, FUN=synch_onerep, species, year, abundance, metric)
-    reps<-unique(data1[replicate])
+synchrony<-function(df, species.var="species", time.var="year", abundance.var="abundance", metric="Loreau", replicate.var=NA) {
+  if(is.na(replicate.var)==TRUE){
+    output<-synch_onerep(df, species.var, time.var, abundance.var, metric)}else{
+    df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
+    X <- split(df, df[replicate.var])
+    out<-lapply(X, FUN=synch_onerep, species.var, time.var, abundance.var, metric)
+    reps<-unique(df[replicate.var])
     output<-cbind(reps, do.call("rbind", out))
-    names(output)=c(replicate, "synchrony")
+    names(output)=c(replicate.var, "synchrony")
     row.names(output)<-NULL
 }
 return(output)
@@ -36,52 +36,52 @@ return(output)
 
 #' A function to calculate species synchrony over time within one replicate
 #'
-#' @param data1 A dataframe containing rep, year, species and abundance columns
-#' @param year The name of the year column from data1
-#' @param species The name of the species column from data1
-#' @param abundance The name of the abundance column from data1
+#' @param df A dataframe containing rep, time, species and abundance columns
+#' @param time.var The name of the time column from df
+#' @param species.var The name of the species column from df
+#' @param abundance.var The name of the abundance column from df
 #' @param metric The synchrony metric to return. The default, "Loreau", returns synchrony as calculated by Loreau and de Mazancourt 2008.
 #'        The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014
 #' @return output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony. 
 #'        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
 
-synch_onerep<-function(data1, species, year, abundance, metric="Loreau") {
+synch_onerep<-function(df, species.var, time.var, abundance.var, metric="Loreau") {
     #remove any species that were never present
-    data1<-subset(data1, abundance>0)
+    df<-subset(df, abundance.var>0)
     #fill in 0s
-    spplist<-(unique(data1[species]))
-    yearlist<-(unique(data1[year]))
-    fulllist<-expand.grid(species=spplist[[species]], year=yearlist[[year]])
-    data2<-merge(data1[c(species, year, abundance)], fulllist, all=T)
-    data2[is.na(data2)]<-0  
+    spplist<-(unique(df[species.var]))
+    yearlist<-(unique(df[time.var]))
+    fulllist<-expand.grid(species.var=spplist[[species.var]], time.var=yearlist[[time.var]])
+    df2<-merge(df[c(species.var, time.var, abundance.var)], fulllist, all=T)
+    df2[is.na(df2)]<-0  
   
     if(metric=="Loreau"){
     #calculate community variance
-    XTformula<-as.formula(paste(abundance, "~", year, sep=""))
-    XT<-aggregate(XTformula, data=data2, sum )
+    XTformula<-as.formula(paste(abundance.var, "~", time.var, sep=""))
+    XT<-aggregate(XTformula, data=df2, sum )
     #do this within rep
-    varXT<-var(XT[abundance])
+    varXT<-var(XT[abundance.var])
     
     #calculate species variance
-    sdSppformula<-as.formula(paste(abundance, "~", species, sep=""))
-    sdSpp<-aggregate(sdSppformula, data=data2, sd)
-    varSpp<-sum((sdSpp[abundance]))*sum(sdSpp[abundance])
+    sdSppformula<-as.formula(paste(abundance.var, "~", species.var, sep=""))
+    sdSpp<-aggregate(sdSppformula, data=df2, sd)
+    varSpp<-sum((sdSpp[abundance.var]))*sum(sdSpp[abundance.var])
     
     #calculate synchrony
     synchrony<-as.numeric(varXT/varSpp)} else{
       if(metric=="Gross"){
-        corout<-as.data.frame(cbind(species=as.character(), "sppcor"=as.numeric()))
+        corout<-as.data.frame(cbind(species.var=as.character(), "sppcor"=as.numeric()))
         for (i in 1:nrow(spplist)){
           myspp<-as.character(spplist[[1]][i])
-          focalspp<-data2[which(data2[species] == myspp),]
-          com.focalspp<-transpose_community(focalspp, species, year, abundance)
-          otherspp<-data2[which(data2[species] != myspp),]
-          com.otherspp<-transpose_community(otherspp, species, year, abundance)
+          focalspp<-df2[which(df2[species.var] == myspp),]
+          com.focalspp<-transpose_community(focalspp, species.var, time.var, abundance.var)
+          otherspp<-df2[which(df2[species.var] != myspp),]
+          com.otherspp<-transpose_community(otherspp, species.var, time.var, abundance.var)
           agg.otherspp<-(rowSums(com.otherspp))
           sppcor<-cor(agg.otherspp, com.focalspp)
           ##need to add a default value for species that do not fluctuate at all
           subout<-as.data.frame(cbind(myspp, sppcor))
-          names(subout)=c(species, "sppcor")
+          names(subout)=c(species.var, "sppcor")
           subout$sppcor<-as.numeric(as.character(subout$sppcor))    
           corout<-rbind(corout, subout)
         }

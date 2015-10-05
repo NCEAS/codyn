@@ -4,30 +4,30 @@
 \alias{temporal_torus_translation_CI}
 \title{A function that returns confidence intervals calculated from a temporal modification of the torus translation}
 \usage{
-temporal_torus_translation_CI(data1, replicate = "replicate",
-  species = "species", year = "year", abundance = "abundance", FUN,
-  bootnumber, li = 0.025, ui = 0.975, averagereps = TRUE)
+temporal_torus_translation_CI(df, time.var = "year",
+  species.var = "species", abundance.var = "abundance", FUN, bootnumber,
+  replicate.var = NA, li = 0.025, ui = 0.975, average.replicates = TRUE)
 }
 \arguments{
-\item{data1}{A dataframe containing year, species and abundance columns}
+\item{df}{A dataframe containing time, species and abundance columns}
 
-\item{replicate}{The name of the replication column from data1}
+\item{time.var}{The name of the time column from df}
 
-\item{species}{The name of the species column from data1}
+\item{species.var}{The name of the species column from df}
 
-\item{year}{The name of the year column from data1}
-
-\item{abundance}{The name of the abundance column from data1}
+\item{abundance.var}{The name of the abundance column from df}
 
 \item{FUN}{A function to calculate on the null community}
 
 \item{bootnumber}{The number of null model iterations used to calculated CIs}
 
+\item{replicate.var}{The name of the replication column from df}
+
 \item{li}{The lower confidence interval, defaults to lowest 2.5\% CI}
 
 \item{ui}{The upper confidence interval, defaults to upper 97.5\% CI}
 
-\item{averagereps}{If true returns CI averaged across reps; if false returns CI for each rep}
+\item{average.replicates}{If true returns CI averaged across reps; if false returns CI for each rep}
 }
 \value{
 output A dataframe containing lowerCI, upperCI and nullmean value of the test statistic

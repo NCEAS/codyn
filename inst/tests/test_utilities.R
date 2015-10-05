@@ -15,7 +15,7 @@ test_that("utilities loads and returns correct result", {
     dat1 <- subset(knz_001d, knz_001d$subplot=="A_1")
 
     # Does transpose_community correctly transform a long dataframe into a matrix?
-    com_wide_df <- transpose_community(data1 = dat1, "species", "year", "abundance")
+    com_wide_df <- transpose_community(df = dat1, "year", "species", "abundance")
     expect_true(is.data.frame(com_wide_df))
     # rownames should be timevar
     expect_true(all(as.numeric(rownames(com_wide_df)) %in% dat1[["year"]]))

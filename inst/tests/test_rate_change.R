@@ -45,47 +45,47 @@ test_that("rate_change loads and returns correct result", {
 
 	#test the rate_change function
   #test that works on a single replicate
-  myresults3<-rate_change(dat1, replicate=NA, year="year", species="species", abundance="abundance")
+  myresults3<-rate_change(dat1, replicate.var=NA, time.var="year", species.var="species", abundance.var="abundance")
   expect_that(myresults3, equals(myresults2))
 
   #test that will still run if there are missing levels in a factor "replicate"; deleting levels that are NaN
-  myresults4<-rate_change(dat1, replicate="subplot", year="year", species="species", abundance="abundance")
+  myresults4<-rate_change(dat1, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
   #this will give a warning because replicate is a factor without all values present in dat1 - the warning is a good thing
   myresults5<-as.numeric(myresults4[2])
   expect_that(myresults5, equals(myresults3))
 
   #test that works whether replicate is a character or factor
-  myresults6<-rate_change(dat3, replicate="subplot", year="year", species="species", abundance="abundance")
+  myresults6<-rate_change(dat3, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
   expect_that((myresults6[1,2]), equals(myresults3))
 
   #test that works with multiple replicates
-  myresults7<-rate_change(knz_001d, replicate="subplot", year="year", species="species", abundance="abundance")
+  myresults7<-rate_change(knz_001d, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
   expect_that(myresults6[1,2], equals(myresults7[1,2]))
 
     #test that works with different column names
-  myresults8<-rate_change(knz_001d2, replicate="sub", year="yr", species="sp", abundance="abund")
+  myresults8<-rate_change(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
   expect_that(myresults7[1,2], equals(myresults8[1,2]))
 
 	#test that works regardless of whether parameter is specified or just ordered
-  myresults8<-rate_change(knz_001d, "subplot", "year", "species", "abundance")
+  myresults8<-rate_change(knz_001d, replicate.var="subplot", time.var = "year", species.var = "species", abundance.var = "abundance")
   expect_that(myresults8, is_identical_to(myresults7))
 
 	#test that works with different column orders if names specified
-  myresults9<-rate_change(knz_001d, abundance="abundance", replicate="subplot", species="species", year="year")
+  myresults9<-rate_change(knz_001d, abundance.var="abundance", replicate.var="subplot", species.var="species", time.var="year")
   expect_that(myresults9, is_identical_to(myresults7))
 
   #test that works with different column names
-  myresults10<-rate_change(knz_001d2, replicate="sub", year="yr", species="sp", abundance="abund")
+  myresults10<-rate_change(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
   expect_that(myresults10[1,2], equals(myresults7[1,2]))
 
 	#test that it works even if there are additional unused columns
   knz_001d3<-knz_001d
   knz_001d3$site<-"KNZ"
-  myresults11<-rate_change(knz_001d3, "subplot", "year", "species", "abundance")
+  myresults11<-rate_change(knz_001d3, replicate.var = "subplot", time.var = "year", species.var = "species", abundance.var = "abundance")
   expect_that(myresults11, is_identical_to(myresults7))
 
   #test that gives error when abundance column is a character or factor
-  expect_error(rate_change(knz_001d2, replicate="sub", year="yr", species="sp", abundance="randcharacter"))
-  expect_error(rate_change(knz_001d2, replicate="sub", year="yr", species="sp", abundance="randfactor"))
+  expect_error(rate_change(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randcharacter"))
+  expect_error(rate_change(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randfactor"))
 
 })

@@ -4,16 +4,16 @@
 \alias{turnover_allyears}
 \title{A function to calculate species turnover between years}
 \usage{
-turnover_allyears(data1, species, year, abundance, metric = "total")
+turnover_allyears(df, species, year, abundance, metric = "total")
 }
 \arguments{
-\item{data1}{A dataframe containing year,species and abundance columns}
+\item{df}{A dataframe containing year,species and abundance columns}
 
-\item{species}{The name of the species column from data1}
+\item{species}{The name of the species column from df}
 
-\item{year}{The name of the year column from data1}
+\item{year}{The name of the year column from df}
 
-\item{abundance}{The name of the abundance column from data1}
+\item{abundance}{The name of the abundance column from df}
 
 \item{metric}{The turnover metric to return; the default, total, returns summed appearances and disappearances relative to total species richness across both years
 appearance returns the number of appearances in the second year relative to total species richness across both years

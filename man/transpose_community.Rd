@@ -2,23 +2,23 @@
 % Please edit documentation in R/utilities.R
 \name{transpose_community}
 \alias{transpose_community}
-\title{Convert from a longform abundance dataframe to a year by species dataframe.}
+\title{Convert from a longform abundance dataframe to a time by species dataframe.}
 \usage{
-transpose_community(data1, species, year, abundance)
+transpose_community(df, time.var, species.var, abundance.var)
 }
 \arguments{
-\item{data1}{A dataframe containing year, species and abundance columns}
+\item{df}{A dataframe containing time.var, species.var and abundance.var columns}
 
-\item{species}{The name of the species column from data1}
+\item{time.var}{The name of the time column from df}
 
-\item{year}{The name of the year column from data1}
+\item{species.var}{The name of the species column from df}
 
-\item{abundance}{The name of the abundance column from data1}
+\item{abundance.var}{The name of the abundance column from df}
 }
 \value{
-comdat A dataframe of species abundances x year
+comdat A dataframe of species abundances x time
 }
 \description{
-Convert from a longform abundance dataframe to a year by species dataframe.
+Convert from a longform abundance dataframe to a time by species dataframe.
 }
 
