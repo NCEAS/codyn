@@ -4,10 +4,10 @@
 \alias{stability_onerep}
 \title{A function to calculate species synchrony over time within one replicate}
 \usage{
-stability_onerep(data1, x)
+stability_onerep(df, x)
 }
 \arguments{
-\item{data1}{A dataframe containing x column}
+\item{df}{A dataframe containing x column}
 
 \item{x}{The column to calculate stability on}
 }

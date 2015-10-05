@@ -37,11 +37,10 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
-#' @import vegan
 #' @return a slope of time lags by species distances
 get_slope = function(df, time.var="time", species.var="species", abundance.var="abundance") {
 		df <- codyn::transpose_community(df, species.var, time.var, abundance.var)
-		DM <- vegdist(df[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
+		DM <- dist(df[-1], method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
 
     rownums = row(DM)

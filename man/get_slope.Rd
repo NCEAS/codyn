@@ -4,20 +4,20 @@
 \alias{get_slope}
 \title{A function that returns the slope of community change within one replicate.}
 \usage{
-get_slope(data1, year = "year", species = "species",
-  abundance = "abundance")
+get_slope(df, time.var = "time", species.var = "species",
+  abundance.var = "abundance")
 }
 \arguments{
-\item{data1}{data frame to compute the slope of community change for}
+\item{df}{data frame to compute the slope of community change for}
 
-\item{year}{The name of the year column from data1}
+\item{time.var}{The name of the time column from df}
 
-\item{species}{The name of the species column from data1}
+\item{species.var}{The name of the species column from df}
 
-\item{abundance}{The name of the abundance column from data1}
+\item{abundance.var}{The name of the abundance column from df}
 }
 \value{
-a slope of year lags by species distances
+a slope of time lags by species distances
 }
 \description{
 A function that returns the slope of community change within one replicate.

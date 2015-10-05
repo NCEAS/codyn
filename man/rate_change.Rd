@@ -4,19 +4,19 @@
 \alias{rate_change}
 \title{A function to calculate community rate changes over time within multiple replicates}
 \usage{
-rate_change(data1, replicate = "replicate", year = "year",
-  species = "species", abundance = "abundance")
+rate_change(df, time.var = "time", species.var = "species",
+  abundance.var = "abundance", replicate.var = NA)
 }
 \arguments{
-\item{data1}{A dataframe containing replicate, year, species and abundance columns.}
+\item{df}{A dataframe containing replicate, time, species and abundance columns.}
 
-\item{replicate}{The name of the replicate column from data1}
+\item{time.var}{The name of the time column from df}
 
-\item{year}{The name of the year column from data1}
+\item{species.var}{The name of the species column from df}
 
-\item{species}{The name of the species column from data1}
+\item{abundance.var}{The name of the abundance column from df}
 
-\item{abundance}{The name of the abundance column from data1}
+\item{replicate.var}{The name of the replicate column from df. Defaults to NA.}
 }
 \value{
 output The rate of community change

@@ -4,22 +4,22 @@
 \alias{synchrony}
 \title{A function to calculate species synchrony over time within multiple replicates}
 \usage{
-synchrony(data1, replicate = "replicate", species = "species",
-  year = "year", abundance = "abundance", metric = "Loreau")
+synchrony(df, species.var = "species", time.var = "year",
+  abundance.var = "abundance", metric = "Loreau", replicate.var = NA)
 }
 \arguments{
-\item{data1}{A dataframe containing replicate, year, species and abundance columns}
+\item{df}{A dataframe containing replicate, time, species and abundance columns}
 
-\item{replicate}{The name of the replicate column from data1}
+\item{species.var}{The name of the species column from df}
 
-\item{species}{The name of the species column from data1}
+\item{time.var}{The name of the time column from df}
 
-\item{year}{The name of the year column from data1}
-
-\item{abundance}{The name of the abundance column from data1}
+\item{abundance.var}{The name of the abundance column from df}
 
 \item{metric}{The synchrony metric to return. The default, "Loreau", returns synchrony as calculated by Loreau and de Mazancourt 2008.
 The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014}
+
+\item{replicate.var}{The name of the replicate column from df}
 }
 \value{
 output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony.
