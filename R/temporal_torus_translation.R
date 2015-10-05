@@ -1,14 +1,14 @@
 #' A function to calculate a vector of null test statistics using a temporal modification of the Torus translation
 #'
-#' @param data1 A dataframe containing year, species and abundance columns
-#' @param species The name of the species column from data1
-#' @param year The name of the year column from data1
-#' @param abundance The name of the abundance column from data1
+#' @param df A dataframe containing time, species and abundance columns
+#' @param species.var The name of the species column from df
+#' @param time.var The name of the time column from df
+#' @param abundance.var The name of the abundance column from df
 #' @param FUN A function to calculate on the null community
 #' @return a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
 #' @export
-temporal_torus_translation<-function(data1, species, year, abundance, FUN){
-  out<-FUN(genRand(transpose_community(data1, species, year, abundance)))
+temporal_torus_translation<-function(df, species.var, time.var, abundance.var, FUN){
+  out<-FUN(genRand(transpose_community(df, species.var, time.var, abundance.var)))
   bootout<-unlist(out)
   return(bootout)
 }
@@ -16,11 +16,11 @@ temporal_torus_translation<-function(data1, species, year, abundance, FUN){
 
 #' A function that returns confidence intervals calculated from a temporal modification of the torus translation
 #'
-#' @param data1 A dataframe containing year, species and abundance columns
-#' @param replicate The name of the replication column from data1
-#' @param species The name of the species column from data1
-#' @param year The name of the year column from data1
-#' @param abundance The name of the abundance column from data1
+#' @param df A dataframe containing time, species and abundance columns
+#' @param replicate.var The name of the replication column from df
+#' @param species.var The name of the species column from df
+#' @param time.var The name of the time column from df
+#' @param abundance.var The name of the abundance column from df
 #' @param FUN A function to calculate on the null community
 #' @param bootnumber The number of null model iterations used to calculated CIs
 #' @param li The lower confidence interval, defaults to lowest 2.5\% CI
@@ -28,32 +28,32 @@ temporal_torus_translation<-function(data1, species, year, abundance, FUN){
 #' @param averagereps If true returns CI averaged across reps; if false returns CI for each rep
 #' @return output A dataframe containing lowerCI, upperCI and nullmean value of the test statistic
 #' @export
-temporal_torus_translation_CI<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance", FUN, bootnumber, li=0.025, ui=0.975, averagereps=TRUE){
-  if(is.na(replicate)==TRUE){
-    out<-replicate(bootnumber, temporal_torus_translation(data1, species, year, abundance, FUN))
+temporal_torus_translation_CI<-function(df, species.var="species", time.var="year", abundance.var="abundance", FUN, bootnumber, li=0.025, ui=0.975, averagereps=TRUE, replicate.var=NA){
+  if(is.na(replicate.var)==TRUE){
+    out<-replicate(bootnumber, temporal_torus_translation(df, species.var, time.var, abundance.var, FUN))
     lowerCI <- quantile(out, li)
     upperCI <-quantile(out, ui)
     nullmean<-mean(out)
     output<-cbind(lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
   }else{
-    data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
-    data1<-data1[order(data1[[replicate]]),]  
+    df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
+    df<-df[order(df[[replicate.var]]),]  
     if(averagereps==TRUE){
-    X<-split(data1, data1[replicate])
-    out<-replicate(bootnumber, mean(unlist(lapply(X, temporal_torus_translation, species, year, abundance, FUN)))) 
+    X<-split(df, df[replicate.var])
+    out<-replicate(bootnumber, mean(unlist(lapply(X, temporal_torus_translation, species.var, time.var, abundance.var, FUN)))) 
     lowerCI <- quantile(out, li)
     upperCI <-quantile(out, ui)
     nullmean<-mean(out)
     output<-cbind(lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
   } else{
-    X <- split(data1, data1[replicate])
-    out<-lapply(X, function(x, species, year, abundance, FUN, bootnumber){replicate(bootnumber, temporal_torus_translation(x, species, year, abundance, FUN))}, species, year, abundance, FUN, bootnumber)
+    X <- split(df, df[replicate.var])
+    out<-lapply(X, function(x, species.var, time.var, abundance.var, FUN, bootnumber){replicate(bootnumber, temporal_torus_translation(x, species.var, time.var, abundance.var, FUN))}, species.var, time.var, abundance.var, FUN, bootnumber)
     lowerCI<-do.call("rbind", lapply(out, quantile, li))
     upperCI<-do.call("rbind", lapply(out, quantile, ui))
     nullmean<-do.call("rbind", lapply(out, mean))
-    reps<-unique(data1[replicate])
+    reps<-unique(df[replicate.var])
     output<-cbind(reps, lowerCI, upperCI, nullmean)
     names(output)[2:3]=c("lowerCI", "upperCI")
   }
