@@ -49,19 +49,19 @@ test_that("rankshifts loads and returns correct result", {
 
 		#test the meanrankshift function
   	#test that works on a single replicate
-  	myresults3<-meanrankshift(dat1, replicate=NA, year="year", species="species", abundance="abundance")
+  	myresults3<-meanrankshift(dat1, replicate=NA, time.var="year", species="species", abundance="abundance")
   	expect_that(myresults3, equals(myresults2))
 
   	#test that works whether replicate is a character or factor
-  	myresults4<-meanrankshift(dat3, replicate="subplot", year="year", species="species", abundance="abundance")
+  	myresults4<-meanrankshift(dat3, replicate="subplot", time.var="year", species="species", abundance="abundance")
   	expect_that((myresults4[2,2]), equals(myresults3[2,2]))
 
   	#test that works with multiple replicates
-  	myresults5<-meanrankshift(knz_001d, replicate="subplot", year="year", species="species", abundance="abundance")
+  	myresults5<-meanrankshift(knz_001d, replicate="subplot", time.var="year", species="species", abundance="abundance")
   	expect_that(myresults4[2,2], equals(myresults5[2,2]))
 
     #test that works with different column names
-  	myresults6<-meanrankshift(knz_001d2, replicate="sub", year="yr", species="sp", abundance="abund")
+  	myresults6<-meanrankshift(knz_001d2, replicate="sub", time.var="yr", species="sp", abundance="abund")
   	expect_that(myresults6[2,2], equals(myresults5[2,2]))
 
 		#test that works regardless of whether parameter is specified or just ordered
@@ -69,11 +69,11 @@ test_that("rankshifts loads and returns correct result", {
   	expect_that(myresults7, is_identical_to(myresults5))
 
 		#test that works with different column orders if names specified
-  	myresults8<-meanrankshift(knz_001d, abundance="abundance", replicate="subplot", species="species", year="year")
+  	myresults8<-meanrankshift(knz_001d, abundance="abundance", replicate="subplot", species="species", time.var="year")
   	expect_that(myresults8, is_identical_to(myresults5))
 
   	#test that works with different column names
-  	myresults9<-meanrankshift(knz_001d2, replicate="sub", year="yr", species="sp", abundance="abund")
+  	myresults9<-meanrankshift(knz_001d2, replicate="sub", time.var="yr", species="sp", abundance="abund")
   	expect_that(myresults9[2,2], equals(myresults5[2,2]))
 
 		#test that it works even if there are additional unused columns
@@ -83,7 +83,7 @@ test_that("rankshifts loads and returns correct result", {
   	expect_that(myresults10, is_identical_to(myresults5))
 
   	#test that gives error when abundance column is a character or factor
-#   	expect_error(meanrankshift(knz_001d2, replicate="sub", year="yr", species="sp", abundance="randcharacter"))
-#   	expect_error(meanrankshift(knz_001d2, replicate="sub", year="yr", species="sp", abundance="randfactor"))
+#   	expect_error(meanrankshift(knz_001d2, replicate="sub", time.var="yr", species="sp", abundance="randcharacter"))
+#   	expect_error(meanrankshift(knz_001d2, replicate="sub", time.var="yr", species="sp", abundance="randfactor"))
 
 })
