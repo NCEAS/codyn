@@ -67,7 +67,7 @@ test_that("rate_change loads and returns correct result", {
   expect_that(myresults7[1,2], equals(myresults8[1,2]))
 
 	#test that works regardless of whether parameter is specified or just ordered
-  myresults8<-rate_change(knz_001d, "subplot", "year", "species", "abundance")
+  myresults8<-rate_change(knz_001d, replicate.var="subplot", time.var = "year", species.var = "species", abundance.var = "abundance")
   expect_that(myresults8, is_identical_to(myresults7))
 
 	#test that works with different column orders if names specified
@@ -81,7 +81,7 @@ test_that("rate_change loads and returns correct result", {
 	#test that it works even if there are additional unused columns
   knz_001d3<-knz_001d
   knz_001d3$site<-"KNZ"
-  myresults11<-rate_change(knz_001d3, "subplot", "year", "species", "abundance")
+  myresults11<-rate_change(knz_001d3, replicate.var = "subplot", time.var = "year", species.var = "species", abundance.var = "abundance")
   expect_that(myresults11, is_identical_to(myresults7))
 
   #test that gives error when abundance column is a character or factor
