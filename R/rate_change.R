@@ -1,22 +1,22 @@
 #' A function to calculate community rate changes over time within multiple replicates
 #'
 #'#' This is an analysis of differences in species composition between samples at increasing time lags. It measures the rate of directional change in community composition. First, a triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean distance values are plotted against time lags. For example, a data set with 6 time intervals will have 5 one-year time lags (year 1 vs year 2, year 2 vs year 3 ...) and 4 two-year time lags (year 1 vs year 3, year 2 vs year 4 ...). Finally, distance values are regressed against time lag. The slope of the regression line indicates the rate and direction of change.
-#' @param data1 A dataframe containing replicate, year, species and abundance columns.
-#' @param replicate The name of the replicate column from data1
-#' @param year The name of the year column from data1
-#' @param species The name of the species column from data1
-#' @param abundance The name of the abundance column from data1
+#' @param df A dataframe containing replicate, time, species and abundance columns.
+#' @param replicate.var The name of the replicate column from df. Defaults to NA.
+#' @param time.var The name of the time column from df
+#' @param species.var The name of the species column from df
+#' @param abundance.var The name of the abundance column from df
 #' @import vegan
 #' @return output The rate of community change
-rate_change <- function(data1, replicate="replicate", year="year", species="species", abundance="abundance") {
-	if(is.na(replicate)==TRUE){
-    output<-get_slope(data1, year, species, abundance)}else{
-        data1[replicate]<-if(is.factor(data1[[replicate]])==TRUE){factor(data1[[replicate]])} else {data1[replicate]}
-		X <- split(data1, data1[replicate])
-		out <- lapply(X, FUN=get_slope, year, species, abundance)
-		reps <- unique(data1[replicate])
+rate_change <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
+	if(is.na(replicate.var)==TRUE){
+    output<-get_slope(df, time.var, species.var, abundance.var)}else{
+        df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
+		X <- split(df, df[replicate.var])
+		out <- lapply(X, FUN=get_slope, time.var, species.var, abundance.var)
+		reps <- unique(df[replicate.var])
 		output <- cbind(reps, do.call("rbind", out))
-		names(output)=c(replicate, "rate_change")
+		names(output)=c(replicate.var, "rate_change")
     }
 		return(output)
 }
@@ -33,15 +33,15 @@ rate_change <- function(data1, replicate="replicate", year="year", species="spec
 
 
 #' A function that returns the slope of community change within one replicate.
-#' @param data1 data frame to compute the slope of community change for
-#' @param year The name of the year column from data1
-#' @param species The name of the species column from data1
-#' @param abundance The name of the abundance column from data1
+#' @param df data frame to compute the slope of community change for
+#' @param time.var The name of the time column from df
+#' @param species.var The name of the species column from df
+#' @param abundance.var The name of the abundance column from df
 #' @import vegan
-#' @return a slope of year lags by species distances
-get_slope = function(data1, year="year", species="species", abundance="abundance") {
-		data1 <- codyn::transpose_community(data1, species, year, abundance)
-		DM <- vegdist(data1[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
+#' @return a slope of time lags by species distances
+get_slope = function(df, time.var="time", species.var="species", abundance.var="abundance") {
+		df <- codyn::transpose_community(df, species.var, time.var, abundance.var)
+		DM <- vegdist(df[-1], method="euclidean", diag = FALSE, upper = FALSE, na.rm = TRUE)
     DM <- as.matrix(DM)
 
     rownums = row(DM)
@@ -52,7 +52,7 @@ get_slope = function(data1, year="year", species="species", abundance="abundance
     }
 
     lag_list = lapply(
-        1:(nrow(data1)-1),
+        1:(nrow(df)-1),
         get_lag_i)
 
     results <- data.frame(do.call(rbind, lag_list))
