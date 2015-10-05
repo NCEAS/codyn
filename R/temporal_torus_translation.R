@@ -7,8 +7,8 @@
 #' @param FUN A function to calculate on the null community
 #' @return a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
 #' @export
-temporal_torus_translation<-function(df, species.var, time.var, abundance.var, FUN){
-  out<-FUN(genRand(transpose_community(df, species.var, time.var, abundance.var)))
+temporal_torus_translation<-function(df, time.var, species.var,  abundance.var, FUN){
+  out<-FUN(genRand(transpose_community(df, time.var,  species.var, abundance.var)))
   bootout<-unlist(out)
   return(bootout)
 }
@@ -17,20 +17,20 @@ temporal_torus_translation<-function(df, species.var, time.var, abundance.var, F
 #' A function that returns confidence intervals calculated from a temporal modification of the torus translation
 #'
 #' @param df A dataframe containing time, species and abundance columns
-#' @param replicate.var The name of the replication column from df
-#' @param species.var The name of the species column from df
 #' @param time.var The name of the time column from df
+#' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @param FUN A function to calculate on the null community
 #' @param bootnumber The number of null model iterations used to calculated CIs
+#' @param replicate.var The name of the replication column from df
 #' @param li The lower confidence interval, defaults to lowest 2.5\% CI
 #' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
-#' @param averagereps If true returns CI averaged across reps; if false returns CI for each rep
+#' @param average.replicates If true returns CI averaged across reps; if false returns CI for each rep
 #' @return output A dataframe containing lowerCI, upperCI and nullmean value of the test statistic
 #' @export
-temporal_torus_translation_CI<-function(df, species.var="species", time.var="year", abundance.var="abundance", FUN, bootnumber, li=0.025, ui=0.975, averagereps=TRUE, replicate.var=NA){
+temporal_torus_translation_CI<-function(df,  time.var="year",species.var="species", abundance.var="abundance", FUN, bootnumber, replicate.var=NA, li=0.025, ui=0.975, average.replicates=TRUE){
   if(is.na(replicate.var)==TRUE){
-    out<-replicate(bootnumber, temporal_torus_translation(df, species.var, time.var, abundance.var, FUN))
+    out<-replicate(bootnumber, temporal_torus_translation(df, time.var, species.var,  abundance.var, FUN))
     lowerCI <- quantile(out, li)
     upperCI <-quantile(out, ui)
     nullmean<-mean(out)
@@ -39,9 +39,9 @@ temporal_torus_translation_CI<-function(df, species.var="species", time.var="yea
   }else{
     df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
     df<-df[order(df[[replicate.var]]),]  
-    if(averagereps==TRUE){
+    if(average.replicates==TRUE){
     X<-split(df, df[replicate.var])
-    out<-replicate(bootnumber, mean(unlist(lapply(X, temporal_torus_translation, species.var, time.var, abundance.var, FUN)))) 
+    out<-replicate(bootnumber, mean(unlist(lapply(X, temporal_torus_translation, time.var, species.var, abundance.var, FUN)))) 
     lowerCI <- quantile(out, li)
     upperCI <-quantile(out, ui)
     nullmean<-mean(out)
@@ -49,7 +49,7 @@ temporal_torus_translation_CI<-function(df, species.var="species", time.var="yea
     row.names(output)<-NULL
   } else{
     X <- split(df, df[replicate.var])
-    out<-lapply(X, function(x, species.var, time.var, abundance.var, FUN, bootnumber){replicate(bootnumber, temporal_torus_translation(x, species.var, time.var, abundance.var, FUN))}, species.var, time.var, abundance.var, FUN, bootnumber)
+    out<-lapply(X, function(x,time.var, species.var,  abundance.var, FUN, bootnumber){replicate(bootnumber, temporal_torus_translation(x, time.var, species.var, abundance.var, FUN))}, time.var, species.var, abundance.var, FUN, bootnumber)
     lowerCI<-do.call("rbind", lapply(out, quantile, li))
     upperCI<-do.call("rbind", lapply(out, quantile, ui))
     nullmean<-do.call("rbind", lapply(out, mean))

@@ -1,16 +1,16 @@
 #' Convert from a longform abundance dataframe to a time by species dataframe.
 #'
-#' @param df A dataframe containing time.var, species and abundance columns
+#' @param df A dataframe containing time.var, species.var and abundance.var columns
 #' @param time.var The name of the time column from df
-#' @param species The name of the species column from df
-#' @param abundance The name of the abundance column from df
+#' @param species.var The name of the species column from df
+#' @param abundance.var The name of the abundance column from df
 #' @return comdat A dataframe of species abundances x time
 #' @export
-transpose_community <- function(df, time.var, species, abundance) {
+transpose_community <- function(df, time.var, species.var, abundance.var) {
     df<-as.data.frame(df)
-    df[species]<-if(is.factor(df[[species]])==TRUE){factor(df[[species]])} else {df[species]}  
-    df<-df[order(df[time.var], df[species]),]
-    comdat<-tapply(df[[abundance]], list(df[[time.var]], as.vector(df[[species]])), sum)
+    df[species.var]<-if(is.factor(df[[species.var]])==TRUE){factor(df[[species.var]])} else {df[species.var]}  
+    df<-df[order(df[time.var], df[species.var]),]
+    comdat<-tapply(df[[abundance.var]], list(df[[time.var]], as.vector(df[[species.var]])), sum)
     comdat[is.na(comdat)]<-0
     comdat<-as.data.frame(comdat)
     return(comdat)
