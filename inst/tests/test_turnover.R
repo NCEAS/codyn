@@ -7,18 +7,15 @@ test_that("turnover loads and returns correct result", {
     library(codyn)
     
     # Load our example data set
-    # data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
     data(knz_001d)
-    #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
     expect_that(names(knz_001d)[4], equals("abundance"))
     
-
     #give new column names
     knz_001d2 <- knz_001d
     names(knz_001d2)=c("sp", "yr", "sub", "abund")
     
     #add a random character and factor column
-    knz_001d2$randcharacter<-"rchar"
+    knz_001d2$randcharacter<-sample(letters, size = nrow(knz_001d2), replace = T)
     knz_001d2$randfactor<-as.factor(knz_001d2$randcharacter)
     
     #take a subset
@@ -38,30 +35,33 @@ test_that("turnover loads and returns correct result", {
     #test that works regardless of whether parameter is specified or just ordered
     myresults<-turnover(df=knz_001d, time.var="year", species.var="species", abundance.var="abundance",  replicate.var="subplot", 
                         metric="total")
-    myresults2<-turnover(df=knz_001d, time.var="year", species.var="species", abundance.var="abundance",  replicate.var="subplot",
+    myresults2<-turnover(df=knz_001d, replicate.var="subplot",
                          metric="total")    
-    expect_that(myresults, is_identical_to(myresults2))  
+    expect_identical(myresults, myresults2)
     
     #test that total is the default metric
-    myresults3<-turnover(df=knz_001d, time.var="year", species="species", abundance="abundance", replicate.var="subplot")
-    expect_that(myresults, is_identical_to(myresults3))  
+    myresults3 <- turnover(df=knz_001d, time.var="year", species="species", abundance="abundance", replicate.var="subplot")
+    expect_identical(myresults, myresults3)
     
     #test that works with different column nmaes
-    myresults4<-turnover(df=knz_001d2, time.var="yr", species="sp", abundance="abund", replicate="sub", metric="total")
-    expect_that(sum(myresults$turnover), equals(sum(myresults4$turnover)))
+    myresults4 <- turnover(df=knz_001d2, time.var="yr", species="sp", abundance="abund", replicate="sub", metric="total")
+    expect_equal(sum(myresults$total), sum(myresults4$total))
     
     #test that works with different column orders if names specified
-    myresults5<-turnover(df=knz_001d2, time.var="yr", species="sp", abundance="abund", replicate="sub", metric="total")
-    expect_that(sum(myresults$turnover), equals(sum(myresults5$turnover)))
+    myresults5 <- turnover(df=knz_001d2, time.var="yr", abundance="abund", replicate="sub", metric="total", species="sp")
+    expect_equal(sum(myresults$turnover), sum(myresults5$turnover))
     
     #test that gives an error if abundance is a character or factor
-    myresults4<-turnover(df=knz_001d2, time.var="yr", species.var="sp", abundance.var="randcharacter", replicate.var="sub", 
-                         metric="total")
+    expect_error(turnover(df=knz_001d2, time.var="yr", species.var="sp", abundance.var="randcharacter", replicate.var="sub"))
+    expect_error(turnover(df=knz_001d2, time.var="yr", species.var="sp", abundance.var="randfactor", replicate.var="sub"))
     
-    ##TODO: Decide how to handle factor and character abundance columns
-    #Test that returns a warning when abundance is a character or factor column
-    #expect_error(turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randcharacter", metric="total"))
-    #expect_error(turnover(knz_001d2, replicate="sub", species="sp", year="yr", abundance="randfactor", metric="total"))
+    # test that stops if more than one record for a species within a year, in one replicate
+    dat4 = rbind(dat1, dat1[nrow(dat1),])
+    expect_error(turnover(dat4, time.var="year", species.var="species", abundance.var="abundance", replicate.var="subplot"))
+    
+    dat5 = rbind(knz_001d, knz_001d[nrow(knz_001d),], knz_001d[1,])
+    expect_error(turnover(dat5, time.var="year", species.var="species", abundance.var="abundance", replicate.var="subplot"))
+    
     
 })
 

@@ -9,16 +9,25 @@
 #' @return output The rate of community change
 #' @export
 rate_change <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
-	if(is.na(replicate.var)==TRUE){
-    output<-get_slope(df, time.var, species.var, abundance.var)}else{
-        df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
-		X <- split(df, df[replicate.var])
-		out <- lapply(X, FUN=get_slope, time.var, species.var, abundance.var)
-		reps <- unique(df[replicate.var])
-		output <- cbind(reps, do.call("rbind", out))
-		names(output)=c(replicate.var, "rate_change")
+    stopifnot(is.numeric(df[[time.var]]))
+    stopifnot(is.numeric(df[[abundance.var]]))
+    if(is.na(replicate.var)) {
+        check_single_onerep(df, time.var, species.var)
+        output <- get_slope(df, time.var, species.var, abundance.var)
+    } else {
+        check_single(df, time.var, species.var, replicate.var)
+        df[replicate.var] <- if(is.factor(df[[replicate.var]])) {
+            factor(df[[replicate.var]])
+        } else {
+            df[replicate.var]
+        }
+        X <- split(df, df[replicate.var])
+        out <- lapply(X, FUN=get_slope, time.var, species.var, abundance.var)
+        reps <- unique(df[replicate.var])
+        output <- cbind(reps, do.call("rbind", out))
+        names(output)=c(replicate.var, "rate_change")
     }
-		return(output)
+    return(output)
 }
 
 
@@ -30,33 +39,35 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
 #
 ############################################################################
 
-
-
-#' A function that returns the slope of community change within one replicate.
+#' Get slope
+#' Returns the slope of community change within one replicate.
 #' @param df data frame to compute the slope of community change for
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
-get_slope = function(df, time.var="time", species.var="species", abundance.var="abundance") {
-		df <- codyn::transpose_community(df, time.var, species.var, abundance.var)
-		DM <- dist(df[-1], method="euclidean", diag = FALSE, upper = FALSE)
+get_slope <- function(df, time.var="time", species.var="species", abundance.var="abundance") {
+    df <- transpose_community(df, time.var, species.var, abundance.var)
+    DM <- dist(df[-1], method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
-
+    
     rownums = row(DM)
     colnums = col(DM)
-
-    get_lag_i = function(i){
-        cbind(lag = i, value = DM[rownums == (colnums + i)])
-    }
-
-    lag_list = lapply(
-        1:(nrow(df)-1),
-        get_lag_i)
-
+    lag_list = lapply(1:(nrow(df)-1), get_lag_i, DM, rownums, colnums)
+    
     results <- data.frame(do.call(rbind, lag_list))
-		lm_coefficents <- lm(value ~ lag, data=results)
-		slope <- data.frame(lm_coefficents[1][[1]])
-		return(slope[2,])
+    lm_coefficents <- lm(value ~ lag, data=results)
+    slope <- data.frame(lm_coefficents[1][[1]])
+    return(slope[2,])
 }
 
+#' Get lagged values from a distance matrix
+#' Get lagged values from distance matrix at value i
+#' @param i the index of the matrix to lag
+#' @param DM the distance matrix from which lagged values are drawn
+#' @param rownums number of rows in the distance matrix
+#' @param colnums number of columns in the distance matrix
+#' @return the lagged values
+get_lag_i <- function(i, DM, rownums, colnums) {
+    cbind(lag = i, value = DM[rownums == (colnums + i)])
+}

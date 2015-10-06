@@ -2,31 +2,45 @@
 % Please edit documentation in R/synchrony.R
 \name{synchrony}
 \alias{synchrony}
-\title{A function to calculate species synchrony over time within multiple replicates}
+\title{Species synchrony}
 \usage{
 synchrony(df, time.var = "year", species.var = "species",
   abundance.var = "abundance", metric = "Loreau", replicate.var = NA)
 }
 \arguments{
-\item{df}{A dataframe containing replicate, time, species and abundance columns}
+\item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
 
-\item{time.var}{The name of the time column from df}
+\item{time.var}{The name of the time column}
 
-\item{species.var}{The name of the species column from df}
+\item{species.var}{The name of the species column}
 
-\item{abundance.var}{The name of the abundance column from df}
+\item{abundance.var}{The name of the abundance column}
 
-\item{metric}{The synchrony metric to return. The default, "Loreau", returns synchrony as calculated by Loreau and de Mazancourt 2008.
-The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014}
+\item{metric}{The synchrony metric to return:
+\itemize{
+ \item{"Loreau": }{The default metric, calculates synchrony following Loreau and de Mazancourt (2008).}
+ \item{"Gross": }{Calculates synchrony following Gross et al. 2014.}
+ \item{"disappearance": }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods.}
+}}
 
-\item{replicate.var}{The name of the replicate column from df. Defaults to NA.}
+\item{replicate.var}{The name of the replicate column}
 }
 \value{
-output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony.
-       If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
+The synchrony function returns a numeric synchrony value unless a replication column is specified in the input dataframe.
+If replication is specified, the function returns a dataframe with the following attributes:
+\itemize{
+ \item{synchrony: }{A numeric column with the synchrony values.}
+ \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in df.}
+}
 }
 \description{
-A function to calculate species synchrony over time within multiple replicates
+Calculates the degree synchrony in species abundance patterns within a community over time.
+Includes the option for two different synchrony metrics. The first, developed by Loreau and de Mazancourt (2008), compares the variance of the aggregated community with the variance of individual components.
+The second, developed by Gross et al. (2014), compares the average correlation of each individual species with the rest of the aggregated community.
+}
+\details{
+The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 }
 \examples{
 data(knz_001d)

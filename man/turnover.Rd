@@ -17,7 +17,7 @@ turnover(df, time.var = "year", species.var = "species",
 
 \item{abundance.var}{The name of the abundance column}
 
-\item{replicate.var}{The name of the replicate column}
+\item{replicate.var}{The name of the optional replicate column}
 
 \item{metric}{The turnover metric to return:
 \itemize{

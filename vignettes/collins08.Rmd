@@ -62,7 +62,7 @@ This function quantifies relative changes in species rank abundances by taking t
 
 ```{r}
 ##reading in data from Konza
-collins08 <- read.csv(system.file("extdata", "collins08.csv", package="codyn"), sep=",", header=TRUE)
+data(collins08)
 
 ##running mean rank shift function 
 dat <- meanrankshift(df=collins08, replicate.var="replicate", time.var="year", species.var="species", abundance.var="abundance")
