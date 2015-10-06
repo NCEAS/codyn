@@ -17,29 +17,24 @@
 #' @export
 synchrony<-function(df, time.var="year", species.var="species", abundance.var="abundance", metric="Loreau", replicate.var=NA) {
   # check to see if there are actual replicates without specifying replicate.var
-  
   if(is.na(replicate.var)==TRUE){
     check_single_onerep(df, time.var, species.var)  
     output <- synch_onerep(df, time.var, species.var, abundance.var, metric)
+    } else {
+      df[replicate.var] <- if(is.factor(df[[replicate.var]])) { 
+        factor(df[[replicate.var]])
+      } else {
+        df[replicate.var]
+      }
+      check_single(df, time.var, species.var, replicate.var)
+      X <- split(df, df[replicate.var])
+      out <- lapply(X, FUN=synch_onerep, time.var, species.var, abundance.var, metric)
+      reps <- unique(df[replicate.var])
+      output <- cbind(reps, do.call("rbind", out))
+      names(output) = c(replicate.var, "synchrony")
+      row.names(output) <- NULL
     }
-    
-  else {
-    
-    df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
-    
-    X <- split(df, df[replicate.var])
-    
-    check_single(df, time.var, species.var, replicate.var)
-    
-    out<-lapply(X, FUN=synch_onerep, time.var, species.var, abundance.var, metric)
-    reps<-unique(df[replicate.var])
-    output<-cbind(reps, do.call("rbind", out))
-    names(output)=c(replicate.var, "synchrony")
-    row.names(output)<-NULL
-    }
-
-  return(output)
-
+    return(output)
 }
 
 ############################################################################
@@ -61,43 +56,39 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
 #' @return output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony. 
 #'        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
 
-synch_onerep<-function(df, time.var, species.var, abundance.var, metric=c("Loreau", "Gross")) {
+synch_onerep <- function(df, time.var, species.var, abundance.var, metric=c("Loreau", "Gross")) {
     metric = match.arg(metric) # for partial argument matching
-    #remove any species that were never present. 
-    
     # check to make sure abundance is numeric data
     if(!is.numeric(df[,abundance.var])) { stop("Abundance variable is not numeric") }
     
+    #remove any species that were never present. 
     df <- subset(df, abundance.var>0)
     #fill in 0s
-    spplist<-(unique(df[species.var]))
-    yearlist<-(unique(df[time.var]))
-    fulllist<-expand.grid(species.var=spplist[[species.var]], time.var=yearlist[[time.var]])
+    spplist <- unique(df[species.var])
+    yearlist <- unique(df[time.var])
+    fulllist <- expand.grid(species.var=spplist[[species.var]], time.var=yearlist[[time.var]])
     # recapture original names
     names(fulllist) = c(species.var, time.var)
     df2 <- merge(df[c(species.var, time.var, abundance.var)], fulllist, all.y = T)
-    df2[is.na(df2)]<-0  
+    df2[is.na(df2)] <- 0  
     
     if(metric=="Loreau"){
-    #calculate community variance
-    XTformula<-as.formula(paste(abundance.var, "~", time.var, sep=""))
-    XT<-aggregate(XTformula, data=df2, sum)
-    #do this within rep
-    varXT<-var(XT[abundance.var])
+      #calculate community variance
+      XTformula <- as.formula(paste(abundance.var, "~", time.var, sep=""))
+      XT <- aggregate(XTformula, data=df2, sum)
+      #do this within rep
+      varXT<-var(XT[abundance.var])
     
-    #calculate species variance
-    sdSppformula <- as.formula(paste(abundance.var, "~", species.var, sep=""))
-    sdSpp <- aggregate(sdSppformula, data=df2, sd)
-    varSpp <- sum((sdSpp[abundance.var])) * sum(sdSpp[abundance.var])
-    
-    #calculate synchrony
-    synchrony <- as.numeric(varXT/varSpp)
-    
-    }
-    
-    else {
+      #calculate species variance
+      sdSppformula <- as.formula(paste(abundance.var, "~", species.var, sep=""))
+      sdSpp <- aggregate(sdSppformula, data=df2, sd)
+      varSpp <- sum((sdSpp[abundance.var])) * sum(sdSpp[abundance.var])
+      
+      #calculate synchrony
+      synchrony <- as.numeric(varXT/varSpp)
+      
+    } else {
       if(metric=="Gross"){
-        
         corout<-as.data.frame(cbind(species.var= as.character(), "sppcor"=as.numeric()))
         
         for (i in 1:nrow(spplist)){
@@ -114,7 +105,6 @@ synch_onerep<-function(df, time.var, species.var, abundance.var, metric=c("Lorea
           subout$sppcor<-as.numeric(as.character(subout$sppcor))    
           corout<-rbind(corout, subout)
         }
-        
         #average correlation for the community
         synchrony <- mean(corout$sppcor)
       }
