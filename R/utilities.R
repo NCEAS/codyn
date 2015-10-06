@@ -31,6 +31,10 @@ check_names <- function(given, data) {
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param replicate The name of the replicate column from df
+#' @example 
+#' data(knz_001d)
+#' df = rbind(knz_001d, knz_001d[nrow(knz_001d),])
+#' check_single(df, time.var = "year", species.var = "species", replicate.var = "subplot")
 
 check_single <- function(df, time.var, species.var, replicate.var){
   X <- split(df, df[replicate.var]) 
