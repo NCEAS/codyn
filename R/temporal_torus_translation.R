@@ -1,5 +1,6 @@
-#' A function to calculate a vector of null test statistics using a temporal modification of the Torus translation
-#'
+#' @title Temporal modification of the Torus translation
+#' @description A function to calculate a vector of null test statistics using a temporal modification of the Torus translation
+#' 
 #' @param df A dataframe containing time, species and abundance columns
 #' @param species.var The name of the species column from df
 #' @param time.var The name of the time column from df
