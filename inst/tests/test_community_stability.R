@@ -46,7 +46,7 @@ test_that("community_stability loads and returns correct result", {
   
   #test the community_stability function
   #test that works on a single replicate
-  myresults3<-community_stability(dat1, replicate=NA, time.var="year", abundance.var="abundance")
+  myresults3<-community_stability(dat1, replicate.var=NA, time.var="year", abundance.var="abundance")
   expect_that(myresults3, equals(myresults2))
   
   #test that will still run if there are missing levels in a factor "replicate"; deleting levels that are NaN
