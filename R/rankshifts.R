@@ -1,14 +1,18 @@
-#' Function for calculating mean rank shifts
-#'
-#' This is a function that calculates mean rank shifts
+#' @title Mean Rank Shifts
+#' @description Quantify shifts in species rank order
+#' 
+#' @details Mean rank shift (MRS) quantifies relative changes in species rank abundances by taking the sum difference of species ranks of consecutive pairs of years.
+#' MRS is an indicator of shifts in relative abundance over time. 
+#' Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark. “Rank Clocks and Plant Community Dynamics.” Ecology 89, no. 12 (2008): 3534–41.
 #' 
 #' @param df dataframe of Community dataset. Must be in 'long' format.
-#' @param replicate.var The replication variable
 #' @param time.var The time variable
 #' @param species.var The species variable
 #' @param abundance.var The abundance variable
+#' @param replicate.var The replication variable
 #' @return a dataframe, showing years compared
 #' @export
+
 meanrankshift <- function(df, time.var = "year", species.var = "species",
                     abundance.var = "abundance", replicate.var=as.character(NA)){
   if(is.na(replicate.var)==TRUE){
