@@ -2,7 +2,7 @@
 #' @description Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schluter 1984).
 #' 
 #' Includes a null modeling option to test if the variance ratio significantly differs from 1. The null community is created by randomly selecting different starting points for each species' time series, which generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Hallett et al. 2014). This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of variance ratios. If the dataframe includes multiple replicates, the variance ratios for the actual and null communities are averaged within each iteration unless specified otherwise.
-#' @param df A dataframe containing time.var, species.var and abundance.var columns and an optional replicate.var column
+#' @param df A dataframe containing time, species and abundances columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
@@ -19,9 +19,12 @@
 #'  \item{nullVRmean: }{Number, the average null variance ratio}
 #'  \item{replicate.var: }{Optionally, shares the same column name and type as the replicate.var column in df}
 #' }
-#' @examples
-#' 
-#'  mydat <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+#' @details
+#' The input dataframe needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+#' If multiple replicates are included in the dataframe, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+#' Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.
+#' @examples 
+#'  mydat <- data(knz_001d)
 #'  
 #'  # Calculate the variance ratio and CIs averaged within replicates
 #'  # Here the null model is repeated once, for final use it is recommended to set bootnumber to 10,000 times
@@ -34,7 +37,7 @@
 #'  myoutput_withinreplicates <-varianceratio(knz_001d, time.var="year", species.var="species", 
 #'  abundance.var="abundance", bootnumber=1, replicate="subplot", average.replicates=FALSE)
 #'  @references
-#'  Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6: 1693–1700.
+#'  Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6: 1693–1700. doi: 10.1890/13-0895.1
 #'  
 #'  Schluter, Dolph. (1984) “A Variance Test for Detecting Species Associations, with Some Example Applications.” Ecology 65, no. 3: 998–1005. doi:10.2307/1938071.
 

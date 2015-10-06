@@ -1,13 +1,18 @@
-#' A function to calculate species turnover between years
+#' @title Species turnover 
+#'@description Computes species turnover between time periods as the proportion of species either gained or lost relative to the total number of species observed across both time periods.
+#'Includes an option to compute turnover as just the proportion of species gained (i.e., "appearances") or lost (i.e., "disappearances").
 #'
-#' @param df A dataframe containing year,species and abundance columns
-#' @param time.var The name of the year column from df
-#' @param species.var The name of the species column from df
-#' @param abundance.var The name of the abundance column from df
-#' @param replicate.var The name of the replicate column from df
-#' @param metric The turnover metric to return; the default, total, returns summed appearances and disappearances relative to total species richness across both years
-#'          appearance returns the number of appearances in the second year relative to total species richness across both years
-#'          disappearance returns the number of disappearances in the second year relative to the total species richness across both years
+#' @param df A dataframe containing time.var, species.var and abundance.var columns and an optional replicate.var column
+#' @param time.var The name of the time column 
+#' @param species.var The name of the species column 
+#' @param abundance.var The name of the abundance column 
+#' @param replicate.var The name of the replicate column 
+#' @param metric The turnover metric to return:
+#' \itemize{
+#'  \item{"total": }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods}
+#'  \item{"appearance": }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods}
+#'  \item{"disappearance: }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods}
+#' }
 #' @return output A dataframe containing the specificed turnover metric and year
 #' @export
 #turnover<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance", metric="total") {
