@@ -1,29 +1,46 @@
 #' A function to calculate species synchrony over time within multiple replicates
 #'
 #' @param df A dataframe containing replicate, time, species and abundance columns
-#' @param replicate.var The name of the replicate column from df
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @param metric The synchrony metric to return. The default, "Loreau", returns synchrony as calculated by Loreau and de Mazancourt 2008.
 #'        The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014
+#' @param replicate.var The name of the replicate column from df. Defaults to NA.
 #' @return output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony. 
 #'        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
+#' @examples 
+#' data(knz_001d)
+#' synchrony(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
+#' synchrony(knz_001d, replicate.var = "subplot") # across all subplots
+#' synchrony(knz_001d, replicate.var = "subplot", metric="Gross") # With Gross et al. 2014 metric.
 #' @export
 synchrony<-function(df, time.var="year", species.var="species", abundance.var="abundance", metric="Loreau", replicate.var=NA) {
   # check to see if there are actual replicates without specifying replicate.var
   
   if(is.na(replicate.var)==TRUE){
-      if(max(table(df[,time.var], df[,species.var]))>1) warning("Data appear to span multiple replicates but not replicate.var specified")
+      if(max(table(df[,time.var], df[,species.var]))>1) warning("Either data span multiple replicates with no replicate.var specified or multiple records within years for some species")
       output<-synch_onerep(df, species.var, time.var, abundance.var, metric)
     }
     
   else {
     
-    df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} 
-      else {df[replicate.var]}
+    df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
+    
+    
     
     X <- split(df, df[replicate.var])
+    
+    checksingle <- lapply(X, FUN = function(xx) apply(table(xx[[species.var]], xx[[time.var]]), 2, function(x) any(x>1)))
+    reptest <- unlist(lapply(checksingle, any))
+    yrtest <- lapply(checksingle, which)
+    
+    if(any(unlist(checksingle))){ 
+        stop(paste("In replicate(s)", names(reptest)[which(reptest)], "there are species with multiple records at time point(s)", unlist(lapply(yrtest, names))))  
+             }
+    
+    if(max(table(df[,time.var], df[,species.var]))>1) 
+    
     out<-lapply(X, FUN=synch_onerep, time.var, species.var, abundance.var, metric)
     reps<-unique(df[replicate.var])
     output<-cbind(reps, do.call("rbind", out))
@@ -42,8 +59,6 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
 # should not use them.
 #
 ############################################################################
-
-
 
 #' A function to calculate species synchrony over time within one replicate
 #'
@@ -69,7 +84,6 @@ synch_onerep<-function(df, time.var, species.var, abundance.var, metric=c("Lorea
     df2 <- merge(df[c(species.var, time.var, abundance.var)], fulllist, all.y = T)
     df2[is.na(df2)]<-0  
     
-  
     if(metric=="Loreau"){
     #calculate community variance
     XTformula<-as.formula(paste(abundance.var, "~", time.var, sep=""))
