@@ -9,9 +9,9 @@
 #' @param replicate.var The name of the optional replicate column 
 #' @param metric The turnover metric to return:
 #' \itemize{
-#'  \item{"total": }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods.}
-#'  \item{"appearance": }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods.}
-#'  \item{"disappearance": }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods.}
+#'  \item{total: }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods.}
+#'  \item{appearance: }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods.}
+#'  \item{disappearance: }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods.}
 #' }
 #' @return The turnover function returns a dataframe with the following attributes:
 #' \itemize{
@@ -27,20 +27,20 @@
 #' @examples 
 #'  data(knz_001d)
 #'
-#'  # Calculate total turnover within replicates
+#'  # Calculate relative total turnover within replicates
 #'  total.res <- turnover(df=knz_001d,  replicate.var="subplot")
 #'  
-#'  Calculate species appearances within replicates
+#'  # Calculate relative species appearances within replicates
 #'  appear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="appearance")
 #'  
-#'  Calculate species disappearances within replicates
+#'  # Calculate relative species disappearances within replicates
 #'  disappear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="disappearance")
 #'  
 #' @export
 turnover <- function(df, time.var="year", species.var="species", abundance.var="abundance", replicate.var=as.character(NA), metric="total") {
   if(is.na(replicate.var)){
     check_single_onerep(df, time.var, species.var)  
-    output <- turnover_allyears(df, species.var, time.var, abundance.var)
+    output <- turnover_allyears(df, time.var, species.var, abundance.var)
     } else {
       df[replicate.var]<-if(is.factor(df[[replicate.var]])){factor(df[[replicate.var]])} else {df[replicate.var] }
       check_single(df, time.var, species.var, replicate.var)
@@ -71,8 +71,8 @@ turnover <- function(df, time.var="year", species.var="species", abundance.var="
 #' @param abundance The name of the abundance column from df
 #' @param metric The turnover metric to return; the default, total, returns summed appearances and disappearances relative to total species richness across both years
 #' \itemize{
-#'  \item{"appearance": }{ returns the number of appearances in the second year relative to total species richness across both years }
-#'   \item{"disappearance": }{ returns the number of disappearances in the second year relative to the total species richness across both years }
+#'  \item{appearance: }{ returns the number of appearances in the second year relative to total species richness across both years }
+#'   \item{disappearance: }{ returns the number of disappearances in the second year relative to the total species richness across both years }
 #'   }
 #' @return output A dataframe containing the specificed turnover metric and year
 turnover_allyears<-function(df, time.var, species.var, abundance.var, metric="total"){
@@ -103,8 +103,8 @@ turnover_allyears<-function(df, time.var, species.var, abundance.var, metric="to
 #' @param species.var The name of the species column in d1 and d2
 #' @param metric The turnover metric to return; the default, total, returns summed appearances and disappearances relative to total species richness across both years
 #' \itemize{
-#'  \item{"appearance": }{ returns the number of appearances in the second year relative to total species richness across both years }
-#'  \item{"disappearance": }{ returns the number of disappearances in the second year relative to the total species richness across both years }
+#'  \item{appearance: }{ returns the number of appearances in the second year relative to total species richness across both years }
+#'  \item{disappearance: }{ returns the number of disappearances in the second year relative to the total species richness across both years }
 #'  }
 #' @return output The specificed turnover metric
 getturnover <- function(d1, d2, species.var = "species", metric="total"){
