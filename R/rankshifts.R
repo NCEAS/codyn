@@ -1,28 +1,48 @@
 #' @title Mean Rank Shifts
-#' @description Quantify shifts in species rank order
-#' 
-#' @details Mean rank shift (MRS) quantifies relative changes in species rank abundances by taking the sum difference of species ranks of consecutive pairs of years.
-#' MRS is an indicator of shifts in relative abundance over time. 
-#' 
-#' @param df dataframe of Community dataset. Must be in 'long' format.
-#' @param time.var The time variable
-#' @param species.var The species variable
-#' @param abundance.var The abundance variable
-#' @param replicate.var The replication variable
-#' @return a dataframe, showing years compared
+#' @description A measure of the relative change in species rank abundances, which indicates shifts in relative abundances over time (Collins et al. 2008).  
+#' Mean rank shifts are calculated as the average difference in species' ranks between consecutive time periods, among species that are present across the entire time series.
+#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @param time.var The name of the time column 
+#' @param species.var The name of the species column 
+#' @param abundance.var The name of the abundance column 
+#' @param replicate.var The name of the optional replicate column
+#' @return The meanrankshift function returns a data frame with the following attributes:
+#' \itemize{
+#'  \item{time.var_pair: }{A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".}
+#'  \item{MRS: }{A numeric column with the mean rank shift values.}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
+#' }
+#' @details
+#' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+#' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+#' @references  Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark.  (2008) “Rank clocks and plant community dynamics.” Ecology 89, no. 12: 3534–41.
+#' @examples 
+#'  # Calculate mean rank shifts within replicates
+#'  mydat <- data(knz_001d)
+#'  
+#'  myoutput <- meanrankshift(mydat,  time.var = "year", species.var = "species", 
+#'  abundance.var = "abundance", replicate.var = "subplot")
+#'  
+#'  # Calculate mean rank shifts for a data frame with no replication
+#'  
+#'  mydat_singlerep <- subset(mydat, subplot=="A_1")
+#'  myoutput_singlerep <- meanrankshift(mydat_singlerep, time.var = "year", 
+#'  species.var = "species",abundance.var = "abundance")
 #' @export
-#' 
-#' @references  Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark. “Rank Clocks and Plant Community Dynamics.” Ecology 89, no. 12 (2008): 3534–41.
-
 meanrankshift <- function(df, time.var = "year", species.var = "species",
-                    abundance.var = "abundance", replicate.var=as.character(NA)){
-  if(is.na(replicate.var)==TRUE){
-    output<-meanrank(df, time.var, species.var, abundance.var)}else{
-        df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
-        X<-split(df, df[replicate.var])
-        out<-(lapply(X, FUN=meanrank, time.var, species.var, abundance.var))
-        ID<-unique(names(out))
-        out<-mapply(function(x, y) "[<-"(x, replicate.var, value = y) ,
+                    abundance.var = "abundance", replicate.var = as.character(NA)) {
+  if(is.na(replicate.var)==TRUE) {
+    output<-meanrank(df, time.var, species.var, abundance.var)
+    } else {
+        df[replicate.var] <- if(is.factor(df[[replicate.var]])==TRUE) {
+          factor(df[[replicate.var]])
+          } else {
+            df[replicate.var]
+          }
+        X <- split(df, df[replicate.var])
+        out <- (lapply(X, FUN=meanrank, time.var, species.var, abundance.var))
+        ID <- unique(names(out))
+        out <- mapply(function(x, y) "[<-"(x, replicate.var, value = y) ,
                     out, ID, SIMPLIFY = FALSE)
         output<-do.call("rbind", out)
         row.names(output)<-NULL
@@ -52,7 +72,7 @@ return(output)
 #' @param abundance.var The abundance variable
 #' @return a dataframe, showing years compared
 meanrank <- function(comm_data, time.var = "year",
-                     species.var = "species", abundance.var = "abundance"){
+                     species.var = "species", abundance.var = "abundance") {
     ## split data by year
     yearlist <- split(comm_data, comm_data[[time.var]])
     ## Compare consecutive pairs of years
@@ -87,13 +107,15 @@ meanrank <- function(comm_data, time.var = "year",
 #' @param df1 A dataframe
 #' @param df2 A dataframe
 #' @param dataname The name of the column on which the two datasets will be joined and intersected
-getintersect <- function(df1, df2, dataname = "species"){
+getintersect <- function(df1, df2, dataname = "species") {
   commspp <- intersect(df1[[dataname]], df2[[dataname]])
+  
   ## select out the dataname columsn from df1 and df2
   df1dataname<-data.frame(df1[[dataname]])
   names(df1dataname)=dataname
   df2dataname<-data.frame(df2[[dataname]])
   names(df2dataname)=dataname
+  
   ## rename df1 and df2 columns
   df1[[dataname]]<-NULL
   df2[[dataname]]<-NULL

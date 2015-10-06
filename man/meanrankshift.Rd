@@ -8,27 +8,46 @@ meanrankshift(df, time.var = "year", species.var = "species",
   abundance.var = "abundance", replicate.var = as.character(NA))
 }
 \arguments{
-\item{df}{dataframe of Community dataset. Must be in 'long' format.}
+\item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
 
-\item{time.var}{The time variable}
+\item{time.var}{The name of the time column}
 
-\item{species.var}{The species variable}
+\item{species.var}{The name of the species column}
 
-\item{abundance.var}{The abundance variable}
+\item{abundance.var}{The name of the abundance column}
 
-\item{replicate.var}{The replication variable}
+\item{replicate.var}{The name of the optional replicate column}
 }
 \value{
-a dataframe, showing years compared
+The meanrankshift function returns a data frame with the following attributes:
+\itemize{
+ \item{time.var_pair: }{A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".}
+ \item{MRS: }{A numeric column with the mean rank shift values.}
+ \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
+}
 }
 \description{
-Quantify shifts in species rank order
+A measure of the relative change in species rank abundances, which indicates shifts in relative abundances over time (Collins et al. 2008).
+Mean rank shifts are calculated as the average difference in species' ranks between consecutive time periods, among species that are present across the entire time series.
 }
 \details{
-Mean rank shift (MRS) quantifies relative changes in species rank abundances by taking the sum difference of species ranks of consecutive pairs of years.
-MRS is an indicator of shifts in relative abundance over time.
+The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+}
+\examples{
+# Calculate mean rank shifts within replicates
+ mydat <- data(knz_001d)
+
+ myoutput <- meanrankshift(mydat,  time.var = "year", species.var = "species",
+ abundance.var = "abundance", replicate.var = "subplot")
+
+ # Calculate mean rank shifts for a data frame with no replication
+
+ mydat_singlerep <- subset(mydat, subplot=="A_1")
+ myoutput_singlerep <- meanrankshift(mydat_singlerep, time.var = "year",
+ species.var = "species",abundance.var = "abundance")
 }
 \references{
-Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark. “Rank Clocks and Plant Community Dynamics.” Ecology 89, no. 12 (2008): 3534–41.
+Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark.  (2008) “Rank clocks and plant community dynamics.” Ecology 89, no. 12: 3534–41.
 }
 
