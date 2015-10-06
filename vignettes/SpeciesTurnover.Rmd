@@ -30,12 +30,12 @@ library(knitr)
 ```
 
 # Example dataset
-`codyn` utilizes a subset of the data presented by Collins et al. [-@Collins2008]. The `KNZ_Collins` dataset includes plant composition from the Konza Prairie Long-term Ecological Research site in Manhattan, KS. It spans 18 years and includes data collected from two locations, one that is annually burned and one that is unburned. 
+`codyn` utilizes a subset of the data presented by Collins et al. [-@Collins2008]. The `collins08` dataset includes plant composition from the Konza Prairie Long-term Ecological Research site in Manhattan, KS. It spans 18 years and includes data collected from two locations, one that is annually burned and one that is unburned. 
 
 ```{r echo=FALSE}
-KNZ_Collins<-read.csv(system.file("extdata", "collins08.csv", package="codyn"), sep=",", header=TRUE)
-names(KNZ_Collins)[1]="location"
-kable(head(KNZ_Collins))
+data(collins08)
+names(collins08)[1]="location"
+kable(head(collins08))
 ```
 
 # Species turnover
@@ -51,7 +51,8 @@ The metric was introduced by MacArthur and Wilson (1963) and modified by Diamond
 `turnover` requires a dataframe with columns for species, year and abundance, and includes an argument to specify a column for spatial replicates.
 ```{r results='asis'}
 library(codyn)
-KNZ_turnover<-turnover(df=KNZ_Collins, replicate.var="location", species.var="species", time.var="year", abundance.var="abundance")
+data(collins08)
+KNZ_turnover<-turnover(df=collins08, replicate.var="replicate", species.var="species", time.var="year", abundance.var="abundance")
 ```
 ```{r echo=FALSE}
     kable(head(KNZ_turnover))
@@ -59,7 +60,7 @@ KNZ_turnover<-turnover(df=KNZ_Collins, replicate.var="location", species.var="sp
 
 If there are no replicates in the dataset, specify `replicate=NA`. 
 ```{r results='asis'}
-KNZ_burned<-subset(KNZ_Collins, location=="annually burned")
+KNZ_burned<-subset(collins08, replicate=="annually burned")
 KNZ_burned_turnover<-turnover(df=KNZ_burned, replicate.var=as.character(NA), 
                               species.var="species", time.var="year", abundance.var="abundance")
 ```
@@ -68,10 +69,10 @@ kable(head(KNZ_burned_turnover))
 ```
 
 
-Note that if `replicate=NA` but the dataset in fact includes replicates, `turnover` will calculate across all species present in a given year (i.e., it will return a site-level measure of turnover). For example, specifying `replicate=NA` while using the entire `KNZ_Collins` dataset yields total turnover across the unburned and burned locations combined.
+Note that if `replicate=NA` but the dataset in fact includes replicates, `turnover` will calculate across all species present in a given year (i.e., it will return a site-level measure of turnover). For example, specifying `replicate=NA` while using the entire `collins08` dataset yields total turnover across the unburned and burned locations combined.
 
 ```{r results='asis'}
-KNZ_turnover_agg<-turnover(df=KNZ_Collins, replicate.var=as.character(NA), species.var="species", time.var="year", abundance.var="abundance")
+KNZ_turnover_agg<-turnover(df=collins08, replicate.var=as.character(NA), species.var="species", time.var="year", abundance.var="abundance")
 ```
 ```{r echo=FALSE}
     kable(head(KNZ_turnover_agg))
@@ -83,13 +84,13 @@ Total turnover incorporates both species appearances and disappearances, but som
 
 Specifying `metric="appearance"` will return the proportion of species that appeared relative to the total number of species observed in both timepoints. As before, spatial replicates can be specified with the `replicate` argument; setting `replicate=NA` will calculate across the full dataset.
 ```{r results='asis'}
-KNZ_appearance<-turnover(df=KNZ_Collins, replicate.var="location", species.var="species", time.var="year", abundance.var="abundance", metric="appearance")
+KNZ_appearance<-turnover(df=collins08, replicate.var="replicate", species.var="species", time.var="year", abundance.var="abundance", metric="appearance")
 ```
 
 
 Similarly, specifying `metric="disappearance"` will return the proportion of species that disappeared relative to the total number of species observed in both timepoints. 
 ```{r results='asis'}
-KNZ_disappearance<-turnover(df=KNZ_Collins, replicate.var="location", species.var="species", time.var="year", abundance="abundance", metric="disappearance")
+KNZ_disappearance<-turnover(df=collins08, replicate.var="replicate", species.var="species", time.var="year", abundance="abundance", metric="disappearance")
 ```
 
 ## Turnover at Konza
@@ -97,15 +98,15 @@ Total turnover indicates that in general there was greater fluctuations in the s
 
 ```{r echo=FALSE}
 library(ggplot2)
-ggplot(KNZ_turnover, aes(x=year, y=total, color=location))+geom_line()+ theme_bw() #+ theme(legend.position="none")
+ggplot(KNZ_turnover, aes(x=year, y=total, color=replicate))+geom_line()+ theme_bw() #+ theme(legend.position="none")
 ```
 
 Parsing total turnover by appearances and disappearances indicates that in there were generally more appearances in the unburned than burned location. In addition, the strong divergence in total turnover between locations in 1995 was because the unburned location lost many species that year while the burned locations lost none.
 
 
 ```{r echo=FALSE}
-ggplot(KNZ_appearance, aes(x=year, y=appearance, color=location))+geom_line()+ theme_bw() + theme(legend.position="none")
-ggplot(KNZ_disappearance, aes(x=year, y=disappearance, color=location))+geom_line()+ theme_bw() + theme(legend.position="none")
+ggplot(KNZ_appearance, aes(x=year, y=appearance, color=replicate))+geom_line()+ theme_bw() + theme(legend.position="none")
+ggplot(KNZ_disappearance, aes(x=year, y=disappearance, color=replicate))+geom_line()+ theme_bw() + theme(legend.position="none")
 ```
 
 
@@ -122,7 +123,7 @@ where $N$ is the number of species in common in both years, $t$ is the year, $R_
 In `codyn`, this metric is calculated with `meanrankshift` and requires a dataset with a year, species and abundance column; it also include an option replicate column to calculate the metric within multiple spatial replicates. 
 
 ```{r}
-KNZ_rankshift <- meanrankshift(df=KNZ_Collins, replicate.var="location", time.var="year", species.var="species", abundance.var="abundance")
+KNZ_rankshift <- meanrankshift(df=collins08, replicate.var="replicate", time.var="year", species.var="species", abundance.var="abundance")
 #Select the final year from the returned year_pair
 KNZ_rankshift$year<-as.numeric(substr(KNZ_rankshift$year_pair, 6,9))
 ```
@@ -132,9 +133,9 @@ kable(head(KNZ_rankshift))
 
 
 
-If`replicate=NA` but the dataset in fact includes replicates, `meanrankshifts` will be calculated using all species present in the datset. For KNZ_Collins, this would return meanrankshifts for the burned and unburned areas combined.
+If`replicate=NA` but the dataset in fact includes replicates, `meanrankshifts` will be calculated using all species present in the datset. For collins08, this would return meanrankshifts for the burned and unburned areas combined.
 ```{r}
-KNZ_rankshift_agg <- meanrankshift(df=KNZ_Collins, replicate.var=as.character(NA), time.var="year", species.var="species", abundance.var="abundance")
+KNZ_rankshift_agg <- meanrankshift(df=collins08, replicate.var=as.character(NA), time.var="year", species.var="species", abundance.var="abundance")
 #Select the final year from the returned year_pair
 KNZ_rankshift$year<-as.numeric(substr(KNZ_rankshift$year_pair, 6,9))
 ```
@@ -143,7 +144,7 @@ KNZ_rankshift$year<-as.numeric(substr(KNZ_rankshift$year_pair, 6,9))
 Calculating mean rank shifts highlights the stability of communities diverged at Konza around 1992, with fewer rank shifts between species in the burned relative to the unburned area. 
 ```{r}
 ##plotting
-ggplot(KNZ_rankshift, aes(year, MRS, color=location)) + geom_line() + theme_bw()+ theme(legend.position="none")
+ggplot(KNZ_rankshift, aes(year, MRS, color=replicate)) + geom_line() + theme_bw()+ theme(legend.position="none")
 ```
 
 

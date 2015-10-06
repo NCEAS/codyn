@@ -31,7 +31,8 @@ library(dplyr)
 To illustrate each function, we use a dataset of plant composition from the Konza Prairie Long-term Ecological Research site in Manhattan, KS. The KNZ dataset spans 24 years and includes 20 replicate subplots.
 
 ```{r results='asis'}
-KNZ <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+data(knz_001d)
+KNZ <- knz_001d
 kable(head(KNZ))
 ```
 
