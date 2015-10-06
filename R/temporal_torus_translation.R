@@ -8,7 +8,8 @@
 #' @param FUN A function to calculate on the null community
 #' @return a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
 #' @export
-temporal_torus_translation<-function(df, time.var, species.var,  abundance.var, FUN){
+temporal_torus_translation <- function(df, time.var="year", species.var="species",  abundance.var="abundance", FUN){
+  if(!is.numeric(df[,abundance.var])) { stop("Abundance variable is not numeric") }
   out<-FUN(genRand(transpose_community(df, time.var,  species.var, abundance.var)))
   bootout<-unlist(out)
   return(bootout)
