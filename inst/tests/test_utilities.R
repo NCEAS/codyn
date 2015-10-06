@@ -7,9 +7,7 @@ test_that("utilities loads and returns correct result", {
     library(codyn)
 
     # Load our example data set
-    # data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
     data(knz_001d)
-    #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
     expect_that(names(knz_001d)[4], equals("abundance"))
 
     #take a subset
@@ -40,4 +38,18 @@ test_that("Name checking works", {
   expect_error(check_names(given = c("species", "year", "subplot", "DDD"),
                            data = knz_001d),
                "data does not have name .*")
+})
+
+test_that("Single-record checks for species work", {
+  data(knz_001d)
+ 
+  expect_null(check_single(knz_001d, time.var = "year", species.var = "species", replicate.var = "subplot"))
+  df = rbind(knz_001d, knz_001d[nrow(knz_001d),])
+  expect_error(check_single(df, time.var = "year", species.var = "species", replicate.var = "subplot"))
+
+  df = subset(knz_001d, subplot == "A_1")
+  expect_null(check_single_onerep(df, time.var = "year", species.var = "species"))
+  df = subset(knz_001d, subplot == "A_1" | subplot == "A_2")
+  expect_warning(check_single_onerep(df, time.var = "year", species.var = "species"))
+                            
 })
