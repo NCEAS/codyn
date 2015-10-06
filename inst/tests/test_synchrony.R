@@ -10,10 +10,6 @@ test_that("synchrony loads and returns correct result", {
     data(knz_001d)
     expect_that(names(knz_001d)[4], equals("abundance"))
     
-    # TODO: Test the synchrony function
-    
-    # TODO: Test the synch_onerep function
-    
     # From community_stability
 
     # make new data frame with different column names
@@ -56,32 +52,36 @@ test_that("synchrony loads and returns correct result", {
     dat4 = rbind(dat1, dat1[nrow(dat1),])
     expect_warning(synchrony(dat4, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA))
     
-    dat5 = rbind(knz_001d, knz_001d[nrow(knz_001d),])
+    dat5 = rbind(knz_001d, knz_001d[nrow(knz_001d),], knz_001d[1,])
     
     expect_error(synchrony(dat5, replicate.var="subplot"))
     
-    
     #test that will still run if there are missing levels in a factor "replicate"; deleting levels that are NaN
-    myresults4<-synchrony(dat1, replicate.var="subplot", time.var="year", abundance.var="abundance")
+    myresults4<-synchrony(dat1, time.var="year", species.var = "species", abundance.var="abundance", replicate.var= "subplot")
+    
     #this will give a warning because replicate is a factor without all values present in dat1 - the warning is a good thing
     myresults5<-as.numeric(myresults4[2])
     expect_that(myresults5, equals(myresults3)) 
     
     #test that works whether replicate is a character or factor
-    myresults6<-community_stability(dat3, replicate="subplot", time.var="year", abundance.var="abundance")
+    myresults6<-synchrony(dat3, replicate.var="subplot", species.var = "species", time.var="year", abundance.var="abundance")
     expect_that((myresults6[1,2]), equals(myresults3))  
     
     #test that works with multiple replicates
-    myresults7<-community_stability(knz_001d, replicate="subplot", time.var="year", abundance.var="abundance")
+    myresults7<-synchrony(knz_001d, replicate.var="subplot", time.var="year", abundance.var="abundance")
     expect_that(myresults6[1,2], equals(myresults7[1,2]))  
     
     #test that works with different column names
-    myresults8<-community_stability(knz_001d2, replicate="sub", time.var="yr", abundance.var="abund")
+    myresults8<-synchrony(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="abund", species.var = "sp")
+    
     expect_that(myresults7[1,2], equals(myresults8[1,2]))
     
+    # test that if species name is not specified, will cause error
+    expect_error(synchrony(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="abund"))
+    
     #test that gives error when abundance column is a character or factor
-    expect_error(community_stability(knz_001d2, replicate="sub", time.var="yr", abundance.var="randcharacter"))
-    expect_error(community_stability(knz_001d2, replicate="sub", time.var="yr", abundance.var="randfactor"))
+    expect_error(synchrony(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randcharacter"))
+    expect_error(synchrony(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randfactor"))
     
     
     

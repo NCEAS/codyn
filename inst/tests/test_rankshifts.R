@@ -7,7 +7,8 @@ test_that("rankshifts loads and returns correct result", {
     library(codyn)
 
     # Load our example data set
-    knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+    data(knz_001d)
+    #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
     expect_that(names(knz_001d)[4], equals("abundance"))
 
     # Basic test if mean rank produces data frame with right structure and values
