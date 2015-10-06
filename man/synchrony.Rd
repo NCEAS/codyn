@@ -19,7 +19,7 @@ synchrony(df, time.var = "year", species.var = "species",
 \item{metric}{The synchrony metric to return. The default, "Loreau", returns synchrony as calculated by Loreau and de Mazancourt 2008.
 The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014}
 
-\item{replicate.var}{The name of the replicate column from df}
+\item{replicate.var}{The name of the replicate column from df. Defaults to NA.}
 }
 \value{
 output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony.
@@ -27,5 +27,11 @@ output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 
 }
 \description{
 A function to calculate species synchrony over time within multiple replicates
+}
+\examples{
+data(knz_001d)
+synchrony(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
+synchrony(knz_001d, replicate.var = "subplot") # across all subplots
+synchrony(knz_001d, replicate.var = "subplot", metric="Gross") # With Gross et al. 2014 metric.
 }
 

@@ -11,11 +11,28 @@
 #' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
 #' @param replicate.var The name of the optional replicate column 
 #' @param average.replicates If true returns the variance ratio and CIs averaged across replicates; if false returns the variance ratio and CI for each replicate
-#' @return 'varianceratio' returns a dataframe.
+#' @return The varianceratio function returns a dataframe with the following attributes:
+#' \itemize{
+#'  \item{VR: }{Number, the actual variance ratio}
+#'  \item{nullVRCIlow: }{Number, the lowest confidence interval}
+#'  \item{nullVRCIhigh: }{Number, the highest confidence interval}
+#'  \item{nullVRmean: }{Number, the average null variance ratio}
+#'  \item{replicate.var: }{Optionally, shares the same column name and type as the replicate.var column in df}
+#' }
+#' @examples
 #' 
-#' The dataframe has the following attributes:
-#' 
-#' A dataframe containing the actual variance ratio (VR), the lowest CI (nullVRCIlow), the highest CI (nullVRCIhigh), the mean null variance ratio (nullVRmean), and the replicate column if average.replicates=FALSE
+#'  mydat <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+#'  
+#'  # Calculate the variance ratio and CIs averaged within replicates
+#'  # Here the null model is repeated once, for final use it is recommended to set bootnumber to 10,000 times
+#'  
+#'  myoutput_averagedreplicates <-varianceratio(knz_001d, time.var="year", species.var="species", 
+#'  abundance.var="abundance",  bootnumber=1, replicate="subplot")
+#'  
+#'  #Calculate the variance ratio and CIs for each replicate
+#'  
+#'  myoutput_withinreplicates <-varianceratio(knz_001d, time.var="year", species.var="species", 
+#'  abundance.var="abundance",  bootnumber=1, replicate="subplot", average.replicates=FALSE)
 
 #' @export
 varianceratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,

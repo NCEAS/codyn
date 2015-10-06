@@ -28,15 +28,32 @@ varianceratio(df, time.var = "year", species.var = "species",
 \item{average.replicates}{If true returns the variance ratio and CIs averaged across replicates; if false returns the variance ratio and CI for each replicate}
 }
 \value{
-'varianceratio' returns a dataframe.
-
-The dataframe has the following attributes:
-
-A dataframe containing the actual variance ratio (VR), the lowest CI (nullVRCIlow), the highest CI (nullVRCIhigh), the mean null variance ratio (nullVRmean), and the replicate column if average.replicates=FALSE
+The varianceratio function returns a dataframe with the following attributes:
+\itemize{
+ \item{VR: }{Number, the actual variance ratio}
+ \item{nullVRCIlow: }{Number, the lowest confidence interval}
+ \item{nullVRCIhigh: }{Number, the highest confidence interval}
+ \item{nullVRmean: }{Number, the average null variance ratio}
+ \item{replicate.var: }{Optionally, shares the same column name and type as the replicate.var column in df}
+}
 }
 \description{
 Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schluter 1984).
 
 Includes a null modeling option to test if the variance ratio significantly differs from 1. The null community is created by randomly selecting different starting points for each species' time series, which generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Hallett et al. 2014). This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of variance ratios. If the dataframe includes multiple replicates, the variance ratios for the actual and null communities are averaged within each iteration unless specified otherwise.
+}
+\examples{
+mydat <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+
+ # Calculate the variance ratio and CIs averaged within replicates
+ # Here the null model is repeated once, for final use it is recommended to set bootnumber to 10,000 times
+
+ myoutput_averagedreplicates <-varianceratio(knz_001d, time.var="year", species.var="species",
+ abundance.var="abundance",  bootnumber=1, replicate="subplot")
+
+ #Calculate the variance ratio and CIs for each replicate
+
+ myoutput_withinreplicates <-varianceratio(knz_001d, time.var="year", species.var="species",
+ abundance.var="abundance",  bootnumber=1, replicate="subplot", average.replicates=FALSE)
 }
 
