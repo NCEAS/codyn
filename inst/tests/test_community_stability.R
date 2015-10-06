@@ -35,6 +35,9 @@ test_that("community_stability loads and returns correct result", {
   myresults<-stability_onerep(dat1agg,  "abundance")
   expect_that(class(myresults), equals("numeric"))
   expect_that(length(myresults), equals(1))
+  expect_that(myresults, equals(4.1233, tolerance=.00001))
+  
+  
   #test that works with different column names
   dat2agg<-aggregate(abund~yr + sub, data=dat2, sum)
   myresults2<-stability_onerep(dat2agg, "abund")
