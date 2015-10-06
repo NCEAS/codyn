@@ -1,5 +1,5 @@
 #' @title Variance Ratio
-#' @description Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schulter 1984).
+#' @description Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schluter 1984).
 #' 
 #' Includes a null modeling option to test if the variance ratio significantly differs from 1. The null community is created by randomly selecting different starting points for each species' time series, which generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Hallett et al. 2014). This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of variance ratios. If the dataframe includes multiple replicates, the variance ratios for the actual and null communities are averaged within each iteration unless specified otherwise.
 #' @param df A dataframe containing time.var, species.var and abundance.var columns and an optional replicate.var column
@@ -11,9 +11,12 @@
 #' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
 #' @param replicate.var The name of the optional replicate column 
 #' @param average.replicates If true returns the variance ratio and CIs averaged across replicates; if false returns the variance ratio and CI for each replicate
-#' @return output A dataframe containing the actual variance ratio (VR), the lowest CI (nullVRCIlow), the highest CI (nullVRCIhigh), the mean null variance ratio (nullVRmean), and the replicate column if average.replicates=FALSE
-#' @details
+#' @return A dataframe containing the actual variance ratio (VR), the lowest CI (nullVRCIlow), the highest CI (nullVRCIhigh), the mean null variance ratio (nullVRmean), and the replicate column if average.replicates=FALSE
+#' @details 
 #' \deqn{ VR = \frac{Var(C)}{\sum_{i}^{N} Var(x_i)}}
+#' @examples
+#' 
+#' 
 #' @export
 varianceratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {

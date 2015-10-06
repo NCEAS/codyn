@@ -4,8 +4,14 @@
 \name{codyn}
 \alias{codyn}
 \alias{codyn-package}
-\title{codyn.}
+\title{codyn title goes here}
 \description{
-codyn.
+codyn description goes here
+}
+\details{
+include details here
+}
+\author{
+Lauren Hallett
 }
 

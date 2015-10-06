@@ -4,15 +4,15 @@
 \alias{synchrony}
 \title{A function to calculate species synchrony over time within multiple replicates}
 \usage{
-synchrony(df, species.var = "species", time.var = "year",
+synchrony(df, time.var = "year", species.var = "species",
   abundance.var = "abundance", metric = "Loreau", replicate.var = NA)
 }
 \arguments{
 \item{df}{A dataframe containing replicate, time, species and abundance columns}
 
-\item{species.var}{The name of the species column from df}
-
 \item{time.var}{The name of the time column from df}
+
+\item{species.var}{The name of the species column from df}
 
 \item{abundance.var}{The name of the abundance column from df}
 

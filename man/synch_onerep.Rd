@@ -4,14 +4,15 @@
 \alias{synch_onerep}
 \title{A function to calculate species synchrony over time within one replicate}
 \usage{
-synch_onerep(df, species.var, time.var, abundance.var, metric = "Loreau")
+synch_onerep(df, time.var, species.var, abundance.var, metric = c("Loreau",
+  "Gross"))
 }
 \arguments{
 \item{df}{A dataframe containing rep, time, species and abundance columns}
 
-\item{species.var}{The name of the species column from df}
-
 \item{time.var}{The name of the time column from df}
+
+\item{species.var}{The name of the species column from df}
 
 \item{abundance.var}{The name of the abundance column from df}
 
