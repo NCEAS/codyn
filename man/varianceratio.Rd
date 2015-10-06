@@ -11,28 +11,24 @@ varianceratio(df, time.var = "year", species.var = "species",
 \arguments{
 \item{df}{A dataframe containing time.var, species.var and abundance.var columns and an optional replicate.var column}
 
-\item{time.var}{The name of the time column from df}
+\item{time.var}{The name of the time column}
 
-\item{species.var}{The name of the species column from df}
+\item{species.var}{The name of the species column}
 
-\item{abundance.var}{The name of the abundance column from df}
+\item{abundance.var}{The name of the abundance column}
 
-\item{bootnumber}{The number of null model iterations used to calculated CIs}
+\item{bootnumber}{The number of null model iterations used to calculated confidence intervals}
 
-\item{replicate.var}{The name of the replicate column from df}
+\item{replicate.var}{The name of the optional replicate column}
 
 \item{li}{The lower confidence interval, defaults to lowest 2.5\% CI}
 
 \item{ui}{The upper confidence interval, defaults to upper 97.5\% CI}
 
-\item{average.replicates}{If true returns VR and CI averaged across reps; if false returns VR and CI for each rep}
+\item{average.replicates}{If true returns the variance ratio and CIs averaged across replicates; if false returns the variance ratio and CI for each replicate}
 }
 \value{
-output A dataframe containing the replicate.var name, VR  nullVRCIlow, nullVRCIhigh and nullVRmean
-         VR is the actual variance ratio
-         nullVRCIow is the 0.025 CI
-         nullVRCIhigh is the 0.975 CI
-         nullVRmean is the mean variance ratio calculated on null communities
+output A dataframe containing the actual variance ratio (VR), the lowest CI (nullVRCIlow), the highest CI (nullVRCIhigh), the mean null variance ratio (nullVRmean), and the replicate column if average.replicates=FALSE
 }
 \description{
 Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schulter 1984).
