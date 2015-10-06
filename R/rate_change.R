@@ -9,16 +9,21 @@
 #' @return output The rate of community change
 #' @export
 rate_change <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
-	if(is.na(replicate.var)==TRUE){
-    output<-get_slope(df, time.var, species.var, abundance.var)}else{
-        df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
-		X <- split(df, df[replicate.var])
-		out <- lapply(X, FUN=get_slope, time.var, species.var, abundance.var)
-		reps <- unique(df[replicate.var])
-		output <- cbind(reps, do.call("rbind", out))
-		names(output)=c(replicate.var, "rate_change")
+    if(is.na(replicate.var)) {
+        output<-get_slope(df, time.var, species.var, abundance.var)
+    } else {
+        df[replicate.var] <- if(is.factor(df[[replicate.var]])) {
+            factor(df[[replicate.var]])
+        } else {
+            df[replicate.var]
+        }
+        X <- split(df, df[replicate.var])
+        out <- lapply(X, FUN=get_slope, time.var, species.var, abundance.var)
+        reps <- unique(df[replicate.var])
+        output <- cbind(reps, do.call("rbind", out))
+        names(output)=c(replicate.var, "rate_change")
     }
-		return(output)
+    return(output)
 }
 
 
@@ -39,24 +44,22 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
 get_slope = function(df, time.var="time", species.var="species", abundance.var="abundance") {
-		df <- codyn::transpose_community(df, time.var, species.var, abundance.var)
-		DM <- dist(df[-1], method="euclidean", diag = FALSE, upper = FALSE)
+    df <- codyn::transpose_community(df, time.var, species.var, abundance.var)
+    DM <- dist(df[-1], method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
-
+    
     rownums = row(DM)
     colnums = col(DM)
-
+    
     get_lag_i = function(i){
         cbind(lag = i, value = DM[rownums == (colnums + i)])
     }
-
-    lag_list = lapply(
-        1:(nrow(df)-1),
-        get_lag_i)
-
+    
+    lag_list = lapply(1:(nrow(df)-1), get_lag_i)
+    
     results <- data.frame(do.call(rbind, lag_list))
-		lm_coefficents <- lm(value ~ lag, data=results)
-		slope <- data.frame(lm_coefficents[1][[1]])
-		return(slope[2,])
+    lm_coefficents <- lm(value ~ lag, data=results)
+    slope <- data.frame(lm_coefficents[1][[1]])
+    return(slope[2,])
 }
 
