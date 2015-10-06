@@ -2,7 +2,8 @@
 % Please edit documentation in R/rate_change.R
 \name{get_slope}
 \alias{get_slope}
-\title{A function that returns the slope of community change within one replicate.}
+\title{Get slope
+Returns the slope of community change within one replicate.}
 \usage{
 get_slope(df, time.var = "time", species.var = "species",
   abundance.var = "abundance")
@@ -20,6 +21,7 @@ get_slope(df, time.var = "time", species.var = "species",
 a slope of time lags by species distances
 }
 \description{
-A function that returns the slope of community change within one replicate.
+Get slope
+Returns the slope of community change within one replicate.
 }
 

@@ -13,7 +13,7 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
     stopifnot(is.numeric(df[[abundance.var]]))
     if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
-        output<-get_slope(df, time.var, species.var, abundance.var)
+        output <- get_slope(df, time.var, species.var, abundance.var)
     } else {
         check_single(df, time.var, species.var, replicate.var)
         df[replicate.var] <- if(is.factor(df[[replicate.var]])) {
@@ -46,7 +46,7 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
-get_slope = function(df, time.var="time", species.var="species", abundance.var="abundance") {
+get_slope <- function(df, time.var="time", species.var="species", abundance.var="abundance") {
     df <- transpose_community(df, time.var, species.var, abundance.var)
     DM <- dist(df[-1], method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
@@ -63,11 +63,11 @@ get_slope = function(df, time.var="time", species.var="species", abundance.var="
 
 #' Get lagged values from a distance matrix
 #' Get lagged values from distance matrix at value i
-#' @i the index of the matrix to lag
-#' @DM the distance matrix from which lagged values are drawn
-#' @rownums number of rows in the distance matrix
-#' @colnums number of columns in the distance matrix
+#' @param i the index of the matrix to lag
+#' @param DM the distance matrix from which lagged values are drawn
+#' @param rownums number of rows in the distance matrix
+#' @param colnums number of columns in the distance matrix
 #' @return the lagged values
-get_lag_i = function(i, DM, rownums, colnums) {
+get_lag_i <- function(i, DM, rownums, colnums) {
     cbind(lag = i, value = DM[rownums == (colnums + i)])
 }
