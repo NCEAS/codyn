@@ -37,25 +37,21 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
 
 
 
-#' A function that returns the slope of community change within one replicate.
+#' Get slope
+#' Returns the slope of community change within one replicate.
 #' @param df data frame to compute the slope of community change for
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
 get_slope = function(df, time.var="time", species.var="species", abundance.var="abundance") {
-    df <- codyn::transpose_community(df, time.var, species.var, abundance.var)
+    df <- codyn:::transpose_community(df, time.var, species.var, abundance.var)
     DM <- dist(df[-1], method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
     
     rownums = row(DM)
     colnums = col(DM)
-    
-    get_lag_i = function(i){
-        cbind(lag = i, value = DM[rownums == (colnums + i)])
-    }
-    
-    lag_list = lapply(1:(nrow(df)-1), get_lag_i)
+    lag_list = lapply(1:(nrow(df)-1), get_lag_i, DM, rownums, colnums)
     
     results <- data.frame(do.call(rbind, lag_list))
     lm_coefficents <- lm(value ~ lag, data=results)
@@ -63,3 +59,13 @@ get_slope = function(df, time.var="time", species.var="species", abundance.var="
     return(slope[2,])
 }
 
+#' Get lagged values from a distance matrix
+#' Get lagged values from distance matrix at value i
+#' @i the index of the matrix to lag
+#' @DM the distance matrix from which lagged values are drawn
+#' @rownums number of rows in the distance matrix
+#' @colnums number of columns in the distance matrix
+#' @return the lagged values
+get_lag_i = function(i, DM, rownums, colnums) {
+    cbind(lag = i, value = DM[rownums == (colnums + i)])
+}
