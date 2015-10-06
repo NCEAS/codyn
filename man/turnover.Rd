@@ -19,7 +19,7 @@ turnover(df, time.var = "year", species.var = "species",
 
 \item{replicate.var}{The name of the replicate column}
 
-\item{metric}{The turnover metric to return.
+\item{metric}{The turnover metric to return:
 \itemize{
  \item{"total": }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods}
  \item{"appearance": }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods}
@@ -30,7 +30,7 @@ turnover(df, time.var = "year", species.var = "species",
 output A dataframe containing the specificed turnover metric and year
 }
 \description{
-Computes species turnover between time periods as the proportion of species gained and lost relative to the total number of species observed across both time periods.
+Computes species turnover between time periods as the proportion of species either gained or lost relative to the total number of species observed across both time periods.
 Includes an option to compute turnover as just the proportion of species gained (i.e., "appearances") or lost (i.e., "disappearances").
 }
 
