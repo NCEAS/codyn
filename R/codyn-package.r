@@ -1,7 +1,7 @@
 #' codyn title goes here
 #' @description codyn description goes here
 #' @details include details here
-#' @author Lauren Hallett
+#' @author Lauren M. Hallett
 #' @docType package
 #' @name codyn
 #' @aliases codyn
@@ -13,7 +13,7 @@ NULL
 #' site over time at the Konza Prairie LTER, Manhattan Kansas (Collins et al. 2008).
 #' 
 #' \itemize{
-#'   \item replicate
+#'   \item replicate The replicate type, i.e. "burned", "unburned"
 #'   \item year The sampling frequency
 #'   \item species The sampled species
 #'   \item abundance The measure of species abundance
