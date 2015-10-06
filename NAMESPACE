@@ -2,6 +2,7 @@
 
 export(community_stability)
 export(meanrankshift)
+export(rate_change)
 export(synchrony)
 export(temporal_torus_translation)
 export(temporal_torus_translation_CI)
