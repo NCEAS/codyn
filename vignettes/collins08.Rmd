@@ -1,6 +1,6 @@
 ---
 title: "Rank shifts between species"
-author: "Vignette Author"
+author: "Lauren M. Hallett"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: biblio.bib
@@ -65,7 +65,7 @@ This function quantifies relative changes in species rank abundances by taking t
 collins08 <- read.csv(system.file("extdata", "collins08.csv", package="codyn"), sep=",", header=TRUE)
 
 ##running mean rank shift function 
-dat <- meanrankshift(collins08, "replicate", "year", "species", "abundance")
+dat <- meanrankshift(df=collins08, replicate.var="replicate", time.var="year", species.var="species", abundance.var="abundance")
 dat$year<-as.numeric(substr(dat$year_pair, 6,9))
 
 ##plotting
