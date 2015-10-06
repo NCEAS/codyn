@@ -7,8 +7,9 @@ test_that("community_stability loads and returns correct result", {
   library(codyn)
   
   # Load our example data set
-  # data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
-  knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+  data(knz_001d)
+  # data("knz_001d", package="codyn")  # This doesn't work for CSV files :( Will work now!
+  #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
   expect_that(names(knz_001d)[4], equals("abundance"))
   
   #give new column names
@@ -53,25 +54,25 @@ test_that("community_stability loads and returns correct result", {
   expect_that(myresults3, equals(myresults2))
   
   #test that will still run if there are missing levels in a factor "replicate"; deleting levels that are NaN
-  myresults4<-community_stability(dat1, replicate="subplot", time.var="year", abundance.var="abundance")
+  myresults4<-community_stability(dat1, replicate.var="subplot", time.var="year", abundance.var="abundance")
   #this will give a warning because replicate is a factor without all values present in dat1 - the warning is a good thing
   myresults5<-as.numeric(myresults4[2])
   expect_that(myresults5, equals(myresults3)) 
   
   #test that works whether replicate is a character or factor
-  myresults6<-community_stability(dat3, replicate="subplot", time.var="year", abundance.var="abundance")
+  myresults6<-community_stability(dat3, replicate.var="subplot", time.var="year", abundance.var="abundance")
   expect_that((myresults6[1,2]), equals(myresults3))  
   
   #test that works with multiple replicates
-  myresults7<-community_stability(knz_001d, replicate="subplot", time.var="year", abundance.var="abundance")
+  myresults7<-community_stability(knz_001d, replicate.var="subplot", time.var="year", abundance.var="abundance")
   expect_that(myresults6[1,2], equals(myresults7[1,2]))  
   
   #test that works with different column names
-  myresults8<-community_stability(knz_001d2, replicate="sub", time.var="yr", abundance.var="abund")
+  myresults8<-community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="abund")
   expect_that(myresults7[1,2], equals(myresults8[1,2]))
   
   #test that gives error when abundance column is a character or factor
-  expect_error(community_stability(knz_001d2, replicate="sub", time.var="yr", abundance.var="randcharacter"))
-  expect_error(community_stability(knz_001d2, replicate="sub", time.var="yr", abundance.var="randfactor"))
+  expect_error(community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randcharacter"))
+  expect_error(community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randfactor"))
 
   })

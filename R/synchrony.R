@@ -20,24 +20,16 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
   
   if(is.na(replicate.var)==TRUE){
       if(max(table(df[,time.var], df[,species.var]))>1) warning("Either data span multiple replicates with no replicate.var specified or multiple records within years for some species")
-      output<-synch_onerep(df, species.var, time.var, abundance.var, metric)
+      output <- synch_onerep(df, time.var, species.var, abundance.var, metric)
     }
     
   else {
     
     df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
     
-    
-    
     X <- split(df, df[replicate.var])
     
-    checksingle <- lapply(X, FUN = function(xx) apply(table(xx[[species.var]], xx[[time.var]]), 2, function(x) any(x>1)))
-    reptest <- unlist(lapply(checksingle, any))
-    yrtest <- lapply(checksingle, which)
-    
-    if(any(unlist(checksingle))){ 
-        stop(paste("In replicate(s)", names(reptest)[which(reptest)], "there are species with multiple records at time point(s)", unlist(lapply(yrtest, names))))  
-             }
+    check_single(df, time.var, species.var, replicate.var)
     
     if(max(table(df[,time.var], df[,species.var]))>1) 
     
@@ -74,6 +66,10 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
 synch_onerep<-function(df, time.var, species.var, abundance.var, metric=c("Loreau", "Gross")) {
     metric = match.arg(metric) # for partial argument matching
     #remove any species that were never present. 
+    
+    # check to make sure abundance is numeric data
+    if(!is.numeric(df[,abundance.var])) { stop("Abundance variable is not numeric") }
+    
     df <- subset(df, abundance.var>0)
     #fill in 0s
     spplist<-(unique(df[species.var]))
