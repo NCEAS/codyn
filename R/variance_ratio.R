@@ -16,26 +16,26 @@
 #' \deqn{ VR = \frac{Var(C)}{\sum_{i}^{N} Var(x_i)}}
 #' @export
 varianceratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
-                        li=0.025, ui=0.975,  average.replicates=TRUE){
-  stopifnot(is.numeric(df[[time.var]]))
-  if(is.na(replicate.var)==TRUE){
-  VR<-varianceratio_longformdata(df,time.var, species.var, abundance.var)}else{
-    df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
-    if(average.replicates==TRUE){
-      X<-split(df, df[replicate.var])
-      VR<-mean(unlist(lapply(X, FUN=varianceratio_longformdata, time.var, species.var, abundance.var)))}else{
-        X <- split(df, df[replicate.var])
-        VR<-do.call("rbind", lapply(X, FUN=varianceratio_longformdata, time.var,  species.var,abundance.var))
-      }
-  }
-nullout<-temporal_torus_translation_CI(df, time.var, species.var, abundance.var, varianceratio_matrixdata, bootnumber, replicate.var, li, ui, average.replicates)
-output<-(cbind(nullout, VR))
-row.names(output)<-NULL
-return(as.data.frame(output)) 
-      }
-      
-      
-      
+                        li=0.025, ui=0.975,  average.replicates=TRUE) {
+    stopifnot(is.numeric(df[[time.var]]))
+    if(is.na(replicate.var)==TRUE) {
+        VR<-varianceratio_longformdata(df,time.var, species.var, abundance.var)
+    } else {
+        df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
+        if(average.replicates==TRUE) {
+            X<-split(df, df[replicate.var])
+            VR<-mean(unlist(lapply(X, FUN=varianceratio_longformdata, time.var, species.var, abundance.var))) 
+        } else {
+            X <- split(df, df[replicate.var])
+            VR<-do.call("rbind", lapply(X, FUN=varianceratio_longformdata, time.var,  species.var,abundance.var))
+        }
+    }
+    nullout<-temporal_torus_translation_CI(df, time.var, species.var, abundance.var, varianceratio_matrixdata, bootnumber, replicate.var, li, ui, average.replicates)
+    output<-(cbind(nullout, VR))
+    row.names(output)<-NULL
+    return(as.data.frame(output)) 
+}
+
 ############################################################################
 #
 # Private functions: these are internal functions not intended for reuse.  
@@ -49,12 +49,12 @@ return(as.data.frame(output))
 #' @param comdat A community dataframe
 #' @return var.ratio The variance ratio of the community
 varianceratio_matrixdata<-function(comdat){
-  all.cov <- cov(comdat, use="pairwise.complete.obs")
-  col.var<-apply(comdat, 2, var)
-  com.var <-sum(all.cov)
-  pop.var <-sum(col.var)
-  var.ratio<-com.var/pop.var
-  return(var.ratio)
+    all.cov <- cov(comdat, use="pairwise.complete.obs")
+    col.var<-apply(comdat, 2, var)
+    com.var <-sum(all.cov)
+    pop.var <-sum(col.var)
+    var.ratio<-com.var/pop.var
+    return(var.ratio)
 }
 
 #' A function to calculate the variance ratio from a longform dataframe
@@ -65,7 +65,7 @@ varianceratio_matrixdata<-function(comdat){
 #' @param abundance.var The name of the abundance.var column from df
 #' @return var.ratio The variance ratio of the community
 varianceratio_longformdata<-function(df, time.var, species.var, abundance.var){
-  com.use<-transpose_community(df, time.var, species.var, abundance.var)
-  var.ratio<-varianceratio_matrixdata(com.use)
-  return(var.ratio)
+    com.use<-transpose_community(df, time.var, species.var, abundance.var)
+    var.ratio<-varianceratio_matrixdata(com.use)
+    return(var.ratio)
 }
