@@ -40,17 +40,13 @@
 #'  Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6: 1693–1700. doi: 10.1890/13-0895.1
 #'  
 #'  Schluter, Dolph. (1984) “A Variance Test for Detecting Species Associations, with Some Example Applications.” Ecology 65, no. 3: 998–1005. doi:10.2307/1938071.
-
-
 #' @export
 varianceratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
     stopifnot(is.numeric(df[[time.var]]))
     stopifnot(is.numeric(df[[abundance.var]]))
     if(is.na(replicate.var)==TRUE) {
-        if(max(table(df[,time.var], df[,species.var]))>1) {
-            warning("Either data span multiple replicates with no replicate.var specified or multiple records exist within one time period for some species")
-        }
+        check_single_onerep(df, time.var, species.var)
         VR<-varianceratio_longformdata(df,time.var, species.var, abundance.var)
     } else {
         check_single(df, time.var, species.var, replicate.var)
