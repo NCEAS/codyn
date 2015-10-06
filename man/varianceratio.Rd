@@ -49,11 +49,16 @@ mydat <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep="
  # Here the null model is repeated once, for final use it is recommended to set bootnumber to 10,000 times
 
  myoutput_averagedreplicates <-varianceratio(knz_001d, time.var="year", species.var="species",
- abundance.var="abundance",  bootnumber=1, replicate="subplot")
+ abundance.var="abundance", bootnumber=1, replicate="subplot")
 
  #Calculate the variance ratio and CIs for each replicate
 
  myoutput_withinreplicates <-varianceratio(knz_001d, time.var="year", species.var="species",
- abundance.var="abundance",  bootnumber=1, replicate="subplot", average.replicates=FALSE)
+ abundance.var="abundance", bootnumber=1, replicate="subplot", average.replicates=FALSE)
+}
+\references{
+Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6: 1693–1700.
+
+ Schluter, Dolph. (1984) “A Variance Test for Detecting Species Associations, with Some Example Applications.” Ecology 65, no. 3: 998–1005. doi:10.2307/1938071.
 }
 
