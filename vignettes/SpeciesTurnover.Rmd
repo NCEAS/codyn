@@ -33,6 +33,7 @@ library(knitr)
 `codyn` utilizes a subset of the data presented by Collins et al. [-@Collins2008]. The `collins08` dataset includes plant composition from the Konza Prairie Long-term Ecological Research site in Manhattan, KS. It spans 18 years and includes data collected from two locations, one that is annually burned and one that is unburned. 
 
 ```{r echo=FALSE}
+library(codyn)
 data(collins08)
 names(collins08)[1]="location"
 kable(head(collins08))
