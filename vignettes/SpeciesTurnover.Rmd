@@ -1,6 +1,6 @@
 ---
 title: "Temporal diversity indices"
-author: ""
+author: "Lauren M. Hallett"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: biblio.bib

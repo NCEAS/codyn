@@ -1,5 +1,6 @@
 ---
 title: "codyn: An R package for analysis of long-term ecological community data"
+author: "Lauren M. Hallett"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
