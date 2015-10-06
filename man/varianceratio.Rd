@@ -9,7 +9,7 @@ varianceratio(df, time.var = "year", species.var = "species",
   ui = 0.975, average.replicates = TRUE)
 }
 \arguments{
-\item{df}{A dataframe containing time, species and abundances columns and an optional column of replicates}
+\item{df}{A dataframe containing time, species and abundance columns and an optional column of replicates}
 
 \item{time.var}{The name of the time column}
 

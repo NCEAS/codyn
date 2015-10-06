@@ -2,20 +2,40 @@
 #'@description Computes species turnover between time periods as the proportion of species either gained or lost relative to the total number of species observed across both time periods.
 #'Includes an option to compute turnover as just the proportion of species gained (i.e., "appearances") or lost (i.e., "disappearances").
 #'
-#' @param df A dataframe containing time.var, species.var and abundance.var columns and an optional replicate.var column
+#' @param df A dataframe containing time, species and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param metric The turnover metric to return:
 #' \itemize{
-#'  \item{"total": }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods}
-#'  \item{"appearance": }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods}
-#'  \item{"disappearance: }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods}
+#'  \item{"total": }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods.}
+#'  \item{"appearance": }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods.}
+#'  \item{"disappearance": }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods.}
 #' }
-#' @return output A dataframe containing the specificed turnover metric and year
+#' @return The turnover function returns a dataframe with the following attributes:
+#' \itemize{
+#'  \item{turnover: }{Numeric, the turnover value. The name of this column is the same as the specified metric (default is "total").}
+#'  \item{time.var: }{The second time point, the name and type of this column is the same as the time.var column in the input dataframe.}
+#'  \item{replicate.var: }{Optionally, shares the same column name and type as the replicate.var column in df.}
+#' }
+#' @details
+#' The input dataframe needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+#' If multiple replicates are included in the dataframe, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+#' @references
+#' Cleland, Elsa E., Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Katherine L. Gross, Laureano A. Gherardi, Lauren M. Hallett, et al.  (2013) “Sensitivity of grassland plant community composition to spatial vs. temporal variation in precipitation.” Ecology 94, no. 8: 1687–96.
+#' @examples 
+#'  mydat <- data(knz_001d)
+#'
+#'  # Calculate total turnover within replicates
+#'  myresults<-turnover(df=knz_001d, time.var="year", species.var="species", abundance.var="abundance",  replicate.var="subplot")
+#'  
+#'  Calculate species appearances within replicates
+#'  myresults<-turnover(df=knz_001d, time.var="year", species.var="species", abundance.var="abundance",  replicate.var="subplot", metric="appearance")
+#'  
+#'  Calculate species disappearances within replicates
+#'  myresults<-turnover(df=knz_001d, time.var="year", species.var="species", abundance.var="abundance",  replicate.var="subplot", metric="disappearance")
 #' @export
-#turnover<-function(data1, replicate="replicate", species="species", year="year", abundance="abundance", metric="total") {
 turnover<-function(df, time.var="year", species.var="species", abundance.var="abundance", replicate.var=as.character(NA), metric="total") {
   if(is.na(replicate.var)==TRUE){
     output<-turnover_allyears(df, species.var, time.var, abundance.var)}else{
