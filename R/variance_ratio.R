@@ -11,12 +11,12 @@
 #' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
 #' @param replicate.var The name of the optional replicate column 
 #' @param average.replicates If true returns the variance ratio and CIs averaged across replicates; if false returns the variance ratio and CI for each replicate
-#' @return A dataframe containing the actual variance ratio (VR), the lowest CI (nullVRCIlow), the highest CI (nullVRCIhigh), the mean null variance ratio (nullVRmean), and the replicate column if average.replicates=FALSE
-#' @details 
-#' \deqn{ VR = \frac{Var(C)}{\sum_{i}^{N} Var(x_i)}}
-#' @examples
+#' @return 'varianceratio' returns a dataframe.
 #' 
+#' The dataframe has the following attributes:
 #' 
+#' A dataframe containing the actual variance ratio (VR), the lowest CI (nullVRCIlow), the highest CI (nullVRCIhigh), the mean null variance ratio (nullVRmean), and the replicate column if average.replicates=FALSE
+
 #' @export
 varianceratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
