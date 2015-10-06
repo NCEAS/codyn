@@ -39,7 +39,7 @@ turnover<-function(df, time.var="year", species.var="species", abundance.var="ab
 #'
 #' @param d1 A dataframe containing a species column from one year
 #' @param d2 A dataframe containing a species column from the following year
-#' @param species.var The name of the species column in d1 and d2
+#' @param species The name of the species column in d1 and d2
 #' @param metric The turnover metric to return; the default, total, returns summed appearances and disappearances relative to total species richness across both years
 #'          appearance returns the number of appearances in the second year relative to total species richness across both years
 #'          disappearance returns the number of disappearances in the second year relative to the total species richness across both years
