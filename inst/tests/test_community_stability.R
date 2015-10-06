@@ -8,8 +8,7 @@ test_that("community_stability loads and returns correct result", {
   
   # Load our example data set
   data(knz_001d)
-  # data("knz_001d", package="codyn")  # This doesn't work for CSV files :( Will work now!
-  #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+  
   expect_that(names(knz_001d)[4], equals("abundance"))
   
   #give new column names
