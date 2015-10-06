@@ -7,6 +7,7 @@
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return output The rate of community change
+#' @export
 rate_change <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
 	if(is.na(replicate.var)==TRUE){
     output<-get_slope(df, time.var, species.var, abundance.var)}else{
