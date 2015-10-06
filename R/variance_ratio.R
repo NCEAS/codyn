@@ -2,7 +2,7 @@
 #' @description Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schluter 1984).
 #' 
 #' Includes a null modeling option to test if the variance ratio significantly differs from 1. The null community is created by randomly selecting different starting points for each species' time series, which generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Hallett et al. 2014). This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of variance ratios. If the dataframe includes multiple replicates, the variance ratios for the actual and null communities are averaged within each iteration unless specified otherwise.
-#' @param df A dataframe containing time, species and abundances columns and an optional column of replicates
+#' @param df A dataframe containing time, species and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
@@ -46,6 +46,7 @@
 varianceratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
     stopifnot(is.numeric(df[[time.var]]))
+    stopifnot(is.numeric(df[[abundance.var]]))
     if(is.na(replicate.var)==TRUE) {
         if(max(table(df[,time.var], df[,species.var]))>1) {
             warning("Either data span multiple replicates with no replicate.var specified or multiple records exist within one time period for some species")

@@ -5,8 +5,7 @@ test_that("varianceratio function returns correct result", {
     expect_that(length("a"), equals(1))
     
     # Load our example data set
-    # data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
-    knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+    data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
     expect_that(names(knz_001d)[4], equals("abundance"))
     
     
@@ -53,7 +52,6 @@ test_that("varianceratio function returns correct result", {
     myresults3<-varianceratio(knz_001d3, "year", "species",  "abundance",1, "subplot")
     expect_that(myresults3$VR, is_identical_to(myresults$VR))
   
-    
     ##test that works with replicate=NA
     myresults4<-varianceratio(dat1, replicate=NA, bootnumber=10)
     
@@ -71,17 +69,20 @@ test_that("varianceratio function returns correct result", {
     expect_that(myresults4$VR, is_identical_to(myresults6$VR))
     expect_that(myresults4$VR, is_identical_to(myresults7$VR))
     
-    
     ##test varianceratio_matrixdata
     calVRresults<-varianceratio_matrixdata(datmat)
     expect_that(calVRresults, equals(myresults7$VR))
     expect_true(calVRresults>=0)
     expect_true(is.numeric(calVRresults))
     
-  
     ##test varianceratio_longformdata
     lfresults<-varianceratio_longformdata(dat1,  time.var="year",species.var="species", abundance.var="abundance")
     expect_that(lfresults, equals(myresults7$VR))
     expect_true(lfresults>=0)
     expect_true(is.numeric(lfresults))
+    
+    ## test that bad data values are handled with graceful error messages
+    bad_data <- knz_001d
+    bad_data['abundance'][1,] <- 'dung'
+    expect_error(varianceratio(bad_data, "year", "species", "abundance",  bootnumber=1, replicate="subplot"), "is.numeric")
 })
