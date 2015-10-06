@@ -43,16 +43,16 @@ The input dataframe needs to contain columns for time, species and abundance; ti
 If multiple replicates are included in the dataframe, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 }
 \examples{
-mydat <- data(knz_001d)
+data(knz_001d)
 
  # Calculate total turnover within replicates
- myresults<-turnover(df=knz_001d, time.var="year", species.var="species", abundance.var="abundance",  replicate.var="subplot")
+ total.res <- turnover(df=knz_001d,  replicate.var="subplot")
 
  Calculate species appearances within replicates
- myresults<-turnover(df=knz_001d, time.var="year", species.var="species", abundance.var="abundance",  replicate.var="subplot", metric="appearance")
+ appear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="appearance")
 
  Calculate species disappearances within replicates
- myresults<-turnover(df=knz_001d, time.var="year", species.var="species", abundance.var="abundance",  replicate.var="subplot", metric="disappearance")
+ disappear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="disappearance")
 }
 \references{
 Cleland, Elsa E., Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Katherine L. Gross, Laureano A. Gherardi, Lauren M. Hallett, et al.  (2013) “Sensitivity of grassland plant community composition to spatial vs. temporal variation in precipitation.” Ecology 94, no. 8: 1687–96.

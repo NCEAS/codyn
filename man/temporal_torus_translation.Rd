@@ -2,7 +2,7 @@
 % Please edit documentation in R/temporal_torus_translation.R
 \name{temporal_torus_translation}
 \alias{temporal_torus_translation}
-\title{A function to calculate a vector of null test statistics using a temporal modification of the Torus translation}
+\title{Temporal modification of the Torus translation}
 \usage{
 temporal_torus_translation(df, time.var, species.var, abundance.var, FUN)
 }

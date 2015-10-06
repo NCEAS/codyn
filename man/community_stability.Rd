@@ -2,10 +2,10 @@
 % Please edit documentation in R/community_stability.R
 \name{community_stability}
 \alias{community_stability}
-\title{A function to calculate community stability over time}
+\title{Community Stability}
 \usage{
 community_stability(df, time.var = "year", abundance.var = "abundance",
-  replicate.var = as.character(NA))
+  replicate.var = NA)
 }
 \arguments{
 \item{df}{the data frame to use in the calculation}
@@ -17,9 +17,16 @@ community_stability(df, time.var = "year", abundance.var = "abundance",
 \item{replicate.var}{The name of the replicate column from df}
 }
 \value{
-output The stability of community abundance, calculated as mean/standard deviation
+The stability of community abundance, calculated as mean/standard deviation returns a single number or a dataframe with the following attributes:
+\itemize{
+ \item{replicate}{replicate name}
+ \item{stability}{community stability for replicate}
+ }
 }
 \description{
 A function to calculate community stability over time
+}
+\details{
+The input dataframe needs to contain columns for time and abundance;
 }
 
