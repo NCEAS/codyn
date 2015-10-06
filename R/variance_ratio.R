@@ -45,12 +45,16 @@ varianceratio<-function(df, time.var="year", species.var="species",  abundance.v
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
     stopifnot(is.numeric(df[[time.var]]))
     stopifnot(is.numeric(df[[abundance.var]]))
-    if(is.na(replicate.var)==TRUE) {
+    if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
         VR<-varianceratio_longformdata(df,time.var, species.var, abundance.var)
     } else {
         check_single(df, time.var, species.var, replicate.var)
-        df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
+        df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE) {
+            factor(df[[replicate.var]])
+        } else {
+            df[replicate.var]
+        }
         if(average.replicates==TRUE) {
             X<-split(df, df[replicate.var])
             VR<-mean(unlist(lapply(X, FUN=varianceratio_longformdata, time.var, species.var, abundance.var))) 
