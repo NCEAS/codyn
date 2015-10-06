@@ -2,31 +2,35 @@
 % Please edit documentation in R/turnover.R
 \name{turnover}
 \alias{turnover}
-\title{A function to calculate species turnover between years}
+\title{Species turnover}
 \usage{
 turnover(df, time.var = "year", species.var = "species",
   abundance.var = "abundance", replicate.var = as.character(NA),
   metric = "total")
 }
 \arguments{
-\item{df}{A dataframe containing year,species and abundance columns}
+\item{df}{A dataframe containing time.var, species.var and abundance.var columns and an optional replicate.var column}
 
-\item{time.var}{The name of the year column from df}
+\item{time.var}{The name of the time column}
 
-\item{species.var}{The name of the species column from df}
+\item{species.var}{The name of the species column}
 
-\item{abundance.var}{The name of the abundance column from df}
+\item{abundance.var}{The name of the abundance column}
 
-\item{replicate.var}{The name of the replicate column from df}
+\item{replicate.var}{The name of the replicate column}
 
-\item{metric}{The turnover metric to return; the default, total, returns summed appearances and disappearances relative to total species richness across both years
-appearance returns the number of appearances in the second year relative to total species richness across both years
-disappearance returns the number of disappearances in the second year relative to the total species richness across both years}
+\item{metric}{The turnover metric to return.
+\itemize{
+ \item{"total": }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods}
+ \item{"appearance": }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods}
+ \item{"disappearance: }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods}
+}}
 }
 \value{
 output A dataframe containing the specificed turnover metric and year
 }
 \description{
-A function to calculate species turnover between years
+Computes species turnover between time periods as the proportion of species gained and lost relative to the total number of species observed across both time periods.
+Includes an option to compute turnover as just the proportion of species gained (i.e., "appearances") or lost (i.e., "disappearances").
 }
 
