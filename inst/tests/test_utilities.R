@@ -8,7 +8,8 @@ test_that("utilities loads and returns correct result", {
 
     # Load our example data set
     # data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
-    knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
+    data(knz_001d)
+    #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
     expect_that(names(knz_001d)[4], equals("abundance"))
 
     #take a subset
@@ -24,8 +25,9 @@ test_that("utilities loads and returns correct result", {
 })
 
 test_that("Name checking works", {
-  knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"),
-                       sep=",", header=TRUE)
+  data(knz_001d)
+  #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"),
+  #                     sep=",", header=TRUE)
   expect_error(check_names(given = c("AAA", "year", "subplot", "abundance"),
                            data = knz_001d),
                  "data does not have name .*")
