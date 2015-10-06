@@ -19,8 +19,8 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
   # check to see if there are actual replicates without specifying replicate.var
   
   if(is.na(replicate.var)==TRUE){
-      if(max(table(df[,time.var], df[,species.var]))>1) warning("Either data span multiple replicates with no replicate.var specified or multiple records within years for some species")
-      output <- synch_onerep(df, time.var, species.var, abundance.var, metric)
+    check_single_onerep(df, time.var, species.var)  
+    output <- synch_onerep(df, time.var, species.var, abundance.var, metric)
     }
     
   else {
@@ -30,8 +30,6 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
     X <- split(df, df[replicate.var])
     
     check_single(df, time.var, species.var, replicate.var)
-    
-    if(max(table(df[,time.var], df[,species.var]))>1) 
     
     out<-lapply(X, FUN=synch_onerep, time.var, species.var, abundance.var, metric)
     reps<-unique(df[replicate.var])
