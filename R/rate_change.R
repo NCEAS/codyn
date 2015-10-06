@@ -39,7 +39,7 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
 get_slope = function(df, time.var="time", species.var="species", abundance.var="abundance") {
-		df <- codyn::transpose_community(df, species.var, time.var, abundance.var)
+		df <- codyn::transpose_community(df, time.var, species.var, abundance.var)
 		DM <- dist(df[-1], method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
 
