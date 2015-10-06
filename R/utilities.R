@@ -5,7 +5,7 @@
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return comdat A dataframe of species abundances x time
-#' @export
+
 transpose_community <- function(df, time.var, species.var, abundance.var) {
     df<-as.data.frame(df)
     df[species.var]<-if(is.factor(df[[species.var]])==TRUE){factor(df[[species.var]])} else {df[species.var]}  
@@ -26,15 +26,16 @@ check_names <- function(given, data) {
     }
 }
 
+#' Utility function to warn users that either multiple records exist within replicates, or that data may be spanning mutiple replicates but no replicate.var has been specified
+
+check_single_onerep <- function(df, time.var, species.var){
+  if(max(table(df[,time.var], df[,species.var]))>1) warning("Either data span multiple replicates with no replicate.var specified or multiple records within years for some species") }
+
 #' Utility function to ensure only a single record exists for a given species within one replicate, for one time point. 
 #' @param df A dataframe containing time.var, species.var, and replicate.var columns
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param replicate The name of the replicate column from df
-#' @example 
-#' data(knz_001d)
-#' df = rbind(knz_001d, knz_001d[nrow(knz_001d),])
-#' check_single(df, time.var = "year", species.var = "species", replicate.var = "subplot")
 
 check_single <- function(df, time.var, species.var, replicate.var){
   X <- split(df, df[replicate.var]) 
@@ -42,7 +43,15 @@ check_single <- function(df, time.var, species.var, replicate.var){
   reptest <- unlist(lapply(checksingle, any))    
   yrtest <- lapply(checksingle, which)
   
-  if(any(unlist(checksingle))){         
-    stop(paste("In replicate(s)", names(reptest)[which(reptest)], "there are more than one record(s) for species at the time point(s)", unlist(lapply(yrtest, names))))
+  if(any(unlist(checksingle))){
+    if(length(names(reptest)[which(reptest)])==1){
+      
+    stop(paste("In replicate", names(reptest)[which(reptest)], "there is more than one record for species at the time point", unlist(lapply(yrtest, names))))
+    }
+      else  {
+        toprint <- unlist(lapply(yrtest, names))
+    stop("For the following replicates in the following time points, there are more than one records for species: \n", paste(names(toprint), collapse = "\t"), "\n", paste(toprint, collapse = "\t"))
+      }
   }
 }
+
