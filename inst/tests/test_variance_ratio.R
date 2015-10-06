@@ -1,11 +1,8 @@
 context("variance ratio")
 
-
 test_that("varianceratio function returns correct result", {
     # Ensure that tests 
     expect_that(length("a"), equals(1))
-    
-    # Load our example data set
     
     # Load our example data set
     # data("knz_001d", package="codyn")  # This doesn't work for CSV files :(
@@ -31,15 +28,15 @@ test_that("varianceratio function returns correct result", {
     #take a two replicate subset
     dat4<-subset(knz_001d, subplot=="A_1"|subplot=="A_2")
     
-    
     #make a species matrix
-    datmat<-transpose_community(dat1,"year",  "species", "abundance")
+    datmat<-transpose_community(dat1, "year",  "species", "abundance")
     
     #test the class returned with default settings
     myresults<-varianceratio(knz_001d, time.var="year", species.var="species", 
                              abundance.var="abundance",  bootnumber=1, replicate="subplot")
-    expect_that(class(myresults), equals("data.frame"))
-    expect_that(nrow(myresults), equals(1))
+    expect_equal(class(myresults), "data.frame")
+    expect_equal(nrow(myresults), 1)
+    expect_equal(myresults$VR, 1.01443, tolerance=0.00001)
     
     #test that it also works with alternate column names
     knz_001d2<-knz_001d
@@ -47,9 +44,8 @@ test_that("varianceratio function returns correct result", {
     myresults2<-varianceratio(knz_001d2,"yr", "sp", "abund", 1, "sub")
     expect_that(sum(myresults2$VR), equals(sum(myresults$VR)))
     myresults2.2<-varianceratio(knz_001d2, "yr", "sp",  "abund", 1, "sub", average.replicates=FALSE)
-    myresults2.3<-varianceratio(knz_001d2, "yr", "sp",  "abund", 1,NA, average.replicates=FALSE)
-    myresults2.4<-varianceratio(knz_001d2,"yr", "sp",  "abund", 1, NA,average.replicates=TRUE)
-    
+    expect_warning(varianceratio(knz_001d2, "yr", "sp",  "abund", 1, NA, average.replicates=FALSE))
+    expect_warning(varianceratio(knz_001d2,"yr", "sp",  "abund", 1, NA, average.replicates=TRUE))
     
     #test that it works even if there are additional unused columns
     knz_001d3<-knz_001d
@@ -88,10 +84,4 @@ test_that("varianceratio function returns correct result", {
     expect_that(lfresults, equals(myresults7$VR))
     expect_true(lfresults>=0)
     expect_true(is.numeric(lfresults))
-    
-    
-    
-    
-    
-    
 })
