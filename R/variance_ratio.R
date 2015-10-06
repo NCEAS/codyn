@@ -46,6 +46,7 @@
 varianceratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
     stopifnot(is.numeric(df[[time.var]]))
+    stopifnot(is.numeric(df[[abundance.var]]))
     if(is.na(replicate.var)==TRUE) {
         if(max(table(df[,time.var], df[,species.var]))>1) {
             warning("Either data span multiple replicates with no replicate.var specified or multiple records exist within one time period for some species")
