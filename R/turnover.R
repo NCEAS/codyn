@@ -6,7 +6,7 @@
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the replicate column 
+#' @param replicate.var The name of the optional replicate column 
 #' @param metric The turnover metric to return:
 #' \itemize{
 #'  \item{"total": }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods.}
