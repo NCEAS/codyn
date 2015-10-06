@@ -14,7 +14,6 @@
 #' 
 #' @references  Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark. “Rank Clocks and Plant Community Dynamics.” Ecology 89, no. 12 (2008): 3534–41.
 
-
 meanrankshift <- function(df, time.var = "year", species.var = "species",
                     abundance.var = "abundance", replicate.var=as.character(NA)){
   if(is.na(replicate.var)==TRUE){
