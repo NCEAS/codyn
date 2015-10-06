@@ -39,14 +39,14 @@ kable(head(KNZ))
 # Community stability
 The `community_stability` function aggregates species abundances within replicate and year, and used these values to calculate community stability as µ/σ (i.e., the inverse of the coefficient of variation) [@tilman1999]. It includes an argument to calculate community stabilty across multiple replicates, and returns a dataframe with the name of the replicate column and the stability value.
 ```{r results='asis'}
-KNZ_stability<-community_stability(KNZ, replicate="subplot", year="year", abundance="abundance")
+KNZ_stability<-community_stability(df=KNZ, replicate.var="subplot", time.var="year", abundance.var="abundance")
 kable(head(KNZ_stability))
 ```
 
 If `replicate=NA`, the function will aggregate all values within a year and return an integer value.
 ```{r results='asis'}
 KNZ_A1<-subset(KNZ, subplot=="A_1")
-KNZ_A1_stability<-community_stability(KNZ_A1, replicate=NA, year="year", abundance="abundance")
+KNZ_A1_stability<-community_stability(df=KNZ_A1, replicate.var=NA, time.var="year", abundance.var="abundance")
 KNZ_A1_stability
 ```
 
@@ -73,8 +73,7 @@ The variance ratio remains widely used but has been subject to a number of criti
 
 The default `variance_ratio` setting calculates a null variance ratio for each replicate in the dataset, averages these values, and repeats as many times as specified by `bootnumber`. This vector of averaged, null variance ratios is then sampled for lower and upper confidence intervals, which are returned along with the observed variance ratio. 
 ```{r results='asis'}
-KNZ_varianceratio<-varianceratio(KNZ, replicate="subplot", species="species", year="year", abundance="abundance",  
-                                 bootnumber=10)
+KNZ_varianceratio<-varianceratio(df=KNZ, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", bootnumber=10)
 
 kable(KNZ_varianceratio)
 ```
@@ -82,8 +81,7 @@ kable(KNZ_varianceratio)
 
 Alternatively, specifying `averagereps=FALSE` will create a vector of null variance ratios for each replicate in the dataset, and return the subsequent confidence intervals and observed variance ratios for each replicate.
 ```{r results='asis'}
-KNZ_varianceratio_avgrep<-varianceratio(KNZ, replicate="subplot", species="species", year="year", abundance="abundance",  
-                                 bootnumber=10, averagereps=FALSE)
+KNZ_varianceratio_avgrep<-varianceratio(df=KNZ, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance",  bootnumber=10, average.replicates=FALSE)
 
 kable(head(KNZ_varianceratio_avgrep))
 ```
@@ -92,9 +90,8 @@ kable(head(KNZ_varianceratio_avgrep))
 To indicate that there are no replicates in the dataset specify `replicate=NA`. 
 ```{r results='asis'}
 KNZ_A1<-subset(KNZ, subplot=="A_1")
-KNZ_A1_varianceratio<-varianceratio(KNZ_A1, replicate=NA, species="species", year="year", abundance="abundance",  
-                                 bootnumber=10)
-
+KNZ_A1_varianceratio<-varianceratio(df=KNZ_A1, replicate.var=NA, species.var="species", time.var="year", abundance.var="abundance",  
+                                 bootnumber=10) 
 kable(KNZ_A1_varianceratio)
 ```
 
@@ -119,7 +116,7 @@ This measure of synchrony is standardized between 0 (perfect asynchrony) and 1 (
 
 In `codyn`, this is the default metric for the `synchrony` function and can be easily calculated for each replicate in a dataset. 
 ```{r results='asis'}
-KNZ_synchrony<-synchrony(KNZ, replicate="subplot", species="species", year="year", abundance="abundance", metric="Loreau")
+KNZ_synchrony<-synchrony(df=KNZ, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", metric="Loreau")
 kable(head(KNZ_synchrony))
 ```
 
@@ -127,7 +124,7 @@ kable(head(KNZ_synchrony))
 If there are no replicates within the dataset, specify `replicate=NA`. 
 ```{r results='asis'}
 KNZ_A1<-subset(KNZ, subplot=="A_1")
-KNZ_A1_synchrony<-synchrony(KNZ_A1, replicate=NA, species="species", year="year", abundance="abundance", metric="Loreau")
+KNZ_A1_synchrony<-synchrony(df=KNZ_A1, replicate.var=NA, species.var="species", time.var="year", abundance.var="abundance", metric="Loreau")
 KNZ_A1_synchrony
 ```
 
@@ -142,7 +139,7 @@ This measure of synchrony is standardized from -1 (perfect asynchrony) to 1 (per
 
 In `codyn`, this metric is calculated with the "Gross" option in the `synchrony` function and can be easily calculated for each replicate in a dataset.
 ```{r results='asis'}
-KNZ_synchrony_2<-synchrony(KNZ, replicate="subplot", species="species", year="year", abundance="abundance", metric="Gross")
+KNZ_synchrony_2<-synchrony(df=KNZ, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", metric="Gross")
 kable(head(KNZ_synchrony))
 ```
 
@@ -150,7 +147,7 @@ kable(head(KNZ_synchrony))
 If there are no replicates within the dataset, specify `replicate=NA`. 
 ```{r results='asis'}
 KNZ_A1<-subset(KNZ, subplot=="A_1")
-KNZ_A1_synchrony_2<-synchrony(KNZ_A1, replicate=NA, species="species", year="year", abundance="abundance", metric="Gross")
+KNZ_A1_synchrony_2<-synchrony(df=KNZ_A1, replicate.var=as.character(NA), species.var="species", time.var="year", abundance.var="abundance", metric="Gross")
 KNZ_A1_synchrony
 ```
 

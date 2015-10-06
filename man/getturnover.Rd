@@ -11,11 +11,11 @@ getturnover(d1, d2, species = "species", metric = "total")
 
 \item{d2}{A dataframe containing a species column from the following year}
 
-\item{species}{The name of the species column in d1 and d2}
-
 \item{metric}{The turnover metric to return; the default, total, returns summed appearances and disappearances relative to total species richness across both years
 appearance returns the number of appearances in the second year relative to total species richness across both years
 disappearance returns the number of disappearances in the second year relative to the total species richness across both years}
+
+\item{species.var}{The name of the species column in d1 and d2}
 }
 \value{
 output The specificed turnover metric
