@@ -2,7 +2,7 @@
 #' @description Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schluter 1984).
 #' 
 #' Includes a null modeling option to test if the variance ratio significantly differs from 1. The null community is created by randomly selecting different starting points for each species' time series, which generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Hallett et al. 2014). This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of variance ratios. If the dataframe includes multiple replicates, the variance ratios for the actual and null communities are averaged within each iteration unless specified otherwise.
-#' @param df A dataframe containing time, species and abundance columns and an optional column of replicates
+#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
@@ -13,21 +13,21 @@
 #' @param average.replicates If true returns the variance ratio and CIs averaged across replicates; if false returns the variance ratio and CI for each replicate
 #' @return The varianceratio function returns a dataframe with the following attributes:
 #' \itemize{
-#'  \item{VR: }{Number, the actual variance ratio}
-#'  \item{nullVRCIlow: }{Number, the lowest confidence interval}
-#'  \item{nullVRCIhigh: }{Number, the highest confidence interval}
-#'  \item{nullVRmean: }{Number, the average null variance ratio}
-#'  \item{replicate.var: }{Optionally, shares the same column name and type as the replicate.var column in df}
+#'  \item{VR: }{A numeric column with the actual variance ratio values.}
+#'  \item{nullVRCIlow: }{A numeric column with the lowest confidence interval values.}
+#'  \item{nullVRCIhigh: }{A numeric column with the highest confidence interval values.}
+#'  \item{nullVRmean: }{A numeric column with the average null variance ratio values.}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
 #' }
 #' @details
-#' The input dataframe needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
-#' If multiple replicates are included in the dataframe, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+#' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+#' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 #' Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.
 #' @examples 
-#'  mydat <- data(knz_001d)
+#'  data(knz_001d)
 #'  
 #'  # Calculate the variance ratio and CIs averaged within replicates
-#'  # Here the null model is repeated once, for final use it is recommended to set bootnumber to 10,000 times
+#'  # Here the null model is repeated once, for final use it is recommended to set a large bootnumber (eg, 10000)
 #'  
 #'  myoutput_averagedreplicates <-varianceratio(knz_001d, time.var="year", species.var="species", 
 #'  abundance.var="abundance", bootnumber=1, replicate="subplot")

@@ -36,15 +36,14 @@ If multiple replicates are included in the data frame, that column should be spe
 }
 \examples{
 # Calculate mean rank shifts within replicates
- mydat <- data(knz_001d)
+ data(knz_001d)
 
- myoutput <- meanrankshift(mydat,  time.var = "year", species.var = "species",
+ myoutput <- meanrankshift(knz_001d,  time.var = "year", species.var = "species",
  abundance.var = "abundance", replicate.var = "subplot")
 
  # Calculate mean rank shifts for a data frame with no replication
 
- mydat_singlerep <- subset(mydat, subplot=="A_1")
- myoutput_singlerep <- meanrankshift(mydat_singlerep, time.var = "year",
+ myoutput_singlerep <- meanrankshift(subset(knz_001d, subplot=="A_1"), time.var = "year",
  species.var = "species",abundance.var = "abundance")
 }
 \references{

@@ -18,15 +18,14 @@
 #' @references  Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark.  (2008) “Rank clocks and plant community dynamics.” Ecology 89, no. 12: 3534–41.
 #' @examples 
 #'  # Calculate mean rank shifts within replicates
-#'  mydat <- data(knz_001d)
+#'  data(knz_001d)
 #'  
-#'  myoutput <- meanrankshift(mydat,  time.var = "year", species.var = "species", 
+#'  myoutput <- meanrankshift(knz_001d,  time.var = "year", species.var = "species", 
 #'  abundance.var = "abundance", replicate.var = "subplot")
 #'  
 #'  # Calculate mean rank shifts for a data frame with no replication
 #'  
-#'  mydat_singlerep <- subset(mydat, subplot=="A_1")
-#'  myoutput_singlerep <- meanrankshift(mydat_singlerep, time.var = "year", 
+#'  myoutput_singlerep <- meanrankshift(subset(knz_001d, subplot=="A_1"), time.var = "year", 
 #'  species.var = "species",abundance.var = "abundance")
 #' @export
 meanrankshift <- function(df, time.var = "year", species.var = "species",

@@ -15,8 +15,8 @@ turnover_allyears(df, time.var, species.var, abundance.var, metric = "total")
 
 \item{metric}{The turnover metric to return; the default, total, returns summed appearances and disappearances relative to total species richness across both years
 \itemize{
- \item{"appearance": }{ returns the number of appearances in the second year relative to total species richness across both years }
-  \item{"disappearance": }{ returns the number of disappearances in the second year relative to the total species richness across both years }
+ \item{appearance: }{ returns the number of appearances in the second year relative to total species richness across both years }
+  \item{disappearance: }{ returns the number of disappearances in the second year relative to the total species richness across both years }
   }}
 
 \item{abundance}{The name of the abundance column from df}

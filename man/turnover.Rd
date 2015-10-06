@@ -2,14 +2,14 @@
 % Please edit documentation in R/turnover.R
 \name{turnover}
 \alias{turnover}
-\title{Species turnover}
+\title{Species Turnover}
 \usage{
 turnover(df, time.var = "year", species.var = "species",
   abundance.var = "abundance", replicate.var = as.character(NA),
   metric = "total")
 }
 \arguments{
-\item{df}{A dataframe containing time, species and abundance columns and an optional column of replicates}
+\item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
 
 \item{time.var}{The name of the time column}
 
@@ -21,17 +21,17 @@ turnover(df, time.var = "year", species.var = "species",
 
 \item{metric}{The turnover metric to return:
 \itemize{
- \item{"total": }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods.}
- \item{"appearance": }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods.}
- \item{"disappearance": }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods.}
+ \item{total: }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods.}
+ \item{appearance: }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods.}
+ \item{disappearance: }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods.}
 }}
 }
 \value{
-The turnover function returns a dataframe with the following attributes:
+The turnover function returns a data frame with the following attributes:
 \itemize{
- \item{turnover: }{Numeric, the turnover value. The name of this column is the same as the specified metric (default is "total").}
- \item{time.var: }{The second time point, the name and type of this column is the same as the time.var column in the input dataframe.}
- \item{replicate.var: }{Optionally, shares the same column name and type as the replicate.var column in df.}
+ \item{turnover: }{A numeric column with the turnover values. The name of this column is the same as the specified metric (default is "total").}
+ \item{time.var: }{A column containing the second time point; the name and type of this column is the same as the time.var column in the input dataframe.}
+ \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
 }
 }
 \description{
@@ -39,19 +39,19 @@ Computes species turnover between time periods as the proportion of species eith
 Includes an option to compute turnover as just the proportion of species gained (i.e., "appearances") or lost (i.e., "disappearances").
 }
 \details{
-The input dataframe needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
-If multiple replicates are included in the dataframe, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 }
 \examples{
 data(knz_001d)
 
- # Calculate total turnover within replicates
+ # Calculate relative total turnover within replicates
  total.res <- turnover(df=knz_001d,  replicate.var="subplot")
 
- Calculate species appearances within replicates
+ # Calculate relative species appearances within replicates
  appear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="appearance")
 
- Calculate species disappearances within replicates
+ # Calculate relative species disappearances within replicates
  disappear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="disappearance")
 }
 \references{
