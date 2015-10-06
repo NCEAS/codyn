@@ -31,14 +31,17 @@
 #' @export
 meanrankshift <- function(df, time.var = "year", species.var = "species",
                     abundance.var = "abundance", replicate.var = as.character(NA)) {
-  if(is.na(replicate.var)==TRUE) {
-    output<-meanrank(df, time.var, species.var, abundance.var)
+    stopifnot(is.numeric(df[[time.var]]))
+    stopifnot(is.numeric(df[[abundance.var]]))
+    if(is.na(replicate.var)==TRUE) {
+        output<-meanrank(df, time.var, species.var, abundance.var)
     } else {
+        check_single(df, time.var, species.var, replicate.var)
         df[replicate.var] <- if(is.factor(df[[replicate.var]])==TRUE) {
-          factor(df[[replicate.var]])
-          } else {
-            df[replicate.var]
-          }
+                factor(df[[replicate.var]])
+            } else {
+                df[replicate.var]
+            }
         X <- split(df, df[replicate.var])
         out <- (lapply(X, FUN=meanrank, time.var, species.var, abundance.var))
         ID <- unique(names(out))
@@ -46,8 +49,8 @@ meanrankshift <- function(df, time.var = "year", species.var = "species",
                     out, ID, SIMPLIFY = FALSE)
         output<-do.call("rbind", out)
         row.names(output)<-NULL
-      }
-return(output)
+    }
+    return(output)
 }
   
   
