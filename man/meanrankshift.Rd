@@ -4,19 +4,19 @@
 \alias{meanrankshift}
 \title{Function for calculating mean rank shifts}
 \usage{
-meanrankshift(data1, replicate = "replicate", year = "year",
-  species = "species", abundance = "abundance")
+meanrankshift(df, time.var = "year", species.var = "species",
+  abundance.var = "abundance", replicate.var = as.character(NA))
 }
 \arguments{
-\item{data1}{Community dataset. Must be in 'long' format.}
+\item{df}{dataframe of Community dataset. Must be in 'long' format.}
 
-\item{replicate}{The replication variable}
+\item{time.var}{The time variable}
 
-\item{year}{The time variable}
+\item{species.var}{The species variable}
 
-\item{species}{The species variable}
+\item{abundance.var}{The abundance variable}
 
-\item{abundance}{The abundance variable}
+\item{replicate.var}{The replication variable}
 }
 \value{
 a dataframe, showing years compared

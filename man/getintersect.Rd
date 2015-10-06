@@ -4,12 +4,12 @@
 \alias{getintersect}
 \title{Create intersected data frames}
 \usage{
-getintersect(d1, d2, dataname = "species")
+getintersect(df1, df2, dataname = "species")
 }
 \arguments{
-\item{d1}{A dataframe}
+\item{df1}{A dataframe}
 
-\item{d2}{A dataframe}
+\item{df2}{A dataframe}
 
 \item{dataname}{The name of the column on which the two datasets will be joined and intersected}
 }

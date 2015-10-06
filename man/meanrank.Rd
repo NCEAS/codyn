@@ -4,17 +4,17 @@
 \alias{meanrank}
 \title{Function for calculating mean rank shifts}
 \usage{
-meanrank(comm_data, year = "year", species = "species",
-  abundance = "abundance")
+meanrank(comm_data, time.var = "year", species.var = "species",
+  abundance.var = "abundance")
 }
 \arguments{
-\item{comm_data}{Community dataset. Must be in 'long' format.}
+\item{comm_data}{dataframe of Community dataset. Must be in 'long' format.}
 
-\item{year}{The time variable}
+\item{time.var}{The time variable}
 
-\item{species}{The species variable}
+\item{species.var}{The species variable}
 
-\item{abundance}{The abundance variable}
+\item{abundance.var}{The abundance variable}
 }
 \value{
 a dataframe, showing years compared

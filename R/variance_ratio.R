@@ -1,6 +1,10 @@
-#' A function to calculate the variance ratio and null model mean and CIs within multiple replicates
-#'
-#' @param df A dataframe containing replicate.var, species.var, time.var and abundance.var columns
+#' @title Variance Ratio
+#' @description Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schulter 1984).
+#' 
+#' Includes a null modeling option to test if the variance ratio significantly differs from 1. The null community is created by randomly selecting different starting points for each species' time series, which generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Hallett et al. 2014). This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of variance ratios. If the dataframe includes multiple replicates, the variance ratios for the actual and null communities are averaged within each iteration unless specified otherwise.
+#' @details
+#' \deqn{ VR = \frac{Var(C)}{\sum_{i}^{N} Var(x_i)}}
+#' @param df A dataframe containing time.var, species.var and abundance.var columns and an optional replicate.var column
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
