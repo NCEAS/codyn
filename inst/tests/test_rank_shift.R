@@ -1,6 +1,6 @@
-context("rankshifts")
+context("rank_shift")
 
-test_that("rankshifts loads and returns correct result", {
+test_that("rank_shift loads and returns correct result", {
     # Ensure that trivial tests work correctly
     expect_that(length("a"), equals(1))
 
@@ -38,7 +38,7 @@ test_that("rankshifts loads and returns correct result", {
   	dat3$subplot<-as.character(dat3$subplot)
 
 
-		#test the get_slope function
+	#test the get_slope function
   	myresults<-meanrank(dat1, "year", "species", "abundance")
   	expect_that(class(myresults[,2]), equals("numeric"))
   	expect_that(length(myresults), equals(2))
@@ -48,7 +48,7 @@ test_that("rankshifts loads and returns correct result", {
   	#test that gives a warning if running on factor instead of numeric
   	expect_error(meanrank(dat2, "yr", "sp", "subplot"))
 
-		#test the mean_rank_shift function
+	#test the mean_rank_shift function
   	#test that works on a single replicate
   	myresults3<-mean_rank_shift(dat1, replicate.var=NA, time.var="year", species.var="species", abundance.var="abundance")
   	expect_that(myresults3, equals(myresults2))
@@ -65,11 +65,11 @@ test_that("rankshifts loads and returns correct result", {
   	myresults6<-mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
   	expect_that(myresults6[2,2], equals(myresults5[2,2]))
 
-		#test that works regardless of whether parameter is specified or just ordered
+	#test that works regardless of whether parameter is specified or just ordered
   	myresults7<-mean_rank_shift(knz_001d,  "year", "species", "abundance", "subplot")
   	expect_that(myresults7, is_identical_to(myresults5))
 
-		#test that works with different column orders if names specified
+	#test that works with different column orders if names specified
   	myresults8<-mean_rank_shift(knz_001d, abundance.var="abundance", replicate.var="subplot", species.var="species", time.var="year")
   	expect_that(myresults8, is_identical_to(myresults5))
 
@@ -77,7 +77,7 @@ test_that("rankshifts loads and returns correct result", {
   	myresults9<-mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
   	expect_that(myresults9[2,2], equals(myresults5[2,2]))
 
-		#test that it works even if there are additional unused columns
+	#test that it works even if there are additional unused columns
   	knz_001d3<-knz_001d
   	knz_001d3$site<-"KNZ"
   	myresults10<-mean_rank_shift(knz_001d3, "year", "species", "abundance", "subplot")
