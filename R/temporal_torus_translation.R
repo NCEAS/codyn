@@ -62,6 +62,7 @@ temporal_torus_translation <- function(df, time.var="year", species.var="species
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. “Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot.” Journal of Ecology 89, no. 6 (2001): 947–59.
 #' @export
 temporal_torus_translation_CI<-function(df,  time.var="year",species.var="species", abundance.var="abundance", FUN, bootnumber, replicate.var=NA, li=0.025, ui=0.975, average.replicates=TRUE){
+  check_numeric(df, time.var, abundance.var)
   if(is.na(replicate.var)){
     check_single_onerep(df, time.var, species.var)
     
