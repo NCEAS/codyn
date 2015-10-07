@@ -16,7 +16,7 @@ transpose_community(df, time.var, species.var, abundance.var)
 \item{abundance.var}{The name of the abundance column from df}
 }
 \value{
-comdat A dataframe of species abundances x time
+A dataframe of species abundances x time
 }
 \description{
 Convert from a longform abundance dataframe to a time by species dataframe.

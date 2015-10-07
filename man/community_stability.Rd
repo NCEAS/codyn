@@ -15,8 +15,6 @@ community_stability(df, time.var = "year", abundance.var = "abundance",
 \item{abundance.var}{The name of the abundance column}
 
 \item{replicate.var}{The name of the optional replicate column}
-
-\item{species.var}{The name of the species column}
 }
 \value{
 The community_stability function returns a numeric stability value unless a replication column is specified in the input data frame.

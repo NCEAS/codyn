@@ -6,6 +6,13 @@
 \usage{
 check_single_onerep(df, time.var, species.var)
 }
+\arguments{
+\item{df}{A dataframe containing time.var, species.var and abundance.var columns}
+
+\item{time.var}{The name of the time column from df}
+
+\item{species.var}{The name of the species column from df}
+}
 \description{
 Utility function to warn users that either multiple records exist within replicates, or that data may be spanning mutiple replicates but no replicate.var has been specified
 }

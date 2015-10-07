@@ -13,7 +13,7 @@ check_single(df, time.var, species.var, replicate.var)
 
 \item{species.var}{The name of the species column from df}
 
-\item{replicate}{The name of the replicate column from df}
+\item{replicate.var}{The name of the replicate column from df}
 }
 \description{
 Utility function to ensure only a single record exists for a given species within one replicate, for one time point.
