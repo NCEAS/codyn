@@ -27,7 +27,7 @@ If replication is specified, the function returns a data frame with the followin
 }
 }
 \description{
-Calculates the stability of the overall community over time as the temporal standard deviation / temporal mean of aggregate species abundances (Tilman 1999).
+Calculates the stability of the overall community over time as the temporal mean / temporal standard deviation of aggregate species abundances (Tilman 1999).
 }
 \details{
 The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.

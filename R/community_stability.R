@@ -1,5 +1,5 @@
 #' @title Community Stability
-#' @description Calculates the stability of the overall community over time as the temporal standard deviation / temporal mean of aggregate species abundances (Tilman 1999).
+#' @description Calculates the stability of the overall community over time as the temporal mean / temporal standard deviation of aggregate species abundances (Tilman 1999).
 #' 
 #' @param df A data frame containing time, species and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
