@@ -76,7 +76,6 @@ get_intervals <- function(df, time.var="time", species.var="species", abundance.
     colnums = col(DM)
     lag_list = lapply(1:(nrow(df)-1), get_lag_i, DM, rownums, colnums)
     results <- data.frame(do.call(rbind, lag_list))
-    browser()
     return(results)
 }
 
