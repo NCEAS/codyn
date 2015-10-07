@@ -4,7 +4,8 @@
 \alias{temporal_torus_translation}
 \title{Temporal modification of the Torus translation}
 \usage{
-temporal_torus_translation(df, time.var, species.var, abundance.var, FUN)
+temporal_torus_translation(df, time.var = "year", species.var = "species",
+  abundance.var = "abundance", FUN)
 }
 \arguments{
 \item{df}{A dataframe containing time, species and abundance columns}
