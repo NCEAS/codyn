@@ -31,26 +31,33 @@ library(reshape2)
 
 ## Generate some sample data 
 x = 1977:2003
-y1 = .3*sin(x) + rnorm(length(x), 0, .1) + -.05*x + 150
-y2 = .2*sin(x) + rnorm(length(x), 0, .1) + -.01*x + 70
-y3 = .2*sin(x) + rnorm(length(x), 0, .1) + .01*x + 30
+sp1 = .3*sin(x) + rnorm(length(x), 0, .1) + -.05*x + 150
+sp2 = .2*sin(x) + rnorm(length(x), 0, .1) + -.01*x + 70
+sp3 = .2*sin(x) + rnorm(length(x), 0, .1) + .01*x + 30
 
 ## Reshape the data: year, variable (y1,y2,y3), value
-dat = melt(data.frame(x, y1, y2, y3), "x")
-
+dat = melt(data.frame(x, sp1, sp2, sp3), "x")
 ```
 
 
 A traditional, linear depiction of species rank shifts can be cluttered and visually confusing:
-```{r}
-ggplot(dat, aes(x,value,color=variable)) + geom_line()
+```{r, fig.width = 5, fig.height = 5}
+ggplot(dat, aes(x,value,color=variable)) + geom_line(size = 2)
 ```
 
 
 In contrast, a rank clock visualization highlights differences in the stability of species:
-```{r}
-ggplot(dat, aes(x,value,color=variable)) + geom_line() + coord_polar() + theme_bw() 
+```{r, fig.width = 5, fig.height = 5}
+ggplot(dat, aes(x, value, color=variable)) + geom_line(size = 2) + coord_polar() + theme_bw() 
+```
 
+For example, in the Konza grasslands there has been tremendous variation in the abundance of little bluestem and big bluestem over time.
+```{r, fig.width = 7, fig.height = 7}
+dat.agg <- aggregate(abundance ~ species * year, data = knz_001d, FUN = mean)
+blues <- subset(dat.agg, species == "andropogon gerardii" | species == "schizachyrium scoparium")
+ggplot(blues, aes(year, abundance, color = species)) + 
+  geom_line(size = 2) + coord_polar() + theme_bw() + 
+  ggtitle("Variation in little and big bluestem")
 ```
 
 ## rankshifts: A function to quantify shifts in species rank order
@@ -60,7 +67,7 @@ This function quantifies relative changes in species rank abundances by taking t
 
 ## Visualizing mean species rank shifts
 
-```{r}
+```{r, fig.width = 5, fig.height = 5}
 ##reading in data from Konza
 data(collins08)
 
