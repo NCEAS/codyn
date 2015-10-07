@@ -1,13 +1,26 @@
 #' @title Temporal Modification of the Torus Translation
-#' @description Calculates a user-specified test statistic on a null ecological community using a temporal modification of the Torus translation.
-#' 
+#' @description Performs a user-specified function on a null ecological community using a temporal modification of the torus translation (Harms et al. 2001, Hallett et al. 2014).
+#' The null community is formed by randomly selected different starting years for each species’ time series. 
+#' This generated a null community matrix in which species abundances varied independently but within-species autocorrelation is maintained.
+#' The user-specified function must require a species x time matrix input.
 #' @param df A data frame containing time, species and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param FUN A function to calculate on the null community
-#' @return The temporal_torus_translation function returns an integer output of the user-specified function calculated on a null community. 
+#' @return The temporal_torus_translation function returns the same output as the user-specified function, as calculated on a null community.
 #' @details The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+#' @examples
+#'  data(knz_001d)
+#' 
+#' Calculate a Euclidean distance matrix on a null community
+#' 
+#' temporal_torus_translation(subset(knz_001d, subplot=="A_1"), time.var="year", 
+#' species.var="species", abundance.var="abundance", FUN=dist)
+#' @references
+#' Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6 (2014): 1693–1700.
+#' 
+#' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. “Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot.” Journal of Ecology 89, no. 6 (2001): 947–59.
 #' @export
 temporal_torus_translation <- function(df, time.var="year", species.var="species",  abundance.var="abundance", FUN){
   if(!is.numeric(df[,abundance.var])) { stop("Abundance variable is not numeric") }
