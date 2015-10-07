@@ -57,27 +57,27 @@ test_that("temporal_torus_translation loads and returns correct result", {
   
   
   # Test the temporal_torus_translation function
-  myresults <- temporal_torus_translation(dat1, "year", "species", "abundance", varianceratio_matrixdata)
+  myresults <- temporal_torus_translation(dat1, "year", "species", "abundance", variance_ratio_matrixdata)
   #test that returns a single numeric value
   expect_equal(length(myresults), 1)
   expect_true(is.numeric(myresults))  
   #test that does not generate the same value every time
-  myresults2<-temporal_torus_translation(dat1, "year","species",  "abundance", varianceratio_matrixdata)
+  myresults2<-temporal_torus_translation(dat1, "year","species",  "abundance", variance_ratio_matrixdata)
   expect_that(myresults==myresults2, equals(FALSE))
   
   #test that is not sensitive to different column names
-  myresults3 <- temporal_torus_translation(dat2, "yr",  "sp", "abund", varianceratio_matrixdata)
+  myresults3 <- temporal_torus_translation(dat2, "yr",  "sp", "abund", variance_ratio_matrixdata)
   expect_equal(length(myresults3), 1)
   expect_true(is.numeric(myresults3)) 
   
   
   #Test the temporal_torus_translation_CI function
-  myresults<-temporal_torus_translation_CI(dat1, replicate.var=NA, species.var="species", time.var="year", abundance.var="abundance", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
+  myresults<-temporal_torus_translation_CI(dat1, replicate.var=NA, species.var="species", time.var="year", abundance.var="abundance", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
   
   #Test that returns an error when abundance is a character or factor column
-  expect_error(temporal_torus_translation_CI(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randcharacter", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
+  expect_error(temporal_torus_translation_CI(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randcharacter", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
 
-    expect_error(temporal_torus_translation_CI(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randfactor", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
+    expect_error(temporal_torus_translation_CI(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randfactor", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
   
   
   
@@ -85,29 +85,29 @@ test_that("temporal_torus_translation loads and returns correct result", {
   #or as a factor with additional, missing levels)
   
   #For example :
-  myresults2<-temporal_torus_translation_CI(dat1, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
+  myresults2<-temporal_torus_translation_CI(dat1, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
   expect_true(is.factor(myresults2$subplot))
   
-  myresults2b<-temporal_torus_translation_CI(dat3, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
+  myresults2b<-temporal_torus_translation_CI(dat3, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
   expect_true(is.character(myresults2b$subplot))
   
   expect_equal(as.character(myresults2$subplot), myresults2b$subplot)
   
-  myresults2b<-temporal_torus_translation_CI(knz_001d, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
+  myresults2b<-temporal_torus_translation_CI(knz_001d, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
   
   #Test that is correct for whether "averagereps" is true or false
   dat5<-dat4
   dat5$subplot<-as.character(dat5$subplot)
-  myresults3<-temporal_torus_translation_CI(dat5, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=TRUE)
-  myresults4<-temporal_torus_translation_CI(dat5, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
+  myresults3<-temporal_torus_translation_CI(dat5, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=TRUE)
+  myresults4<-temporal_torus_translation_CI(dat5, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
  
   #expect that subplot names are the same between input and output
   expect_equal(unique(dat5$subplot), myresults4$subplot)
   
   #Test both options for "averagereps"
-  myresults4<-temporal_torus_translation_CI(knz_001d, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=TRUE)
+  myresults4<-temporal_torus_translation_CI(knz_001d, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=TRUE)
   expect_that(nrow(myresults4), equals(1))
-  myresults5<-temporal_torus_translation_CI(knz_001d, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=varianceratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
+  myresults5<-temporal_torus_translation_CI(knz_001d, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
   expect_that(nrow(myresults5), equals(length(unique(knz_001d$subplot))))
  
 })
