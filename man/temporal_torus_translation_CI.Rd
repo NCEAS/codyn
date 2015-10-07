@@ -53,8 +53,8 @@ If multiple replicates are included in the data frame, that column should be spe
 Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.
 }
 \references{
-Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6 (2014): 1693–1700.
+Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.
 
-Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. “Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot.” Journal of Ecology 89, no. 6 (2001): 947–59.
+Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 }
 
