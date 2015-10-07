@@ -11,7 +11,7 @@
 #' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
 #' @param replicate.var The name of the optional replicate column 
 #' @param average.replicates If true returns the variance ratio and CIs averaged across replicates; if false returns the variance ratio and CI for each replicate
-#' @return The varianceratio function returns a dataframe with the following attributes:
+#' @return The variance_ratio function returns a dataframe with the following attributes:
 #' \itemize{
 #'  \item{VR: }{A numeric column with the actual variance ratio value.}
 #'  \item{nullVRCIlow: }{A numeric column with the lowest confidence interval value.}
@@ -28,25 +28,25 @@
 #'  # Calculate the variance ratio and CIs averaged within replicates
 #'  # Here the null model is repeated once, for final use it is recommended to set a large bootnumber (eg, 10000)
 #'  
-#'  myoutput_averagedreplicates <-varianceratio(knz_001d, time.var="year", species.var="species", 
+#'  myoutput_averagedreplicates <-variance_ratio(knz_001d, time.var="year", species.var="species", 
 #'  abundance.var="abundance", bootnumber=1, replicate="subplot")
 #'  
 #'  #Calculate the variance ratio and CIs for each replicate
 #'  
-#'  myoutput_withinreplicates <-varianceratio(knz_001d, time.var="year", species.var="species", 
+#'  myoutput_withinreplicates <-variance_ratio(knz_001d, time.var="year", species.var="species", 
 #'  abundance.var="abundance", bootnumber=1, replicate="subplot", average.replicates=FALSE)
 #'  @references
 #'  Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6: 1693–1700. doi: 10.1890/13-0895.1
 #'  
 #'  Schluter, Dolph. (1984) “A Variance Test for Detecting Species Associations, with Some Example Applications.” Ecology 65, no. 3: 998–1005. doi:10.2307/1938071.
 #' @export
-varianceratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
+variance_ratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
     stopifnot(is.numeric(df[[time.var]]))
     stopifnot(is.numeric(df[[abundance.var]]))
     if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
-        VR<-varianceratio_longformdata(df,time.var, species.var, abundance.var)
+        VR<-variance_ratio_longformdata(df,time.var, species.var, abundance.var)
     } else {
         check_single(df, time.var, species.var, replicate.var)
         df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE) {
@@ -56,13 +56,13 @@ varianceratio<-function(df, time.var="year", species.var="species",  abundance.v
         }
         if(average.replicates==TRUE) {
             X<-split(df, df[replicate.var])
-            VR<-mean(unlist(lapply(X, FUN=varianceratio_longformdata, time.var, species.var, abundance.var))) 
+            VR<-mean(unlist(lapply(X, FUN=variance_ratio_longformdata, time.var, species.var, abundance.var))) 
         } else {
             X <- split(df, df[replicate.var])
-            VR<-do.call("rbind", lapply(X, FUN=varianceratio_longformdata, time.var,  species.var,abundance.var))
+            VR<-do.call("rbind", lapply(X, FUN=variance_ratio_longformdata, time.var,  species.var,abundance.var))
         }
     }
-    nullout<-temporal_torus_translation_CI(df, time.var, species.var, abundance.var, varianceratio_matrixdata, bootnumber, replicate.var, li, ui, average.replicates)
+    nullout<-temporal_torus_translation_CI(df, time.var, species.var, abundance.var, variance_ratio_matrixdata, bootnumber, replicate.var, li, ui, average.replicates)
     output<-(cbind(nullout, VR))
     row.names(output)<-NULL
     return(as.data.frame(output)) 
@@ -80,7 +80,7 @@ varianceratio<-function(df, time.var="year", species.var="species",  abundance.v
 #'
 #' @param comdat A community dataframe
 #' @return var.ratio The variance ratio of the community
-varianceratio_matrixdata<-function(comdat){
+variance_ratio_matrixdata<-function(comdat){
     all.cov <- cov(comdat, use="pairwise.complete.obs")
     col.var<-apply(comdat, 2, var)
     com.var <-sum(all.cov)
@@ -96,8 +96,8 @@ varianceratio_matrixdata<-function(comdat){
 #' @param species.var The name of the species.var column from df
 #' @param abundance.var The name of the abundance.var column from df
 #' @return var.ratio The variance ratio of the community
-varianceratio_longformdata<-function(df, time.var, species.var, abundance.var){
+variance_ratio_longformdata<-function(df, time.var, species.var, abundance.var){
     com.use<-transpose_community(df, time.var, species.var, abundance.var)
-    var.ratio<-varianceratio_matrixdata(com.use)
+    var.ratio<-variance_ratio_matrixdata(com.use)
     return(var.ratio)
 }
