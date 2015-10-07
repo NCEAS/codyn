@@ -4,8 +4,7 @@
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
-#' @return comdat A dataframe of species abundances x time
-
+#' @return A dataframe of species abundances x time
 transpose_community <- function(df, time.var, species.var, abundance.var) {
     df<-as.data.frame(df)
     df[species.var]<-if(is.factor(df[[species.var]])==TRUE){factor(df[[species.var]])} else {df[species.var]}  
@@ -27,7 +26,9 @@ check_names <- function(given, data) {
 }
 
 #' Utility function to warn users that either multiple records exist within replicates, or that data may be spanning mutiple replicates but no replicate.var has been specified
-
+#' @param df A dataframe containing time.var, species.var and abundance.var columns
+#' @param time.var The name of the time column from df
+#' @param species.var The name of the species column from df
 check_single_onerep <- function(df, time.var, species.var){
   if(max(table(df[,time.var], df[,species.var]))>1) warning("Either data span multiple replicates with no replicate.var specified or multiple records within years for some species") }
 
@@ -35,7 +36,7 @@ check_single_onerep <- function(df, time.var, species.var){
 #' @param df A dataframe containing time.var, species.var, and replicate.var columns
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
-#' @param replicate The name of the replicate column from df
+#' @param replicate.var The name of the replicate column from df
 
 check_single <- function(df, time.var, species.var, replicate.var){
   X <- split(df, df[replicate.var]) 
@@ -59,7 +60,7 @@ check_single <- function(df, time.var, species.var, replicate.var){
 #' 
 #' @param df A dataframe containing time.var, species.var, and replicate.var columns
 #' @param time.var The name of the time column from df
-#' @param replicate The name of the replicate column from df
+#' @param abundance.var The name of the replicate column from df
 
 check_numeric <- function(df, time.var, abundance.var) {
   if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
