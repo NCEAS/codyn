@@ -74,26 +74,26 @@ The variance ratio remains widely used but has been subject to a number of criti
 
 The default `variance_ratio` setting calculates a null variance ratio for each replicate in the dataset, averages these values, and repeats as many times as specified by `bootnumber`. This vector of averaged, null variance ratios is then sampled for lower and upper confidence intervals, which are returned along with the observed variance ratio. 
 ```{r results='asis'}
-KNZ_varianceratio<-varianceratio(df=KNZ, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", bootnumber=10)
+KNZ_variance_ratio<-variance_ratio(df=KNZ, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance", bootnumber=10)
 
-kable(KNZ_varianceratio)
+kable(KNZ_variance_ratio)
 ```
 
 
 Alternatively, specifying `averagereps=FALSE` will create a vector of null variance ratios for each replicate in the dataset, and return the subsequent confidence intervals and observed variance ratios for each replicate.
 ```{r results='asis'}
-KNZ_varianceratio_avgrep<-varianceratio(df=KNZ, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance",  bootnumber=10, average.replicates=FALSE)
+KNZ_variance_ratio_avgrep<-variance_ratio(df=KNZ, replicate.var="subplot", species.var="species", time.var="year", abundance.var="abundance",  bootnumber=10, average.replicates=FALSE)
 
-kable(head(KNZ_varianceratio_avgrep))
+kable(head(KNZ_variance_ratio_avgrep))
 ```
 
 
 To indicate that there are no replicates in the dataset specify `replicate=NA`. 
 ```{r results='asis'}
 KNZ_A1<-subset(KNZ, subplot=="A_1")
-KNZ_A1_varianceratio<-varianceratio(df=KNZ_A1, replicate.var=NA, species.var="species", time.var="year", abundance.var="abundance",  
+KNZ_A1_variance_ratio<-variance_ratio(df=KNZ_A1, replicate.var=NA, species.var="species", time.var="year", abundance.var="abundance",  
                                  bootnumber=10) 
-kable(KNZ_A1_varianceratio)
+kable(KNZ_A1_variance_ratio)
 ```
 
 #### General torus-translation function
