@@ -2,26 +2,26 @@
 % Please edit documentation in R/temporal_torus_translation.R
 \name{temporal_torus_translation}
 \alias{temporal_torus_translation}
-\title{Temporal modification of the Torus translation}
+\title{Temporal Modification of the Torus Translation}
 \usage{
 temporal_torus_translation(df, time.var = "year", species.var = "species",
   abundance.var = "abundance", FUN)
 }
 \arguments{
-\item{df}{A dataframe containing time, species and abundance columns}
+\item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
 
-\item{time.var}{The name of the time column from df}
+\item{time.var}{The name of the time column}
 
-\item{species.var}{The name of the species column from df}
+\item{species.var}{The name of the species column}
 
-\item{abundance.var}{The name of the abundance column from df}
+\item{abundance.var}{The name of the abundance column}
 
 \item{FUN}{A function to calculate on the null community}
 }
 \value{
-a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
+The temporal_torus_translation returns a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
 }
 \description{
-A function to calculate a vector of null test statistics using a temporal modification of the Torus translation
+Calculates a vector of null test statistics using a temporal modification of the Torus translation.
 }
 

@@ -1,12 +1,12 @@
-#' @title Temporal modification of the Torus translation
-#' @description A function to calculate a vector of null test statistics using a temporal modification of the Torus translation
+#' @title Temporal Modification of the Torus Translation
+#' @description Calculates a vector of null test statistics using a temporal modification of the Torus translation.
 #' 
-#' @param df A dataframe containing time, species and abundance columns
-#' @param species.var The name of the species column from df
-#' @param time.var The name of the time column from df
-#' @param abundance.var The name of the abundance column from df
+#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @param time.var The name of the time column 
+#' @param species.var The name of the species column 
+#' @param abundance.var The name of the abundance column 
 #' @param FUN A function to calculate on the null community
-#' @return a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
+#' @return The temporal_torus_translation returns a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
 #' @export
 temporal_torus_translation <- function(df, time.var="year", species.var="species",  abundance.var="abundance", FUN){
   if(!is.numeric(df[,abundance.var])) { stop("Abundance variable is not numeric") }
