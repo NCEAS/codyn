@@ -1,5 +1,5 @@
 Package: codyn
-Title: Community dynamics metrics
+Title: Community Dynamics Metrics
 Version: 0.9.0.9000
 Authors@R: c( person("Lauren", "Hallett", email="lauren.hallett@berkeley.edu",
     role=c("aut")), person("Sydney", "Jones",
