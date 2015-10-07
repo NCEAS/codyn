@@ -84,7 +84,7 @@ test_that("rank_shift loads and returns correct result", {
   	expect_that(myresults10, is_identical_to(myresults5))
 
   	#test that gives error when abundance column is a character or factor
-#   	expect_error(mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randcharacter"))
-#   	expect_error(mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randfactor"))
+  	expect_error(mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randcharacter"))
+  	expect_error(mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randfactor"))
 
 })
