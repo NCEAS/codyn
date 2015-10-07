@@ -42,7 +42,7 @@ test_that("synchrony loads and returns correct result", {
     expect_that(myresults, equals(myresults2))
 
     #test that gives a warning if running on factor instead of numeric
-    expect_error(synch_onerep(dat2, time.var = "yr", abundance.var="sub", species.var="sp"), "not numeric")
+    expect_error(synchrony(dat2, time.var = "yr", abundance.var="sub", species.var="sp"), "not numeric")
     
     #test that works on a single replicate
     myresults3 <- synchrony(dat1, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA)

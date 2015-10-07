@@ -84,5 +84,5 @@ test_that("variance_ratio function returns correct result", {
     ## test that bad data values are handled with graceful error messages
     bad_data <- knz_001d
     bad_data['abundance'][1,] <- 'dung'
-    expect_error(variance_ratio(bad_data, "year", "species", "abundance",  bootnumber=1, replicate="subplot"), "is.numeric")
+    expect_error(variance_ratio(bad_data, "year", "species", "abundance",  bootnumber=1, replicate="subplot"), "not numeric")
 })
