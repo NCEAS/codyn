@@ -53,7 +53,7 @@ community_distance <- function(df, time.var="time", species.var="species", abund
     stopifnot(is.numeric(df[[abundance.var]]))
     if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
-        output <- get_intervals(df, time.var, species.var, abundance.var)
+        output <- get_lagged_distances(df, time.var, species.var, abundance.var)
     } else {
         check_single(df, time.var, species.var, replicate.var)
         df[replicate.var] <- if(is.factor(df[[replicate.var]])) {
