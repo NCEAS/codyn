@@ -4,7 +4,8 @@
 \alias{getturnover}
 \title{A function to calculate species turnover between two years}
 \usage{
-getturnover(d1, d2, species.var = "species", metric = "total")
+getturnover(d1, d2, species.var = "species", metric = c("total",
+  "disappearance", "appearance"))
 }
 \arguments{
 \item{d1}{A dataframe containing a species column from one year}

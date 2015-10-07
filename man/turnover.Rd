@@ -5,8 +5,7 @@
 \title{Species Turnover}
 \usage{
 turnover(df, time.var = "year", species.var = "species",
-  abundance.var = "abundance", replicate.var = as.character(NA),
-  metric = "total")
+  abundance.var = "abundance", replicate.var = NA, metric = "total")
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
@@ -55,6 +54,6 @@ data(knz_001d)
  disappear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="disappearance")
 }
 \references{
-Cleland, Elsa E., Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Katherine L. Gross, Laureano A. Gherardi, Lauren M. Hallett, et al.  (2013) “Sensitivity of grassland plant community composition to spatial vs. temporal variation in precipitation.” Ecology 94, no. 8: 1687–96.
+Cleland, Elsa E., Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Katherine L. Gross, Laureano A. Gherardi, Lauren M. Hallett, et al. (2013) "Sensitivity of grassland plant community composition to spatial vs. temporal variation in precipitation." Ecology 94, no. 8: 1687-96.
 }
 
