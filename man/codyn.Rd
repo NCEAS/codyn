@@ -4,7 +4,7 @@
 \name{codyn}
 \alias{codyn}
 \alias{codyn-package}
-\title{Analysis of Long-Term Ecological Community Data}
+\title{codyn - Community Dynamics Metrics}
 \description{
 Temporal diversity indices and community stability metrics for ecologists.
 }
