@@ -1,4 +1,6 @@
 ^\.travis\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.Rhistory
+^\.RData
 cran-comments.md
