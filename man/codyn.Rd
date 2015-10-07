@@ -4,7 +4,7 @@
 \name{codyn}
 \alias{codyn}
 \alias{codyn-package}
-\title{An R package for analysis of long-term ecological community data}
+\title{Analysis of Long-Term Ecological Community Data}
 \description{
 Temporal diversity indices and community stability metrics for ecologists.
 }
@@ -31,13 +31,13 @@ Work on this package was supported by NSF-ABI grant #1262458
 }
 }
 \author{
-Lauren Hallett \email{lauren.hallett@berkeley.edu}
+Lauren Hallett \email{lauren.m.hallett@gmail.com}
  Sydney Jones \email{syd@sevilleta.unm.edu}
  Andrew MacDonald \email{aammacdonald@gmail.com}
- Matthew Jones \email{jones@nceas.ucsb.edu}
  Dan Flynn \email{flynn@fas.harvard.edu}
  Peter Slaughter \email{slaughter@nceas.ucsb.edu}
  Corinna Gries \email{cgries@wisc.edu}
  Scott Collins \email{scollins@sevilleta.unm.edu}
+ Matthew Jones \email{jones@nceas.ucsb.edu}
 }
 
