@@ -1,5 +1,5 @@
 ---
-title: "Temporal diversity indices"
+title: "Temporal Diversity Indices"
 author: "Lauren M. Hallett"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -116,11 +116,9 @@ ggplot(KNZ_disappearance, aes(x=year, y=disappearance, color=replicate)) + geom_
 
 
 # Species rank shifts
-Species rank shifts describe within-community reording among species over time [@Collins2008]. 
 
 ## Rank clocks: visualizing species rank shifts
-
-Rank clocks plot the rank order of abundance of each species over time in a circle, starting with a vertical axis at 12 o'clock. They are useful to visualize the degree to which species fluctuate over time [@Collins2008]. 
+Rank clocks are a useful way to visualize the degree to which species reorder over time. They plot the rank order of abundance of each species over time in a circle, starting with a vertical axis at 12 o'clock [@Collins2008]. 
 
 To illustrate, generate some sample data:
 
@@ -141,7 +139,7 @@ dat = melt(data.frame(x, sp1, sp2, sp3), "x")
 
 
 A traditional, linear depiction of species rank shifts can be cluttered and visually confusing:
-```{r, fig.width = 5, fig.height = 5}
+```{r, fig.width = 7, fig.height = 4}
 ggplot(dat, aes(x,value,color=variable)) + geom_line(size = 2) + theme_bw()
 ```
 
@@ -165,13 +163,13 @@ ggplot(blues, aes(year, abundance, color = species)) +
 
 ## Mean rank shifts
 
-Mean rank shifts describe relative changes in species rank abundances, which indicate the degree of species reording over time. This metric is calculated as:
+The `mean_rank_shift` function describes relative changes in species rank abundances, which indicate the degree of species reording over time. This metric is calculated as:
 
 $$ MRS = {\sum_{i=1}^{N} (|R_i,t+1 - R_i,t|})/N $$
 
 where $N$ is the number of species in common in both years, $t$ is the year, $R_i,t$ is the relative rank of species $i$ in year $t$.
 
-In `codyn`, this metric is calculated with `mean_rank_shift` and requires a dataset with a year, species and abundance column; it also include an option replicate column to calculate the metric within multiple spatial replicates. 
+`mean_rank_shift` requires a data frame with columns for species, year and abundance, and includes an optional argument to specify a column for spatial replicates.
 
 ```{r}
 KNZ_rankshift <- mean_rank_shift(df=collins08, replicate.var="replicate", abundance.var="abundance")
@@ -182,9 +180,7 @@ KNZ_rankshift$year <- as.numeric(substr(KNZ_rankshift$year_pair, 6,9))
 kable(head(KNZ_rankshift))
 ```
 
-
-
-If`replicate.var=NA` but the dataset in fact includes replicates, `mean_rank_shift` will be calculated using all species present in the datset. For collins08, this would return mean_rank_shift for the burned and unburned areas combined.
+If`replicate.var=NA` but the dataset in fact includes replicates, `mean_rank_shift` will be calculated using all species present in the datset. For collins08, this would return mean_rank_shift for the burned and unburned areas combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
 ```{r}
 KNZ_rankshift_agg <- mean_rank_shift(df=collins08, replicate.var=NA)
 #Select the final year from the returned year_pair
@@ -193,10 +189,10 @@ KNZ_rankshift$year<-as.numeric(substr(KNZ_rankshift$year_pair, 6, 9))
 
 ## Rank shifts at Konza
 Calculating mean rank shifts highlights the stability of communities diverged at Konza around 1992, with fewer rank shifts between species in the burned relative to the unburned area. 
-```{r}
+```{r fig.width = 7, fig.height = 4,}
 ##plotting
 ggplot(KNZ_rankshift, aes(year, MRS, color=replicate)) + 
-  geom_line() + theme_bw() + theme(legend.position="none")
+  geom_line(size= 2) + theme_bw() + theme(legend.position="none")
 ```
 
 
