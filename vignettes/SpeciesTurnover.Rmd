@@ -20,7 +20,7 @@ Many measures of community structure, such as diversity indices and rank-abundan
 - **`turnover`** calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
 
 - **`mean_rank_shift`** quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive timepoints. 
-This metric goes hand-in-hand "rank clocks," a useful visualization tool of shifts in species ranks. 
+This metric goes hand-in-hand with "rank clocks," a useful visualization tool of shifts in species ranks. 
 
 - **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition. 
 
