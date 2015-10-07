@@ -1,11 +1,11 @@
 ---
-title: "codyn: Analysis of Long-Term Ecological Community Data"
+title: "codyn: Community Dynamic Metrics"
 author: "Lauren M. Hallett, Sydney K. Jones,  Andrew A. MacDonald,  Dan F. B. Flynn, Peter Slaughter, Corinna Gries, Scott L. Collins, Matthew B. Jones"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: biblio.bib
 vignette: >
-  %\VignetteIndexEntry{codyn: An R package for analysis of long-term ecological community data}
+  %\VignetteIndexEntry{codyn: Community Dynamic Metrics}
   %\VignetteEngine{knitr::rmarkdown}
   %\SweaveUTF8
   %\VignetteEncoding{UTF-8}
