@@ -1,6 +1,6 @@
 #' @title Temporal Modification of the Torus Translation
 #' @description Performs a user-specified function on a null ecological community using a temporal modification of the torus translation (Harms et al. 2001, Hallett et al. 2014).
-#' The null community is formed by randomly selected different starting years for each species’ time series. 
+#' The null community is formed by randomly selected different starting years for the time series of each species. 
 #' This generates a null community matrix in which species abundances vary independently but within-species autocorrelation is maintained.
 #' The user-specified function must require a species x time matrix input.
 #' @param df A data frame containing time, species and abundance columns and an optional column of replicates
