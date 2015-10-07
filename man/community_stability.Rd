@@ -39,6 +39,6 @@ community_stability(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
 community_stability(knz_001d, replicate.var = "subplot") # across all subplots
 }
 \references{
-Tilman, D. “The Ecological Consequences of Changes in Biodiversity: A Search for General Principles.” Ecology 80, no. 5 (July 1999): 1455–74. doi:10.1890/0012-9658(1999)080[1455:TECOCI]2.0.CO;2.
+Tilman, D. "The Ecological Consequences of Changes in Biodiversity: A Search for General Principles." Ecology 80, no. 5 (July 1999): 1455-74. doi:10.1890/0012-9658(1999)080[1455:TECOCI]2.0.CO;2.
 }
 

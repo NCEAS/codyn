@@ -16,7 +16,7 @@
 #' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there should be a single community represented within each time point and replicate.
 #' @references
-#' Tilman, D. “The Ecological Consequences of Changes in Biodiversity: A Search for General Principles.” Ecology 80, no. 5 (July 1999): 1455–74. doi:10.1890/0012-9658(1999)080[1455:TECOCI]2.0.CO;2.
+#' Tilman, D. "The Ecological Consequences of Changes in Biodiversity: A Search for General Principles." Ecology 80, no. 5 (July 1999): 1455-74. doi:10.1890/0012-9658(1999)080[1455:TECOCI]2.0.CO;2.
 #' @examples
 #' data(knz_001d)
 #' community_stability(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
