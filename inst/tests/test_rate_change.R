@@ -44,6 +44,12 @@ test_that("rate_change loads and returns correct result", {
     myresults3<-rate_change(dat1, replicate.var=NA, time.var="year", species.var="species", abundance.var="abundance")
     expect_equal(myresults3, myresults2)
     
+    # Test getting the lagged distance data as a data frame, by replicates
+    dist1 <- community_distance(knz_001d, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
+    expect_equal(class(dist1), "data.frame")
+    expect_equal(ncol(dist1), 3)
+    expect_equal(nrow(dist1), 5520)
+    
     #test that will still run if there are missing levels in a factor "replicate"; deleting levels that are NaN
     myresults4<-rate_change(dat1, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
     #this will give a warning because replicate is a factor without all values present in dat1 - the warning is a good thing
