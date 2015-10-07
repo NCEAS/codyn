@@ -72,7 +72,8 @@ This function quantifies relative changes in species rank abundances by taking t
 data(collins08)
 
 ##running mean rank shift function 
-dat <- meanrankshift(df=collins08, replicate.var="replicate", time.var="year", species.var="species", abundance.var="abundance")
+dat <- meanrankshift(df=collins08, replicate.var="replicate", 
+                     time.var="year", species.var="species", abundance.var="abundance")
 dat$year<-as.numeric(substr(dat$year_pair, 6,9))
 
 ##plotting

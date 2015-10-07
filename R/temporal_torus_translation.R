@@ -42,25 +42,29 @@ temporal_torus_translation <- function(df, time.var="year", species.var="species
 #' Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.
 #' @export
 temporal_torus_translation_CI<-function(df,  time.var="year",species.var="species", abundance.var="abundance", FUN, bootnumber, replicate.var=NA, li=0.025, ui=0.975, average.replicates=TRUE){
-  if(is.na(replicate.var)==TRUE){
+  if(is.na(replicate.var)){
+    check_single_onerep(df, time.var, species.var)
+    
     out<-replicate(bootnumber, temporal_torus_translation(df, time.var, species.var,  abundance.var, FUN))
     lowerCI <- quantile(out, li)
     upperCI <-quantile(out, ui)
     nullmean<-mean(out)
     output<-cbind(lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
-  }else{
-    df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
+  } else {
+    df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]} 
+    
     df<-df[order(df[[replicate.var]]),]  
+    check_single(df, time.var, species.var, replicate.var)
     if(average.replicates==TRUE){
-    X<-split(df, df[replicate.var])
+      X<-split(df, df[replicate.var])
     out<-replicate(bootnumber, mean(unlist(lapply(X, temporal_torus_translation, time.var, species.var, abundance.var, FUN)))) 
     lowerCI <- quantile(out, li)
     upperCI <-quantile(out, ui)
     nullmean<-mean(out)
     output<-cbind(lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
-  } else{
+  } else {
     X <- split(df, df[replicate.var])
     out<-lapply(X, function(x,time.var, species.var,  abundance.var, FUN, bootnumber){replicate(bootnumber, temporal_torus_translation(x, time.var, species.var, abundance.var, FUN))}, time.var, species.var, abundance.var, FUN, bootnumber)
     lowerCI<-do.call("rbind", lapply(out, quantile, li))
