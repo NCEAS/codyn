@@ -31,7 +31,7 @@ test_that("rate_change loads and returns correct result", {
     myresults <- get_slope(dat1, "year", "species", "abundance")
     expect_equal(class(myresults), "numeric")
     expect_equal(length(myresults), 1)
-    expect_equal(myresults, 0.6707087, tolerance=0.00001)
+    expect_equal(myresults, 0.6706902, tolerance=0.00001)
     #test that works with different column names
     myresults2<-get_slope(dat2,  "yr", "sp", "abund")
     expect_equal(myresults, myresults2)
@@ -45,7 +45,7 @@ test_that("rate_change loads and returns correct result", {
     expect_equal(myresults3, myresults2)
     
     # Test getting the lagged distance data as a data frame, by replicates
-    dist1 <- community_distance(knz_001d, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
+    dist1 <- rate_change_interval(knz_001d, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
     expect_equal(class(dist1), "data.frame")
     expect_equal(ncol(dist1), 3)
     expect_equal(nrow(dist1), 5520)

@@ -35,7 +35,7 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
     return(output)
 }
 
-#' A function to calculate euclidean community distance over time within multiple replicates.
+#' A function to calculate Euclidean distance over time intervals within multiple replicates.
 #'
 #' This is an analysis of differences in species composition between samples at increasing time 
 #' lags. It measures the rate of directional change in community composition. First, a 
@@ -48,7 +48,7 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
 #' @param abundance.var The name of the abundance column from df
 #' @return output a data frame with the euclidean distance between communities by replicate and interval
 #' @export
-community_distance <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
+rate_change_interval <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
     stopifnot(is.numeric(df[[time.var]]))
     stopifnot(is.numeric(df[[abundance.var]]))
     if(is.na(replicate.var)) {
@@ -82,7 +82,7 @@ community_distance <- function(df, time.var="time", species.var="species", abund
 ############################################################################
 
 #' Get lagged distances for a single replicate
-#' @description Returns a data frame with two columns, interval and distance. The interval is 
+#' @description Returns a data frame with two columns, interval and distance. The interval is
 #' the number of time steps between two communities, while distance is the 
 #' euclidean distance of community change within one replicate lagged across invtervals.
 #' @param df data frame to compute the slope of community change for
@@ -92,7 +92,7 @@ community_distance <- function(df, time.var="time", species.var="species", abund
 #' @return a data frame containing of time lags by species distances
 get_lagged_distances <- function(df, time.var="time", species.var="species", abundance.var="abundance") {
     df <- transpose_community(df, time.var, species.var, abundance.var)
-    DM <- dist(df[-1], method="euclidean", diag = FALSE, upper = FALSE)
+    DM <- dist(df, method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
     
     rownums = row(DM)
@@ -111,7 +111,6 @@ get_lagged_distances <- function(df, time.var="time", species.var="species", abu
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
 get_slope <- function(df, time.var="time", species.var="species", abundance.var="abundance") {
-
     results <- get_lagged_distances(df, time.var, species.var, abundance.var)
     lm_coefficents <- lm(distance ~ interval, data=results)
     slope <- data.frame(lm_coefficents[1][[1]])
