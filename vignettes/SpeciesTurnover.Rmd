@@ -1,6 +1,6 @@
 ---
 title: "Temporal Diversity Indices"
-author: "Lauren M. Hallett"
+author: "Lauren M. Hallett, Dan F. B. Flynn, Sydney K. Jones"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: biblio.bib
@@ -104,9 +104,14 @@ ggplot(KNZ_turnover, aes(x=year, y=total, color=replicate)) + geom_line(size = 2
 
 Parsing total turnover by appearances and disappearances indicates that in there were generally more appearances in the unburned than burned location. In addition, the strong divergence in total turnover between locations in 1995 was because the unburned location lost many species that year, while the burned locations lost none.
 
-```{r echo=FALSE}
-ggplot(KNZ_appearance, aes(x=year, y=appearance, color=replicate)) + geom_line(size = 2)+ theme_bw() + theme(legend.position="none")
-ggplot(KNZ_disappearance, aes(x=year, y=disappearance, color=replicate)) + geom_line(size = 2)+ theme_bw() + theme(legend.position="none")
+```{r fig.width = 7, fig.height = 4, echo=FALSE}
+KNZ_appearance$metric<-"appearance"
+names(KNZ_appearance)[1]="turnover"
+KNZ_disappearance$metric<-"disappearance"
+names(KNZ_disappearance)[1]="turnover"
+KNZ_appdisapp<-rbind(KNZ_appearance, KNZ_disappearance)
+ggplot(KNZ_appdisapp, aes(x=year, y=turnover, color=replicate)) + geom_line(size = 2)+ theme_bw() + facet_wrap(~metric) + ggtitle("Species appearances and disappearances \n Annually burned vs unburned plots, Konza
+          ")
 ```
 
 
@@ -146,7 +151,7 @@ ggplot(dat, aes(year, abundance, color = species)) +
 
 ## Rank clocks at Konza
 
-Rank clocks highlight that in the Konza grasslands there has been tremendous variation in the abundance of little bluestem and big bluestem over time.
+Rank clocks highlight that in the Konza grasslands there has been tremendous re-ordering in the relative abundance of big bluestem compared to little bluestem over time in the annually burned site but not the unburned site.
 ```{r, fig.width = 7, fig.height = 5}
 
 aggdat <- aggregate(abundance ~ species * year * replicate, 
@@ -155,7 +160,8 @@ aggdat <- aggregate(abundance ~ species * year * replicate,
 
 ggplot(aggdat, aes(year, abundance, color = species)) + 
   geom_line(size = 2) + coord_polar() + theme_bw() + facet_wrap(~replicate) +
-  ggtitle("Little Bluestem and Big Bluestem \n Annually burned vs unburned plots, Konza")
+  ggtitle("Little Bluestem and Big Bluestem \n Annually burned vs unburned plots, Konza
+          ")
 ```
 
 ## Mean rank shifts
@@ -180,16 +186,17 @@ kable(head(KNZ_rankshift))
 If`replicate.var=NA` but the dataset in fact includes replicates, `mean_rank_shift` will be calculated using all species present in the datset. For collins08, this would return mean_rank_shift for the burned and unburned areas combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
 ```{r}
 KNZ_rankshift_agg <- mean_rank_shift(df=collins08, replicate.var=NA)
-#Select the final year from the returned year_pair
-KNZ_rankshift$year<-as.numeric(substr(KNZ_rankshift$year_pair, 6, 9))
 ```
 
 ## Rank shifts at Konza
-Calculating mean rank shifts highlights the stability of communities diverged at Konza around 1992, with fewer rank shifts between species in the burned relative to the unburned area. 
-```{r fig.width = 7, fig.height = 4,}
-##plotting
+Calculating mean rank shifts highlights that the stability of communities diverged at Konza around 1992, with fewer rank shifts between species in the burned relative to the unburned area. 
+```{r fig.width = 7, fig.height = 4}
+# Create a column with the final year from the returned year_pair
+KNZ_rankshift$year<-as.numeric(substr(KNZ_rankshift$year_pair, 6, 9))
+
+# Plot it
 ggplot(KNZ_rankshift, aes(year, MRS, color=replicate)) + 
-  geom_line(size= 2) + theme_bw() + theme(legend.position="none")
+  geom_line(size= 2) + theme_bw() 
 ```
 
 
