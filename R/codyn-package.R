@@ -6,7 +6,7 @@
 #' Specifically, \code{codyn} includes functions to calculate species turnover, mean rank shifts and lags in community similarity between time points. 
 #' The community stability metrics in \code{codyn} calculate overall stability and patterns of species covariance and synchrony over time. 
 #' Finally, \code{codyn} contains vignettes that describe methods and reproduce figures from published papers to help users contextualize and apply functions to their own data.
-#' 
+#' Work on this package was supported by NSF-ABI grant #1262458
 #' 
 #' @author 
 #'  Lauren Hallett \email{lauren.hallett@@berkeley.edu}
@@ -32,7 +32,7 @@
 #'  \item{\code{\link[=synchrony]{synchrony}}}{: Calculates the degree synchrony in species abundances}
 #'  \item{\code{\link[=temporal_torus_translation]{temporal_torus_translation}}}{: Calculates a null test statistic using a temporal modification of the torus translation}
 #'  \item{\code{\link[=temporal_torus_translation_CI]{temporal_torus_translation_CI}}}{: Returns confidence intervals calculated from a temporal modification of the torus translation}
-#' } 
+#' }
 NULL
 
 #' Konza data from Collins et al. 2008

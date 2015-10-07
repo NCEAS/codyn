@@ -15,6 +15,7 @@ The diversity indices in \code{codyn} are temporal analogs to traditional divers
 Specifically, \code{codyn} includes functions to calculate species turnover, mean rank shifts and lags in community similarity between time points.
 The community stability metrics in \code{codyn} calculate overall stability and patterns of species covariance and synchrony over time.
 Finally, \code{codyn} contains vignettes that describe methods and reproduce figures from published papers to help users contextualize and apply functions to their own data.
+Work on this package was supported by NSF-ABI grant #1262458
 }
 \section{functions}{
 
