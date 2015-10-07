@@ -11,10 +11,8 @@
 #' @return The temporal_torus_translation function returns the same output as the user-specified function, as calculated on a null community.
 #' @details The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' @examples
-#'  data(knz_001d)
-#' 
-#' Calculate a covariance matrix on a null community
-#' 
+#' # Calculate a covariance matrix on a null community
+#' data(knz_001d)
 #' temporal_torus_translation(subset(knz_001d, subplot=="A_1"), time.var="year", 
 #' species.var="species", abundance.var="abundance", FUN=cov)
 #' @references
