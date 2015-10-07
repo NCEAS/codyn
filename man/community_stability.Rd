@@ -8,25 +8,37 @@ community_stability(df, time.var = "year", abundance.var = "abundance",
   replicate.var = NA)
 }
 \arguments{
-\item{df}{the data frame to use in the calculation}
+\item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
 
-\item{time.var}{The name of the time column from df}
+\item{time.var}{The name of the time column}
 
-\item{abundance.var}{The name of the abundance column from df}
+\item{abundance.var}{The name of the abundance column}
 
-\item{replicate.var}{The name of the replicate column from df}
+\item{replicate.var}{The name of the optional replicate column}
+
+\item{species.var}{The name of the species column}
 }
 \value{
-The stability of community abundance, calculated as mean/standard deviation returns a single number or a dataframe with the following attributes:
+The community_stability function returns a numeric stability value unless a replication column is specified in the input data frame.
+If replication is specified, the function returns a data frame with the following attributes:
 \itemize{
- \item{replicate}{replicate name}
- \item{stability}{community stability for replicate}
- }
+ \item{stability: }{A numeric column with the stability values.}
+ \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
+}
 }
 \description{
-A function to calculate community stability over time
+Calculates the stability of the overall community over time as the temporal standard deviation / temporal mean of aggregate species abundances (Tilman 1999).
 }
 \details{
-The input dataframe needs to contain columns for time and abundance;
+The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there should be a single community represented within each time point and replicate.
+}
+\examples{
+data(knz_001d)
+community_stability(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
+community_stability(knz_001d, replicate.var = "subplot") # across all subplots
+}
+\references{
+Tilman, D. “The Ecological Consequences of Changes in Biodiversity: A Search for General Principles.” Ecology 80, no. 5 (July 1999): 1455–74. doi:10.1890/0012-9658(1999)080[1455:TECOCI]2.0.CO;2.
 }
 

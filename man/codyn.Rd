@@ -4,6 +4,7 @@
 \name{codyn}
 \alias{codyn}
 \alias{codyn-package}
+\title{An R package for analysis of long-term ecological community data}
 \description{
 Temporal diversity indices and community stability metrics for ecologists.
 }
@@ -14,14 +15,13 @@ The functions in codyn implement metrics that are explicitly temporal, and inclu
 
 \itemize{
  \item{\code{\link[=community_stability]{community_stability}}}{: A function to calculate community stability over time}
- \item{\code{\link[=meanrankshift]{mean_rank_shift}}}{: A measure of the relative change in species rank abundances}
+ \item{\code{\link[=mean_rank_shift]{mean_rank_shift}}}{: A measure of the relative change in species rank abundances}
  \item{\code{\link[=rate_change]{rate_change}}}{: calculate community rate changes over time within multiple replicates}
  \item{\code{\link[=synchrony]{synchrony}}}{: Calculates the degree synchrony in species abundances}
  \item{\code{\link[=temporal_torus_translation]{temporal_torus_translation}}}{: Calculate a vector of null test statistics using a temporal modification of the Torus translation}
- \item{\code{\link[=temporal_torus_translation_CI]{temporal_torus_translation_CI}}}{: Returns confidence intervals calculated from a temporal modification of the torus translation
+ \item{\code{\link[=temporal_torus_translation_CI]{temporal_torus_translation_CI}}}{: Returns confidence intervals calculated from a temporal modification of the torus translation}
  \item{\code{\link[=turnover]{turnover}}}{: Computes species turnover between time periods}
  \item{\code{\link[=variance_ratio]{variance_ratio}}}{: Computes the ratio of the variance of aggregate species abundances in a community }
-}
 }
 }
 \author{

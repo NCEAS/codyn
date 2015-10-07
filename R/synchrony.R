@@ -13,8 +13,8 @@
 #'  \item{"Loreau": }{The default metric, calculates synchrony following Loreau and de Mazancourt (2008).}
 #'  \item{"Gross": }{Calculates synchrony following Gross et al. (2014).}
 #' }
-#' @return The synchrony function returns a numeric synchrony value unless a replication column is specified in the input dataframe. 
-#' If replication is specified, the function returns a dataframe with the following attributes:
+#' @return The synchrony function returns a numeric synchrony value unless a replication column is specified in the input data frame. 
+#' If replication is specified, the function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{synchrony: }{A numeric column with the synchrony values.}
 #'  \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
