@@ -1,0 +1,18 @@
+Version 0.9.0.9000
+------------------
+
+NEW FEATURES
+
+* Initial version (see help topic for 'codyn', e.g. "?codyn")
+* Includes functions for temporal community dynamics analysis
+
+NEW FUNCTIONS
+
+* turnover: Calculates species turnover between time periods
+* mean_rank_shift: Calculates the mean relative change in species rank abundances 
+* rate_change: Calculates the rate change in a community over time
+* community_stability: Calculates community stability over time
+* variance_ratio: Computes the ratio of the variance of aggregate species abundances in a community
+* synchrony: Calculates the degree synchrony in species abundances
+* temporal_torus_translation: Calculates a null test statistic using a temporal modification of the torus translation
+* temporal_torus_translation_CI: Returns confidence intervals calculated from a temporal modification of the torus translation
