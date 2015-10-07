@@ -25,7 +25,7 @@ synchrony(df, time.var = "year", species.var = "species",
 \item{replicate.var}{The name of the optional replicate column}
 }
 \value{
-The synchrony function returns a numeric synchrony value unless a replication column is specified in the input data frame.
+The \code{synchrony} function returns a numeric synchrony value unless a replication column is specified in the input data frame.
 If replication is specified, the function returns a data frame with the following attributes:
 \itemize{
  \item{synchrony: }{A numeric column with the synchrony values.}
