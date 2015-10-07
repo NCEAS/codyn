@@ -35,7 +35,6 @@ library(knitr)
 ```{r echo=FALSE}
 library(codyn)
 data(collins08)
-names(collins08)[1]="location"
 kable(head(collins08))
 ```
 
@@ -53,8 +52,6 @@ The metric was introduced by MacArthur and Wilson (1963) and modified by Diamond
 
 `turnover` requires a data frame with columns for species, year and abundance, and includes an optional argument to specify a column for spatial replicates.
 ```{r results='asis'}
-library(codyn)
-data(collins08)
 KNZ_turnover<-turnover(df=collins08, 
                        time.var="year", 
                        species.var="species", 
@@ -102,17 +99,15 @@ Total turnover indicates that in general there were greater fluctuations in the 
 
 ```{r fig.width = 7, fig.height = 4, echo=FALSE}
 library(ggplot2)
-ggplot(KNZ_turnover, aes(x=year, y=total, color=replicate)) + geom_line(size = 2) + theme_bw() #+ theme(legend.position="none")
+ggplot(KNZ_turnover, aes(x=year, y=total, color=replicate)) + geom_line(size = 2) + theme_bw()
 ```
 
 Parsing total turnover by appearances and disappearances indicates that in there were generally more appearances in the unburned than burned location. In addition, the strong divergence in total turnover between locations in 1995 was because the unburned location lost many species that year, while the burned locations lost none.
-
 
 ```{r echo=FALSE}
 ggplot(KNZ_appearance, aes(x=year, y=appearance, color=replicate)) + geom_line(size = 2)+ theme_bw() + theme(legend.position="none")
 ggplot(KNZ_disappearance, aes(x=year, y=disappearance, color=replicate)) + geom_line(size = 2)+ theme_bw() + theme(legend.position="none")
 ```
-
 
 
 # Species rank shifts
@@ -123,42 +118,44 @@ Rank clocks are a useful way to visualize the degree to which species reorder ov
 To illustrate, generate some sample data:
 
 ```{r}
-library(codyn)
-library(ggplot2)
-library(reshape2)
 
 ## Generate some sample data 
-x = 1977:2003
-sp1 = .3*sin(x) + rnorm(length(x), 0, .1) + -.05*x + 150
-sp2 = .2*sin(x) + rnorm(length(x), 0, .1) + -.01*x + 70
-sp3 = .2*sin(x) + rnorm(length(x), 0, .1) + .01*x + 30
+yr = 1977:2003
+sp1 = .3*sin(yr) + rnorm(length(yr), 0, .1) + -.05*yr + 150
+sp2 = .2*sin(yr) + rnorm(length(yr), 0, .1) + -.01*yr + 70
+sp3 = .2*sin(yr) + rnorm(length(yr), 0, .1) + .01*yr + 30
 
-## Reshape the data: year, variable (y1,y2,y3), value
-dat = melt(data.frame(x, sp1, sp2, sp3), "x")
+dat = data.frame(year = rep(yr, 3), 
+           species = gl(3, length(yr), labels = c("sp1","sp2","sp3")),
+           abundance = c(sp1, sp2, sp3))
 ```
-
 
 A traditional, linear depiction of species rank shifts can be cluttered and visually confusing:
 ```{r, fig.width = 7, fig.height = 4}
-ggplot(dat, aes(x,value,color=variable)) + geom_line(size = 2) + theme_bw()
+ggplot(dat, aes(year, abundance, color = species)) + 
+  geom_line(size = 2) + theme_bw()
 ```
 
 
 In contrast, a rank clock visualization highlights differences in the stability of species:
 ```{r, fig.width = 5, fig.height = 5}
-ggplot(dat, aes(x, value, color=variable)) + geom_line(size = 2) + coord_polar() + theme_bw() 
+ggplot(dat, aes(year, abundance, color = species)) + 
+  geom_line(size = 2) + coord_polar() + theme_bw() 
 ```
 
 
 ## Rank clocks at Konza
 
 Rank clocks highlight that in the Konza grasslands there has been tremendous variation in the abundance of little bluestem and big bluestem over time.
-```{r, fig.width = 7, fig.height = 7}
-dat.agg <- aggregate(abundance ~ species * year, data = knz_001d, FUN = mean)
-blues <- subset(dat.agg, species == "andropogon gerardii" | species == "schizachyrium scoparium")
-ggplot(blues, aes(year, abundance, color = species)) + 
-  geom_line(size = 2) + coord_polar() + theme_bw() + 
-  ggtitle("Variation in little and big bluestem")
+```{r, fig.width = 7, fig.height = 5}
+
+aggdat <- aggregate(abundance ~ species * year * replicate, 
+                    data = subset(collins08, species == "andrgera" | species == "andrscop"), 
+                    FUN = mean)
+
+ggplot(aggdat, aes(year, abundance, color = species)) + 
+  geom_line(size = 2) + coord_polar() + theme_bw() + facet_wrap(~replicate) +
+  ggtitle("Little Bluestem and Big Bluestem \n Annually burned vs unburned plots, Konza")
 ```
 
 ## Mean rank shifts

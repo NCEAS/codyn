@@ -4,3 +4,11 @@
 codyn.Rproj
 
 inst/doc/*
+
+*.html
+
+vignettes/codyn_overview.R
+
+vignettes/SpeciesTurnover.R
+
+vignettes/VarianceRatio.R
