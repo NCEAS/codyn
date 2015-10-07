@@ -6,7 +6,7 @@
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column
-#' @return The meanrankshift function returns a data frame with the following attributes:
+#' @return The mean_rank_shift function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{time.var_pair: }{A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".}
 #'  \item{MRS: }{A numeric column with the mean rank shift values.}
@@ -20,15 +20,15 @@
 #'  # Calculate mean rank shifts within replicates
 #'  data(knz_001d)
 #'  
-#'  myoutput <- meanrankshift(knz_001d,  time.var = "year", species.var = "species", 
+#'  myoutput <- mean_rank_shift(knz_001d,  time.var = "year", species.var = "species", 
 #'  abundance.var = "abundance", replicate.var = "subplot")
 #'  
 #'  # Calculate mean rank shifts for a data frame with no replication
 #'  
-#'  myoutput_singlerep <- meanrankshift(subset(knz_001d, subplot=="A_1"), time.var = "year", 
+#'  myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), time.var = "year", 
 #'  species.var = "species",abundance.var = "abundance")
 #' @export
-meanrankshift <- function(df, time.var = "year", species.var = "species",
+mean_rank_shift <- function(df, time.var = "year", species.var = "species",
                     abundance.var = "abundance", replicate.var = as.character(NA)) {
     stopifnot(is.numeric(df[[time.var]]))
     stopifnot(is.numeric(df[[abundance.var]]))
