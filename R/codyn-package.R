@@ -1,4 +1,4 @@
-#' codyn - Community Dynamics Metrics
+#' Community Dynamics Metrics
 #' @description Temporal diversity indices and community stability metrics for ecologists.
 #' @details The functions in \code{codyn} implement metrics that are explicitly temporal, and include the option to  calculate them over multiple replicates. 
 #' Functions fall into two categories: temporal diversity indices and community stability metrics. 
