@@ -24,7 +24,7 @@ The temporal_torus_translation function returns the same output as the user-spec
 \description{
 Performs a user-specified function on a null ecological community using a temporal modification of the torus translation (Harms et al. 2001, Hallett et al. 2014).
 The null community is formed by randomly selected different starting years for each species’ time series.
-This generated a null community matrix in which species abundances varied independently but within-species autocorrelation is maintained.
+This generates a null community matrix in which species abundances vary independently but within-species autocorrelation is maintained.
 The user-specified function must require a species x time matrix input.
 }
 \details{
@@ -33,10 +33,10 @@ The input data frame needs to contain columns for time, species and abundance; t
 \examples{
 data(knz_001d)
 
-Calculate a Euclidean distance matrix on a null community
+Calculate a covariance matrix on a null community
 
 temporal_torus_translation(subset(knz_001d, subplot=="A_1"), time.var="year",
-species.var="species", abundance.var="abundance", FUN=dist)
+species.var="species", abundance.var="abundance", FUN=cov)
 }
 \references{
 Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6 (2014): 1693–1700.

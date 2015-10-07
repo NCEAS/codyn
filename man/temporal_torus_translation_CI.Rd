@@ -17,7 +17,7 @@ temporal_torus_translation_CI(df, time.var = "year",
 
 \item{abundance.var}{The name of the abundance column}
 
-\item{FUN}{A function to calculate on the null community}
+\item{FUN}{A function to calculate on the null community that requires a species x time matrix}
 
 \item{bootnumber}{The number of null model iterations used to calculated confidence intervals}
 
@@ -34,16 +34,27 @@ The temporal_torus_translation_CI function returns a dataframe with the followin
 \itemize{
  \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
  \item{upperCI: }{A numeric column with the highest confidence interval value.}
- \item{nullMean: }{A numeric column with the average value of the specified function when calculated on a null community.}
+ \item{nullMean: }{A numeric column with the average value of the specified test statistic when calculated on a null community.}
  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
 }
 }
 \description{
-Calculates a user-specified test statistic on a null ecological community using a temporal modification of the Torus translation.
+Calculates confidence intervals for a user-specified test statistic that derives from a species x time matrix.
+It does so by employing a torus translation that creates a null community by randomly selecting different starting points for each species' time series. This generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Harms et al. 2001, Hallett et al. 2014).
+This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of the test statistic.
+If the data frame includes multiple replicates, the test statistics for the null communities are averaged within each iteration unless specified otherwise.
 }
 \details{
-The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+This function was developed to be applied to the variance ratio; to use it for that purpose see the variance_ratio function.
+It is included as a general function here but has very specific requirements. Namely, it is only relevant for functions that return single values, and for which varying species abundances independently is an acceptable way to develop a null test statistic value.
+
+If applying this function to test statistics other the variance ratio, the input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.
+}
+\references{
+Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6 (2014): 1693–1700.
+
+Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. “Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot.” Journal of Ecology 89, no. 6 (2001): 947–59.
 }
 
