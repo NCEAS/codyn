@@ -23,7 +23,7 @@ install.packages("codyn")
 Releases and pre-releases of the software are also available from the NCEAS drat repository, and
 can be installed after drat has been installed using:
 ```R
-drat:::addRepo("NCEAS")
+drat::addRepo("NCEAS")
 install.packages("codyn")
 ```
 
