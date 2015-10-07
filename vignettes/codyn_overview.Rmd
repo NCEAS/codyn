@@ -1,6 +1,6 @@
 ---
 title: "codyn: Community Dynamic Metrics"
-author: "Lauren M. Hallett, Sydney K. Jones,  Andrew A. MacDonald,  Dan F. B. Flynn, Peter Slaughter, Corinna Gries, Scott L. Collins, Matthew B. Jones"
+author: "Lauren M. Hallett, Sydney K. Jones,  Andrew A. MacDonald,  Matthew B. Jones, Dan F. B. Flynn, Peter Slaughter, Corinna Gries, Scott L. Collins"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: biblio.bib
@@ -16,17 +16,18 @@ vignette: >
 As long-term datasets increase in scope and length, new analytical tools are being developed to capture patterns of species interactions over time. The package `codyn` includes recently developed metrics of ecological community dynamics. Functions in `codyn` implement metrics that are explicitly temporal, and include the option to calculate them over multiple replicates. Functions fall into two categories: temporal diversity indices and community stability metrics. 
 
 ##Temporal Diversity Indices
-Many traditional measure of community structure represent ‘snapshot in time’ whereas ecological communities are dynamic and many are experiencing directional change with time. The diversity indices in `codyn` are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. They include:
+Many traditional measure of community structure represent a ‘snapshot in time’ whereas ecological communities are dynamic and many are experiencing directional change with time. The diversity indices in `codyn` are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. They include:
 
 - **`turnover`** calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
 
-- **`mean_rank_shift`** quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive timepoints. 
-This metric goes hand-in-hand "rank clocks," a useful visualization tool of shifts in species ranks. 
+- **`mean_rank_shift`** quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive timepoints. This metric goes hand-in-hand with "rank clocks," a useful visualization tool for shifts in species ranks. 
 
-- **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition. 
+- **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition.
+
+- **`rate_change_intervals`** produces a data frame containing differences in species composition between samples at increasing time intervals.
 
 ##Community Stability Metrics
-Ecologists have long debated the relationship between species diversity and stability. Unstable species populations may stabilize aggregate community properties if a decrease in one species is compensated for by an increase in another. In time series analysis, this should be reflected by a pattern in which species negatively covary or fluctuate asynchronously while total community stability remained relatively stable. `codyn` includes a function to characterize community stability, **`community_stability`**, and three metrics to characterize species covariance and asynchrony:
+Ecologists have long debated the relationship between species diversity and stability. Unstable species populations may stabilize aggregate community properties if a decrease in one species is compensated for by an increase in another. In time series analysis, this should be reflected by a pattern in which species negatively covary or fluctuate asynchronously while total community stability remains relatively stable. `codyn` includes a function to characterize community stability, **`community_stability`**, and three metrics to characterize species covariance and asynchrony:
 
 - **`variance_ratio`** characterizes species covariance [@schluter1984; @houlahan2007], and includes a null-modeling approach to test significance [@hallett2014]. Null modeling is built-in to the `variance_ratio` function. Two additional functions, `temporal_torus_translation` and `temporal_torus_translation_CI`, allow this method to be generalized to other test statistics.
 
