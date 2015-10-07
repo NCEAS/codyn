@@ -8,7 +8,17 @@
 #' Finally, \code{codyn} contains vignettes that describe methods and reproduce figures from published papers to help users contextualize and apply functions to their own data.
 #' 
 #' 
-#' @author Lauren M. Hallett
+#' @author 
+#'  Lauren Hallett \email{lauren.hallett@@berkeley.edu}
+#'  Sydney Jones \email{syd@@sevilleta.unm.edu}
+#'  Andrew MacDonald \email{aammacdonald@@gmail.com}
+#'  Matthew Jones \email{jones@@nceas.ucsb.edu}
+#'  Dan Flynn \email{flynn@@fas.harvard.edu}
+#'  Peter Slaughter \email{slaughter@@nceas.ucsb.edu}
+#'  Corinna Gries \email{cgries@@wisc.edu}
+#'  Scott Collins \email{scollins@@sevilleta.unm.edu}
+#'
+#' 
 #' @docType package
 #' @name codyn
 #' @aliases codyn
