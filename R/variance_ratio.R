@@ -26,8 +26,8 @@
 #'  data(knz_001d)
 #'  
 #'  # Calculate the variance ratio and CIs averaged within replicates
-#'  # Here the null model is repeated once, for final use it is recommended to set a large bootnumber (eg, 10000)
-#'  
+#'  # Here the null model is repeated once, for final use it is recommended to set a 
+#'  # large bootnumber (eg, 10000)
 #'  myoutput_averagedreplicates <-variance_ratio(knz_001d, time.var="year", species.var="species", 
 #'  abundance.var="abundance", bootnumber=1, replicate="subplot")
 #'  
