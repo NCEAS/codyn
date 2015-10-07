@@ -23,7 +23,7 @@
 #' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 #' @references
-#' Cleland, Elsa E., Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Katherine L. Gross, Laureano A. Gherardi, Lauren M. Hallett, et al.  (2013) “Sensitivity of grassland plant community composition to spatial vs. temporal variation in precipitation.” Ecology 94, no. 8: 1687–96.
+#' Cleland, Elsa E., Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Katherine L. Gross, Laureano A. Gherardi, Lauren M. Hallett, et al. (2013) "Sensitivity of grassland plant community composition to spatial vs. temporal variation in precipitation." Ecology 94, no. 8: 1687-96.
 #' @examples 
 #'  data(knz_001d)
 #'
@@ -37,7 +37,8 @@
 #'  disappear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="disappearance")
 #'  
 #' @export
-turnover <- function(df, time.var="year", species.var="species", abundance.var="abundance", replicate.var=as.character(NA), metric="total") {
+turnover <- function(df, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA, metric="total") {
+  
   if(is.na(replicate.var)){
     check_single_onerep(df, time.var, species.var)  
     output <- turnover_allyears(df, time.var, species.var, abundance.var)
@@ -68,33 +69,36 @@ turnover <- function(df, time.var="year", species.var="species", abundance.var="
 #' @param df A dataframe containing time, species and abundance columns
 #' @param species.var The name of the species column from df
 #' @param time.var The name of the time column from df
-#' @param abundance The name of the abundance column from df
+#' @param abundance.var The name of the abundance column from df
 #' @param metric The turnover metric to return; the default, total, returns summed appearances and disappearances relative to total species richness across both years
 #' \itemize{
 #'  \item{appearance: }{ returns the number of appearances in the second year relative to total species richness across both years }
 #'   \item{disappearance: }{ returns the number of disappearances in the second year relative to the total species richness across both years }
 #'   }
 #' @return output A dataframe containing the specificed turnover metric and year
-turnover_allyears<-function(df, time.var, species.var, abundance.var, metric="total"){
-  # check to make sure abundance is numeric data
-  check_numeric(df, time.var, abundance.var)
-  df<-df[order(df[time.var]),]
-  df<-df[which(df[[abundance.var]]>0),]
-  ## split data by year
-  templist <- split(df, df[[time.var]])
-  ## create consecutive pairs of time points
-  t1 <- templist[-length(templist)]
-  t2 <- templist[-1]
-  ## rbind consecutive pairs of time points
-  #temppair <- Map(function(d1, d2){ rbind(d1, d2) }, t1, t2)
-  ## calculate turnover for across all time points
-  out <- Map(getturnover, t1, t2, species.var, metric)
-  output<-as.data.frame(unlist(out))
-  names(output)[1] = metric
-  ## add time variable column
-  alltemp <- unique(df[[time.var]])
-  output[time.var] =  alltemp[2:length(alltemp)]
-  return(output)
+turnover_allyears <- function(df, time.var, species.var, abundance.var, metric=c("total", "disappearance","appearance")) {
+    metric = match.arg(metric) # for partial argument matching
+  
+    check_numeric(df, time.var, abundance.var)
+    df<-df[order(df[time.var]),]
+    df<-df[which(df[[abundance.var]]>0),]
+    
+    ## split data by year
+    templist <- split(df, df[[time.var]])
+    
+    ## create consecutive pairs of time points
+    t1 <- templist[-length(templist)]
+    t2 <- templist[-1]
+    
+    ## calculate turnover for across all time points
+    out <- Map(getturnover, t1, t2, species.var, metric)
+    output<-as.data.frame(unlist(out))
+    names(output)[1] = metric
+    
+    ## add time variable column
+    alltemp <- unique(df[[time.var]])
+    output[time.var] =  alltemp[2:length(alltemp)]
+    return(output)
 }
 
 #' A function to calculate species turnover between two years 
@@ -108,7 +112,10 @@ turnover_allyears<-function(df, time.var, species.var, abundance.var, metric="to
 #'  \item{disappearance: }{ returns the number of disappearances in the second year relative to the total species richness across both years }
 #'  }
 #' @return output The specificed turnover metric
-getturnover <- function(d1, d2, species.var = "species", metric="total"){
+
+getturnover <- function(d1, d2, species.var = "species", metric=c("total", "disappearance","appearance")){
+  metric = match.arg(metric) # for partial argument matching
+  
   d1spp <- as.character(unique(d1[[species.var]]))
   d2spp <- as.character(unique(d2[[species.var]]))
   commspp <- intersect(d1spp, d2spp)
