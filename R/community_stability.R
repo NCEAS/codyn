@@ -24,9 +24,9 @@
 #' @export
 
 community_stability<-function(df, time.var="year", abundance.var="abundance", replicate.var=NA){
-    stopifnot(is.numeric(df[[time.var]]))
-    stopifnot(is.numeric(df[[abundance.var]]))
-    df<-df[which(df[[abundance.var]]>0),]
+    check_numeric(df, time.var, abundance.var)
+    
+  df<-df[which(df[[abundance.var]]>0),]
     
     if(is.na(replicate.var)) {
         

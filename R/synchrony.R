@@ -33,6 +33,8 @@
 #' synchrony(knz_001d, replicate.var = "subplot", metric="Gross") # With Gross et al. (2014) metric.
 #' @export
 synchrony<-function(df, time.var="year", species.var="species", abundance.var="abundance", metric="Loreau", replicate.var=NA) {
+  
+  check_numeric(df, time.var, abundance.var)
   # check to see if there are actual replicates without specifying replicate.var
   if(is.na(replicate.var)==TRUE){
     check_single_onerep(df, time.var, species.var)  
@@ -75,8 +77,6 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
 
 synch_onerep <- function(df, time.var, species.var, abundance.var, metric=c("Loreau", "Gross")) {
     metric = match.arg(metric) # for partial argument matching
-    # check to make sure abundance is numeric data
-    if(!is.numeric(df[,abundance.var])) { stop("Abundance variable is not numeric") }
     
     #remove any species that were never present. 
     df <- subset(df, abundance.var>0)

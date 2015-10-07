@@ -42,8 +42,8 @@
 #' @export
 variance_ratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
-    stopifnot(is.numeric(df[[time.var]]))
-    stopifnot(is.numeric(df[[abundance.var]]))
+  # check to make sure abundance is numeric data
+  check_numeric(df, time.var, abundance.var)
     if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
         VR<-variance_ratio_longformdata(df,time.var, species.var, abundance.var)

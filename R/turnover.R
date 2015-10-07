@@ -76,7 +76,8 @@ turnover <- function(df, time.var="year", species.var="species", abundance.var="
 #'   }
 #' @return output A dataframe containing the specificed turnover metric and year
 turnover_allyears<-function(df, time.var, species.var, abundance.var, metric="total"){
-  if(!is.numeric(df[,abundance.var])) { stop("Abundance variable is not numeric") }
+  # check to make sure abundance is numeric data
+  check_numeric(df, time.var, abundance.var)
   df<-df[order(df[time.var]),]
   df<-df[which(df[[abundance.var]]>0),]
   ## split data by year

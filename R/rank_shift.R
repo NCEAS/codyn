@@ -30,9 +30,9 @@
 #' @export
 mean_rank_shift <- function(df, time.var = "year", species.var = "species",
                     abundance.var = "abundance", replicate.var = as.character(NA)) {
-    stopifnot(is.numeric(df[[time.var]]))
-    stopifnot(is.numeric(df[[abundance.var]]))
-    if(is.na(replicate.var)) {
+  
+    check_numeric(df, time.var, abundance.var)
+  if(is.na(replicate.var)) {
       check_single_onerep(df, time.var, species.var)
       output<-meanrank(df, time.var, species.var, abundance.var)
     } else {

@@ -9,9 +9,8 @@
 #' @return output The rate of community change
 #' @export
 rate_change <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
-    stopifnot(is.numeric(df[[time.var]]))
-    stopifnot(is.numeric(df[[abundance.var]]))
-    if(is.na(replicate.var)) {
+  check_numeric(df, time.var, abundance.var)
+  if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
         output <- get_slope(df, time.var, species.var, abundance.var)
     } else {
