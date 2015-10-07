@@ -5,20 +5,25 @@
 \alias{knz_001d}
 \title{Data from Konza Prairie, watershed 001d}
 \format{A data frame with 8768 rows and 4 variables}
+\source{
+Konza Prairie LTER Dataset ID: PVC02, watershed 1D
+
+Collins, S. L. (2000) Disturbance frequency and community stability in native tallgrass prairie. American Naturalist 155:311–325.
+}
 \usage{
 data(knz_001d)
 }
 \description{
 Plant composition within multiple replicates at an annually burned tallgrass
-prairie site in the Konza Prairie LTER, Manhattan KS (Watershed 001D).
+prairie site in the Konza Prairie LTER, Manhattan KS (Watershed 001d).
 }
 \details{
-species,year,subplot,abundance
+A data frame containing a column for species, year, subplot and abundance:
 \itemize{
-  \item species The sampled species
-  \item year The sampling frequency
-  \item subplot The sampled subplot
-  \item abundance The measure of species abundance
+  \item species: A factor column of species sampled
+  \item year: An integer column of sampling time points
+  \item subplot: A factor column of spatial replicates with 20 levels
+  \item abundance: A numeric column of abundance values
 }
 }
 \keyword{datasets}

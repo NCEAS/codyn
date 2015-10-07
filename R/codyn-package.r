@@ -9,21 +9,21 @@
 #' @aliases codyn
 NULL
 
-#' Konza data from Collins et. all 2008
+#' Konza data from Collins et al. 2008
 #'
 #' A dataset of tallgrass prairie plant composition at one annually burned and one unburned 
 #' site over time at the Konza Prairie LTER, Manhattan Kansas (Collins et al. 2008).
 #' 
+#' A data frame containing a column for replicate, year, species and abundance:
 #' \itemize{
-#'   \item replicate The replicate type, i.e. "burned", "unburned"
-#'   \item year The sampling frequency
-#'   \item species The sampled species
-#'   \item abundance The measure of species abundance
+#'   \item replicate: A factor column of spatial replicates with two levels ("annually burned" and "unburned")
+#'   \item year: An integer column of sampling time points
+#'   \item species: A factor column of species sampled
+#'   \item abundance: A numeric column of abundance values
 #' }
 #'
 #' @source
-#' Scott L. Collins 1987. Interaction of Disturbances in Tallgrass Prairie: A Field Experiment. 
-#' Ecology 68:1243–1250. http://dx.doi.org/10.2307/1939208
+#' Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark. (2008) “Rank clocks and plant community dynamics.” Ecology 89, no. 12: 3534–41.
 #' @docType data
 #' @keywords datasets
 #' @name collins08
@@ -34,16 +34,20 @@ NULL
 #' Data from Konza Prairie, watershed 001d
 #'
 #' Plant composition within multiple replicates at an annually burned tallgrass 
-#' prairie site in the Konza Prairie LTER, Manhattan KS (Watershed 001D). 
+#' prairie site in the Konza Prairie LTER, Manhattan KS (Watershed 001d). 
 #' 
-#' species,year,subplot,abundance
+#' A data frame containing a column for species, year, subplot and abundance:
 #' \itemize{
-#'   \item species The sampled species
-#'   \item year The sampling frequency
-#'   \item subplot The sampled subplot
-#'   \item abundance The measure of species abundance
+#'   \item species: A factor column of species sampled
+#'   \item year: An integer column of sampling time points
+#'   \item subplot: A factor column of spatial replicates with 20 levels
+#'   \item abundance: A numeric column of abundance values
 #' }
 #'
+#' @source
+#' Konza Prairie LTER Dataset ID: PVC02, watershed 1D 
+#' 
+#' Collins, S. L. (2000) Disturbance frequency and community stability in native tallgrass prairie. American Naturalist 155:311–325.
 #' @docType data
 #' @keywords datasets
 #' @name knz_001d
