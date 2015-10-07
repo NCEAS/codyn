@@ -30,12 +30,12 @@ varianceratio(df, time.var = "year", species.var = "species",
 \value{
 The varianceratio function returns a dataframe with the following attributes:
 \itemize{
- \item{VR: }{A numeric column with the actual variance ratio values.}
- \item{nullVRCIlow: }{A numeric column with the lowest confidence interval values.}
- \item{nullVRCIhigh: }{A numeric column with the highest confidence interval values.}
- \item{nullVRmean: }{A numeric column with the average null variance ratio values.}
+ \item{VR: }{A numeric column with the actual variance ratio value.}
+ \item{nullVRCIlow: }{A numeric column with the lowest confidence interval value.}
+ \item{nullVRCIhigh: }{A numeric column with the highest confidence interval value.}
+ \item{nullVRmean: }{A numeric column with the average null variance ratio value.}
  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
-}
+}#'
 }
 \description{
 Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schluter 1984).

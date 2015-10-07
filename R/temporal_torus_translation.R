@@ -1,12 +1,13 @@
 #' @title Temporal Modification of the Torus Translation
-#' @description Calculates a vector of null test statistics using a temporal modification of the Torus translation.
+#' @description Calculates a user-specified test statistic on a null ecological community using a temporal modification of the Torus translation.
 #' 
 #' @param df A data frame containing time, species and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param FUN A function to calculate on the null community
-#' @return The temporal_torus_translation returns a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
+#' @return The temporal_torus_translation function returns an integer output of the user-specified function calculated on a null community. 
+#' @details The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' @export
 temporal_torus_translation <- function(df, time.var="year", species.var="species",  abundance.var="abundance", FUN){
   if(!is.numeric(df[,abundance.var])) { stop("Abundance variable is not numeric") }
@@ -15,20 +16,30 @@ temporal_torus_translation <- function(df, time.var="year", species.var="species
   return(bootout)
 }
 
-
-#' A function that returns confidence intervals calculated from a temporal modification of the torus translation
-#'
-#' @param df A dataframe containing time, species and abundance columns
-#' @param time.var The name of the time column from df
-#' @param species.var The name of the species column from df
-#' @param abundance.var The name of the abundance column from df
+#' @title Confidence Intervals Using a Modification of the Torus Translation
+#' @description Calculates a user-specified test statistic on a null ecological community using a temporal modification of the Torus translation.
+#' 
+#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @param time.var The name of the time column 
+#' @param species.var The name of the species column 
+#' @param abundance.var The name of the abundance column 
 #' @param FUN A function to calculate on the null community
-#' @param bootnumber The number of null model iterations used to calculated CIs
+#' @param bootnumber The number of null model iterations used to calculated confidence intervals
 #' @param replicate.var The name of the replication column from df
 #' @param li The lower confidence interval, defaults to lowest 2.5\% CI
 #' @param ui The upper confidence interval, defaults to upper 97.5\% CI  
-#' @param average.replicates If true returns CI averaged across reps; if false returns CI for each rep
-#' @return output A dataframe containing lowerCI, upperCI and nullmean value of the test statistic
+#' @param average.replicates If true returns the CIs averaged across replicates; if false returns the CI for each replicate
+#' @return The temporal_torus_translation_CI function returns a dataframe with the following attributes:
+#' \itemize{
+#'  \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
+#'  \item{upperCI: }{A numeric column with the highest confidence interval value.}
+#'  \item{nullMean: }{A numeric column with the average value of the specified function when calculated on a null community.}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
+#' }
+#' @details
+#' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+#' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+#' Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.
 #' @export
 temporal_torus_translation_CI<-function(df,  time.var="year",species.var="species", abundance.var="abundance", FUN, bootnumber, replicate.var=NA, li=0.025, ui=0.975, average.replicates=TRUE){
   if(is.na(replicate.var)==TRUE){

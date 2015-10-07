@@ -13,13 +13,12 @@
 #' @param average.replicates If true returns the variance ratio and CIs averaged across replicates; if false returns the variance ratio and CI for each replicate
 #' @return The varianceratio function returns a dataframe with the following attributes:
 #' \itemize{
-#'  \item{VR: }{A numeric column with the actual variance ratio values.}
-#'  \item{nullVRCIlow: }{A numeric column with the lowest confidence interval values.}
-#'  \item{nullVRCIhigh: }{A numeric column with the highest confidence interval values.}
-#'  \item{nullVRmean: }{A numeric column with the average null variance ratio values.}
+#'  \item{VR: }{A numeric column with the actual variance ratio value.}
+#'  \item{nullVRCIlow: }{A numeric column with the lowest confidence interval value.}
+#'  \item{nullVRCIhigh: }{A numeric column with the highest confidence interval value.}
+#'  \item{nullVRmean: }{A numeric column with the average null variance ratio value.}
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
-#' }
-#' @details
+#' }#' @details
 #' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 #' Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.

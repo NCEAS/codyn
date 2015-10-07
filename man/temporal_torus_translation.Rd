@@ -19,9 +19,12 @@ temporal_torus_translation(df, time.var = "year", species.var = "species",
 \item{FUN}{A function to calculate on the null community}
 }
 \value{
-The temporal_torus_translation returns a vector of null test statistics calculated from a randomized community matrix in which species autocorrelation has been maintained via a Torus translation
+The temporal_torus_translation function returns an integer output of the user-specified function calculated on a null community.
 }
 \description{
-Calculates a vector of null test statistics using a temporal modification of the Torus translation.
+Calculates a user-specified test statistic on a null ecological community using a temporal modification of the Torus translation.
+}
+\details{
+The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 }
 

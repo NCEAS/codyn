@@ -2,24 +2,24 @@
 % Please edit documentation in R/temporal_torus_translation.R
 \name{temporal_torus_translation_CI}
 \alias{temporal_torus_translation_CI}
-\title{A function that returns confidence intervals calculated from a temporal modification of the torus translation}
+\title{Confidence Intervals Using a Modification of the Torus Translation}
 \usage{
 temporal_torus_translation_CI(df, time.var = "year",
   species.var = "species", abundance.var = "abundance", FUN, bootnumber,
   replicate.var = NA, li = 0.025, ui = 0.975, average.replicates = TRUE)
 }
 \arguments{
-\item{df}{A dataframe containing time, species and abundance columns}
+\item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
 
-\item{time.var}{The name of the time column from df}
+\item{time.var}{The name of the time column}
 
-\item{species.var}{The name of the species column from df}
+\item{species.var}{The name of the species column}
 
-\item{abundance.var}{The name of the abundance column from df}
+\item{abundance.var}{The name of the abundance column}
 
 \item{FUN}{A function to calculate on the null community}
 
-\item{bootnumber}{The number of null model iterations used to calculated CIs}
+\item{bootnumber}{The number of null model iterations used to calculated confidence intervals}
 
 \item{replicate.var}{The name of the replication column from df}
 
@@ -27,12 +27,23 @@ temporal_torus_translation_CI(df, time.var = "year",
 
 \item{ui}{The upper confidence interval, defaults to upper 97.5\% CI}
 
-\item{average.replicates}{If true returns CI averaged across reps; if false returns CI for each rep}
+\item{average.replicates}{If true returns the CIs averaged across replicates; if false returns the CI for each replicate}
 }
 \value{
-output A dataframe containing lowerCI, upperCI and nullmean value of the test statistic
+The temporal_torus_translation_CI function returns a dataframe with the following attributes:
+\itemize{
+ \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
+ \item{upperCI: }{A numeric column with the highest confidence interval value.}
+ \item{nullMean: }{A numeric column with the average value of the specified function when calculated on a null community.}
+ \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
+}
 }
 \description{
-A function that returns confidence intervals calculated from a temporal modification of the torus translation
+Calculates a user-specified test statistic on a null ecological community using a temporal modification of the Torus translation.
+}
+\details{
+The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.
 }
 
