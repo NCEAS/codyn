@@ -18,20 +18,18 @@ community_stability<-function(df, time.var="year", abundance.var="abundance", re
     stopifnot(is.numeric(df[[time.var]]))
     stopifnot(is.numeric(df[[abundance.var]]))
     df<-df[which(df[[abundance.var]]>0),]
-  
+    
     if(is.na(replicate.var)) {
-      check_single_onerep(df, time.var, species.var)
-      
+        
         #sum abundance within a year
         aggform<-as.formula(paste(abundance.var, "~", time.var, sep=""))
         data2<-aggregate(aggform, data=df, sum)
         output<-stability_onerep(data2, abundance.var)
         
     } else {
-    
+        
         df<-df[order(df[[replicate.var]]),]  
         df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
-        check_single(df, time.var, species.var, replicate.var)
         
         #sum abundance within a replicate and year
         aggform<-as.formula(paste(abundance.var, "~", replicate.var, "+", time.var, sep=""))
@@ -43,7 +41,7 @@ community_stability<-function(df, time.var="year", abundance.var="abundance", re
         output<-cbind(reps, do.call("rbind", out))
         names(output)=c(replicate.var, "stability")
         output<-subset(output, !is.na(output$stability))
-
+        
     }
     
     row.names(output)<-NULL
