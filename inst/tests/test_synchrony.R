@@ -83,7 +83,15 @@ test_that("synchrony loads and returns correct result", {
     expect_error(synchrony(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randcharacter"))
     expect_error(synchrony(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randfactor"))
     
+    # For the "Gross" metric, if a species doesn't vary at all over the time series it omits that species from focal species list and gives warning.
+    # E.g, in KNZ_001d subplot D_5, salvia azurea has an abundance of 3 across the time series.
+    dat5 <- knz_001d[knz_001d$subplot == "D_5",]
+    expect_warning(synchrony(dat5, replicate.var = NA, metric = "G"))
     
+    # Checks Loreau method with the same subplot, for a single plot vs whole dataset
+    myres7 <- synchrony(dat5, replicate.var = NA, metric = "L")
+    myres8 <- synchrony(knz_001d, replicate.var = "subplot", metric = "L")
+    expect_equal(myres7, myres8[myres8$subplot=="D_5","synchrony"])
     
     
 })

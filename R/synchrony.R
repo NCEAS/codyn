@@ -108,19 +108,29 @@ synch_onerep <- function(df, time.var, species.var, abundance.var, metric=c("Lor
       if(metric=="Gross"){
         corout<-as.data.frame(cbind(species.var= as.character(), "sppcor"=as.numeric()))
         
+        # check to see if there are species which do not vary within a subplot
+        nonvary <- apply(transpose_community(df, time.var, species.var, abundance.var), 2, sd)
+        if(any(nonvary == 0)) { 
+          warning("One or more species has non-varying abundance within a subplot and has been omitted")
+        
+          # remove non-varying species from the spplist for this subplot
+          spplist <- data.frame(species = 
+                      spplist[[1]][is.na(match(as.character(unlist(spplist)), names(nonvary)[which(nonvary == 0)]))]
+                        )
+          }
+        
         for (i in 1:nrow(spplist)){
-          myspp<-as.character(spplist[[1]][i])
-          focalspp<-df2[which(df2[species.var] == myspp),]
-          com.focalspp<-transpose_community(focalspp, time.var, species.var, abundance.var)
-          otherspp<-df2[which(df2[species.var] != myspp),]
-          com.otherspp<-transpose_community(otherspp, time.var, species.var, abundance.var)
-          agg.otherspp<-(rowSums(com.otherspp))
-          sppcor<-cor(agg.otherspp, com.focalspp)
-          ##need to add a default value for species that do not fluctuate at all
-          subout<-as.data.frame(cbind(myspp, sppcor))
-          names(subout)=c(species.var, "sppcor")
-          subout$sppcor<-as.numeric(as.character(subout$sppcor))    
-          corout<-rbind(corout, subout)
+          myspp <- as.character(spplist[[1]][i])
+          focalspp <- df2[which(df2[species.var] == myspp),]
+          com.focalspp <- transpose_community(focalspp, time.var, species.var, abundance.var)
+          otherspp <- df2[which(df2[species.var] != myspp),]
+          com.otherspp <- transpose_community(otherspp, time.var, species.var, abundance.var)
+          agg.otherspp <- rowSums(com.otherspp)
+          sppcor <- cor(agg.otherspp, com.focalspp)
+          subout <- as.data.frame(cbind(myspp, sppcor))
+          names(subout) = c(species.var, "sppcor")
+          subout$sppcor <- as.numeric(as.character(subout$sppcor))    
+          corout <- rbind(corout, subout)
         }
         #average correlation for the community
         synchrony <- mean(corout$sppcor)
