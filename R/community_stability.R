@@ -3,7 +3,6 @@
 #' 
 #' @param df A data frame containing time, species and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
-#' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column 
 #' @return The community_stability function returns a numeric stability value unless a replication column is specified in the input data frame. 
