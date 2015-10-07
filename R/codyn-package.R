@@ -1,4 +1,4 @@
-#' An R package for analysis of long-term ecological community data
+#' Analysis of Long-Term Ecological Community Data
 #' @description Temporal diversity indices and community stability metrics for ecologists.
 #' @details The functions in \code{codyn} implement metrics that are explicitly temporal, and include the option to  calculate them over multiple replicates. 
 #' Functions fall into two categories: temporal diversity indices and community stability metrics. 
@@ -9,7 +9,7 @@
 #' Work on this package was supported by NSF-ABI grant #1262458
 #' 
 #' @author 
-#'  Lauren Hallett \email{lauren.hallett@@berkeley.edu}
+#'  Lauren Hallett \email{lauren.m.hallett@@gmail.com}
 #'  Sydney Jones \email{syd@@sevilleta.unm.edu}
 #'  Andrew MacDonald \email{aammacdonald@@gmail.com}
 #'  Matthew Jones \email{jones@@nceas.ucsb.edu}

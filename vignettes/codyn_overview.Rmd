@@ -1,6 +1,6 @@
 ---
-title: "codyn: An R package for analysis of long-term ecological community data"
-author: "Lauren M. Hallett"
+title: "Analysis of Long-Term Ecological Community Data"
+author: "Lauren M. Hallett, Sydney K. Jones,  Andrew A. MacDonald, Matthew B. Jones,  Dan F. B. Flynn, Peter Slaughter, Corinna Gries, Scott L. Collins"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -10,64 +10,18 @@ vignette: >
   %\VignetteEncoding{UTF-8}
   %\usepackage[utf8]{inputenc}
 ---
-From Collins08:
-Most well understood measures of community structure
-(e.g., diversity indices, rank-abundance curves,
-species–area curves) have advantages in some contexts
-and limitations in others. Many such measures represent
-a ‘‘snapshot in time’’ yet many ecological models are
-dynamic and require insight into patterns and mechanisms
-that change over time. As long-term data sets
-increase in breadth, length, and scope, better visualization
-tools and analytical methods will be needed to
-quantify temporal dynamics in ecological communities
-(MacNally 2007, Alonso et al. 2008).
 
+#Overview
+As long-term datasets increase in scope and length, new analytical tools are developing to capture patterns of species interactions over time. `codyn` is a package that includes recently developed metrics of ecological community dynamics. Functions in `codyn` implement metrics that are explicitly temporal, and include the option to calculate them over multiple replicates. Functions fall into two categories: temporal diversity indices and community stability metrics. 
 
-Many measures of community structure (eg, diversity indices and rank-abundance curve)  represent “snapshots in time” – which poorly capture the temporal dynamics of ecological systems. As long-term datasets increase in scope and length, new analytical tools are developing to capture patterns of species interactions over time. We present a new R package, codyn, to help ecologists easily implement these metrics and gain broader insight into community dynamics. codyn functions are explicitly temporal and include metrics of community stability and species turnover; they can also be implemented over multiple spatial replicates. In addition, codyn contains vignettes which reproduce figures and methods from published papers. 
+#Temporal Diversity Indices
+Many traditional measure of community structure represent ‘snapshot in time’ whereas ecological communities are dynamic and many are experiencing directional change with time. The diversity indices in `codyn` are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. 
 
+- **`turnover`** calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
 
-A growing number of syntheses studies have documented high turnover in communities with static species richness, highlighting the need to utilize turnover metrics in tandem with diversity metrics to understand ecological community dynamics. 
+- **`mean_rank_shift`** quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive timepoints. 
+This metric goes hand-in-hand "rank clocks," a useful visualization tool of shifts in species ranks. 
 
+- **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition. 
 
-## Vignette Info
-
-Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+#Community Stability Metrics
