@@ -24,7 +24,7 @@ Many traditional measure of community structure represent a â€˜snapshot in timeâ
 
 - **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition.
 
-- **`rate_change_intervals`** produces a data frame containing differences in species composition between samples at increasing time intervals.
+- **`rate_change_interval`** produces a data frame containing differences in species composition between samples at increasing time intervals.
 
 ##Community Stability Metrics
 Ecologists have long debated the relationship between species diversity and stability. Unstable species populations may stabilize aggregate community properties if a decrease in one species is compensated for by an increase in another. In time series analysis, this should be reflected by a pattern in which species negatively covary or fluctuate asynchronously while total community stability remains relatively stable. `codyn` includes a function to characterize community stability, **`community_stability`**, and three metrics to characterize species covariance and asynchrony:

@@ -23,6 +23,7 @@ Work on this package was supported by NSF-ABI grant #1262458
  \item{\code{\link[=turnover]{turnover}}}{: Calculates species turnover between time periods}
  \item{\code{\link[=mean_rank_shift]{mean_rank_shift}}}{: Calculates the mean relative change in species rank abundances}
  \item{\code{\link[=rate_change]{rate_change}}}{: Calculates the rate change in a community over time}
+ \item{\code{\link[=rate_change_interval]{rate_change_interval}}}{: Produces a data frame containing differences in species composition between samples at increasing time intervals}
  \item{\code{\link[=community_stability]{community_stability}}}{: Calculates community stability over time}
  \item{\code{\link[=variance_ratio]{variance_ratio}}}{: Computes the ratio of the variance of aggregate species abundances in a community }
  \item{\code{\link[=synchrony]{synchrony}}}{: Calculates the degree synchrony in species abundances}
