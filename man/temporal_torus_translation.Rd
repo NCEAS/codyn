@@ -37,8 +37,8 @@ temporal_torus_translation(subset(knz_001d, subplot=="A_1"), time.var="year",
 species.var="species", abundance.var="abundance", FUN=cov)
 }
 \references{
-Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6 (2014): 1693–1700.
+Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.
 
-Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. “Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot.” Journal of Ecology 89, no. 6 (2001): 947–59.
+Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 }
 
