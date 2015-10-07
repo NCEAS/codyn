@@ -39,7 +39,7 @@ NULL
 #' }
 #'
 #' @source
-#' Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark. (2008) “Rank clocks and plant community dynamics.” Ecology 89, no. 12: 3534–41.
+#' Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark. (2008) "Rank clocks and plant community dynamics." Ecology 89, no. 12: 3534-41.
 #' @docType data
 #' @keywords datasets
 #' @name collins08
@@ -63,7 +63,7 @@ NULL
 #' @source
 #' Konza Prairie LTER Dataset ID: PVC02, watershed 1D 
 #' 
-#' Collins, S. L. (2000) Disturbance frequency and community stability in native tallgrass prairie. American Naturalist 155:311–325.
+#' Collins, S. L. (2000) Disturbance frequency and community stability in native tallgrass prairie. American Naturalist 155:311-325.
 #' @docType data
 #' @keywords datasets
 #' @name knz_001d

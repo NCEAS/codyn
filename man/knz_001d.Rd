@@ -8,7 +8,7 @@
 \source{
 Konza Prairie LTER Dataset ID: PVC02, watershed 1D
 
-Collins, S. L. (2000) Disturbance frequency and community stability in native tallgrass prairie. American Naturalist 155:311–325.
+Collins, S. L. (2000) Disturbance frequency and community stability in native tallgrass prairie. American Naturalist 155:311-325.
 }
 \usage{
 data(knz_001d)
