@@ -51,8 +51,8 @@ Null model confidence intervals default to the standard lowest 2.5\% and upper 9
 data(knz_001d)
 
  # Calculate the variance ratio and CIs averaged within replicates
- # Here the null model is repeated once, for final use it is recommended to set a large bootnumber (eg, 10000)
-
+ # Here the null model is repeated once, for final use it is recommended to set a
+ # large bootnumber (eg, 10000)
  myoutput_averagedreplicates <-variance_ratio(knz_001d, time.var="year", species.var="species",
  abundance.var="abundance", bootnumber=1, replicate="subplot")
 
@@ -62,8 +62,8 @@ data(knz_001d)
  abundance.var="abundance", bootnumber=1, replicate="subplot", average.replicates=FALSE)
 }
 \references{
-Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6: 1693–1700. doi: 10.1890/13-0895.1
+Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6: 1693-1700. doi: 10.1890/13-0895.1
 
- Schluter, Dolph. (1984) “A Variance Test for Detecting Species Associations, with Some Example Applications.” Ecology 65, no. 3: 998–1005. doi:10.2307/1938071.
+ Schluter, Dolph. (1984) "A Variance Test for Detecting Species Associations, with Some Example Applications." Ecology 65, no. 3: 998-1005. doi:10.2307/1938071.
 }
 

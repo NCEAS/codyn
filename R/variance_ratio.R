@@ -36,9 +36,9 @@
 #'  myoutput_withinreplicates <-variance_ratio(knz_001d, time.var="year", species.var="species", 
 #'  abundance.var="abundance", bootnumber=1, replicate="subplot", average.replicates=FALSE)
 #'  @references
-#'  Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) “Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient.” Ecology 95, no. 6: 1693–1700. doi: 10.1890/13-0895.1
+#'  Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6: 1693-1700. doi: 10.1890/13-0895.1
 #'  
-#'  Schluter, Dolph. (1984) “A Variance Test for Detecting Species Associations, with Some Example Applications.” Ecology 65, no. 3: 998–1005. doi:10.2307/1938071.
+#'  Schluter, Dolph. (1984) "A Variance Test for Detecting Species Associations, with Some Example Applications." Ecology 65, no. 3: 998-1005. doi:10.2307/1938071.
 #' @export
 variance_ratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
