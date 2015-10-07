@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 codyn.Rproj
+
+inst/doc/*
