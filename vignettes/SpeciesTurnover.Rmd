@@ -15,11 +15,15 @@ vignette: >
 ---
 
 # Overview
+<<<<<<< Updated upstream
 Many measures of community structure, such as diversity indices and rank-abundance curves, represent "snapshots in time" - which poorly capture the temporal dynamics of ecological systems. For example, species richness (i.e., the number of species present) is a common metric to characterize ecological communities. However, species richness may be a poor indicator of community change if there is turnover in the identity but not the number of species present over time [@Collins2008; @cleland2013]. Similarly, species rank abundances can reorder through time, even when the pool of species present remains relatively stable. Within-year rank abundance curves fail to capture this dynamic, and other tools are needed to quantify within-community reordering without masking informative temporal shifts in internal dynamics [@Collins2008]. `codyn` includes three functions to characterize temporal shifts in species identity and rank abundances over time:
+=======
+Many measures of community structure, such as diversity indices and rank-abundance curves, represent “snapshots in time” – which do not capture the temporal dynamics of ecological systems. For example, species richness (i.e., the number of species present) is a common metric to characterize ecological communities. However, species richness may be a poor indicator of community change if there is turnover in the identity but not the number of species present over time [@Collins2008; @cleland2013]. Similarly, species rank abundances can reorder through time, even when the pool of species present remains relatively stable. Within-year rank abundance curves fail to capture this dynamic, and other tools are needed to quantify within-community reordering without masking informative temporal shifts in internal dynamics [@Collins2008]. `codyn` includes three functions to characterize temporal shifts in species identity and rank abundances over time:
+>>>>>>> Stashed changes
 
 - **`turnover`** calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
 
-- **`rankshift`** quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive timepoints. 
+- **`mean_rank_shift`** quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive timepoints. 
 This metric goes hand-in-hand "rank clocks," a useful visualization tool of shifts in species ranks. 
 
 - **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition. 
@@ -40,6 +44,8 @@ kable(head(collins08))
 ```
 
 # Species turnover
+Species turnover represents a temporal analog to species richness. It is described by the total turnover in species (appearances and disappearances) as well as the proportion of species that either appear or disappear between time points [@Collins2008; @cleland2013]. 
+
 ## Total turnover
 The function `turnover` calculates three metrics of species turnover: total turnover, appearances, and disappearances.
 
@@ -49,7 +55,7 @@ $$ Total\; turnover = \frac{Species\; gained\; +\; Species\; lost}{Total\; speci
 
 The metric was introduced by MacArthur and Wilson (1963) and modified by Diamond (1969) to be expressed as a proportion in order to compare turnover between sites that differ in species richness.
 
-`turnover` requires a dataframe with columns for species, year and abundance, and includes an argument to specify a column for spatial replicates.
+`turnover` requires a data frame with columns for species, year and abundance, and includes an optional argument to specify a column for spatial replicates.
 ```{r results='asis'}
 library(codyn)
 data(collins08)
@@ -63,29 +69,14 @@ KNZ_turnover<-turnover(df=collins08,
     kable(head(KNZ_turnover))
 ```
 
-If there are no replicates in the dataset, specify `replicate.var=NA`. 
-```{r results='asis'}
-KNZ_burned<-subset(collins08, replicate=="annually burned")
-KNZ_burned_turnover <- turnover(df=KNZ_burned, 
-                                replicate.var=NA,
-                                species.var="species",
-                                time.var="year",
-                                abundance.var="abundance",
-                                metric = "total")
-```
-```{r echo=FALSE}
-kable(head(KNZ_burned_turnover))
-```
-
-
-Note that if `replicate.var=NA` but the dataset in fact includes replicates, `turnover` will calculate across all species present in a given year (i.e., it will return a site-level measure of turnover). For example, specifying `replicate.var=NA` while using the entire `collins08` dataset yields total turnover across the unburned and burned locations combined.
+Note that if the `replicate.var` column is not specified but the dataset in fact includes replicates, `turnover` will calculate across all species present in a given time point (i.e., it will return a site-level measure of turnover). For example, defaulting the `replicate.var` to `NA` while using the entire `collins08` dataset yields total turnover across the unburned and burned locations combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
 
 ```{r results='asis'}
 KNZ_turnover_agg<-turnover(df=collins08, 
-                          replicate.var=NA, 
                           species.var="species",
                           time.var="year",
-                          abundance.var="abundance")
+                          abundance.var="abundance",
+                          replicate.var=NA)
 ```
 ```{r echo=FALSE}
     kable(head(KNZ_turnover_agg))
@@ -111,27 +102,74 @@ KNZ_disappearance<-turnover(df=collins08,
 ```
 
 ## Turnover at Konza
-Total turnover indicates that in general there was greater fluctuations in the species present in the unburned than burned location at Konza.
+Total turnover indicates that in general there were greater fluctuations in the species present in the unburned than burned location at Konza.
 
-```{r echo=FALSE}
+```{r fig.width = 7, fig.height = 4, echo=FALSE}
 library(ggplot2)
-ggplot(KNZ_turnover, aes(x=year, y=total, color=replicate))+geom_line()+ theme_bw() #+ theme(legend.position="none")
+ggplot(KNZ_turnover, aes(x=year, y=total, color=replicate)) + geom_line(size = 2) + theme_bw() #+ theme(legend.position="none")
 ```
 
-Parsing total turnover by appearances and disappearances indicates that in there were generally more appearances in the unburned than burned location. In addition, the strong divergence in total turnover between locations in 1995 was because the unburned location lost many species that year while the burned locations lost none.
+Parsing total turnover by appearances and disappearances indicates that in there were generally more appearances in the unburned than burned location. In addition, the strong divergence in total turnover between locations in 1995 was because the unburned location lost many species that year, while the burned locations lost none.
 
 
 ```{r echo=FALSE}
-ggplot(KNZ_appearance, aes(x=year, y=appearance, color=replicate))+geom_line()+ theme_bw() + theme(legend.position="none")
-ggplot(KNZ_disappearance, aes(x=year, y=disappearance, color=replicate))+geom_line()+ theme_bw() + theme(legend.position="none")
+ggplot(KNZ_appearance, aes(x=year, y=appearance, color=replicate)) + geom_line(size = 2)+ theme_bw() + theme(legend.position="none")
+ggplot(KNZ_disappearance, aes(x=year, y=disappearance, color=replicate)) + geom_line(size = 2)+ theme_bw() + theme(legend.position="none")
 ```
 
 
-# Species rankshifts
-## Rank clocks
 
-## Rank shifts
-Mean rank shifts are the relative change in species rank abundances, which provides an indication of shifts in relative abundance over time. It is calculated as:
+# Species rank shifts
+Species rank shifts describe within-community reording among species over time [@Collins2008]. 
+
+## Rank clocks: visualizing species rank shifts
+
+Rank clocks plot the rank order of abundance of each species over time in a circle, starting with a vertical axis at 12 o'clock. They are useful to visualize the degree to which species fluctuate over time [@Collins2008]. 
+
+To illustrate, generate some sample data:
+
+```{r}
+library(codyn)
+library(ggplot2)
+library(reshape2)
+
+## Generate some sample data 
+x = 1977:2003
+sp1 = .3*sin(x) + rnorm(length(x), 0, .1) + -.05*x + 150
+sp2 = .2*sin(x) + rnorm(length(x), 0, .1) + -.01*x + 70
+sp3 = .2*sin(x) + rnorm(length(x), 0, .1) + .01*x + 30
+
+## Reshape the data: year, variable (y1,y2,y3), value
+dat = melt(data.frame(x, sp1, sp2, sp3), "x")
+```
+
+
+A traditional, linear depiction of species rank shifts can be cluttered and visually confusing:
+```{r, fig.width = 5, fig.height = 5}
+ggplot(dat, aes(x,value,color=variable)) + geom_line(size = 2) + theme_bw()
+```
+
+
+In contrast, a rank clock visualization highlights differences in the stability of species:
+```{r, fig.width = 5, fig.height = 5}
+ggplot(dat, aes(x, value, color=variable)) + geom_line(size = 2) + coord_polar() + theme_bw() 
+```
+
+
+## Rank clocks at Konza
+
+Rank clocks highlight that in the Konza grasslands there has been tremendous variation in the abundance of little bluestem and big bluestem over time.
+```{r, fig.width = 7, fig.height = 7}
+dat.agg <- aggregate(abundance ~ species * year, data = knz_001d, FUN = mean)
+blues <- subset(dat.agg, species == "andropogon gerardii" | species == "schizachyrium scoparium")
+ggplot(blues, aes(year, abundance, color = species)) + 
+  geom_line(size = 2) + coord_polar() + theme_bw() + 
+  ggtitle("Variation in little and big bluestem")
+```
+
+## Mean rank shifts
+
+Mean rank shifts describe relative changes in species rank abundances, which indicate the degree of species reording over time. This metric is calculated as:
 
 $$ MRS = {\sum_{i=1}^{N} (|R_i,t+1 - R_i,t|})/N $$
 
