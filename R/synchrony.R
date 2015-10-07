@@ -23,9 +23,9 @@
 #' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 #' @references
-#' Gross, Kevin, Bradley J. Cardinale, Jeremy W. Fox, Andrew Gonzalez, Michel Loreau, H. Wayne Polley, Peter B. Reich, and Jasper van Ruijven. (2014) “Species richness and the temporal stability of biomass production: A new analysis of recent biodiversity experiments.” The American Naturalist 183, no. 1: 1–12. doi:10.1086/673915.
+#' Gross, Kevin, Bradley J. Cardinale, Jeremy W. Fox, Andrew Gonzalez, Michel Loreau, H. Wayne Polley, Peter B. Reich, and Jasper van Ruijven. (2014) "Species richness and the temporal stability of biomass production: A new analysis of recent biodiversity experiments." The American Naturalist 183, no. 1: 1-12. doi:10.1086/673915.
 #' 
-#' Loreau, Michel, and Claire de Mazancourt. (2008) “Species synchrony and its drivers: Neutral and nonneutral community dynamics in fluctuating environments.” The American Naturalist 172, no. 2: E48–66. doi:10.1086/589746.
+#' Loreau, Michel, and Claire de Mazancourt. (2008) "Species synchrony and its drivers: Neutral and nonneutral community dynamics in fluctuating environments." The American Naturalist 172, no. 2: E48-66. doi:10.1086/589746.
 #' @examples 
 #' data(knz_001d)
 #' synchrony(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot

@@ -48,8 +48,8 @@ synchrony(knz_001d, replicate.var = "subplot") # across all subplots
 synchrony(knz_001d, replicate.var = "subplot", metric="Gross") # With Gross et al. (2014) metric.
 }
 \references{
-Gross, Kevin, Bradley J. Cardinale, Jeremy W. Fox, Andrew Gonzalez, Michel Loreau, H. Wayne Polley, Peter B. Reich, and Jasper van Ruijven. (2014) “Species richness and the temporal stability of biomass production: A new analysis of recent biodiversity experiments.” The American Naturalist 183, no. 1: 1–12. doi:10.1086/673915.
+Gross, Kevin, Bradley J. Cardinale, Jeremy W. Fox, Andrew Gonzalez, Michel Loreau, H. Wayne Polley, Peter B. Reich, and Jasper van Ruijven. (2014) "Species richness and the temporal stability of biomass production: A new analysis of recent biodiversity experiments." The American Naturalist 183, no. 1: 1-12. doi:10.1086/673915.
 
-Loreau, Michel, and Claire de Mazancourt. (2008) “Species synchrony and its drivers: Neutral and nonneutral community dynamics in fluctuating environments.” The American Naturalist 172, no. 2: E48–66. doi:10.1086/589746.
+Loreau, Michel, and Claire de Mazancourt. (2008) "Species synchrony and its drivers: Neutral and nonneutral community dynamics in fluctuating environments." The American Naturalist 172, no. 2: E48-66. doi:10.1086/589746.
 }
 
