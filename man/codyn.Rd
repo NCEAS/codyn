@@ -30,6 +30,13 @@ Finally, \code{codyn} contains vignettes that describe methods and reproduce fig
 }
 }
 \author{
-Lauren M. Hallett
+Lauren Hallett \email{lauren.hallett@berkeley.edu}
+ Sydney Jones \email{syd@sevilleta.unm.edu}
+ Andrew MacDonald \email{aammacdonald@gmail.com}
+ Matthew Jones \email{jones@nceas.ucsb.edu}
+ Dan Flynn \email{flynn@fas.harvard.edu}
+ Peter Slaughter \email{slaughter@nceas.ucsb.edu}
+ Corinna Gries \email{cgries@wisc.edu}
+ Scott Collins \email{scollins@sevilleta.unm.edu}
 }
 
