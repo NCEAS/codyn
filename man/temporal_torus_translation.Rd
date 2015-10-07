@@ -31,10 +31,8 @@ The user-specified function must require a species x time matrix input.
 The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 }
 \examples{
+# Calculate a covariance matrix on a null community
 data(knz_001d)
-
-Calculate a covariance matrix on a null community
-
 temporal_torus_translation(subset(knz_001d, subplot=="A_1"), time.var="year",
 species.var="species", abundance.var="abundance", FUN=cov)
 }
