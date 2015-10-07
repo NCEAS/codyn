@@ -1,6 +1,11 @@
 #' An R package for analysis of long-term ecological community data
 #' @description Temporal diversity indices and community stability metrics for ecologists.
-#' @details The functions in codyn implement metrics that are explicitly temporal, and include the option to  calculate them over multiple replicates. Functions fall into two categories: temporal diversity indices and community stability metrics. The diversity indices in codyn are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. Specifically, codyn includes functions to calculate species turnover, mean rank shifts and lags in community similarity between time points. The community stability metrics in codyn calculate overall stability and patterns of species covariance and synchrony over time. Finally, codyn contains vignettes that describe methods and reproduce figures from published papers to help users contextualize and apply functions to their own data.
+#' @details The functions in \code{codyn} implement metrics that are explicitly temporal, and include the option to  calculate them over multiple replicates. 
+#' Functions fall into two categories: temporal diversity indices and community stability metrics. 
+#' The diversity indices in \code{codyn} are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. 
+#' Specifically, \code{codyn} includes functions to calculate species turnover, mean rank shifts and lags in community similarity between time points. 
+#' The community stability metrics in \code{codyn} calculate overall stability and patterns of species covariance and synchrony over time. 
+#' Finally, \code{codyn} contains vignettes that describe methods and reproduce figures from published papers to help users contextualize and apply functions to their own data.
 #' 
 #' 
 #' @author Lauren M. Hallett
@@ -9,14 +14,14 @@
 #' @aliases codyn
 #' @section functions:
 #' \itemize{
-#'  \item{\code{\link[=community_stability]{community_stability}}}{: A function to calculate community stability over time}
-#'  \item{\code{\link[=mean_rank_shift]{mean_rank_shift}}}{: A measure of the relative change in species rank abundances}
-#'  \item{\code{\link[=rate_change]{rate_change}}}{: calculate community rate changes over time within multiple replicates}
-#'  \item{\code{\link[=synchrony]{synchrony}}}{: Calculates the degree synchrony in species abundances}
-#'  \item{\code{\link[=temporal_torus_translation]{temporal_torus_translation}}}{: Calculate a vector of null test statistics using a temporal modification of the Torus translation}
-#'  \item{\code{\link[=temporal_torus_translation_CI]{temporal_torus_translation_CI}}}{: Returns confidence intervals calculated from a temporal modification of the torus translation}
-#'  \item{\code{\link[=turnover]{turnover}}}{: Computes species turnover between time periods}
+#'  \item{\code{\link[=turnover]{turnover}}}{: Calculates species turnover between time periods}
+#'  \item{\code{\link[=mean_rank_shift]{mean_rank_shift}}}{: Calculates the mean relative change in species rank abundances}
+#'  \item{\code{\link[=rate_change]{rate_change}}}{: Calculates the rate change in a community over time}
+#'  \item{\code{\link[=community_stability]{community_stability}}}{: Calculates community stability over time}
 #'  \item{\code{\link[=variance_ratio]{variance_ratio}}}{: Computes the ratio of the variance of aggregate species abundances in a community }
+#'  \item{\code{\link[=synchrony]{synchrony}}}{: Calculates the degree synchrony in species abundances}
+#'  \item{\code{\link[=temporal_torus_translation]{temporal_torus_translation}}}{: Calculates a null test statistic using a temporal modification of the torus translation}
+#'  \item{\code{\link[=temporal_torus_translation_CI]{temporal_torus_translation_CI}}}{: Returns confidence intervals calculated from a temporal modification of the torus translation}
 #' } 
 NULL
 
