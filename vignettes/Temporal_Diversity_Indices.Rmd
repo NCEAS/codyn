@@ -22,7 +22,8 @@ Many measures of community structure, such as diversity indices and rank-abundan
 - **`mean_rank_shift`** quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive timepoints. 
 This metric goes hand-in-hand with "rank clocks," a useful visualization tool of shifts in species ranks. 
 
-- **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition. 
+- **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition. The associated function **`rate_change_interval`** returns the full set of community distance values and associated time lag intervals 
+to use in visualization.
 
 
 ```{r echo=FALSE}
@@ -50,26 +51,26 @@ $$ Total\; turnover = \frac{Species\; gained\; +\; Species\; lost}{Total\; speci
 
 The metric was introduced by MacArthur and Wislon [-@MacArthur1963] and modified by Diamond [-@diamond1969] to be expressed as a proportion in order to compare turnover between sites that differ in species richness.
 
-`turnover` requires a data frame with columns for species, year and abundance, and includes an optional argument to specify a column for spatial replicates.
+`turnover` requires a data frame with columns for species, time and abundance, and includes an optional argument to specify a column for spatial replicates.
 ```{r results='asis'}
-KNZ_turnover<-turnover(df=collins08, 
-                       time.var="year", 
-                       species.var="species", 
-                       abundance.var="abundance", 
-                       replicate.var="replicate")
+KNZ_turnover <- turnover(df = collins08, 
+                       time.var = "year", 
+                       species.var = "species", 
+                       abundance.var = "abundance", 
+                       replicate.var = "replicate")
 ```
 ```{r echo=FALSE}
     kable(head(KNZ_turnover))
 ```
 
-Note that if the `replicate.var` column is not specified but the dataset in fact includes replicates, `turnover` will calculate across all species present in a given time point (i.e., it will return a site-level measure of turnover). For example, defaulting the `replicate.var` to `NA` while using the entire `collins08` dataset yields total turnover across the unburned and burned locations combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
+Note that if the `replicate.var` column is not specified but the dataset in fact includes replicates, `turnover` will calculate across all species present in a given time point across the dataset. For example, defaulting the `replicate.var` to `NA` while using the entire `collins08` dataset yields total turnover across the unburned and burned locations combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
 
 ```{r results='asis'}
-KNZ_turnover_agg<-turnover(df=collins08, 
-                          species.var="species",
-                          time.var="year",
-                          abundance.var="abundance",
-                          replicate.var=NA)
+KNZ_turnover_agg <- turnover(df = collins08, 
+                          species.var = "species",
+                          time.var = "year",
+                          abundance.var = "abundance",
+                          replicate.var = NA)
 ```
 ```{r echo=FALSE}
     kable(head(KNZ_turnover_agg))
@@ -81,17 +82,17 @@ Total turnover incorporates both species appearances and disappearances, but som
 
 Specifying `metric="appearance"` will return the proportion of species that appeared relative to the total number of species observed in both timepoints. As before, spatial replicates can be specified with the `replicate` argument; setting `replicate.var=NA` will calculate across the full dataset.
 ```{r results='asis'}
-KNZ_appearance<-turnover(df=collins08, 
-                         replicate.var="replicate",
-                         metric="appearance")
+KNZ_appearance <- turnover(df = collins08, 
+                         replicate.var = "replicate",
+                         metric = "appearance")
 ```
 
 
 Similarly, specifying `metric="disappearance"` will return the proportion of species that disappeared relative to the total number of species observed in both timepoints. 
 ```{r results='asis'}
-KNZ_disappearance<-turnover(df=collins08,
-                            replicate.var="replicate",
-                            metric="disappearance")
+KNZ_disappearance <- turnover(df = collins08,
+                            replicate.var = "replicate",
+                            metric = "disappearance")
 ```
 
 ## Turnover at Konza
@@ -102,7 +103,7 @@ library(ggplot2)
 ggplot(KNZ_turnover, aes(x=year, y=total, color=replicate)) + geom_line(size = 2) + theme_bw()
 ```
 
-Parsing total turnover by appearances and disappearances indicates that in there were generally more appearances in the unburned than burned location. In addition, the strong divergence in total turnover between locations in 1995 was because the unburned location lost many species that year, while the burned locations lost none.
+Parsing total turnover by appearances and disappearances indicates that there were generally more appearances in the unburned than burned location. In addition, the strong divergence in total turnover between locations in 1995 was because the burned location lost many species that year, while the unburned locations lost none.
 
 ```{r fig.width = 7, fig.height = 4, echo=FALSE}
 KNZ_appearance$metric<-"appearance"
@@ -151,47 +152,52 @@ ggplot(dat, aes(year, abundance, color = species)) +
 
 ## Rank clocks at Konza
 
-Rank clocks highlight that in the Konza grasslands there has been tremendous re-ordering in the relative abundance of dominant speices, especially with big bluestem  compared to little bluestem over time in the annually burned site but not the unburned site.
+Rank clocks highlight that there has been tremendous reordering in the relative abundance of dominant species in the annually burned but not the unburned location at Konza. For example, big bluestem (_Andropogon gerardii_) decreased substantially in the annually burned plot over time but remained stable and dominant in the unburned plot.
+
 ```{r, fig.width = 7, fig.height = 5}
 
 aggdat <- aggregate(abundance ~ species * year * replicate, 
-                    data = subset(collins08, species == "andrgera" | species == "andrscop" | species == "poaprat" | species == "sorgnuta"), 
+                    data = subset(collins08, 
+                                    species == "andrgera" |
+                                    species == "andrscop" | 
+                                    species == "poaprat"| 
+                                    species == "sorgnuta"), 
                     FUN = mean)
 
 ggplot(aggdat, aes(year, abundance, color = species)) + 
   geom_line(size = 2) + coord_polar() + theme_bw() + facet_wrap(~replicate) +
-  ggtitle("Dominant species in \n Annually burned vs unburned plots, Konza")
+  ggtitle("Dominant species abundances \n Annually burned vs unburned plots, Konza \n")
 ```
 
 ## Mean rank shifts
 
-The `mean_rank_shift` function describes relative changes in species rank abundances, which indicate the degree of species reording over time. This metric is calculated as:
+The `mean_rank_shift` function describes relative changes in species rank abundances, which indicate the degree of species reording between two time points. This metric is calculated as:
 
 $$ MRS = {\sum_{i=1}^{N} (|R_i,t+1 - R_i,t|})/N $$
 
-where $N$ is the number of species in common in both years, $t$ is the year, $R_i,t$ is the relative rank of species $i$ in year $t$.
+where $N$ is the number of species in common in both time points, $t$ is the time point, $R_i,t$ is the relative rank of species $i$ in time $t$.
 
-`mean_rank_shift` requires a data frame with columns for species, year and abundance, and includes an optional argument to specify a column for spatial replicates.
+`mean_rank_shift` requires a data frame with columns for species, time and abundance, and includes an optional argument to specify a column for spatial replicates.
 
 ```{r}
-KNZ_rankshift <- mean_rank_shift(df=collins08, replicate.var="replicate", abundance.var="abundance")
-#Select the final year from the returned year_pair
+KNZ_rankshift <- mean_rank_shift(df=collins08,  abundance.var = "abundance", replicate.var = "replicate")
+#Select the final time point from the returned time.var_pair
 KNZ_rankshift$year <- as.numeric(substr(KNZ_rankshift$year_pair, 6,9))
 ```
 ```{r echo=FALSE}
 kable(head(KNZ_rankshift))
 ```
 
-If`replicate.var=NA` but the dataset in fact includes replicates, `mean_rank_shift` will be calculated using all species present in the datset. For collins08, this would return mean_rank_shift for the burned and unburned areas combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
+If `replicate.var` is not specified but the dataset in fact includes replicates, `mean_rank_shift` will be calculated using all species present in the datset. For `collins08`, this would return mean rank shifts for the burned and unburned areas combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
 ```{r}
-KNZ_rankshift_agg <- mean_rank_shift(df=collins08, replicate.var=NA)
+KNZ_rankshift_agg <- mean_rank_shift(df = collins08)
 ```
 
 ## Rank shifts at Konza
 Calculating mean rank shifts highlights that the stability of communities diverged at Konza around 1992, with fewer rank shifts between species in the burned relative to the unburned area. 
 ```{r fig.width = 7, fig.height = 4}
-# Create a column with the final year from the returned year_pair
-KNZ_rankshift$year<-as.numeric(substr(KNZ_rankshift$year_pair, 6, 9))
+# Create a column with the final year from the returned time.var_pair
+KNZ_rankshift$year <- as.numeric(substr(KNZ_rankshift$year_pair, 6, 9))
 
 # Plot it
 ggplot(KNZ_rankshift, aes(year, MRS, color=replicate)) + 
@@ -200,15 +206,21 @@ ggplot(KNZ_rankshift, aes(year, MRS, color=replicate)) +
 
 ## Rate change
 
-The rate_change function assesses the rate and pattern of variability within a community, namely illustrating how whether species reordering over time is leading to directional change. This function calculates differences in species composition between samples at increasing time intervals. First, a dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean distance values are plotted against increasing time lag intervals. For example, a data set with 6 time intervals will have 5 one-year time lags (year 1 vs. year 2, year 2 vs. year 3 ...) and 4 two-year time lags (year 1 vs. year 3, year 2 vs. year 4 ...). Finally, distance values are regressed against time lag interval. The slope of the regression line indicates the rate and direction of change. A positive slope indicates directional change, a flat slope indicates stability and a negative slope implies convergence toward an earlier sampling period.
+The `rate_change` function assesses the rate and pattern of variability within a community, which indicates  whether species reordering over time is resulting in directional change. This function calculates differences in species composition between samples at increasing time intervals.  Differences in species composition are characterized by Euclidean distances, which are calculated on pair-wise communities across the entire time series. For example, a data set with 6 time intervals will have distance values for five one-interval time lags (e.g., time 1 vs time 2, time 2 vs time 3 ...), 4 two-interval time lags (e.g., time 1 vs time 3, time 2 vs time 4 ...) and so forth. These distance values are regressed against the time lag interval. The slope of the regression line is an indication of the rate and direction of compositional change in the community [@collins2000].
+
 
 ```{r}
-    rate.res <- rate_change(collins08, replicate.var= "replicate", 
-                    time.var= "year", species.var= "species", abundance.var= "abundance")
+    rate.res <- rate_change(collins08,  
+                    time.var= "year", 
+                    species.var= "species", 
+                    abundance.var= "abundance", 
+                    replicate.var = "replicate")
 ```
+
 ```{r, echo = F}
 rownames(rate.res) = NULL
 ```
+
 ```{r, fig.width = 7, fig.height = 5}
 kable(rate.res)
 
@@ -216,15 +228,16 @@ kable(rate.res)
 
 ## Rate change at Konza
 
-The annually burned grassland plots shown here have relatively greater directional change through time, which can also be observed in the rank clocks. For example, the dominant species _Andropogon gerardii_ decreases substantially over time in the annually burned plot, yet stays stable in the unburned plot.
+The annually burned grassland location shown here has relatively greater directional change through time than the unburned location This reflects the pattern highlighted in the rank clocks, in which, for example, the dominant species _Andropogon gerardii_ decreased substantially over time in the annually burned location but remained stable in the unburned location.
 
 ```{r, fig.width = 7, fig.height = 5}
 
+#Use the rate_change_interval function to generate the full data frame of distances by time lag intervals
 comm.res <- rate_change_interval(collins08, 
-                              time.var="year",
-                              species.var="species",
-                              abundance.var="abundance",
-                              replicate.var="replicate")
+                              time.var = "year",
+                              species.var = "species",
+                              abundance.var = "abundance",
+                              replicate.var = "replicate")
 
 ggplot(comm.res, aes(interval, distance, color = replicate)) + facet_wrap(~replicate) + 
   geom_point() + theme_bw() + stat_smooth(method = "lm", se = F, size = 2)
