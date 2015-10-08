@@ -17,7 +17,7 @@ The community stability metrics in \code{codyn} calculate overall stability and 
 Finally, \code{codyn} contains vignettes that describe methods and reproduce figures from published papers to help users contextualize and apply functions to their own data.
 Work on this package was supported by NSF-ABI grant #1262458
 }
-\section{functions}{
+\section{Functions}{
 
 \itemize{
  \item{\code{\link[=turnover]{turnover}}}{: Calculates species turnover between time periods}
@@ -32,13 +32,15 @@ Work on this package was supported by NSF-ABI grant #1262458
 }
 }
 \author{
-Lauren Hallett \email{lauren.m.hallett@gmail.com}
- Sydney Jones \email{syd@sevilleta.unm.edu}
- Andrew MacDonald \email{aammacdonald@gmail.com}
- Dan Flynn \email{flynn@fas.harvard.edu}
- Peter Slaughter \email{slaughter@nceas.ucsb.edu}
- Corinna Gries \email{cgries@wisc.edu}
- Scott Collins \email{scollins@sevilleta.unm.edu}
- Matthew Jones \email{jones@nceas.ucsb.edu}
+\itemize{
+ \item{Lauren Hallett \email{lauren.m.hallett@gmail.com}}
+ \item{Sydney K. Jones \email{syd@sevilleta.unm.edu}}
+ \item{Andrew A. MacDonald \email{aammacdonald@gmail.com}}
+ \item{Matthew B. Jones \email{jones@nceas.ucsb.edu}}
+ \item{Dan F. B. Flynn \email{flynn@fas.harvard.edu}}
+ \item{Peter Slaughter \email{slaughter@nceas.ucsb.edu}}
+ \item{Corinna Gries \email{cgries@wisc.edu}}
+ \item{Scott L. Collins \email{scollins@sevilleta.unm.edu}}
+}
 }
 
