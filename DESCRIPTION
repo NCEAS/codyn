@@ -11,7 +11,7 @@ Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com",
     email="cgries@wisc.edu", role=c("aut")), 
     person("Matthew", "Jones", email="jones@nceas.ucsb.edu", role=c("aut",
     "cre")))
-Date: 2015-10-07
+Date: 2015-10-08
 Description: A toolbox of longterm ecological data analysis metrics.
 Depends:
     R (>= 3.1.0)

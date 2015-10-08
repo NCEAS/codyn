@@ -19,6 +19,7 @@ transpose_community <- function(df, time.var, species.var, abundance.var) {
 #'
 #' @param given Vector of variable names as supplied by user
 #' @param data Data frame containing variables
+#' @import assertthat
 check_names <- function(given, data) {
     for (i in given){
         assertthat::assert_that(assertthat::has_name(data, i))
