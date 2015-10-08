@@ -1,6 +1,7 @@
 codyn - Community Dynamics Metrics
 =====
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/codyn)](http://cran.r-project.org/web/packages/codyn)
 [![Build Status](https://travis-ci.org/laurenmh/codyn.png?branch=master)](https://travis-ci.org/laurenmh/codyn)
 
 
