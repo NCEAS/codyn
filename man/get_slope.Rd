@@ -5,7 +5,7 @@
 \title{Get slope
 Returns the slope of community change within one replicate.}
 \usage{
-get_slope(df, time.var = "time", species.var = "species",
+get_slope(df, time.var = "year", species.var = "species",
   abundance.var = "abundance")
 }
 \arguments{

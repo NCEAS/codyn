@@ -4,7 +4,7 @@
 \alias{get_lagged_distances}
 \title{Get lagged distances for a single replicate}
 \usage{
-get_lagged_distances(df, time.var = "time", species.var = "species",
+get_lagged_distances(df, time.var = "year", species.var = "species",
   abundance.var = "abundance")
 }
 \arguments{

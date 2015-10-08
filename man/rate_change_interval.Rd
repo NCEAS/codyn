@@ -2,29 +2,47 @@
 % Please edit documentation in R/rate_change.R
 \name{rate_change_interval}
 \alias{rate_change_interval}
-\title{A function to calculate Euclidean distance over time intervals within multiple replicates.}
+\title{Differences in community composition over successive time lag intervals}
 \usage{
-rate_change_interval(df, time.var = "time", species.var = "species",
+rate_change_interval(df, time.var = "year", species.var = "species",
   abundance.var = "abundance", replicate.var = NA)
 }
 \arguments{
-\item{df}{A dataframe containing replicate, time, species and abundance columns.}
+\item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
 
-\item{time.var}{The name of the time column from df}
+\item{time.var}{The name of the time column}
 
-\item{species.var}{The name of the species column from df}
+\item{species.var}{The name of the species column}
 
-\item{abundance.var}{The name of the abundance column from df}
+\item{abundance.var}{The name of the abundance column}
 
-\item{replicate.var}{The name of the replicate column from df. Defaults to NA.}
+\item{replicate.var}{The name of the optional replicate column}
 }
 \value{
-output a data frame with the euclidean distance between communities by replicate and interval
+The \code{rate_change_interval} function returns a data frame with the following attributes:
+\itemize{
+ \item{interval: }{A numeric column containing the interval length between time periods.}
+ \item{distance: }{A numeric column containing the Euclidean distances.}
+ \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
+}
+The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 }
 \description{
-This is an analysis of differences in species composition between samples at increasing time
-lags. It measures the rate of directional change in community composition. First, a
-triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean
-distance values are plotted against time lags, and output as a data frame.
+Calculates the differences in species composition within a community over increasing time
+intervals. Differences in species composition are characterized by Euclidean distances,
+which are calculated on pair-wise communities across the entire time series.
+For example, a data set with 6 time intervals will have distance values for five one-year time lags
+(year 1 vs year 2, year 2 vs year 3 ...),
+4 two-year time lags (year 1 vs year 3, year 2 vs year 4 ...) and so forth.
+Returns the full set of community distance values and associated time lag intervals.
+}
+\examples{
+data(knz_001d)
+rate_change_interval(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
+rate_change_interval(knz_001d, replicate.var = "subplot") # across all subplots
+}
+\references{
+Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates andpatterns of variability in ecological communities. - Oikos 91: 285-293.
 }
 

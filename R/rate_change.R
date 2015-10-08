@@ -1,25 +1,40 @@
-#'  Community changes over successive time intervals
+#'  Rate of community change over successive time intervals
 #'
-#' Calculates the slope of the difference in species composition between samples over increasing time 
+#' Calculates the slope of the differences in species composition within a community over increasing time 
 #' intervals, which provides a  measures of the rate of directional change in community composition. 
-#' First, a triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean 
-#' distance values are plotted against time lags. For example, a data set with 6 time intervals
-#' will have 5 one-year time lags (year 1 vs year 2, year 2 vs year 3 ...) and 4 two-year time 
-#' lags (year 1 vs year 3, year 2 vs year 4 ...). Finally, distance values are regressed against time lag. 
-#' The slope of the regression line indicates the rate and direction of change.
+#' Differences in species composition are characterized by Euclidean distances, 
+#' which are calculated on pair-wise communities across the entire time series. 
+#' For example, a data set with 6 time intervals will have distance values for five one-year time lags 
+#' (year 1 vs year 2, year 2 vs year 3 ...), 
+#' 4 two-year time lags (year 1 vs year 3, year 2 vs year 4 ...) and so forth. 
+#' These distance values are regressed against the time lag interval. 
+#' The slope of the regression line is reported as an indication of the rate and direction of compositional change in the community.
 #' @param df A data frame containing time, species and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column 
-#' @return The \code{rate_chnage} function returns a numeric rate change value unless a replication column is specified in the input data frame. 
+#' @return The \code{rate_change} function returns a numeric rate change value unless a replication column is specified in the input data frame. 
 #' If replication is specified, the function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{rate_change: }{A numeric column with the synchrony values.}
 #'  \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
 #' }
+#' @details
+#' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+#' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+#' 
+#' The \code{rate_change} function uses linear regression to relate Euclidean distances to time lag intervals. 
+#' It is recommended that fit of this relationship be verified using \code{rate_change_interval},
+#' which returns the full set of community distance values and associated time lag intervals.
+#' @references 
+#' Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates andpatterns of variability in ecological communities. - Oikos 91: 285-293. 
+#' @examples 
+#' data(knz_001d)
+#' rate_change(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
+#' rate_change(knz_001d, replicate.var = "subplot") # across all subplots
 #' @export
-rate_change <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
+rate_change <- function(df, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA) {
   check_numeric(df, time.var, abundance.var)
   if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
@@ -40,20 +55,37 @@ rate_change <- function(df, time.var="time", species.var="species", abundance.va
     return(output)
 }
 
-#' A function to calculate Euclidean distance over time intervals within multiple replicates.
-#'
-#' This is an analysis of differences in species composition between samples at increasing time 
-#' lags. It measures the rate of directional change in community composition. First, a 
-#' triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean 
-#' distance values are plotted against time lags, and output as a data frame.
-#' @param df A dataframe containing replicate, time, species and abundance columns.
-#' @param replicate.var The name of the replicate column from df. Defaults to NA.
-#' @param time.var The name of the time column from df
-#' @param species.var The name of the species column from df
-#' @param abundance.var The name of the abundance column from df
-#' @return output a data frame with the euclidean distance between communities by replicate and interval
+#' 
+#' Differences in community composition over successive time lag intervals
+#' 
+#' Calculates the differences in species composition within a community over increasing time 
+#' intervals. Differences in species composition are characterized by Euclidean distances, 
+#' which are calculated on pair-wise communities across the entire time series. 
+#' For example, a data set with 6 time intervals will have distance values for five one-year time lags 
+#' (year 1 vs year 2, year 2 vs year 3 ...), 
+#' 4 two-year time lags (year 1 vs year 3, year 2 vs year 4 ...) and so forth. 
+#' Returns the full set of community distance values and associated time lag intervals.
+#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @param time.var The name of the time column 
+#' @param species.var The name of the species column 
+#' @param abundance.var The name of the abundance column 
+#' @param replicate.var The name of the optional replicate column
+#' @return The \code{rate_change_interval} function returns a data frame with the following attributes:
+#' \itemize{
+#'  \item{interval: }{A numeric column containing the interval length between time periods.}
+#'  \item{distance: }{A numeric column containing the Euclidean distances.}
+#'  \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
+#' }
+#' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+#' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+#' @references 
+#' Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates andpatterns of variability in ecological communities. - Oikos 91: 285-293. 
+#' @examples 
+#' data(knz_001d)
+#' rate_change_interval(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
+#' rate_change_interval(knz_001d, replicate.var = "subplot") # across all subplots
 #' @export
-rate_change_interval <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
+rate_change_interval <- function(df, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA) {
     stopifnot(is.numeric(df[[time.var]]))
     stopifnot(is.numeric(df[[abundance.var]]))
     if(is.na(replicate.var)) {
@@ -95,7 +127,7 @@ rate_change_interval <- function(df, time.var="time", species.var="species", abu
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a data frame containing of time lags by species distances
-get_lagged_distances <- function(df, time.var="time", species.var="species", abundance.var="abundance") {
+get_lagged_distances <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
     df <- transpose_community(df, time.var, species.var, abundance.var)
     DM <- dist(df, method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
@@ -115,7 +147,7 @@ get_lagged_distances <- function(df, time.var="time", species.var="species", abu
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
-get_slope <- function(df, time.var="time", species.var="species", abundance.var="abundance") {
+get_slope <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
     results <- get_lagged_distances(df, time.var, species.var, abundance.var)
     lm_coefficents <- lm(distance ~ interval, data=results)
     slope <- data.frame(lm_coefficents[1][[1]])
