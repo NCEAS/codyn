@@ -14,15 +14,15 @@ vignette: >
   
 ---
 
-# Overview
+## Overview
 Many measures of community structure, such as diversity indices and rank-abundance curves, represent "snapshots in time" - which do not capture the temporal dynamics of ecological systems. For example, species richness (i.e., the number of species present) is a common metric to characterize ecological communities. However, species richness may be a poor indicator of community change if there is turnover in the identity but not the number of species present over time [@Collins2008; @cleland2013]. Similarly, species rank abundances can reorder through time, even when the pool of species present remains relatively stable. Within-year rank abundance curves fail to capture this dynamic, and other tools are needed to quantify within-community reordering without masking informative temporal shifts in internal dynamics [@Collins2008]. `codyn` includes three functions to characterize temporal shifts in species identity and rank abundances over time:
 
-- **`turnover`** calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
+- `turnover` calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
 
-- **`mean_rank_shift`** quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive timepoints. 
+- `mean_rank_shift` quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive time points. 
 This metric goes hand-in-hand with "rank clocks," a useful visualization tool of shifts in species ranks. 
 
-- **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition. The associated function **`rate_change_interval`** returns the full set of community distance values and associated time lag intervals 
+- `rate_change` analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition. The associated function `rate_change_interval` returns the full set of community distance values and associated time lag intervals 
 to use in visualization.
 
 
@@ -30,7 +30,7 @@ to use in visualization.
 library(knitr)
 ```
 
-# Example dataset
+## Example dataset
 `codyn` utilizes a subset of the data presented by Collins et al. [-@Collins2008]. The `collins08` dataset includes plant composition from the Konza Prairie Long-term Ecological Research site in Manhattan, KS. It spans 18 years and includes data collected from two locations, one that is annually burned and one that is unburned. 
 
 ```{r echo=FALSE}
@@ -39,10 +39,10 @@ data(collins08)
 kable(head(collins08))
 ```
 
-# Species turnover
+## Species turnover
 Species turnover represents a temporal analog to species richness. It is described by the total turnover in species (appearances and disappearances) as well as the proportion of species that either appear or disappear between time points [@Collins2008; @cleland2013]. 
 
-## Total turnover
+### Total turnover
 The function `turnover` calculates three metrics of species turnover: total turnover, appearances, and disappearances.
 
 The default metric `total` refers to total turnover, which calculates the proportion of species that differ between timepoints as:
@@ -76,7 +76,7 @@ KNZ_turnover_agg <- turnover(df = collins08,
     kable(head(KNZ_turnover_agg))
 ```
 
-## Appearances and disappearances
+### Appearances and disappearances
 
 Total turnover incorporates both species appearances and disappearances, but sometimes it is useful to parse their relative contribution. For example, a timepoint in which many species appear may reflect a different ecological story than a timepoint in which many species drop from the system, but the total turnover in both scenarios may be similar. 
 
@@ -95,7 +95,7 @@ KNZ_disappearance <- turnover(df = collins08,
                             metric = "disappearance")
 ```
 
-## Turnover at Konza
+### Turnover at Konza
 Total turnover indicates that in general there were greater fluctuations in the species present in the unburned than burned location at Konza.
 
 ```{r fig.width = 7, fig.height = 4, echo=FALSE}
@@ -116,9 +116,9 @@ ggplot(KNZ_appdisapp, aes(x=year, y=turnover, color=replicate)) + geom_line(size
 ```
 
 
-# Species rank shifts
+## Species rank shifts
 
-## Rank clocks: visualizing species rank shifts
+### Rank clocks: visualizing species rank shifts
 Rank clocks are a useful way to visualize the degree to which species reorder over time. They plot the rank order of abundance of each species over time in a circle, starting with a vertical axis at 12 o'clock [@Collins2008]. 
 
 To illustrate, generate some sample data:
@@ -150,7 +150,7 @@ ggplot(dat, aes(year, abundance, color = species)) +
 ```
 
 
-## Rank clocks at Konza
+### Rank clocks at Konza
 
 Rank clocks highlight that there has been tremendous reordering in the relative abundance of dominant species in the annually burned but not the unburned location at Konza. For example, big bluestem (_Andropogon gerardii_) decreased substantially in the annually burned plot over time but remained stable and dominant in the unburned plot.
 
@@ -169,7 +169,7 @@ ggplot(aggdat, aes(year, abundance, color = species)) +
   ggtitle("Dominant species abundances \n Annually burned vs unburned plots, Konza \n")
 ```
 
-## Mean rank shifts
+### Mean rank shifts
 
 The `mean_rank_shift` function describes relative changes in species rank abundances, which indicate the degree of species reording between two time points. This metric is calculated as:
 
@@ -193,7 +193,7 @@ If `replicate.var` is not specified but the dataset in fact includes replicates,
 KNZ_rankshift_agg <- mean_rank_shift(df = collins08)
 ```
 
-## Rank shifts at Konza
+### Rank shifts at Konza
 Calculating mean rank shifts highlights that the stability of communities diverged at Konza around 1992, with fewer rank shifts between species in the burned relative to the unburned area. 
 ```{r fig.width = 7, fig.height = 4}
 # Create a column with the final year from the returned time.var_pair
@@ -204,7 +204,7 @@ ggplot(KNZ_rankshift, aes(year, MRS, color=replicate)) +
   geom_line(size= 2) + theme_bw() 
 ```
 
-## Rate change
+## Rate of community change
 
 The `rate_change` function assesses the rate and pattern of variability within a community, which indicates  whether species reordering over time is resulting in directional change. This function calculates differences in species composition between samples at increasing time intervals.  Differences in species composition are characterized by Euclidean distances, which are calculated on pair-wise communities across the entire time series. For example, a data set with 6 time intervals will have distance values for five one-interval time lags (e.g., time 1 vs time 2, time 2 vs time 3 ...), 4 two-interval time lags (e.g., time 1 vs time 3, time 2 vs time 4 ...) and so forth. These distance values are regressed against the time lag interval. The slope of the regression line is an indication of the rate and direction of compositional change in the community [@collins2000].
 
@@ -226,7 +226,7 @@ kable(rate.res)
 
 ```
 
-## Rate change at Konza
+### Rate change at Konza
 
 The annually burned grassland location shown here has relatively greater directional change through time than the unburned location This reflects the pattern highlighted in the rank clocks, in which, for example, the dominant species _Andropogon gerardii_ decreased substantially over time in the annually burned location but remained stable in the unburned location.
 

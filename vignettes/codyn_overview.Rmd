@@ -18,20 +18,20 @@ As long-term datasets increase in scope and length, new analytical tools are bei
 ##Temporal Diversity Indices
 Many traditional measure of community structure represent a ‘snapshot in time’ whereas ecological communities are dynamic and many are experiencing directional change with time. The diversity indices in `codyn` are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. They include:
 
-- **`turnover`** calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
+- `turnover` calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
 
-- **`mean_rank_shift`** quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive timepoints. This metric goes hand-in-hand with "rank clocks," a useful visualization tool for shifts in species ranks. 
+- `mean_rank_shift` quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive time points. This metric goes hand-in-hand with "rank clocks," a useful visualization tool for shifts in species ranks. 
 
-- **`rate_change`** analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition.
+- `rate_change` analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition.
 
-- **`rate_change_interval`** produces a data frame containing differences in species composition between samples at increasing time intervals.
+- `rate_change_interval` produces a data frame containing differences in species composition between samples at increasing time intervals.
 
 ##Community Stability Metrics
-Ecologists have long debated the relationship between species diversity and stability. Unstable species populations may stabilize aggregate community properties if a decrease in one species is compensated for by an increase in another. In time series analysis, this should be reflected by a pattern in which species negatively covary or fluctuate asynchronously while total community stability remains relatively stable. `codyn` includes a function to characterize community stability, **`community_stability`**, and three metrics to characterize species covariance and asynchrony:
+Ecologists have long debated the relationship between species diversity and stability. Unstable species populations may stabilize aggregate community properties if a decrease in one species is compensated for by an increase in another. In a time series, this should be reflected by a pattern in which species negatively covary or fluctuate asynchronously while total community stability remains relatively stable. `codyn` includes a function to characterize community stability, `community_stability`, and three metrics to characterize species covariance and asynchrony:
 
-- **`variance_ratio`** characterizes species covariance [@schluter1984; @houlahan2007], and includes a null-modeling approach to test significance [@hallett2014]. Null modeling is built-in to the `variance_ratio` function. Two additional functions, `temporal_torus_translation` and `temporal_torus_translation_CI`, allow this method to be generalized to other test statistics.
+- `variance_ratio` characterizes species covariance [@schluter1984; @houlahan2007], and includes a null-modeling approach to test significance [@hallett2014]. Null modeling is built-in to the `variance_ratio` function. Two additional functions, `temporal_torus_translation` and `temporal_torus_translation_CI`, allow this method to be generalized to other test statistics.
 
-- **`synchrony`** has two options. The first compares the variance of the aggregated community with the variance of individual components [@loreau2008]. The second compares the average correlation of each individual species with the rest of the aggregated community [@gross2014].
+- `synchrony` has two options. The first compares the variance of the aggregated community with the variance of individual components [@loreau2008]. The second compares the average correlation of each individual species with the rest of the aggregated community [@gross2014].
 
 ##Citations
 
