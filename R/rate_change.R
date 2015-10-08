@@ -127,6 +127,7 @@ rate_change_interval <- function(df, time.var="year", species.var="species", abu
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a data frame containing of time lags by species distances
+#' @import stats
 get_lagged_distances <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
     df <- transpose_community(df, time.var, species.var, abundance.var)
     DM <- dist(df, method="euclidean", diag = FALSE, upper = FALSE)
@@ -147,6 +148,7 @@ get_lagged_distances <- function(df, time.var="year", species.var="species", abu
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
+#' @import stats
 get_slope <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
     results <- get_lagged_distances(df, time.var, species.var, abundance.var)
     lm_coefficents <- lm(distance ~ interval, data=results)

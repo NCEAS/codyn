@@ -80,6 +80,7 @@ variance_ratio<-function(df, time.var="year", species.var="species",  abundance.
 #'
 #' @param comdat A community dataframe
 #' @return var.ratio The variance ratio of the community
+#' @import stats
 variance_ratio_matrixdata<-function(comdat){
     all.cov <- cov(comdat, use="pairwise.complete.obs")
     col.var<-apply(comdat, 2, var)

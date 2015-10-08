@@ -20,6 +20,7 @@
 #' data(knz_001d)
 #' community_stability(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
 #' community_stability(knz_001d, replicate.var = "subplot") # across all subplots
+#' @import stats
 #' @export
 
 community_stability<-function(df, time.var="year", abundance.var="abundance", replicate.var=NA){
@@ -73,6 +74,7 @@ community_stability<-function(df, time.var="year", abundance.var="abundance", re
 #' @param df A dataframe containing x column
 #' @param x The column to calculate stability on
 #' @return Stability of x, calculated as the mean/sd
+#' @import stats
 stability_onerep<-function(df,  x){
   return(mean(df[[x]], na.rm=T)/sd(df[[x]], na.rm=T))
 }

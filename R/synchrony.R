@@ -74,7 +74,7 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
 #'        The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014
 #' @return output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony. 
 #'        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
-
+#' @import stats
 synch_onerep <- function(df, time.var, species.var, abundance.var, metric=c("Loreau", "Gross")) {
     metric = match.arg(metric) # for partial argument matching
     
