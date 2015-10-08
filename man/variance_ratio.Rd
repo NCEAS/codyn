@@ -31,9 +31,9 @@ variance_ratio(df, time.var = "year", species.var = "species",
 The variance_ratio function returns a dataframe with the following attributes:
 \itemize{
  \item{VR: }{A numeric column with the actual variance ratio value.}
- \item{nullVRCIlow: }{A numeric column with the lowest confidence interval value.}
- \item{nullVRCIhigh: }{A numeric column with the highest confidence interval value.}
- \item{nullVRmean: }{A numeric column with the average null variance ratio value.}
+ \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
+ \item{upperCI: }{A numeric column with the highest confidence interval value.}
+ \item{nullmean: }{A numeric column with the average null variance ratio value.}
  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
 }#'
 }
