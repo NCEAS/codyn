@@ -28,14 +28,14 @@ variance_ratio(df, time.var = "year", species.var = "species",
 \item{average.replicates}{If true returns the variance ratio and CIs averaged across replicates; if false returns the variance ratio and CI for each replicate}
 }
 \value{
-The variance_ratio function returns a dataframe with the following attributes:
+The variance_ratio function returns a data frame with the following attributes:
 \itemize{
  \item{VR: }{A numeric column with the actual variance ratio value.}
  \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
  \item{upperCI: }{A numeric column with the highest confidence interval value.}
  \item{nullmean: }{A numeric column with the average null variance ratio value.}
  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
-}#'
+}
 }
 \description{
 Computes the ratio of the variance of aggregate species abundances in a community to the sum of the variances of individual, component species. A variance ratio = 1 indicates that species do not covary,  a variance ratio > 1 indicates predominately positive covariance among species and a variance ratio < 1 indicates predominately negative covariance (Schluter 1984).
@@ -45,6 +45,7 @@ Includes a null modeling option to test if the variance ratio significantly diff
 \details{
 The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+
 Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.
 }
 \examples{
@@ -53,13 +54,14 @@ data(knz_001d)
  # Calculate the variance ratio and CIs averaged within replicates
  # Here the null model is repeated once, for final use it is recommended to set a
  # large bootnumber (eg, 10000)
- myoutput_averagedreplicates <-variance_ratio(knz_001d, time.var="year", species.var="species",
- abundance.var="abundance", bootnumber=1, replicate="subplot")
+
+ res_averagedreplicates <- variance_ratio(knz_001d, time.var = "year", species.var = "species",
+ abundance.var = "abundance", bootnumber = 1, replicate = "subplot")
 
  #Calculate the variance ratio and CIs for each replicate
 
- myoutput_withinreplicates <-variance_ratio(knz_001d, time.var="year", species.var="species",
- abundance.var="abundance", bootnumber=1, replicate="subplot", average.replicates=FALSE)
+ res_withinreplicates <- variance_ratio(knz_001d, time.var = "year", species.var = "species",
+ abundance.var = "abundance", bootnumber = 1, replicate = "subplot", average.replicates = FALSE)
 }
 \references{
 Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. (2014) "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6: 1693-1700. doi: 10.1890/13-0895.1
