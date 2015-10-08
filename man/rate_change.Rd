@@ -2,29 +2,34 @@
 % Please edit documentation in R/rate_change.R
 \name{rate_change}
 \alias{rate_change}
-\title{A function to calculate community rate changes over time within multiple replicates.}
+\title{Community changes over successive time intervals}
 \usage{
 rate_change(df, time.var = "time", species.var = "species",
   abundance.var = "abundance", replicate.var = NA)
 }
 \arguments{
-\item{df}{A dataframe containing replicate, time, species and abundance columns.}
+\item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
 
-\item{time.var}{The name of the time column from df}
+\item{time.var}{The name of the time column}
 
-\item{species.var}{The name of the species column from df}
+\item{species.var}{The name of the species column}
 
-\item{abundance.var}{The name of the abundance column from df}
+\item{abundance.var}{The name of the abundance column}
 
-\item{replicate.var}{The name of the replicate column from df. Defaults to NA.}
+\item{replicate.var}{The name of the optional replicate column}
 }
 \value{
-output The rate of community change
+The \code{rate_chnage} function returns a numeric rate change value unless a replication column is specified in the input data frame.
+If replication is specified, the function returns a data frame with the following attributes:
+\itemize{
+ \item{rate_change: }{A numeric column with the synchrony values.}
+ \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
+}
 }
 \description{
-This is an analysis of differences in species composition between samples at increasing time
-lags. It measures the rate of directional change in community composition. First, a
-triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean
+Calculates the slope of the difference in species composition between samples over increasing time
+intervals, which provides a  measures of the rate of directional change in community composition.
+First, a triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean
 distance values are plotted against time lags. For example, a data set with 6 time intervals
 will have 5 one-year time lags (year 1 vs year 2, year 2 vs year 3 ...) and 4 two-year time
 lags (year 1 vs year 3, year 2 vs year 4 ...). Finally, distance values are regressed against time lag.

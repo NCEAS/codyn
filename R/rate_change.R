@@ -1,18 +1,23 @@
-#' A function to calculate community rate changes over time within multiple replicates.
+#'  Community changes over successive time intervals
 #'
-#' This is an analysis of differences in species composition between samples at increasing time 
-#' lags. It measures the rate of directional change in community composition. First, a 
-#' triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean 
+#' Calculates the slope of the difference in species composition between samples over increasing time 
+#' intervals, which provides a  measures of the rate of directional change in community composition. 
+#' First, a triangular dissimilarity matrix is calculated using Euclidean distance. Then, the Euclidean 
 #' distance values are plotted against time lags. For example, a data set with 6 time intervals
 #' will have 5 one-year time lags (year 1 vs year 2, year 2 vs year 3 ...) and 4 two-year time 
 #' lags (year 1 vs year 3, year 2 vs year 4 ...). Finally, distance values are regressed against time lag. 
 #' The slope of the regression line indicates the rate and direction of change.
-#' @param df A dataframe containing replicate, time, species and abundance columns.
-#' @param replicate.var The name of the replicate column from df. Defaults to NA.
-#' @param time.var The name of the time column from df
-#' @param species.var The name of the species column from df
-#' @param abundance.var The name of the abundance column from df
-#' @return output The rate of community change
+#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @param time.var The name of the time column 
+#' @param species.var The name of the species column 
+#' @param abundance.var The name of the abundance column 
+#' @param replicate.var The name of the optional replicate column 
+#' @return The \code{rate_chnage} function returns a numeric rate change value unless a replication column is specified in the input data frame. 
+#' If replication is specified, the function returns a data frame with the following attributes:
+#' \itemize{
+#'  \item{rate_change: }{A numeric column with the synchrony values.}
+#'  \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
+#' }
 #' @export
 rate_change <- function(df, time.var="time", species.var="species", abundance.var="abundance", replicate.var=NA) {
   check_numeric(df, time.var, abundance.var)
