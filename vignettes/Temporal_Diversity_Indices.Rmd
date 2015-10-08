@@ -48,7 +48,7 @@ The default metric `total` refers to total turnover, which calculates the propor
 
 $$ Total\; turnover = \frac{Species\; gained\; +\; Species\; lost}{Total\; species\; observed\; in\; both\; timepoints} $$
 
-The metric was introduced by [@MacArthur1963] and modified by Diamond (1969) to be expressed as a proportion in order to compare turnover between sites that differ in species richness.
+The metric was introduced by MacArthur and Wislon [-@MacArthur1963] and modified by Diamond (1969) to be expressed as a proportion in order to compare turnover between sites that differ in species richness.
 
 `turnover` requires a data frame with columns for species, year and abundance, and includes an optional argument to specify a column for spatial replicates.
 ```{r results='asis'}
