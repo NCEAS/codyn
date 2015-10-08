@@ -4,9 +4,9 @@
 #' intervals, which provides a  measures of the rate of directional change in community composition. 
 #' Differences in species composition are characterized by Euclidean distances, 
 #' which are calculated on pair-wise communities across the entire time series. 
-#' For example, a data set with 6 time intervals will have distance values for five one-year time lags 
+#' For example, a data set with six time intervals will have distance values for five one-year time lags 
 #' (year 1 vs year 2, year 2 vs year 3 ...), 
-#' 4 two-year time lags (year 1 vs year 3, year 2 vs year 4 ...) and so forth. 
+#' four two-year time lags (year 1 vs year 3, year 2 vs year 4 ...) and so forth. 
 #' These distance values are regressed against the time lag interval. 
 #' The slope of the regression line is reported as an indication of the rate and direction of compositional change in the community.
 #' @param df A data frame containing time, species and abundance columns and an optional column of replicates
