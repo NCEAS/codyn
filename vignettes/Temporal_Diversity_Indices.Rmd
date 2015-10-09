@@ -28,6 +28,9 @@ to use in visualization.
 
 ```{r echo=FALSE}
 library(knitr)
+options(digits = 3)
+```
+
 ```
 
 ## Example dataset

@@ -3,9 +3,7 @@ context("turnover")
 test_that("turnover loads and returns correct result", {
     # Ensure that trivial tests work correctly
     expect_that(length("a"), equals(1))
-    
     library(codyn)
-    
     # Load our example data set
     data(knz_001d)
     expect_that(names(knz_001d)[4], equals("abundance"))
@@ -108,7 +106,6 @@ test_that("turnover loads and returns correct result", {
     # checking to make sure that when using a single replicate, should not be a problem if subplot is still specified
     tot.sub <- turnover(dat1, time.var="year", species.var="species", abundance.var="abundance", metric = "total", replicate.var = "subplot")
     expect_equal(tot[1:2], tot.sub[1:2])
-    
     
     })
 

@@ -25,6 +25,10 @@ Ecologists have long debated the relationship between species diversity and stab
 ## Example dataset
 To illustrate each function, `codyn` uses a dataset of plant composition from an annually burned watershed at the Konza Prairie Long-Term Ecological Research site in Manhattan, KS. The `knz_001d` dataset spans 24 years and includes 20 replicate subplots.
 
+```{r echo = F}
+options(digits = 3)
+```
+
 ```{r results='asis'}
 library(codyn)
 library(knitr)
