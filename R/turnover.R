@@ -40,8 +40,8 @@
 turnover <- function(df, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA, metric="total") {
   
   if(is.na(replicate.var)){
-    check_single_onerep(df, time.var, species.var)  
-    output <- turnover_allyears(df, time.var, species.var, abundance.var)
+    check_single_onerep(df, time.var, species.var)
+    output <- turnover_allyears(df, time.var, species.var, abundance.var, metric)
     } else {
       df[replicate.var]<-if(is.factor(df[[replicate.var]])){factor(df[[replicate.var]])} else {df[replicate.var] }
       check_single(df, time.var, species.var, replicate.var)

@@ -84,5 +84,31 @@ test_that("turnover loads and returns correct result", {
     
     expect_equal(getturnover(test.spp1, test.spp2, metric = "app"), 2 / 7)
     
+    # adding a test to make sure that the output actually is the metric specified
+    tot <- turnover(knz_001d, time.var="year", species.var="species", abundance.var="abundance", replicate.var="subplot", metric = "total")
+    expect_equal(names(tot)[1], "total")
+    
+    app <- turnover(knz_001d, time.var="year", species.var="species", abundance.var="abundance", replicate.var="subplot", metric = "appear")
+    expect_equal(names(app)[1], "appearance")
+    
+    dis <- turnover(knz_001d, time.var="year", species.var="species", abundance.var="abundance", replicate.var="subplot", metric = "disap")
+    expect_equal(names(dis)[1], "disappearance")
+    
+    # same, now for a single replicate
+    
+    tot <- turnover(dat1, time.var="year", species.var="species", abundance.var="abundance", metric = "total")
+    expect_equal(names(tot)[1], "total")
+    
+    app <- turnover(dat1, time.var="year", species.var="species", abundance.var="abundance", replicate.var="subplot", metric = "appear")
+    expect_equal(names(app)[1], "appearance")
+    
+    dis <- turnover(dat1, time.var="year", species.var="species", abundance.var="abundance", replicate.var="subplot", metric = "disap")
+    expect_equal(names(dis)[1], "disappearance")
+    
+    # checking to make sure that when using a single replicate, should not be a problem if subplot is still specified
+    tot.sub <- turnover(dat1, time.var="year", species.var="species", abundance.var="abundance", metric = "total", replicate.var = "subplot")
+    expect_equal(tot[1:2], tot.sub[1:2])
+    
+    
     })
 
