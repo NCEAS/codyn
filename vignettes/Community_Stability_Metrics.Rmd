@@ -12,6 +12,10 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 
 ---
+```{r echo = F}
+library(knitr)
+options(digits = 3)
+```
 
 ## Overview
 Ecologists have long debated the relationship between species diversity and stability. One key question in this debate is how the individual components of a community (e.g., species in species-rich communities) affect the stability of aggregate properties of the whole community (e.g., biomass production). It is increasingly recognized that unstable species populations may still maintain stable community productivity if a decrease in one species is compensated for by an increase in another. In a time series, this should be reflected by a pattern in which species negatively covary or fluctuate asynchronously while total community stability remained relatively stable. 
