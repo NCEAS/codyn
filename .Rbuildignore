@@ -4,3 +4,5 @@
 ^\.Rhistory
 ^\.RData
 cran-comments.md
+Dockerfile
+docker
