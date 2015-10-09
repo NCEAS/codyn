@@ -44,8 +44,10 @@ If multiple replicates are included in the data frame, that column should be spe
 \examples{
 data(knz_001d)
 synchrony(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
+\dontrun{
 synchrony(knz_001d, replicate.var = "subplot") # across all subplots
 synchrony(knz_001d, replicate.var = "subplot", metric="Gross") # With Gross et al. (2014) metric.
+}
 }
 \references{
 Gross, Kevin, Bradley J. Cardinale, Jeremy W. Fox, Andrew Gonzalez, Michel Loreau, H. Wayne Polley, Peter B. Reich, and Jasper van Ruijven. (2014) "Species richness and the temporal stability of biomass production: A new analysis of recent biodiversity experiments." The American Naturalist 183, no. 1: 1-12. doi:10.1086/673915.
