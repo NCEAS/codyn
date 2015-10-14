@@ -2,8 +2,8 @@
 
 * Debian GNU/Linux stretch/sid (via Docker), R 3.2.2 and R-devel
 * Ununtu 14.04, R 3.2.2
-* Mac OS X 10.10.3 install, R 3.2.2
-* Windows (via win-builder): x86_64-w64-mingw32 (64-bit), R 3.2.2
+* Mac OS X 10.10.3, R 3.2.2
+* Windows (via win-builder): x86_64-w64-mingw32 (64-bit), R 3.2.2, and R-devel
 
 # R CMD check results
 
