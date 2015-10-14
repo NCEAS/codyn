@@ -106,7 +106,7 @@ library(ggplot2)
 ggplot(KNZ_turnover, aes(x=year, y=total, color=replicate)) + geom_line(size = 2) + theme_bw()
 ```
 
-Parsing total turnover by appearances and disappearances indicates that there were generally more appearances in the unburned than burned location. In addition, the strong divergence in total turnover between locations in 1995 was because the unburned location lost many species that year, while the annually burned locations lost none.
+Parsing total turnover by appearances and disappearances indicates that there were generally a higher proportion of appearances in the unburned than burned location. In addition, the strong divergence in total turnover between locations in 1995 was because the unburned location lost a high proportion of species that year, while the annually burned locations lost none.
 
 ```{r fig.width = 7, fig.height = 4, echo=FALSE}
 KNZ_appearance$metric<-"appearance"
