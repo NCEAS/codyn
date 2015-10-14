@@ -231,7 +231,7 @@ kable(rate.res)
 
 ### Rate change at Konza
 
-The annually burned grassland location shown here has relatively greater directional change through time than the unburned location This reflects the pattern highlighted in the rank clocks, in which, for example, the dominant species _Andropogon gerardii_ decreased substantially over time in the annually burned location but remained stable in the unburned location.
+The annually burned grassland location shown here has relatively greater directional change through time than the unburned location. This reflects the pattern highlighted in the rank clocks, in which, for example, the dominant species _Andropogon gerardii_ decreased substantially over time in the annually burned location but remained stable in the unburned location.
 
 ```{r, fig.width = 7, fig.height = 5}
 
