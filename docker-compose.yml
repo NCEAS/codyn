@@ -1,0 +1,11 @@
+# docker run --rm -v $(pwd):/src/dev/codyn --name=codyn -it metamattj/codyn-check'
+r-test:
+  container_name: r_test
+  build: .
+  volumes:
+   - .:/src/codyn
+  #links:
+  #- tex
+  command: bash /root/rcheck.sh
+#tex:
+#image: redis
