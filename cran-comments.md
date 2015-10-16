@@ -8,7 +8,9 @@
 # R CMD check results
 
 * There were no ERRORs or WARNINGs.
-* There was one NOTE, indicating that this is a new submission.
+* There was one NOTE, indicating:
+   - that this is a new submission
+   - that the CRAN URL in the README.md is not found, which is expected as a new submission
 
 # Downstream dependencies
 

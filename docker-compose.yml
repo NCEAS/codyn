@@ -1,11 +1,26 @@
 # docker run --rm -v $(pwd):/src/dev/codyn --name=codyn -it metamattj/codyn-check'
-r-test:
-  container_name: r_test
+tex:
+  container_name: texlive
+  dockerfile: docker/Dockerfile-texlive
+  build: .
+  command: sh
+r-check-stable:
+  container_name: r_check_stable
+  dockerfile: docker/Dockerfile-stable
   build: .
   volumes:
-   - .:/src/codyn
-  #links:
-  #- tex
+    - .:/src/codyn
   command: bash /root/rcheck.sh
-#tex:
-#image: redis
+r-check-devel:
+  container_name: r_check_devel
+  dockerfile: docker/Dockerfile-devel
+  build: .
+  volumes:
+    - .:/src/codyn
+  links:
+    - tex
+  volumes_from:
+    - tex
+  #environment: 
+  #  - PATH: ${PATH}:/usr/local/texlive/2014/bin/x86_64-linux/
+  command: bash /root/rcheck.sh

@@ -1,9 +1,7 @@
-codyn - Community Dynamics Metrics
-=====
+# codyn - Community Dynamics Metrics
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/codyn)](http://cran.r-project.org/package=codyn)
 [![Build Status](https://travis-ci.org/laurenmh/codyn.png?branch=master)](https://travis-ci.org/laurenmh/codyn)
-
 
 
 - **Authors**:Lauren Hallett [lauren.m.hallett@gmail.com], Sydney K. Jones [syd@sevilleta.unm.edu], Andrew A. MacDonald [aammacdonald@gmail.com], Matthew B. Jones [jones@nceas.ucsb.edu], Dan F. B. Flynn [flynn@fas.harvard.edu], Peter Slaughter [slaughter@nceas.ucsb.edu], Corinna Gries [cgries@wisc.edu], Scott L. Collins [scollins@sevilleta.unm.edu]
@@ -28,7 +26,25 @@ drat::addRepo("NCEAS")
 install.packages("codyn")
 ```
 
+## Automated R CMD check with Docker
+
+To simplify the process of running `R CMD check` on the package, the source distribution on GitHub includes configuration
+files to use [Docker](https://www.docker.com/) to download and build standard Debian-based images for the current release of 
+R and the current development branch of R. Assuming you already have docker and docker-compose installed, these Docker 
+configuration files allow a clean environment to be built and tested with a single command.  Checks can be run against the 
+current stable release of R using:
+
+```bash
+$ docker-compose run r-check-stable
+```
+
+and the checks can be run against the current unstable development version of R using:
+
+```bash
+$ docker-compose run r-check-devel
+```
+
 ## Acknowledgements
-Work on this package was supported by NSF-ABI grant #1262458 to C Gries, M Jones, and S Collins. Additional support
+Work on this package was supported by NSF-ABI grant #1262458 to C. Gries, M. Jones, and S. Collins. Additional support
 was provided for working group collaboration by the National Center for Ecological Analysis and Synthesis, a Center funded by the University of California, Santa Barbara, and the State of California.
 
