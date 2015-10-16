@@ -2,16 +2,8 @@
 FROM rocker/rstudio-daily:verse
 MAINTAINER Matt Jones jones@nceas.ucsb.edu
 
-# Set up the working directory to a locally mounted volume
-WORKDIR /src
-
 # Add the texlive path from our linked container
 ENV PATH $PATH:/usr/local/texlive/2014/bin/x86_64-linux/
-
-# Install packages needed for R checks
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends -t unstable \
-    qpdf
 
 # Copy check script into the container
 COPY docker /root
