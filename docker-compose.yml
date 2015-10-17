@@ -3,6 +3,7 @@ tex:
   container_name: texlive
   dockerfile: docker/Dockerfile-texlive
   build: .
+  command: sh
 r-check-stable:
   container_name: r_check_stable
   dockerfile: docker/Dockerfile-stable
