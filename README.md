@@ -35,13 +35,13 @@ configuration files allow a clean environment to be built and tested with a sing
 current stable release of R using:
 
 ```bash
-$ docker-compose run r-check-stable
+$ docker-compose run --rm r-check-stable
 ```
 
 and the checks can be run against the current unstable development version of R using:
 
 ```bash
-$ docker-compose run r-check-devel
+$ docker-compose run --rm r-check-devel
 ```
 
 ## Acknowledgements
