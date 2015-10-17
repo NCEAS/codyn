@@ -1,6 +1,6 @@
 # Test environments
 
-* Debian GNU/Linux stretch/sid (via Docker), R 3.2.2 and R-devel
+* Debian GNU/Linux stretch/sid (via Docker), R 3.2.2 and R-devel (2015-10-15 r69519)
 * Ununtu 14.04, R 3.2.2
 * Mac OS X 10.10.3, R 3.2.2
 * Windows (via win-builder): x86_64-w64-mingw32 (64-bit), R 3.2.2, and R-devel
