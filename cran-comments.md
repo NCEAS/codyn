@@ -11,6 +11,7 @@
 * There was one NOTE, indicating:
    - that this is a new submission
    - that the CRAN URL in the README.md is not found, which is expected as a new submission
+   - that 'indices' and 'synchrony' are possibly misspelled, which is not the case
 
 # Downstream dependencies
 
