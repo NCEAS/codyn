@@ -1,3 +1,3 @@
 library(testthat) 
 library(codyn)
-test_check("codyn")
+test_package("codyn")
