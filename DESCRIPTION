@@ -1,6 +1,6 @@
 Package: codyn
 Title: Community Dynamics Metrics
-Version: 1.0.0
+Version: 1.0.0.9000
 Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")), 
     person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")), 
     person("Andrew A.", "MacDonald", email="aammacdonald@gmail.com", role=c("aut")), 
