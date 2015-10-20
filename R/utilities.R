@@ -40,7 +40,7 @@ check_single_onerep <- function(df, time.var, species.var){
 #' @param replicate.var The name of the replicate column from df
 
 check_single <- function(df, time.var, species.var, replicate.var){
-  X <- split(df, df[replicate.var]) 
+  X <- split(df, df[[replicate.var]]) 
   checksingle <- lapply(X, FUN = function(xx) apply(table(xx[[species.var]], xx[[time.var]]), 2, function(x) any(x>1)))    
   reptest <- unlist(lapply(checksingle, any))    
   yrtest <- lapply(checksingle, which)

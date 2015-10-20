@@ -80,7 +80,7 @@ turnover_allyears <- function(df, time.var, species.var, abundance.var, metric=c
     metric = match.arg(metric) # for partial argument matching
   
     check_numeric(df, time.var, abundance.var)
-    df<-df[order(df[time.var]),]
+    df<-df[order(df[[time.var]]),]
     df<-df[which(df[[abundance.var]]>0),]
     
     ## split data by year
