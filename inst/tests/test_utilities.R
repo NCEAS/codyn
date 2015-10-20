@@ -16,6 +16,11 @@ test_that("utilities loads and returns correct result", {
     # Does transpose_community correctly transform a long dataframe into a matrix?
     com_wide_df <- transpose_community(df = dat1, "year", "species", "abundance")
     expect_true(is.data.frame(com_wide_df))
+    
+    df2 = subset(knz_001d, subplot == "A_1")
+    names(df2)=c("spp", "yr", "subplot", "abund")
+    com_wide_df <- transpose_community(df = df2, "yr", "spp", "abund")
+    expect_true(is.data.frame(com_wide_df))
     # rownames should be timevar
     expect_true(all(as.numeric(rownames(com_wide_df)) %in% dat1[["year"]]))
     # colnames should be species
@@ -44,12 +49,26 @@ test_that("Single-record checks for species work", {
   data(knz_001d)
  
   expect_null(check_single(knz_001d, time.var = "year", species.var = "species", replicate.var = "subplot"))
-  df = rbind(knz_001d, knz_001d[nrow(knz_001d),])
-  expect_error(check_single(df, time.var = "year", species.var = "species", replicate.var = "subplot"))
 
-  df = subset(knz_001d, subplot == "A_1")
-  expect_null(check_single_onerep(df, time.var = "year", species.var = "species"))
-  df = subset(knz_001d, subplot == "A_1" | subplot == "A_2")
-  expect_warning(check_single_onerep(df, time.var = "year", species.var = "species"))
-                            
+  knz_001d2<-knz_001d
+  names(knz_001d2)=c("spp", "yr", "subp", "abund")
+  expect_null(check_single(knz_001d2, time.var = "yr", species.var = "spp", replicate.var = "subp"))
+  
+  dftog = rbind(knz_001d, knz_001d[nrow(knz_001d),])
+  expect_error(check_single(dftog, time.var = "year", species.var = "species", replicate.var = "subplot"))
+  
+  dftog2 = rbind(knz_001d2, knz_001d2[nrow(knz_001d2),])
+  expect_error(check_single(dftog2, time.var = "yr", species.var = "spp", replicate.var = "subp"))
+  
+  
+  dfa = subset(knz_001d, subplot == "A_1")
+  expect_null(check_single_onerep(dfa, time.var = "year", species.var = "species"))
+  dfab = subset(knz_001d, subplot == "A_1" | subplot == "A_2")
+  expect_warning(check_single_onerep(dfab, time.var = "year", species.var = "species"))
+  
+  df2 = subset(knz_001d, subplot == "A_1")
+  names(df2)=c("spp", "yr", "subplot", "abund")
+  expect_null(check_single_onerep(df2, time.var = "yr", species.var = "spp"))
+  
+
 })
