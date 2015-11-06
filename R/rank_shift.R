@@ -42,6 +42,7 @@ mean_rank_shift <- function(df, time.var = "year", species.var = "species",
             } else {
                 df[replicate.var]
             }
+        df<-df[order(df[[replicate.var]]),]
         X <- split(df, df[replicate.var])
         out <- (lapply(X, FUN=meanrank, time.var, species.var, abundance.var))
         ID <- unique(names(out))

@@ -48,6 +48,7 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
         df[replicate.var]
       }
       check_single(df, time.var, species.var, replicate.var)
+      df<-df[order(df[[replicate.var]]),]
       X <- split(df, df[replicate.var])
       out <- lapply(X, FUN=synch_onerep, time.var, species.var, abundance.var, metric)
       reps <- unique(df[replicate.var])

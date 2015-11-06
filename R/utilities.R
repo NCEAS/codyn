@@ -64,7 +64,7 @@ check_single <- function(df, time.var, species.var, replicate.var){
 #' @param abundance.var The name of the replicate column from df
 
 check_numeric <- function(df, time.var, abundance.var) {
-  if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
   if(!is.numeric(df[[time.var]])) { stop("Time variable is not numeric") }
+  if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
   }
 
