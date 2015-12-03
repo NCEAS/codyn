@@ -46,19 +46,19 @@ test_that("variance_ratio function returns correct result", {
     
     ##test that works regardless of order of the input replicates if average.replicates=F
     #test the class returned with default settings
-    myresults<-variance_ratio(knz_001d, time.var="year", species.var="species", 
+    myresultsnoavg<-variance_ratio(knz_001d, time.var="year", species.var="species", 
                               abundance.var="abundance",  bootnumber=1, replicate="subplot", average.replicates = F)
-    expect_equal(class(myresults), "data.frame")
-    expect_equal(nrow(myresults), 20)
-    expect_equal(myresults[1,5], 0.9694810, tolerance=0.00001)
+    expect_equal(class(myresultsnoavg), "data.frame")
+    expect_equal(nrow(myresultsnoavg), 20)
+    expect_equal(myresultsnoavg[1,5], 0.9694810, tolerance=0.00001)
     
       
     # test that works regardless of order of the input replicates
     knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
-    myresults_reorder<-variance_ratio(knz_001dreorder, time.var="year", species.var="species", 
+    myresults_reordernoavg<-variance_ratio(knz_001dreorder, time.var="year", species.var="species", 
                                       abundance.var="abundance",  bootnumber=1, replicate="subplot", average.replicates = F)
-    expect_equal(myresults[,5], myresults_reorder[,5])
-    expect_equal(myresults[,1], myresults_reorder[,1])
+    expect_equal(myresultsnoavg[,5], myresults_reordernoavg[,5])
+    expect_equal(myresultsnoavg[,1], myresults_reordernoavg[,1])
     
     
     #test that it also works with alternate column names
