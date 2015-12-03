@@ -40,7 +40,6 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
   # check to see if there are actual replicates without specifying replicate.var
   if(is.na(replicate.var)==TRUE){
     check_single_onerep(df, time.var, species.var)  
-    check_multispp(df, species.var, replicate.var)
         output <- synch_onerep(df, time.var, species.var, abundance.var, metric)
     } else {
       df[replicate.var] <- if(is.factor(df[[replicate.var]])) { 
@@ -48,6 +47,7 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
       } else {
         df[replicate.var]
       }
+      check_multispp(df, species.var, replicate.var)
       check_single(df, time.var, species.var, replicate.var)
       df<-df[order(df[[replicate.var]]),]
       X <- split(df, df[replicate.var])
