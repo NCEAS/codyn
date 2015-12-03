@@ -51,17 +51,18 @@ variance_ratio<-function(df, time.var="year", species.var="species",  abundance.
         VR<-variance_ratio_longformdata(df,time.var, species.var, abundance.var)
     } else {
         check_single(df, time.var, species.var, replicate.var)
-        check_multispp(df, species.var, replicate.var)
         df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE) {
             factor(df[[replicate.var]])
         } else {
             df[replicate.var]
         }
         if(average.replicates==TRUE) {
+           check_multispp(df, species.var, replicate.var)
             df<-df[order(df[[replicate.var]]),]
             X<-split(df, df[replicate.var])
             VR<-mean(unlist(lapply(X, FUN=variance_ratio_longformdata, time.var, species.var, abundance.var))) 
         } else {
+            check_multispp(df, species.var, replicate.var)
             df<-df[order(df[[replicate.var]]),]
             X <- split(df, df[replicate.var])
             VR<-do.call("rbind", lapply(X, FUN=variance_ratio_longformdata, time.var,  species.var,abundance.var))
