@@ -75,7 +75,7 @@ check_numeric <- function(df, time.var, abundance.var) {
 check_multispp <- function(df, species.var, replicate.var){
   spptable<-table(df[[species.var]], df[[replicate.var]])
   spptable[spptable>1] <- 1
-if(min(colSums(mytable)) <2) 
+if(min(colSums(spptable)) <2) 
   stop("One or more replicates consists of only a single species; 
        please remove these replicates prior to calculations ")}
 
