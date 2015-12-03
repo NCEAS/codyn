@@ -21,7 +21,7 @@
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @export
 temporal_torus_translation <- function(df, time.var="year", species.var="species",  abundance.var="abundance", FUN){
-  if(!is.numeric(df[,abundance.var])) { stop("Abundance variable is not numeric") }
+  if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
   out<-FUN(genRand(transpose_community(df, time.var,  species.var, abundance.var)))
   bootout<-unlist(out)
   return(bootout)
