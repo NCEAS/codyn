@@ -71,6 +71,12 @@ test_that("synchrony loads and returns correct result", {
     myresults7<-synchrony(knz_001d, replicate.var="subplot", time.var="year", abundance.var="abundance")
     expect_that(myresults6[1,2], equals(myresults7[1,2]))  
     
+    # test that works regardless of order of the input replicates
+    knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
+    myresults_reorder<-synchrony(knz_001dreorder, replicate.var="subplot", time.var="year", abundance.var="abundance")
+    expect_equal(myresults7, myresults_reorder)
+    
+    
     #test that works with different column names
     myresults8<-synchrony(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="abund", species.var = "sp")
     
@@ -93,5 +99,12 @@ test_that("synchrony loads and returns correct result", {
     myres8 <- synchrony(knz_001d, replicate.var = "subplot", metric = "L")
     expect_equal(myres7, myres8[myres8$subplot=="D_5","synchrony"])
     
+    #test that Gross works with multiple replicates
+    myresults7gross<-synchrony(knz_001d, replicate.var="subplot", time.var="year", abundance.var="abundance", metric="Gross")
+    
+    # test that works regardless of order of the input replicates
+    knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
+    myresults_reordergross<-synchrony(knz_001dreorder, replicate.var="subplot", time.var="year", abundance.var="abundance", metric="Gross")
+    expect_equal(myresults7gross, myresults_reordergross)
     
 })

@@ -31,14 +31,20 @@ test_that("turnover loads and returns correct result", {
     dat4<-subset(knz_001d, subplot=="A_1"|subplot=="A_2")
     
     # test that calculation from turnover is correct and does not regress
-    myresults<-turnover(df=knz_001d, time.var="year", species.var="species", abundance.var="abundance",  replicate.var="subplot", 
+    myresults<-turnover(knz_001d, time.var="year", species.var="species", abundance.var="abundance", 
+                        replicate.var="subplot", 
                         metric="total")
     expect_equal(class(myresults), "data.frame")
     expect_equal(nrow(myresults), 460)
     expect_equal(myresults[460,1], 0.47368421, tolerance=0.00001)
     expect_equal(sum(myresults[,1]), 116.2359, tolerance=0.00001)
     
-    # 
+    # test that works regardless of order of the input replicates
+    knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
+    myresults_reorder<-turnover(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance", 
+                                replicate.var="subplot", 
+                                metric="total")
+    expect_equal(myresults, myresults_reorder)
     
     #test that works regardless of whether parameter is specified or just ordered
     myresults2<-turnover(df=knz_001d, replicate.var="subplot",

@@ -74,4 +74,14 @@ test_that("community_stability loads and returns correct result", {
   expect_error(community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randcharacter"))
   expect_error(community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randfactor"))
 
+  
+  # test that works regardless of order of the input replicates
+  knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
+  myresults<-community_stability(knz_001d, time.var="year", abundance.var="abundance", 
+                             replicate.var="subplot")
+  
+  myresults_reorder<-community_stability(knz_001dreorder, time.var="year", abundance.var="abundance", 
+                                     replicate.var="subplot")
+  expect_equal(myresults, myresults_reorder)
+  
   })

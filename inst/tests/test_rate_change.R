@@ -90,4 +90,26 @@ test_that("rate_change loads and returns correct result", {
     expect_error(rate_change(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randcharacter"))
     expect_error(rate_change(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randfactor"))
     
+    
+    #test that works with multiple replicates regardless of the order
+    myresults7<-rate_change(knz_001d, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
+    
+    knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
+    myresults7reorder<-rate_change(knz_001dreorder, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
+    
+    expect_equal(myresults7[,1], myresults7reorder[,1])
+    expect_equal(myresults7[,2], myresults7reorder[,2])
+    
+    
+    
+    #test that rate_change_interval works with multiple replicates regardless of the order
+    myresults7interval<-rate_change_interval(knz_001d, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
+    
+    knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
+    myresults7reorderinterval<-rate_change_interval(knz_001dreorder, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
+    
+    expect_equal(myresults7interval[,1], myresults7reorderinterval[,1])
+    expect_equal(myresults7interval[,2], myresults7reorderinterval[,2])
+    expect_equal(myresults7interval[,3], myresults7reorderinterval[,3])
+    
 })

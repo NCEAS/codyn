@@ -87,4 +87,13 @@ test_that("rank_shift loads and returns correct result", {
   	expect_error(mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randcharacter"))
   	expect_error(mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randfactor"))
 
+  	# test that works regardless of order of the input replicates
+  	knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
+  	myresults<-mean_rank_shift(knz_001d, time.var="year", species.var="species", abundance.var="abundance", 
+  	                            replicate.var="subplot")
+  	
+  	myresults_reorder<-mean_rank_shift(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance", 
+  	                            replicate.var="subplot")
+  	expect_equal(myresults, myresults_reorder)
+  	
 })
