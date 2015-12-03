@@ -68,3 +68,15 @@ check_numeric <- function(df, time.var, abundance.var) {
   if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
   }
 
+#' Utility function to stop calculations if only one species occurs in at least one replicate
+#' @param df A dataframe containing time.var, species.var and abundance.var columns
+#' @param species.var The name of the species column from df
+#' @param replicate.var The name of the replicate column from df
+check_multispp <- function(df, species.var, replicate.var){
+  spptable<-table(df[[species.var]], df[[replicate.var]])
+  spptable[spptable>1] <- 1
+if(min(colSums(mytable)) <2) 
+  stop("One or more replicates consists of only a single species; 
+       please remove these replicates prior to calculations ")}
+
+
