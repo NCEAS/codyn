@@ -46,6 +46,7 @@ rate_change <- function(df, time.var="year", species.var="species", abundance.va
         } else {
             df[replicate.var]
         }
+        df<-df[order(df[[replicate.var]]),]
         X <- split(df, df[replicate.var])
         out <- lapply(X, FUN=get_slope, time.var, species.var, abundance.var)
         reps <- unique(df[replicate.var])
@@ -98,6 +99,7 @@ rate_change_interval <- function(df, time.var="year", species.var="species", abu
         } else {
             df[replicate.var]
         }
+        df<-df[order(df[[replicate.var]]),]
         X <- split(df, df[replicate.var])
         out <- lapply(X, FUN=get_lagged_distances, time.var, species.var, abundance.var)
         #reps <- unique(df[replicate.var])
