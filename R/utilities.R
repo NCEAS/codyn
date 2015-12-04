@@ -85,7 +85,7 @@ if(min(colSums(spptable)) <2)
 check_sppvar <- function(comdat){
   sppvar <- sum(apply(comdat, 2, var))
   if(sppvar == 0) 
-    stop("One or more replicates consists of species that never vary;
+    stop("One or more replicates consist of species that never vary;
          please remove these replicates before calculation")}
 
   

@@ -70,5 +70,11 @@ test_that("Single-record checks for species work", {
   names(df2)=c("spp", "yr", "subplot", "abund")
   expect_null(check_single_onerep(df2, time.var = "yr", species.var = "spp"))
   
-
-})
+  #check check_sppvar
+  comdf <- as.data.frame(matrix(1, 5, 5))
+  expect_error(check_sppvar(comdf))
+  
+  comdf2 <-as.data.frame(matrix(c(1, 2, 3, 4, 5), 5, 5))
+  check_sppvar(comdf2)
+  
+  })
