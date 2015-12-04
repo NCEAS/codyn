@@ -68,8 +68,8 @@ temporal_torus_translation_CI<-function(df,  time.var="year",species.var="specie
     check_single_onerep(df, time.var, species.var)
     
     out<-replicate(bootnumber, temporal_torus_translation(df, time.var, species.var,  abundance.var, FUN))
-    lowerCI <- quantile(out, li)
-    upperCI <-quantile(out, ui)
+    lowerCI <- quantile(out, li, na.rm=T)
+    upperCI <-quantile(out, ui, na.rm=T)
     nullmean<-mean(out)
     output<-cbind(lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
