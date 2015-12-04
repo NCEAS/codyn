@@ -80,3 +80,12 @@ if(min(colSums(spptable)) <2)
        please remove these replicates prior to calculations ")}
 
 
+#' Utility function to stop calculations if the species never change in a replicate
+#' @param comdat A community dataframe
+check_sppvar <- function(comdat){
+  sppvar <- sum(apply(comdat, 2, var))
+  if(sppvar == 0) 
+    stop("One or more replicates consists of species that never vary;
+         please remove these replicates before calculation")}
+
+  
