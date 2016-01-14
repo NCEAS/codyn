@@ -1,6 +1,6 @@
 Package: codyn
 Title: Community Dynamics Metrics
-Version: 1.0.0.9000
+Version: 1.0.1
 Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")), 
     person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")), 
     person("Andrew A.", "MacDonald", email="aammacdonald@gmail.com", role=c("aut")), 
@@ -10,14 +10,15 @@ Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", rol
     person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")), 
     person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")), 
     person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
-Date: 2015-10-16
-Description: A toolbox of ecological community dynamics metrics that are explicitly 
-    temporal. Functions fall into two categories: temporal diversity indices and community 
-    stability metrics. The diversity indices are temporal analogs to traditional diversity 
-    indices such as richness and rank-abundance curves. Specifically, functions are provided 
-    to calculate species turnover, mean rank shifts, and lags in community similarity between 
-    time points. The community stability metrics calculate overall stability and patterns 
-    of species covariance and synchrony over time.
+Date: 2016-01-14
+Description: A toolbox of ecological community dynamics metrics that are
+    explicitly temporal. Functions fall into two categories: temporal diversity
+    indices and community stability metrics. The diversity indices are temporal
+    analogs to traditional diversity indices such as richness and rank-abundance
+    curves. Specifically, functions are provided to calculate species turnover, mean
+    rank shifts, and lags in community similarity between time points. The community
+    stability metrics calculate overall stability and patterns of species covariance
+    and synchrony over time.
 Depends:
     R (>= 3.2.0)
 Imports:
@@ -35,3 +36,4 @@ URL: https://github.com/laurenmh/codyn/
 BugReports: https://github.com/laurenmh/codyn/issues
 LazyData: true
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1
