@@ -1,0 +1,21 @@
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+title <- meta$Title
+authors <- c(
+    person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")), 
+    person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")), 
+    person("Andrew A.", "MacDonald", email="aammacdonald@gmail.com", role=c("aut")), 
+    person("Dan F. B.", "Flynn", email="flynn@fas.harvard.edu", role=c("aut")), 
+    person("Peter", "Slaughter", email="slaughter@nceas.ucsb.edu", role=c("aut")), 
+    person("Julie", "Ripplinger", email="julie.ripplinger@asu.edu", role=c("aut")), 
+    person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")), 
+    person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")), 
+    person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
+
+bibentry(bibtype = "Manual",
+         title = paste0("{codyn}: ", title),
+         author = authors,
+         year = year,
+         note = note,
+         url = "https://CRAN.R-project.org/package=codyn",
+         doi = "10.5063/F1542KJB")

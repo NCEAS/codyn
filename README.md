@@ -5,6 +5,7 @@
 
 
 - **Authors**:Lauren Hallett [lauren.m.hallett@gmail.com], Sydney K. Jones [syd@sevilleta.unm.edu], Andrew A. MacDonald [aammacdonald@gmail.com], Matthew B. Jones [jones@nceas.ucsb.edu], Dan F. B. Flynn [flynn@fas.harvard.edu], Peter Slaughter [slaughter@nceas.ucsb.edu], Julie Ripplinger [julie.ripplinger@asu.edu], Corinna Gries [cgries@wisc.edu], Scott L. Collins [scollins@sevilleta.unm.edu]
+- [doi:10.5063/F1542KJB](http://doi.org/10.5063/F1542KJB)
 - **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
 - [Package source code on Github](https://github.com/laurenmh/codyn)
 - [**Submit Bugs and feature requests**](https://github.com/laurenmh/codyn/issues)
