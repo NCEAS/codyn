@@ -1,3 +1,13 @@
+Version 1.0.1
+-------------
+
+BUG FIXES
+
+* Fixed bug to ensure data frames are ordered before unlisting (#58)
+* Fixed bug in temporal_torus_translation to correctly recognize numeric data (#59)
+* Fixed bug in synchrony (Gross) with only 1 spp in a plot (#60)
+* Fixed bug in calculating variance ratio if species counts are constant (#61)
+
 Version 1.0.0
 -------------
 
