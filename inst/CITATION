@@ -17,5 +17,5 @@ bibentry(bibtype = "Manual",
          author = authors,
          year = year,
          note = note,
-         url = "https://CRAN.R-project.org/package=codyn",
+         url = "https://github.com/laurenmh/codyn",
          doi = "10.5063/F1542KJB")
