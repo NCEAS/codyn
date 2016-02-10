@@ -117,14 +117,14 @@ temporal_torus_translation_CI<-function(df,  time.var="year",species.var="specie
 #'
 #' @param comdat A community dataframe
 #' @return rand.use A randomized community dataframe
-genRand<-function(comdat){
-  comdat2<-rbind(comdat, comdat)
-  rand.comdat<-matrix(NA, nrow(comdat), ncol(comdat)) 
-  for(i in 1:ncol(comdat)){  
-    rand.start<-sample(1:nrow(comdat), 1)
-    rand.comdat[,i]<-comdat2[rand.start:(rand.start+nrow(comdat)-1), i]
+genRand <- function(comdat) {
+  comdat2 <- rbind(comdat, comdat)
+  nr <- nrow(comdat)
+  nc <- ncol(comdat)
+  rand.comdat <- matrix(NA, nrow = nr, ncol = nc)
+  rand.start <- sample.int(nr, nc, replace = TRUE)
+  for (i in seq_len(nc)) {
+    rand.comdat[, i] <- comdat2[rand.start[i]:(rand.start[i]+nr-1), i]
   }
-  rand.use<-rand.comdat[1:nrow(rand.comdat), 1:ncol(rand.comdat)]
-  return(rand.use)
+  rand.comdat
 }
-
