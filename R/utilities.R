@@ -6,12 +6,12 @@
 #' @param abundance.var The name of the abundance column from df
 #' @return A dataframe of species abundances x time
 transpose_community <- function(df, time.var, species.var, abundance.var) {
-    df<-as.data.frame(df)
-    df[species.var]<-if(is.factor(df[[species.var]])==TRUE){factor(df[[species.var]])} else {df[species.var]}  
-    df<-df[order(df[[time.var]], df[[species.var]]),]
-    comdat<-tapply(df[[abundance.var]], list(df[[time.var]], as.vector(df[[species.var]])), sum)
-    comdat[is.na(comdat)]<-0
-    comdat<-as.data.frame(comdat)
+    df <- as.data.frame(df)
+    df[species.var] <- if(is.factor(df[[species.var]]) == TRUE){factor(df[[species.var]])} else {df[species.var]}  
+    df <- df[order(df[[time.var]], df[[species.var]]),]
+    comdat <- tapply(df[[abundance.var]], list(df[[time.var]], as.vector(df[[species.var]])), sum)
+    comdat[is.na(comdat)] <- 0
+    comdat <- as.data.frame(comdat)
     return(comdat)
 }
 
@@ -46,7 +46,7 @@ check_single <- function(df, time.var, species.var, replicate.var){
   yrtest <- lapply(checksingle, which)
   
   if(any(unlist(checksingle))){
-    if(length(names(reptest)[which(reptest)])==1){
+    if(length(names(reptest)[which(reptest)]) == 1){
       
     stop(paste("In replicate", names(reptest)[which(reptest)], "there is more than one record for species at the time point", unlist(lapply(yrtest, names))))
     }
@@ -73,9 +73,9 @@ check_numeric <- function(df, time.var, abundance.var) {
 #' @param species.var The name of the species column from df
 #' @param replicate.var The name of the replicate column from df
 check_multispp <- function(df, species.var, replicate.var){
-  spptable<-table(df[[species.var]], df[[replicate.var]])
+  spptable <- table(df[[species.var]], df[[replicate.var]])
   spptable[spptable>1] <- 1
-if(min(colSums(spptable)) <2) 
+if(min(colSums(spptable)) < 2) 
   stop("One or more replicates consists of only a single species; 
        please remove these replicates prior to calculations ")}
 

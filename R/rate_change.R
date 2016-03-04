@@ -46,12 +46,12 @@ rate_change <- function(df, time.var="year", species.var="species", abundance.va
         } else {
             df[replicate.var]
         }
-        df<-df[order(df[[replicate.var]]),]
+        df <- df[order(df[[replicate.var]]),]
         X <- split(df, df[replicate.var])
         out <- lapply(X, FUN=get_slope, time.var, species.var, abundance.var)
         reps <- unique(df[replicate.var])
         output <- cbind(reps, do.call("rbind", out))
-        names(output)=c(replicate.var, "rate_change")
+        names(output) = c(replicate.var, "rate_change")
     }
     return(output)
 }
@@ -99,7 +99,7 @@ rate_change_interval <- function(df, time.var="year", species.var="species", abu
         } else {
             df[replicate.var]
         }
-        df<-df[order(df[[replicate.var]]),]
+        df <- df[order(df[[replicate.var]]),]
         X <- split(df, df[replicate.var])
         out <- lapply(X, FUN=get_lagged_distances, time.var, species.var, abundance.var)
         #reps <- unique(df[replicate.var])
@@ -134,12 +134,11 @@ get_lagged_distances <- function(df, time.var="year", species.var="species", abu
     df <- transpose_community(df, time.var, species.var, abundance.var)
     DM <- dist(df, method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
-    
     rownums = row(DM)
     colnums = col(DM)
     lag_list = lapply(1:(nrow(df)-1), get_lag_i, DM, rownums, colnums)
     results <- data.frame(do.call(rbind, lag_list))
-    names(results)=c("interval", "distance")
+    names(results) = c("interval", "distance")
     return(results)
 }
 

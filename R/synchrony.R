@@ -34,11 +34,11 @@
 #' synchrony(knz_001d, replicate.var = "subplot", metric="Gross") # With Gross et al. (2014) metric.
 #' }
 #' @export
-synchrony<-function(df, time.var="year", species.var="species", abundance.var="abundance", metric="Loreau", replicate.var=NA) {
+synchrony <- function(df, time.var="year", species.var="species", abundance.var="abundance", metric="Loreau", replicate.var=NA) {
   
   check_numeric(df, time.var, abundance.var)
   # check to see if there are actual replicates without specifying replicate.var
-  if(is.na(replicate.var)==TRUE){
+  if(is.na(replicate.var) == TRUE){
     check_single_onerep(df, time.var, species.var)  
         output <- synch_onerep(df, time.var, species.var, abundance.var, metric)
     } else {
@@ -49,7 +49,7 @@ synchrony<-function(df, time.var="year", species.var="species", abundance.var="a
       }
       check_multispp(df, species.var, replicate.var)
       check_single(df, time.var, species.var, replicate.var)
-      df<-df[order(df[[replicate.var]]),]
+      df <- df[order(df[[replicate.var]]),]
       X <- split(df, df[replicate.var])
       out <- lapply(X, FUN=synch_onerep, time.var, species.var, abundance.var, metric)
       reps <- unique(df[replicate.var])
@@ -98,7 +98,7 @@ synch_onerep <- function(df, time.var, species.var, abundance.var, metric=c("Lor
       XTformula <- as.formula(paste(abundance.var, "~", time.var, sep=""))
       XT <- aggregate(XTformula, data=df2, sum)
       #do this within rep
-      varXT<-var(XT[abundance.var])
+      varXT <- var(XT[abundance.var])
     
       #calculate species variance
       sdSppformula <- as.formula(paste(abundance.var, "~", species.var, sep=""))
@@ -109,8 +109,8 @@ synch_onerep <- function(df, time.var, species.var, abundance.var, metric=c("Lor
       synchrony <- as.numeric(varXT/varSpp)
       
     } else {
-      if(metric=="Gross"){
-        corout<-as.data.frame(cbind(species.var= as.character(), "sppcor"=as.numeric()))
+      if(metric == "Gross"){
+        corout <- as.data.frame(cbind(species.var= as.character(), "sppcor"=as.numeric()))
         
         # check to see if there are species which do not vary within a subplot
         nonvary <- apply(transpose_community(df, time.var, species.var, abundance.var), 2, sd)

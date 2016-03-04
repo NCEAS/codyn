@@ -66,35 +66,35 @@
 #'  
 #'  res_withinreplicates <- variance_ratio(knz_001d, time.var = "year", species.var = "species", 
 #'  abundance.var = "abundance", bootnumber = 1, replicate = "subplot", average.replicates = FALSE)
-variance_ratio<-function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
+variance_ratio <- function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
   # check to make sure abundance is numeric data
   check_numeric(df, time.var, abundance.var)
     if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
-        VR<-variance_ratio_longformdata(df,time.var, species.var, abundance.var)
+        VR <- variance_ratio_longformdata(df,time.var, species.var, abundance.var)
     } else {
         check_single(df, time.var, species.var, replicate.var)
-        df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE) {
+        df[replicate.var] <- if(is.factor(df[[replicate.var]]) == TRUE) {
             factor(df[[replicate.var]])
         } else {
             df[replicate.var]
         }
-        if(average.replicates==TRUE) {
+        if(average.replicates == TRUE) {
            check_multispp(df, species.var, replicate.var)
-            df<-df[order(df[[replicate.var]]),]
-            X<-split(df, df[replicate.var])
-            VR<-mean(unlist(lapply(X, FUN=variance_ratio_longformdata, time.var, species.var, abundance.var))) 
+            df <- df[order(df[[replicate.var]]),]
+            X <- split(df, df[replicate.var])
+            VR <- mean(unlist(lapply(X, FUN=variance_ratio_longformdata, time.var, species.var, abundance.var))) 
         } else {
             check_multispp(df, species.var, replicate.var)
-            df<-df[order(df[[replicate.var]]),]
+            df <- df[order(df[[replicate.var]]),]
             X <- split(df, df[replicate.var])
-            VR<-do.call("rbind", lapply(X, FUN=variance_ratio_longformdata, time.var,  species.var,abundance.var))
+            VR <- do.call("rbind", lapply(X, FUN=variance_ratio_longformdata, time.var, species.var, abundance.var))
         }
     }
-    nullout<-temporal_torus_translation_CI(df, time.var, species.var, abundance.var, variance_ratio_matrixdata, bootnumber, replicate.var, li, ui, average.replicates)
-    output<-(cbind(nullout, VR))
-    row.names(output)<-NULL
+    nullout <- temporal_torus_translation_CI(df, time.var, species.var, abundance.var, variance_ratio_matrixdata, bootnumber, replicate.var, li, ui, average.replicates)
+    output <- (cbind(nullout, VR))
+    row.names(output) <- NULL
     return(as.data.frame(output)) 
 }
 
@@ -111,13 +111,13 @@ variance_ratio<-function(df, time.var="year", species.var="species",  abundance.
 #' @param comdat A community dataframe
 #' @return var.ratio The variance ratio of the community
 #' @import stats
-variance_ratio_matrixdata<-function(comdat){
+variance_ratio_matrixdata <- function(comdat){
     check_sppvar(comdat)
     all.cov <- cov(comdat, use="pairwise.complete.obs")
-    col.var<-apply(comdat, 2, var)
-    com.var <-sum(all.cov)
-    pop.var <-sum(col.var)
-    var.ratio<-com.var/pop.var
+    col.var <- apply(comdat, 2, var)
+    com.var <- sum(all.cov)
+    pop.var <- sum(col.var)
+    var.ratio <- com.var/pop.var
     return(var.ratio)
 }
 
@@ -128,8 +128,8 @@ variance_ratio_matrixdata<-function(comdat){
 #' @param species.var The name of the species.var column from df
 #' @param abundance.var The name of the abundance.var column from df
 #' @return var.ratio The variance ratio of the community
-variance_ratio_longformdata<-function(df, time.var, species.var, abundance.var){
-    com.use<-transpose_community(df, time.var, species.var, abundance.var)
-    var.ratio<-variance_ratio_matrixdata(com.use)
+variance_ratio_longformdata <- function(df, time.var, species.var, abundance.var){
+    com.use <- transpose_community(df, time.var, species.var, abundance.var)
+    var.ratio <- variance_ratio_matrixdata(com.use)
     return(var.ratio)
 }

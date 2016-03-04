@@ -23,37 +23,37 @@
 #' @import stats
 #' @export
 
-community_stability<-function(df, time.var="year", abundance.var="abundance", replicate.var=NA){
+community_stability <- function(df, time.var="year", abundance.var="abundance", replicate.var=NA){
     check_numeric(df, time.var, abundance.var)
     
-  df<-df[which(df[[abundance.var]]>0),]
+  df <- df[which(df[[abundance.var]]>0),]
     
     if(is.na(replicate.var)) {
         
         #sum abundance within a year
-        aggform<-as.formula(paste(abundance.var, "~", time.var, sep=""))
-        data2<-aggregate(aggform, data=df, sum)
-        output<-stability_onerep(data2, abundance.var)
+        aggform <- as.formula(paste(abundance.var, "~", time.var, sep=""))
+        data2 <- aggregate(aggform, data=df, sum)
+        output <- stability_onerep(data2, abundance.var)
         
     } else {
         
-        df<-df[order(df[[replicate.var]]),]  
-        df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
+        df <- df[order(df[[replicate.var]]),]  
+        df[replicate.var] <- if(is.factor(df[[replicate.var]]) == TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
         
         #sum abundance within a replicate and year
-        aggform<-as.formula(paste(abundance.var, "~", replicate.var, "+", time.var, sep=""))
-        data2<-aggregate(aggform, data=df, sum)
-        data2<-data2[order(data2[[replicate.var]]),]  
-        X<-split(data2, data2[replicate.var])
-        out<-lapply(X, stability_onerep, abundance.var)
-        reps<-unique(data2[replicate.var])
-        output<-cbind(reps, do.call("rbind", out))
-        names(output)=c(replicate.var, "stability")
-        output<-subset(output, !is.na(output$stability))
+        aggform <- as.formula(paste(abundance.var, "~", replicate.var, "+", time.var, sep=""))
+        data2 <- aggregate(aggform, data=df, sum)
+        data2 <- data2[order(data2[[replicate.var]]),]  
+        X <- split(data2, data2[replicate.var])
+        out <- lapply(X, stability_onerep, abundance.var)
+        reps <- unique(data2[replicate.var])
+        output <- cbind(reps, do.call("rbind", out))
+        names(output) = c(replicate.var, "stability")
+        output <- subset(output, !is.na(output$stability))
         
     }
     
-    row.names(output)<-NULL
+    row.names(output) <- NULL
     return(output)
 }
 
@@ -75,7 +75,7 @@ community_stability<-function(df, time.var="year", abundance.var="abundance", re
 #' @param x The column to calculate stability on
 #' @return Stability of x, calculated as the mean/sd
 #' @import stats
-stability_onerep<-function(df,  x){
+stability_onerep <- function(df,  x){
   return(mean(df[[x]], na.rm=T)/sd(df[[x]], na.rm=T))
 }
 

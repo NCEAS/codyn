@@ -43,9 +43,9 @@ turnover <- function(df, time.var="year", species.var="species", abundance.var="
     check_single_onerep(df, time.var, species.var)
     output <- turnover_allyears(df, time.var, species.var, abundance.var, metric)
     } else {
-      df[replicate.var]<-if(is.factor(df[[replicate.var]])){factor(df[[replicate.var]])} else {df[replicate.var] }
+      df[replicate.var] <- if(is.factor(df[[replicate.var]])){factor(df[[replicate.var]])} else {df[replicate.var]}
       check_single(df, time.var, species.var, replicate.var)
-      df<-df[order(df[[replicate.var]]),]
+      df <- df[order(df[[replicate.var]]),]
       X <- split(df, df[replicate.var])
       out <- lapply(X, FUN=turnover_allyears, time.var, species.var, abundance.var, metric)
       ID <- unique(names(out))
@@ -81,8 +81,8 @@ turnover_allyears <- function(df, time.var, species.var, abundance.var, metric=c
     metric = match.arg(metric) # for partial argument matching
   
     check_numeric(df, time.var, abundance.var)
-    df<-df[order(df[[time.var]]),]
-    df<-df[which(df[[abundance.var]]>0),]
+    df <- df[order(df[[time.var]]),]
+    df <- df[which(df[[abundance.var]]>0),]
     
     ## split data by year
     templist <- split(df, df[[time.var]])
@@ -93,7 +93,7 @@ turnover_allyears <- function(df, time.var, species.var, abundance.var, metric=c
     
     ## calculate turnover for across all time points
     out <- Map(getturnover, t1, t2, species.var, metric)
-    output<-as.data.frame(unlist(out))
+    output <- as.data.frame(unlist(out))
     names(output)[1] = metric
     
     ## add time variable column
@@ -126,10 +126,10 @@ getturnover <- function(d1, d2, species.var = "species", metric=c("total", "disa
   if(metric == "total"){
         output <- ((appear+disappear)/totrich)
     } else {
-  if(metric=="appearance"){
+  if(metric == "appearance"){
         output <- appear/totrich
     } else {
-  if(metric=="disappearance"){
+  if(metric == "disappearance"){
         output <- disappear/totrich
       }
     }

@@ -22,8 +22,8 @@
 #' @export
 temporal_torus_translation <- function(df, time.var="year", species.var="species",  abundance.var="abundance", FUN){
   if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
-  out<-FUN(genRand(transpose_community(df, time.var,  species.var, abundance.var)))
-  bootout<-unlist(out)
+  out <- FUN(genRand(transpose_community(df, time.var,  species.var, abundance.var)))
+  bootout <- unlist(out)
   return(bootout)
 }
 
@@ -62,7 +62,7 @@ temporal_torus_translation <- function(df, time.var="year", species.var="species
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @import stats
 #' @export
-temporal_torus_translation_CI<-function(df,  time.var="year",species.var="species", abundance.var="abundance", FUN, bootnumber, replicate.var=NA, li=0.025, ui=0.975, average.replicates=TRUE){
+temporal_torus_translation_CI <- function(df,  time.var="year",species.var="species", abundance.var="abundance", FUN, bootnumber, replicate.var=NA, li=0.025, ui=0.975, average.replicates=TRUE){
   check_numeric(df, time.var, abundance.var)
   if(is.na(replicate.var)){
     check_single_onerep(df, time.var, species.var)
@@ -70,30 +70,29 @@ temporal_torus_translation_CI<-function(df,  time.var="year",species.var="specie
     out<-replicate(bootnumber, temporal_torus_translation(df, time.var, species.var,  abundance.var, FUN))
     lowerCI <- quantile(out, li)
     upperCI <-quantile(out, ui)
-    nullmean<-mean(out)
-    output<-cbind(lowerCI, upperCI, nullmean)
+    nullmean <- mean(out)
+    output <- cbind(lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
   } else {
-    df[replicate.var]<-if(is.factor(df[[replicate.var]])==TRUE){factor(df[[replicate.var]])} else {df[replicate.var]} 
-    
-    df<-df[order(df[[replicate.var]]),]  
+    df[replicate.var] <- if(is.factor(df[[replicate.var]]) == TRUE){factor(df[[replicate.var]])} else {df[replicate.var]} 
+    df <- df[order(df[[replicate.var]]),]  
     check_single(df, time.var, species.var, replicate.var)
-    if(average.replicates==TRUE){
-      X<-split(df, df[replicate.var])
-    out<-replicate(bootnumber, mean(unlist(lapply(X, temporal_torus_translation, time.var, species.var, abundance.var, FUN)))) 
+    if(average.replicates == TRUE){
+      X <- split(df, df[replicate.var])
+    out <- replicate(bootnumber, mean(unlist(lapply(X, temporal_torus_translation, time.var, species.var, abundance.var, FUN)))) 
     lowerCI <- quantile(out, li)
-    upperCI <-quantile(out, ui)
-    nullmean<-mean(out)
-    output<-cbind(lowerCI, upperCI, nullmean)
+    upperCI <- quantile(out, ui)
+    nullmean <- mean(out)
+    output <- cbind(lowerCI, upperCI, nullmean)
     row.names(output)<-NULL
   } else {
     X <- split(df, df[replicate.var])
-    out<-lapply(X, function(x,time.var, species.var,  abundance.var, FUN, bootnumber){replicate(bootnumber, temporal_torus_translation(x, time.var, species.var, abundance.var, FUN))}, time.var, species.var, abundance.var, FUN, bootnumber)
-    lowerCI<-do.call("rbind", lapply(out, quantile, li))
-    upperCI<-do.call("rbind", lapply(out, quantile, ui))
-    nullmean<-do.call("rbind", lapply(out, mean))
-    reps<-unique(df[replicate.var])
-    output<-cbind(reps, lowerCI, upperCI, nullmean)
+    out <- lapply(X, function(x,time.var, species.var,  abundance.var, FUN, bootnumber){replicate(bootnumber, temporal_torus_translation(x, time.var, species.var, abundance.var, FUN))}, time.var, species.var, abundance.var, FUN, bootnumber)
+    lowerCI <- do.call("rbind", lapply(out, quantile, li))
+    upperCI <- do.call("rbind", lapply(out, quantile, ui))
+    nullmean <- do.call("rbind", lapply(out, mean))
+    reps <- unique(df[replicate.var])
+    output <- cbind(reps, lowerCI, upperCI, nullmean)
     names(output)[2:3]=c("lowerCI", "upperCI")
   }
   }
