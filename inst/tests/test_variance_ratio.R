@@ -32,7 +32,8 @@ test_that("variance_ratio function returns correct result", {
     
     #test the class returned with default settings
     myresults<-variance_ratio(knz_001d, time.var="year", species.var="species", 
-                             abundance.var="abundance",  bootnumber=1, replicate="subplot")
+                             abundance.var="abundance",  bootnumber=1, replicate.var="subplot")
+
     
     expect_equal(class(myresults), "data.frame")
     expect_equal(nrow(myresults), 1)
