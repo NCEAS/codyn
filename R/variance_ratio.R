@@ -92,7 +92,8 @@ variance_ratio <- function(df, time.var="year", species.var="species",  abundanc
             VR <- do.call("rbind", lapply(X, FUN=variance_ratio_longformdata, time.var, species.var, abundance.var))
         }
     }
-    nullout <- temporal_torus_translation_CI(df, time.var, species.var, abundance.var, variance_ratio_matrixdata, bootnumber, replicate.var, li, ui, average.replicates)
+    nullout <- confint.cyclic_shift(df, time.var, species.var, abundance.var, variance_ratio_matrixdata, 
+                                    bootnumber,  li, ui, replicate.var, average.replicates)
     output <- (cbind(nullout, VR))
     row.names(output) <- NULL
     return(as.data.frame(output)) 

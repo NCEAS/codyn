@@ -6,13 +6,13 @@
 #' @param abundance.var The name of the abundance column from df
 #' @return A dataframe of species abundances x time
 transpose_community <- function(df, time.var, species.var, abundance.var) {
-    df <- as.data.frame(df)
-    df[species.var] <- if(is.factor(df[[species.var]]) == TRUE){factor(df[[species.var]])} else {df[species.var]}  
-    df <- df[order(df[[time.var]], df[[species.var]]),]
-    comdat <- tapply(df[[abundance.var]], list(df[[time.var]], as.vector(df[[species.var]])), sum)
-    comdat[is.na(comdat)] <- 0
-    comdat <- as.data.frame(comdat)
-    return(comdat)
+  df <- as.data.frame(df)
+  df[species.var] <- if(is.factor(df[[species.var]]) == TRUE){factor(df[[species.var]])} else {df[species.var]}  
+  df <- df[order(df[[time.var]], df[[species.var]]),]
+  comdat <- tapply(df[[abundance.var]], list(df[[time.var]], as.vector(df[[species.var]])), sum)
+  comdat[is.na(comdat)] <- 0
+  comdat <- as.data.frame(comdat)
+  return(comdat)
 }
 
 #' check names of data frames
