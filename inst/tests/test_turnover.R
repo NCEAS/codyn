@@ -79,14 +79,14 @@ test_that("turnover loads and returns correct result", {
     test.spp2 <- data.frame(species=letters[2:7])
     # total turnover: 4 shared species. 1 disappears, 2 appear. Total richness is 7
     
-    # default for getturnover is total; partial matching also being tested
-    expect_equal(getturnover(test.spp1, test.spp2), (2 + 1) / 7)
+    # default for turnover_twoyears is total; partial matching also being tested
+    expect_equal(turnover_twoyears(test.spp1, test.spp2), (2 + 1) / 7)
     
-    expect_equal(getturnover(test.spp1, test.spp2, metric = "tot"), (2 + 1) / 7)
+    expect_equal(turnover_twoyears(test.spp1, test.spp2, metric = "tot"), (2 + 1) / 7)
     
-    expect_equal(getturnover(test.spp1, test.spp2, metric = "dis"), 1 / 7)
+    expect_equal(turnover_twoyears(test.spp1, test.spp2, metric = "dis"), 1 / 7)
     
-    expect_equal(getturnover(test.spp1, test.spp2, metric = "app"), 2 / 7)
+    expect_equal(turnover_twoyears(test.spp1, test.spp2, metric = "app"), 2 / 7)
     
     # adding a test to make sure that the output actually is the metric specified
     tot <- turnover(knz_001d, time.var="year", species.var="species", abundance.var="abundance", replicate.var="subplot", metric = "total")

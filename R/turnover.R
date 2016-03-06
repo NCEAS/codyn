@@ -92,7 +92,7 @@ turnover_allyears <- function(df, time.var, species.var, abundance.var, metric=c
     t2 <- templist[-1]
     
     ## calculate turnover for across all time points
-    out <- Map(getturnover, t1, t2, species.var, metric)
+    out <- Map(turnover_twoyears, t1, t2, species.var, metric)
     output <- as.data.frame(unlist(out))
     names(output)[1] = metric
     
@@ -114,7 +114,7 @@ turnover_allyears <- function(df, time.var, species.var, abundance.var, metric=c
 #'  }
 #' @return output The specificed turnover metric
 
-getturnover <- function(d1, d2, species.var = "species", metric=c("total", "disappearance","appearance")){
+turnover_twoyears <- function(d1, d2, species.var = "species", metric=c("total", "disappearance","appearance")){
   metric = match.arg(metric) # for partial argument matching
   
   d1spp <- as.character(unique(d1[[species.var]]))
