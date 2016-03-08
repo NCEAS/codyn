@@ -27,17 +27,17 @@ test_that("rate_change loads and returns correct result", {
     dat3<-dat1
     dat3$subplot<-as.character(dat3$subplot)
     
-    #test the get_slope function
-    myresults <- get_slope(dat1, "year", "species", "abundance")
+    #test the lagged_slope function
+    myresults <- lagged_slope(dat1, "year", "species", "abundance")
     expect_equal(class(myresults), "numeric")
     expect_equal(length(myresults), 1)
     expect_equal(myresults, 0.6706902, tolerance=0.00001)
     #test that works with different column names
-    myresults2<-get_slope(dat2,  "yr", "sp", "abund")
+    myresults2<-lagged_slope(dat2,  "yr", "sp", "abund")
     expect_equal(myresults, myresults2)
     
     #test that gives a warning if running on factor instead of numeric
-    expect_error(get_slope(dat2, "yr", "sp", "subplot"))
+    expect_error(lagged_slope(dat2, "yr", "sp", "subplot"))
     
     #test the rate_change function
     #test that works on a single replicate

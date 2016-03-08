@@ -83,7 +83,7 @@ meanrank <- function(comm_data, time.var = "year",
     y1 <- yearlist[-length(yearlist)]
     y2 <- yearlist[-1]
 
-    commonspp <- Map(getintersect, y1, y2, dataname = species.var)
+    commonspp <- Map(df_intersect, y1, y2, dataname = species.var)
 
     names(commonspp) <- Map(function(x, y) paste0(x, "-", y), names(y1), names(y2))
 
@@ -111,7 +111,7 @@ meanrank <- function(comm_data, time.var = "year",
 #' @param df1 A dataframe
 #' @param df2 A dataframe
 #' @param dataname The name of the column on which the two datasets will be joined and intersected
-getintersect <- function(df1, df2, dataname = "species") {
+df_intersect <- function(df1, df2, dataname = "species") {
   commspp <- intersect(df1[[dataname]], df2[[dataname]])
   
   ## select out the dataname columsn from df1 and df2

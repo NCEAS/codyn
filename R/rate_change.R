@@ -38,7 +38,7 @@ rate_change <- function(df, time.var="year", species.var="species", abundance.va
   check_numeric(df, time.var, abundance.var)
   if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
-        output <- get_slope(df, time.var, species.var, abundance.var)
+        output <- lagged_slope(df, time.var, species.var, abundance.var)
     } else {
         check_single(df, time.var, species.var, replicate.var)
         df[replicate.var] <- if(is.factor(df[[replicate.var]])) {
@@ -48,7 +48,7 @@ rate_change <- function(df, time.var="year", species.var="species", abundance.va
         }
         df <- df[order(df[[replicate.var]]),]
         X <- split(df, df[replicate.var])
-        out <- lapply(X, FUN=get_slope, time.var, species.var, abundance.var)
+        out <- lapply(X, FUN=lagged_slope, time.var, species.var, abundance.var)
         reps <- unique(df[replicate.var])
         output <- cbind(reps, do.call("rbind", out))
         names(output) = c(replicate.var, "rate_change")
@@ -91,7 +91,7 @@ rate_change_interval <- function(df, time.var="year", species.var="species", abu
     stopifnot(is.numeric(df[[abundance.var]]))
     if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
-        output <- get_lagged_distances(df, time.var, species.var, abundance.var)
+        output <- lagged_distances(df, time.var, species.var, abundance.var)
     } else {
         check_single(df, time.var, species.var, replicate.var)
         df[replicate.var] <- if(is.factor(df[[replicate.var]])) {
@@ -101,7 +101,7 @@ rate_change_interval <- function(df, time.var="year", species.var="species", abu
         }
         df <- df[order(df[[replicate.var]]),]
         X <- split(df, df[replicate.var])
-        out <- lapply(X, FUN=get_lagged_distances, time.var, species.var, abundance.var)
+        out <- lapply(X, FUN=lagged_distances, time.var, species.var, abundance.var)
         #reps <- unique(df[replicate.var])
         #output <- cbind(reps, do.call("rbind", out))
         ID <- unique(names(out))
@@ -130,13 +130,13 @@ rate_change_interval <- function(df, time.var="year", species.var="species", abu
 #' @param abundance.var The name of the abundance column from df
 #' @return a data frame containing of time lags by species distances
 #' @import stats
-get_lagged_distances <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
+lagged_distances <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
     df <- transpose_community(df, time.var, species.var, abundance.var)
     DM <- dist(df, method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
     rownums = row(DM)
     colnums = col(DM)
-    lag_list = lapply(1:(nrow(df)-1), get_lag_i, DM, rownums, colnums)
+    lag_list = lapply(1:(nrow(df)-1), lag_i, DM, rownums, colnums)
     results <- data.frame(do.call(rbind, lag_list))
     names(results) = c("interval", "distance")
     return(results)
@@ -150,8 +150,8 @@ get_lagged_distances <- function(df, time.var="year", species.var="species", abu
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
 #' @import stats
-get_slope <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
-    results <- get_lagged_distances(df, time.var, species.var, abundance.var)
+lagged_slope <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
+    results <- lagged_distances(df, time.var, species.var, abundance.var)
     lm_coefficents <- lm(distance ~ interval, data=results)
     slope <- data.frame(lm_coefficents[1][[1]])
     return(slope[2,])
@@ -164,6 +164,6 @@ get_slope <- function(df, time.var="year", species.var="species", abundance.var=
 #' @param rownums number of rows in the distance matrix
 #' @param colnums number of columns in the distance matrix
 #' @return the lagged values
-get_lag_i <- function(i, DM, rownums, colnums) {
+lag_i <- function(i, DM, rownums, colnums) {
     cbind(lag = i, value = DM[rownums == (colnums + i)])
 }
