@@ -66,34 +66,46 @@
 #'  
 #'  res_withinreplicates <- variance_ratio(knz_001d, time.var = "year", species.var = "species", 
 #'  abundance.var = "abundance", bootnumber = 1, replicate = "subplot", average.replicates = FALSE)
-variance_ratio <- function(df, time.var="year", species.var="species",  abundance.var="abundance", bootnumber, replicate.var=NA,
+variance_ratio <- function(df, time.var, species.var, abundance.var, bootnumber, replicate.var=NA,
                         li=0.025, ui=0.975,  average.replicates=TRUE) {
+  
   # check to make sure abundance is numeric data
   check_numeric(df, time.var, abundance.var)
-    if(is.na(replicate.var)) {
+   
+  # if no replicates, calculate single variance ratio
+   if(is.na(replicate.var)) {
         check_single_onerep(df, time.var, species.var)
-        VR <- variance_ratio_longformdata(df,time.var, species.var, abundance.var)
+        VR <- variance_ratio_longformdata(df, time.var, species.var, abundance.var)
     } else {
+        
+      # if multiple replicates, check all replicates have values
         check_single(df, time.var, species.var, replicate.var)
         df[replicate.var] <- if(is.factor(df[[replicate.var]]) == TRUE) {
             factor(df[[replicate.var]])
         } else {
             df[replicate.var]
         }
+        
+        # calculate average variance ratio across replicates
         if(average.replicates == TRUE) {
            check_multispp(df, species.var, replicate.var)
             df <- df[order(df[[replicate.var]]),]
             X <- split(df, df[replicate.var])
-            VR <- mean(unlist(lapply(X, FUN=variance_ratio_longformdata, time.var, species.var, abundance.var))) 
+            VR <- mean(unlist(lapply(X, FUN = variance_ratio_longformdata, time.var, species.var, abundance.var))) 
         } else {
+          
+          # calculate the variance ratio for replicate
             check_multispp(df, species.var, replicate.var)
             df <- df[order(df[[replicate.var]]),]
             X <- split(df, df[replicate.var])
-            VR <- do.call("rbind", lapply(X, FUN=variance_ratio_longformdata, time.var, species.var, abundance.var))
+            VR <- do.call("rbind", lapply(X, FUN = variance_ratio_longformdata, time.var, species.var, abundance.var))
         }
     }
+  
+    # calculate null model CI 
     nullout <- confint.cyclic_shift(df, time.var, species.var, abundance.var, variance_ratio_matrixdata, 
                                     bootnumber,  li, ui, replicate.var, average.replicates)
+    # bind actual value and CI
     output <- (cbind(nullout, VR))
     row.names(output) <- NULL
     return(as.data.frame(output)) 
