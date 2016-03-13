@@ -45,13 +45,15 @@ test_that("community_stability loads and returns correct result", {
 
   #test that errors if subplot does not exist
   expect_error(stability_onerep(dat2agg, "subplot"),
-               "dat2agg does not have name subplot")
+               "df does not have name subplot")
 
 
   #test the community_stability function
   #test that works on a single replicate
-  myresults3 <- community_stability(dat1, replicate.var=NA, time.var="year", abundance.var="abundance")
-  expect_that(myresults3, equals(myresults2))
+  myresults3 <- community_stability(dat1, replicate.var = NA,
+                                    time.var = "year",
+                                    abundance.var = "abundance")
+  expect_equivalent(myresults3, myresults2)
 
   #test that will still run if there are missing levels in a factor "replicate"; deleting levels that are NaN
   myresults4<-community_stability(dat1, replicate.var="subplot", time.var="year", abundance.var="abundance")
