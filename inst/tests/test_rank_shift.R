@@ -1,11 +1,6 @@
 context("rank_shift")
 
 test_that("rank_shift loads and returns correct result", {
-    # Ensure that trivial tests work correctly
-    expect_that(length("a"), equals(1))
-
-    library(codyn)
-
     # Load our example data set
     data(knz_001d)
     #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
@@ -89,11 +84,11 @@ test_that("rank_shift loads and returns correct result", {
 
   	# test that works regardless of order of the input replicates
   	knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
-  	myresults<-mean_rank_shift(knz_001d, time.var="year", species.var="species", abundance.var="abundance", 
+  	myresults<-mean_rank_shift(knz_001d, time.var="year", species.var="species", abundance.var="abundance",
   	                            replicate.var="subplot")
-  	
-  	myresults_reorder<-mean_rank_shift(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance", 
+
+  	myresults_reorder<-mean_rank_shift(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance",
   	                            replicate.var="subplot")
   	expect_equal(myresults, myresults_reorder)
-  	
+
 })
