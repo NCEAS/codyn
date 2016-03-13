@@ -58,7 +58,7 @@ test_that("community_stability loads and returns correct result", {
   #test that will still run if there are missing levels in a factor "replicate"; deleting levels that are NaN
   myresults4 <- community_stability(dat1, replicate.var = "subplot",
                                     time.var = "year", abundance.var = "abundance")
-  #this will give a warning because replicate is a factor without all values present in dat1 - the warning is a good thing
+
   expect_equal(myresults3, myresults4$stability)
 
   #test that works whether replicate is a character or factor
