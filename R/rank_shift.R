@@ -75,36 +75,37 @@ mean_rank_shift <- function(df, time.var = "year", species.var = "species",
 #' @param species.var The species variable
 #' @param abundance.var The abundance variable
 #' @return a dataframe, showing years compared
+#' @importFrom
 meanrank <- function(comm_data, time.var = "year",
                      species.var = "species",
                      abundance.var = "abundance") {
     ## split data by year
 
 
-    yearlist <- split(comm_data, comm_data[[time.var]])
-    ## Compare consecutive pairs of years
-    y1 <- yearlist[-length(yearlist)]
-    y2 <- yearlist[-1]
+  yearlist <- split(comm_data, comm_data[[time.var]])
+  ## Compare consecutive pairs of years
+  y1 <- yearlist[-length(yearlist)]
+  y2 <- yearlist[-1]
 
-    commonspp <- Map(df_intersect, y1, y2, dataname = species.var)
+  commonspp <- Map(df_intersect, y1, y2, dataname = species.var)
 
-    names(commonspp) <- Map(function(x, y) paste0(x, "-", y), names(y1), names(y2))
+  names(commonspp) <- Map(function(x, y) paste0(x, "-", y), names(y1), names(y2))
 
-    abdname1 <- paste0(abundance.var,"1")
-    abdname2 <- paste0(abundance.var,"2")
-    rank1 <- ""   # Note: initialized rank1 and rank2 simply to eliminate R CMD check NOTE
-    rank2 <- ""
-    ranknames <- lapply(commonspp, function(x) cbind(x,
-                                                     rank1 = rank(x[[abdname1]]),
-                                                     rank2 = rank(x[[abdname2]])
-    ))
+  abdname1 <- paste0(abundance.var,"1")
+  abdname2 <- paste0(abundance.var,"2")
+  rank1 <- ""   # Note: initialized rank1 and rank2 simply to eliminate R CMD check NOTE
+  rank2 <- ""
+  ranknames <- lapply(commonspp, function(x) cbind(x,
+                                                   rank1 = rank(x[[abdname1]]),
+                                                   rank2 = rank(x[[abdname2]])
+  ))
 
-    rankdiff <- lapply(ranknames,
-                       function(x) transform(x, abs_ch_rank = abs(rank2 - rank1)))
+  rankdiff <- lapply(ranknames,
+                     function(x) transform(x, abs_ch_rank = abs(rank2 - rank1)))
 
-    MRS <- sapply(rankdiff, function(x) mean(x$abs_ch_rank))
+  MRS <- sapply(rankdiff, function(x) mean(x$abs_ch_rank))
 
-    data.frame(year_pair = names(MRS), MRS, row.names = NULL)
+  data.frame(year_pair = names(MRS), MRS, row.names = NULL)
 }
 
 
