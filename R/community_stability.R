@@ -76,7 +76,7 @@ community_stability <- function(df, time.var="year", abundance.var="abundance", 
 #' @return Stability of x, calculated as the mean/sd
 stability_onerep <- function(df,  x){
 
-  assertthat::assert_that(assertthat::has_name(dat2agg, "subplot"))
+  assertthat::assert_that(assertthat::has_name(df, "subplot"))
   assertthat::assert_that(is.numeric(df[[x]]))
 
   sync_var <- df[[x]]
