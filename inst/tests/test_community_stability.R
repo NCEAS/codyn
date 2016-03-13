@@ -37,10 +37,15 @@ test_that("community_stability loads and returns correct result", {
   #test that works with different column names
   dat2agg <- aggregate(abund~yr + sub, data = dat2, sum)
   myresults2 <- codyn:::stability_onerep(dat2agg, "abund")
-  expect_that(myresults, equals(myresults2))
-  myresultsNA <- stability_onerep(dat2agg, "subplot")
+  expect_equivalent(myresults, myresults2)
+
+  ## check that x cannnto be character
+  expect_error(codyn:::stability_onerep(dat2agg, "sub"),
+               "is not a numeric or integer")
+
   #test that gives a warning if running on factor instead of numeric
-  expect_that(stability_onerep(dat2agg, "subplot"), gives_warning())
+  expect_error(stability_onerep(dat2agg, "subplot"),
+               "dat2agg does not have name subplot")
 
 
   #test the community_stability function
