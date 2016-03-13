@@ -23,7 +23,8 @@ Depends:
     R (>= 3.2.0)
 Imports:
     assertthat,
-    stats
+    stats,
+    permute
 Suggests:
     testthat,
     knitr,
