@@ -1,14 +1,14 @@
 Package: codyn
 Title: Community Dynamics Metrics
 Version: 1.0.1.9000
-Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")), 
-    person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")), 
-    person("Andrew A.", "MacDonald", email="aammacdonald@gmail.com", role=c("aut")), 
-    person("Dan F. B.", "Flynn", email="flynn@fas.harvard.edu", role=c("aut")), 
-    person("Peter", "Slaughter", email="slaughter@nceas.ucsb.edu", role=c("aut")), 
-    person("Julie", "Ripplinger", email="julie.ripplinger@asu.edu", role=c("aut")), 
-    person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")), 
-    person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")), 
+Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")),
+    person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")),
+    person("Andrew A.", "MacDonald", email="aammacdonald@gmail.com", role=c("aut")),
+    person("Dan F. B.", "Flynn", email="flynn@fas.harvard.edu", role=c("aut")),
+    person("Peter", "Slaughter", email="slaughter@nceas.ucsb.edu", role=c("aut")),
+    person("Julie", "Ripplinger", email="julie.ripplinger@asu.edu", role=c("aut")),
+    person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")),
+    person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")),
     person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
 Date: 2016-01-14
 Description: A toolbox of ecological community dynamics metrics that are
@@ -31,7 +31,8 @@ Suggests:
     ggplot2,
     reshape2,
     devtools,
-    dplyr
+    dplyr,
+    rmarkdown
 License: Apache License (== 2.0)
 URL: https://github.com/laurenmh/codyn/
 BugReports: https://github.com/laurenmh/codyn/issues
