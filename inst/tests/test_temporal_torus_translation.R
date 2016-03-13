@@ -59,16 +59,21 @@ test_that("temporal_torus_translation loads and returns correct result", {
   myresults <- cyclic_shift(dat1, "year", "species",
                             "abundance",
                             variance_ratio_matrixdata,
-                            bootnumber=1)
+                            bootnumber = 1)
 
   expect_s3_class(myresults, "cyclic_shift")
 
-  #test that returns a single numeric value
-  expect_equal(length(myresults), 1)
-  expect_true(is.numeric(myresults))
+  #test structure of this class
+  expect_length(myresults, 1) ## will change soon
+
+  expect_type(myresults$out, "double")
   #test that does not generate the same value every time
-  myresults2<-cyclic_shift(dat1, "year","species",  "abundance", variance_ratio_matrixdata, bootnumber=1)
-  expect_that(myresults==myresults2, equals(FALSE))
+  myresults2 <- cyclic_shift(dat1, "year",
+                             "species",
+                             "abundance",
+                             variance_ratio_matrixdata,
+                             bootnumber = 1)
+  expect_false(myresults$out == myresults2$out)
 
   #test that is not sensitive to different column names
   myresults3 <- cyclic_shift(dat2, "yr",  "sp", "abund", variance_ratio_matrixdata, bootnumber=1)
