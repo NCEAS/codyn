@@ -34,8 +34,12 @@ cyclic_shift <- function(df, time.var="year",
                      transpose_community(df,
                                          time.var,
                                          species.var,
-                                         abundance.var))))
-  return(out)
+                                         abundance.var)
+                   )))
+
+  shift <- structure(list(out = out), class = "cyclic_shift")
+
+  return(shift)
 }
 
 
