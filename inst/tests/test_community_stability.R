@@ -4,9 +4,9 @@ test_that("community_stability loads and returns correct result", {
 
   # Load our example data set
   data(knz_001d)
-  
+
   expect_that(names(knz_001d)[4], equals("abundance"))
-  
+
   #give new column names
   knz_001d2 <- knz_001d
   names(knz_001d2) <- c("sp", "yr", "sub", "abund")
@@ -41,8 +41,8 @@ test_that("community_stability loads and returns correct result", {
   myresultsNA <- stability_onerep(dat2agg, "subplot")
   #test that gives a warning if running on factor instead of numeric
   expect_that(stability_onerep(dat2agg, "subplot"), gives_warning())
-  
-  
+
+
   #test the community_stability function
   #test that works on a single replicate
   myresults3<-community_stability(dat1, replicate.var=NA, time.var="year", abundance.var="abundance")
@@ -65,12 +65,12 @@ test_that("community_stability loads and returns correct result", {
   #test that works with different column names
   myresults8<-community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="abund")
   expect_that(myresults7[1,2], equals(myresults8[1,2]))
-  
+
   #test that gives error when abundance column is a character or factor
   expect_error(community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randcharacter"))
   expect_error(community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randfactor"))
 
-  
+
   # test that works regardless of order of the input replicates
   knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
   myresults<-community_stability(knz_001d, time.var="year", abundance.var="abundance",
@@ -79,5 +79,5 @@ test_that("community_stability loads and returns correct result", {
   myresults_reorder<-community_stability(knz_001dreorder, time.var="year", abundance.var="abundance",
                                      replicate.var="subplot")
   expect_equal(myresults, myresults_reorder)
-  
+
   })
