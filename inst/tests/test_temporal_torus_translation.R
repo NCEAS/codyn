@@ -4,18 +4,22 @@ test_that("temporal_torus_translation loads and returns correct result", {
 
   # Load our example data set
   data(knz_001d)
+
+  ## check dataset
   expect_that(names(knz_001d)[4], equals("abundance"))
 
   #give new column names
   knz_001d2 <- knz_001d
-  names(knz_001d2)=c("sp", "yr", "sub", "abund")
+  names(knz_001d2) <- c("sp", "yr", "sub", "abund")
 
   #add a random character and factor column
-  knz_001d2$randcharacter<-sample(letters, size = nrow(knz_001d2), replace = T)
-  knz_001d2$randfactor<-as.factor(knz_001d2$randcharacter)
+  knz_001d2$randcharacter <- sample(letters,
+                                    size = nrow(knz_001d2),
+                                    replace = TRUE)
+  knz_001d2$randfactor <- as.factor(knz_001d2$randcharacter)
 
   #take a subset
-  dat1 <- subset(knz_001d, knz_001d$subplot=="A_1")
+  dat1 <- subset(knz_001d, knz_001d$subplot == "A_1")
 
   #rename the subset
   dat2<-dat1
