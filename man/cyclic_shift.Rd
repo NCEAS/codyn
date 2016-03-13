@@ -34,7 +34,7 @@ The input data frame needs to contain columns for time, species and abundance; t
 # Calculate a covariance matrix on a null community
 data(knz_001d)
 cyclic_shift(subset(knz_001d, subplot=="A_1"), time.var="year",
-species.var="species", abundance.var="abundance", FUN=cov)
+species.var="species", abundance.var="abundance", FUN=cov, bootnumber = 10)
 }
 \references{
 Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.
