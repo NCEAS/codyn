@@ -83,7 +83,12 @@ test_that("temporal_torus_translation loads and returns correct result", {
 
 
   #Test the confint.cyclic_shift function
-  myresults<-confint.cyclic_shift(dat1, replicate.var=NA, species.var="species", time.var="year", abundance.var="abundance", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE)
+  # myresults <- confint(dat1, replicate.var = NA,
+  #                      species.var = "species",
+  #                      time.var = "year",
+  #                      abundance.var = "abundance",
+  #                      FUN = variance_ratio_matrixdata, bootnumber = 2,
+  #                      li = 0.025, ui = 0.975, average.replicates = FALSE)
 
   #Test that returns an error when abundance is a character or factor column
   expect_error(confint.cyclic_shift(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randcharacter", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
