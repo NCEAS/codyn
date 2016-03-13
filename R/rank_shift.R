@@ -75,12 +75,15 @@ mean_rank_shift <- function(df, time.var = "year", species.var = "species",
 #' @param species.var The species variable
 #' @param abundance.var The abundance variable
 #' @return a dataframe, showing years compared
-#' @importFrom
+#' @importFrom assertthat %has_name%
 meanrank <- function(comm_data, time.var = "year",
                      species.var = "species",
                      abundance.var = "abundance") {
     ## split data by year
 
+  for (v in c(time.var, species.var, abundance.var)){
+    assertthat::assert_that(comm_data %has_name% v)
+  }
 
   yearlist <- split(comm_data, comm_data[[time.var]])
   ## Compare consecutive pairs of years

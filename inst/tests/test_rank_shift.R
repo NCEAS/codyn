@@ -27,21 +27,38 @@ test_that("rank_shift loads and returns correct result", {
   	dat1 <- subset(knz_001d, knz_001d$subplot == "A_1")
   	#rename the subset
   	dat2 <- dat1
-  	names(dat2) = c("sp", "yr", "sub", "abund")
+  	names(dat2) <-  c("sp", "yr", "sub", "abund")
   	#make subplot a character
   	dat3 <- dat1
   	dat3$subplot <- as.character(dat3$subplot)
 
+  	## meanrank() recognizes correct names
+
+  	expect_error(meanrank(dat1, time.var = "pippin",
+  	                      species.var = "species",
+  	                      abundance.var = "abundance"))
+  	expect_error(meanrank(dat1, time.var = "year",
+  	                      species.var = "meriadoc",
+  	                      abundance.var = "abundance"))
+  	expect_error(meanrank(dat1, time.var = "year",
+  	                      species.var = "species",
+  	                      abundance.var = "samwise"))
 
 	#test the get_slope function
-  	myresults <- meanrank(dat1, "year", "species", "abundance")
+  	myresults <- meanrank(dat1, time.var = "year",
+  	                      species.var = "species",
+  	                      abundance.var = "abundance")
   	expect_that(class(myresults[,2]), equals("numeric"))
   	expect_that(length(myresults), equals(2))
   	#test that meanrank function works with different column names
-  	myresults2 <- meanrank(dat2,  "yr", "sp", "abund")
+  	myresults2 <- meanrank(dat2,  time.var = "yr",
+  	                       species.var = "sp",
+  	                       abundance.var = "abund")
   	expect_that(myresults2, equals(myresults))
   	#test that gives a warning if running on factor instead of numeric
-  	expect_error(meanrank(dat2, "yr", "sp", "subplot"))
+  	expect_error(meanrank(dat2, time.var = "yr",
+  	                      species.var = "sp",
+  	                      abundance.var = "subplot"))
 
 	#test the mean_rank_shift function
   	#test that works on a single replicate
