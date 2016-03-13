@@ -1,8 +1,6 @@
 context("temporal_torus_translation")
 
 test_that("temporal_torus_translation loads and returns correct result", {
-  library(codyn)
-
 
   # Load our example data set
   data(knz_001d)
