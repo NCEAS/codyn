@@ -86,8 +86,10 @@ test_that("community_stability loads and returns correct result", {
   expect_equivalent(myresults7, myresults8)
 
   #test that gives error when abundance column is a character or factor
-  expect_error(community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randcharacter"))
-  expect_error(community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randfactor"))
+  expect_error(community_stability(knz_001d2, replicate.var = "sub",
+                                   time.var = "yr", abundance.var = "randcharacter"))
+  expect_error(community_stability(knz_001d2, replicate.var = "sub",
+                                   time.var = "yr", abundance.var = "randfactor"))
 
 
   # test that works regardless of order of the input replicates
