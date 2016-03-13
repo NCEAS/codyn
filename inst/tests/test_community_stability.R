@@ -43,14 +43,14 @@ test_that("community_stability loads and returns correct result", {
   expect_error(codyn:::stability_onerep(dat2agg, "sub"),
                "is not a numeric or integer")
 
-  #test that gives a warning if running on factor instead of numeric
+  #test that errors if subplot does not exist
   expect_error(stability_onerep(dat2agg, "subplot"),
                "dat2agg does not have name subplot")
 
 
   #test the community_stability function
   #test that works on a single replicate
-  myresults3<-community_stability(dat1, replicate.var=NA, time.var="year", abundance.var="abundance")
+  myresults3 <- community_stability(dat1, replicate.var=NA, time.var="year", abundance.var="abundance")
   expect_that(myresults3, equals(myresults2))
 
   #test that will still run if there are missing levels in a factor "replicate"; deleting levels that are NaN
