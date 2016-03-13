@@ -76,14 +76,14 @@ test_that("community_stability loads and returns correct result", {
                                     time.var = "year", abundance.var = "abundance")
 
 
-  expect_equal(myresults6[1,2], myresults7[1,2])
+  expect_equivalent(myresults4, myresults7[1,])
 
   #test that works with different column names
   myresults8 <- community_stability(knz_001d2,
                                     replicate.var = "sub",
                                     time.var = "yr", abundance.var = "abund")
 
-  expect_that(myresults7[1,2], equals(myresults8[1,2]))
+  expect_equivalent(myresults7, myresults8)
 
   #test that gives error when abundance column is a character or factor
   expect_error(community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="randcharacter"))
