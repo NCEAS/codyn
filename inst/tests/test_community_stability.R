@@ -62,15 +62,27 @@ test_that("community_stability loads and returns correct result", {
   expect_equal(myresults3, myresults4$stability)
 
   #test that works whether replicate is a character or factor
-  myresults6<-community_stability(dat3, replicate.var="subplot", time.var="year", abundance.var="abundance")
-  expect_that((myresults6[1,2]), equals(myresults3))
+  myresults6 <- community_stability(dat3,
+                                    replicate.var = "subplot",
+                                    time.var = "year",
+                                    abundance.var = "abundance")
+
+  expect_type(myresults4$subplot, "integer")
+  expect_type(myresults6$subplot, "character")
+  expect_equivalent(myresults6$stability, myresults4$stability)
 
   #test that works with multiple replicates
-  myresults7<-community_stability(knz_001d, replicate.var="subplot", time.var="year", abundance.var="abundance")
-  expect_that(myresults6[1,2], equals(myresults7[1,2]))
+  myresults7 <- community_stability(knz_001d, replicate.var = "subplot",
+                                    time.var = "year", abundance.var = "abundance")
+
+
+  expect_equal(myresults6[1,2], myresults7[1,2])
 
   #test that works with different column names
-  myresults8<-community_stability(knz_001d2, replicate.var="sub", time.var="yr", abundance.var="abund")
+  myresults8 <- community_stability(knz_001d2,
+                                    replicate.var = "sub",
+                                    time.var = "yr", abundance.var = "abund")
+
   expect_that(myresults7[1,2], equals(myresults8[1,2]))
 
   #test that gives error when abundance column is a character or factor
