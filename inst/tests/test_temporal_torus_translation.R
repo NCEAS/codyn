@@ -73,12 +73,13 @@ test_that("temporal_torus_translation loads and returns correct result", {
                              "abundance",
                              variance_ratio_matrixdata,
                              bootnumber = 1)
+
   expect_false(myresults$out == myresults2$out)
 
   #test that is not sensitive to different column names
-  myresults3 <- cyclic_shift(dat2, "yr",  "sp", "abund", variance_ratio_matrixdata, bootnumber=1)
+  myresults3 <- cyclic_shift(dat2, "yr",  "sp", "abund", variance_ratio_matrixdata, bootnumber = 1)
   expect_equal(length(myresults3), 1)
-  expect_true(is.numeric(myresults3))
+  expect_true(is.numeric(myresults3$out))
 
 
   #Test the confint.cyclic_shift function
