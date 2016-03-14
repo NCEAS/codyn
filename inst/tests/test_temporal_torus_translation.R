@@ -61,7 +61,7 @@ test_that("temporal_torus_translation loads and returns correct result", {
                             variance_ratio_matrixdata,
                             bootnumber = 1)
 
-  expect_s3_class(myresults, "cyclic_shift")
+  expect_is(myresults, "cyclic_shift")
 
   #test structure of this class
   expect_length(myresults, 1) ## will change soon
