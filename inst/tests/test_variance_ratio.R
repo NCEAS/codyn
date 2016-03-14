@@ -31,8 +31,11 @@ test_that("variance_ratio function returns correct result", {
     datmat<-transpose_community(dat1, "year",  "species", "abundance")
 
     #test the class returned with default settings
-    myresults<-variance_ratio(knz_001d, time.var="year", species.var="species",
-                             abundance.var="abundance",  bootnumber=1, replicate.var="subplot")
+    myresults <- variance_ratio(knz_001d, time.var = "year",
+                              species.var = "species",
+                              abundance.var = "abundance",
+                              bootnumber = 1,
+                              replicate.var = "subplot")
 
 
     expect_equal(class(myresults), "data.frame")
