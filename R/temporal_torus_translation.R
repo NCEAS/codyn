@@ -78,7 +78,8 @@ cyclic_shift <- function(df, time.var="year",
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @import stats
 #' @export
-confint.cyclic_shift <- function(df, time.var="year", species.var="species",  abundance.var="abundance", FUN, bootnumber,
+confint.cyclic_shift <- function(df, time.var="year", species.var="species",
+                                 abundance.var="abundance", FUN, bootnumber,
                                  li=0.025, ui=0.975, replicate.var=NA, average.replicates=T){
   if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
 
@@ -97,6 +98,9 @@ confint.cyclic_shift <- function(df, time.var="year", species.var="species",  ab
     df <- df[order(df[[replicate.var]]),]
     X <- split(df, df[replicate.var])
     lout <- lapply(X, cyclic_shift, time.var, species.var, abundance.var, FUN, bootnumber)
+
+    ## simple workaround, a model for how this function will need to work
+    lout <- lapply(lout, `[[`, i = "out")
 
     if(average.replicates  ==  TRUE){
       out <- do.call("rbind", lout)
