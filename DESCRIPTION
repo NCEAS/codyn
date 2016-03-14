@@ -26,7 +26,7 @@ Imports:
     stats,
     permute
 Suggests:
-    testthat,
+    testthat (>= 1.10.0),
     knitr,
     ggplot2,
     reshape2,
