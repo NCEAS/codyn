@@ -64,7 +64,7 @@ test_that("temporal_torus_translation loads and returns correct result", {
   expect_is(myresults, "cyclic_shift")
 
   #test structure of this class
-  expect_length(myresults, 1) ## will change soon
+  expect_equal(length(myresults), 1) ## will change soon
 
   expect_type(myresults$out, "double")
   #test that does not generate the same value every time
