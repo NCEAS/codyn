@@ -54,6 +54,11 @@ test_that("temporal_torus_translation loads and returns correct result", {
   dat.col.1 <-sort(as.matrix(datmat[,1]))
   expect_equal(rand.col.1, dat.col.1)
 
+  expect_error(cyclic_shift(dat1, time.var = "year", species.var = "species",
+                            abundance.var = "subplot",
+                            codyn:::variance_ratio_matrixdata,
+                            bootnumber = 1),
+               "not a numeric or integer vector")
 
   # Test the cyclic_shift function
   myresults <- cyclic_shift(dat1, "year", "species",

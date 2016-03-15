@@ -25,9 +25,8 @@ cyclic_shift <- function(df, time.var="year",
                          abundance.var="abundance",
                          FUN,
                          bootnumber){
-  if (!is.numeric(df[[abundance.var]])) {
-    stop("Abundance variable is not numeric")
-  }
+
+  assertthat::assert_that(is.numeric(df[[abundance.var]]))
 
   out <- replicate(bootnumber,
                    FUN(shuffle_community(
