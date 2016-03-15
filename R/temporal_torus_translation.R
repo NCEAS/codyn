@@ -30,10 +30,6 @@ cyclic_shift <- function(df, time.var="year",
 
   assertthat::assert_that(is.numeric(df[[abundance.var]]))
 
-  ## if you give a replicate, it must be a factor. This gives users responsibility for order.
-  if (!missing(replicate.var)) {
-    assertthat::assert_that(is.factor(df[[replicate.var]]))
-  }
 
   if (missing(replicate.var)) {
 
@@ -43,7 +39,8 @@ cyclic_shift <- function(df, time.var="year",
                               bootnumber = bootnumber, method = method)
 
   } else {
-
+    ## if you give a replicate, it must be a factor. This gives users responsibility for order.
+    assertthat::assert_that(is.factor(df[[replicate.var]]))
 
     check_single(df, time.var, species.var, replicate.var)
 
