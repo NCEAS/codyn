@@ -39,13 +39,23 @@ cyclic_shift <- function(df, time.var="year",
     check_single_onerep(df, time.var = time.var, species.var = species.var)
 
     out <- replicate(bootnumber,
-                   FUN(
-                     shuffle_community(
-                       transpose_community(df,
-                                           time.var,
-                                           species.var,
-                                           abundance.var)
-                     )))
+                     FUN(
+                       shuffle_community(
+                         transpose_community(df,
+                                             time.var,
+                                             species.var,
+                                             abundance.var)
+                       )))
+
+  } else {
+
+
+    check_single(df, time.var, species.var, replicate.var)
+
+    df_to_split <- df[order(df[[replicate.var]]), ]
+    X <- split(df_to_split, df_to_split[replicate.var])
+    lout <- lapply(X, cyclic_shift, time.var, species.var, abundance.var, FUN, bootnumber)
+  }
 
   shift <- structure(list(out = out), class = "cyclic_shift")
 
@@ -88,14 +98,11 @@ cyclic_shift <- function(df, time.var="year",
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @import stats
 #' @export
-confint.cyclic_shift <- function(df, time.var="year", species.var="species",
-                                 abundance.var="abundance", FUN, bootnumber,
-                                 li=0.025, ui=0.975, replicate.var=NA, average.replicates=TRUE){
-  if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
+confint.cyclic_shift <- function(object, parm, level = 0.95){
 
+  assertthat::assert_that(inherits(object, "cyclic_shift"))
 
-
-  if(is.na(replicate.var)){
+  if (is.na(replicate.var)) {
 
     lowerCI <- quantile(out, li)
     upperCI <- quantile(out, ui)
@@ -104,12 +111,6 @@ confint.cyclic_shift <- function(df, time.var="year", species.var="species",
     row.names(output) <- NULL
 
   } else {
-
-
-    check_single(df, time.var, species.var, replicate.var)
-    df <- df[order(df[[replicate.var]]),]
-    X <- split(df, df[replicate.var])
-    lout <- lapply(X, cyclic_shift, time.var, species.var, abundance.var, FUN, bootnumber)
 
     ## simple workaround, a model for how this function will need to work
     lout <- lapply(lout, `[[`, i = "out")
