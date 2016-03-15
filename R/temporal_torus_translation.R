@@ -23,12 +23,17 @@
 cyclic_shift <- function(df, time.var="year",
                          species.var="species",
                          abundance.var="abundance",
-                         replicate.var=NA,
+                         replicate.var,
                          FUN,
                          bootnumber,
                          average.replicates=TRUE){
 
   assertthat::assert_that(is.numeric(df[[abundance.var]]))
+
+  ## if you give a replicate, it must be a factor. This gives users responsibility for order.
+  if (!missing(replicate.var)) {
+    assertthat::assert_that(is.factor(df[[replicate.var]]))
+  }
 
   if(is.na(replicate.var)){
  check_single_onerep(df, time.var, species.var)
@@ -89,7 +94,7 @@ confint.cyclic_shift <- function(df, time.var="year", species.var="species",
   if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
 
 
-   
+
   if(is.na(replicate.var)){
 
     lowerCI <- quantile(out, li)
@@ -99,7 +104,8 @@ confint.cyclic_shift <- function(df, time.var="year", species.var="species",
     row.names(output) <- NULL
 
   } else {
-    df[replicate.var] <- if(is.factor(df[[replicate.var]]) == TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
+
+
     check_single(df, time.var, species.var, replicate.var)
     df <- df[order(df[[replicate.var]]),]
     X <- split(df, df[replicate.var])
