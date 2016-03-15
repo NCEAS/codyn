@@ -37,11 +37,11 @@ test_that("temporal_torus_translation loads and returns correct result", {
   datmat<-transpose_community(dat1, "year", "species", "abundance")
 
   #Test the shuffle_community function
-  myresults<-shuffle_community(datmat)
+  myresults <- codyn:::shuffle_community(datmat)
   expect_true(is.data.frame(myresults))
 
   #test that does not generate the same matrix each time
-  myresults2<-shuffle_community(datmat)
+  myresults2<-codyn:::shuffle_community(datmat)
   myresults3<-sort(as.vector(myresults==myresults2))
 
   expect_true(any(as.vector(myresults==myresults2) == FALSE))
@@ -58,7 +58,7 @@ test_that("temporal_torus_translation loads and returns correct result", {
   # Test the cyclic_shift function
   myresults <- cyclic_shift(dat1, "year", "species",
                             "abundance",
-                            variance_ratio_matrixdata,
+                            codyn:::variance_ratio_matrixdata,
                             bootnumber = 1)
 
   expect_is(myresults, "cyclic_shift")
@@ -66,20 +66,20 @@ test_that("temporal_torus_translation loads and returns correct result", {
   #test structure of this class
   expect_equal(length(myresults), 1) ## will change soon
 
-  expect_type(myresults$out, "double")
+  expect_is(myresults$out, "numeric")
   #test that does not generate the same value every time
   myresults2 <- cyclic_shift(dat1, "year",
                              "species",
                              "abundance",
-                             variance_ratio_matrixdata,
+                             codyn:::variance_ratio_matrixdata,
                              bootnumber = 1)
 
   expect_false(myresults$out == myresults2$out)
 
   #test that is not sensitive to different column names
-  myresults3 <- cyclic_shift(dat2, "yr",  "sp", "abund", variance_ratio_matrixdata, bootnumber = 1)
+  myresults3 <- cyclic_shift(dat2, "yr",  "sp", "abund", codyn:::variance_ratio_matrixdata, bootnumber = 1)
   expect_equal(length(myresults3), 1)
-  expect_true(is.numeric(myresults3$out))
+  expect_is(myresults3$out, "numeric")
 
 
   #Test the confint.cyclic_shift function
