@@ -100,11 +100,14 @@ cyclic_shift <- function(df, time.var="year",
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @import stats
 #' @export
-confint.cyclic_shift <- function(object, parm, level = 0.95){
+confint.cyclic_shift <- function(object, parm, level = 0.95, ...){
 
-  assertthat::assert_that(inherits(object, "cyclic_shift"))
+  li <- (1 - level)/2
+  ui <- 1 - li
 
-  if (is.na(replicate.var)) {
+  out <- object$out
+
+#   if (is.na(replicate.var)) {
 
     lowerCI <- quantile(out, li)
     upperCI <- quantile(out, ui)
@@ -112,28 +115,28 @@ confint.cyclic_shift <- function(object, parm, level = 0.95){
     output <- cbind(lowerCI, upperCI, nullmean)
     row.names(output) <- NULL
 
-  } else {
-
-    ## simple workaround, a model for how this function will need to work
-    lout <- lapply(lout, `[[`, i = "out")
-
-    if (average.replicates  ==  TRUE) {
-      out <- do.call("rbind", lout)
-      out <- colMeans(out)
-      lowerCI <- quantile(out, li)
-      upperCI <- quantile(out, ui)
-      nullmean <- mean(out)
-      output <- as.data.frame(cbind(lowerCI, upperCI, nullmean))
-      row.names(output) <- NULL
-    } else {
-      lowerCI <- do.call("rbind", lapply(lout, quantile, li))
-      upperCI <- do.call("rbind", lapply(lout, quantile, ui))
-      nullmean <- do.call("rbind", lapply(lout, mean))
-      reps <- unique(df[replicate.var])
-      output <- cbind(reps, lowerCI, upperCI, nullmean)
-      names(output)[2:3] <- c("lowerCI", "upperCI")
-    }
-  }
+  # } else {
+  #
+  #   ## simple workaround, a model for how this function will need to work
+  #   lout <- lapply(lout, `[[`, i = "out")
+  #
+  #   if (average.replicates  ==  TRUE) {
+  #     out <- do.call("rbind", lout)
+  #     out <- colMeans(out)
+  #     lowerCI <- quantile(out, li)
+  #     upperCI <- quantile(out, ui)
+  #     nullmean <- mean(out)
+  #     output <- as.data.frame(cbind(lowerCI, upperCI, nullmean))
+  #     row.names(output) <- NULL
+  #   } else {
+  #     lowerCI <- do.call("rbind", lapply(lout, quantile, li))
+  #     upperCI <- do.call("rbind", lapply(lout, quantile, ui))
+  #     nullmean <- do.call("rbind", lapply(lout, mean))
+  #     reps <- unique(df[replicate.var])
+  #     output <- cbind(reps, lowerCI, upperCI, nullmean)
+  #     names(output)[2:3] <- c("lowerCI", "upperCI")
+  #   }
+  # }
   return(output)
 }
 
