@@ -37,7 +37,10 @@ cyclic_shift <- function(df, time.var="year",
 
   if (missing(replicate.var)) {
 
-
+    out <- null_single_onerep(df = df, time.var = time.var,
+                              species.var = species.var,
+                              abundance.var = abundance.var,
+                              bootnumber = bootnumber, method = method)
 
   } else {
 
@@ -46,7 +49,7 @@ cyclic_shift <- function(df, time.var="year",
 
     df_to_split <- df[order(df[[replicate.var]]), ]
     X <- split(df_to_split, df_to_split[replicate.var])
-    out <- lapply(X, cyclic_shift,
+    out <- lapply(X, null_single_onerep,
                   time.var = time.var,
                   species.var = species.var,
                   abundance.var = abundance.var,
