@@ -23,18 +23,24 @@
 cyclic_shift <- function(df, time.var="year",
                          species.var="species",
                          abundance.var="abundance",
+                         replicate.var=NA,
                          FUN,
-                         bootnumber){
+                         bootnumber,
+                         average.replicates=TRUE){
 
   assertthat::assert_that(is.numeric(df[[abundance.var]]))
 
+  if(is.na(replicate.var)){
+ check_single_onerep(df, time.var, species.var)
+
   out <- replicate(bootnumber,
-                   FUN(shuffle_community(
-                     transpose_community(df,
-                                         time.var,
-                                         species.var,
-                                         abundance.var)
-                   )))
+                   FUN(
+                     shuffle_community(
+                       transpose_community(df,
+                                           time.var,
+                                           species.var,
+                                           abundance.var)
+                     )))
 
   shift <- structure(list(out = out), class = "cyclic_shift")
 
@@ -82,9 +88,10 @@ confint.cyclic_shift <- function(df, time.var="year", species.var="species",
                                  li=0.025, ui=0.975, replicate.var=NA, average.replicates=TRUE){
   if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
 
+
+   
   if(is.na(replicate.var)){
-    check_single_onerep(df, time.var, species.var)
-    out <- replicate(bootnumber, FUN(shuffle_community(transpose_community(df, time.var,  species.var, abundance.var))))
+
     lowerCI <- quantile(out, li)
     upperCI <- quantile(out, ui)
     nullmean <- mean(out)
