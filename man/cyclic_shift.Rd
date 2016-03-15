@@ -5,7 +5,8 @@
 \title{Cyclic shift}
 \usage{
 cyclic_shift(df, time.var = "year", species.var = "species",
-  abundance.var = "abundance", FUN, bootnumber)
+  abundance.var = "abundance", replicate.var, method, bootnumber,
+  average.replicates = TRUE)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}

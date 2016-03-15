@@ -17,7 +17,7 @@ community_stability(df, time.var = "year", abundance.var = "abundance",
 \item{replicate.var}{The name of the optional replicate column}
 }
 \value{
-The community_stability function returns a numeric stability value unless a replication column is specified in the input data frame. 
+The community_stability function returns a numeric stability value unless a replication column is specified in the input data frame.
 If replication is specified, the function returns a data frame with the following attributes:
 \itemize{
  \item{stability: }{A numeric column with the stability values.}

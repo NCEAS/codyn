@@ -27,7 +27,7 @@ The mean_rank_shift function returns a data frame with the following attributes:
 }
 }
 \description{
-A measure of the relative change in species rank abundances, which indicates shifts in relative abundances over time (Collins et al. 2008).  
+A measure of the relative change in species rank abundances, which indicates shifts in relative abundances over time (Collins et al. 2008).
 Mean rank shifts are calculated as the average difference in species' ranks between consecutive time periods, among species that are present across the entire time series.
 }
 \details{
@@ -37,13 +37,13 @@ If multiple replicates are included in the data frame, that column should be spe
 \examples{
  # Calculate mean rank shifts within replicates
  data(knz_001d)
- 
- myoutput <- mean_rank_shift(knz_001d,  time.var = "year", species.var = "species", 
+
+ myoutput <- mean_rank_shift(knz_001d,  time.var = "year", species.var = "species",
  abundance.var = "abundance", replicate.var = "subplot")
- 
+
  # Calculate mean rank shifts for a data frame with no replication
- 
- myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), time.var = "year", 
+
+ myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), time.var = "year",
  species.var = "species",abundance.var = "abundance")
 }
 \references{
