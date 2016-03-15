@@ -86,7 +86,7 @@ confint.cyclic_shift <- function(df, time.var="year", species.var="species",
     check_single_onerep(df, time.var, species.var)
     out <- replicate(bootnumber, FUN(shuffle_community(transpose_community(df, time.var,  species.var, abundance.var))))
     lowerCI <- quantile(out, li)
-    upperCI <-quantile(out, ui)
+    upperCI <- quantile(out, ui)
     nullmean <- mean(out)
     output <- cbind(lowerCI, upperCI, nullmean)
     row.names(output) <- NULL
@@ -101,23 +101,21 @@ confint.cyclic_shift <- function(df, time.var="year", species.var="species",
     ## simple workaround, a model for how this function will need to work
     lout <- lapply(lout, `[[`, i = "out")
 
-    if(average.replicates  ==  TRUE){
+    if (average.replicates  ==  TRUE) {
       out <- do.call("rbind", lout)
       out <- colMeans(out)
       lowerCI <- quantile(out, li)
-      upperCI <-quantile(out, ui)
+      upperCI <- quantile(out, ui)
       nullmean <- mean(out)
       output <- as.data.frame(cbind(lowerCI, upperCI, nullmean))
       row.names(output) <- NULL
-    }
-
-    else {
+    } else {
       lowerCI <- do.call("rbind", lapply(lout, quantile, li))
       upperCI <- do.call("rbind", lapply(lout, quantile, ui))
       nullmean <- do.call("rbind", lapply(lout, mean))
       reps <- unique(df[replicate.var])
       output <- cbind(reps, lowerCI, upperCI, nullmean)
-      names(output)[2:3]=c("lowerCI", "upperCI")
+      names(output)[2:3] <- c("lowerCI", "upperCI")
     }
   }
   return(output)

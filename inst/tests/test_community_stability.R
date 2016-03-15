@@ -29,8 +29,8 @@ test_that("community_stability loads and returns correct result", {
   #test the stability_onerep function
   dat1agg <- aggregate(abundance~year + subplot, data = dat1, sum)
   myresults <- codyn:::stability_onerep(dat1agg,  "abundance")
-  expect_type(myresults, "double")
-  expect_length(myresults, 1)
+  expect_is(myresults, "numeric")
+  expect_equal(length(myresults), 1)
   expect_equal(myresults, expected = 4.1233, tolerance = 0.00001)
 
 
@@ -67,8 +67,8 @@ test_that("community_stability loads and returns correct result", {
                                     time.var = "year",
                                     abundance.var = "abundance")
 
-  expect_type(myresults4$subplot, "integer")
-  expect_type(myresults6$subplot, "character")
+  expect_is(myresults4$subplot, "factor")
+  expect_is(myresults6$subplot, "character")
   expect_equivalent(myresults6$stability, myresults4$stability)
 
   #test that works with multiple replicates
@@ -94,12 +94,12 @@ test_that("community_stability loads and returns correct result", {
 
   # test that works regardless of order of the input replicates
   knz_001dreorder <- knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
-  myresults <- community_stability(knz_001d, time.var  =  "year", abundance.var = "abundance",
+  myresults_original <- community_stability(knz_001d, time.var  =  "year", abundance.var = "abundance",
                              replicate.var = "subplot")
 
   myresults_reorder <- community_stability(knz_001dreorder, time.var = "year",
                                          abundance.var = "abundance",
                                          replicate.var = "subplot")
-  expect_equal(myresults, myresults_reorder)
+  expect_equal(myresults_original, myresults_reorder)
 
   })
