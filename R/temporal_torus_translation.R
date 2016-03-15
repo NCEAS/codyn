@@ -79,7 +79,7 @@ cyclic_shift <- function(df, time.var="year",
 #' @export
 confint.cyclic_shift <- function(df, time.var="year", species.var="species",
                                  abundance.var="abundance", FUN, bootnumber,
-                                 li=0.025, ui=0.975, replicate.var=NA, average.replicates=T){
+                                 li=0.025, ui=0.975, replicate.var=NA, average.replicates=TRUE){
   if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
 
   if(is.na(replicate.var)){
