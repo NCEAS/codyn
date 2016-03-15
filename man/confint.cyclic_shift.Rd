@@ -4,7 +4,7 @@
 \alias{confint.cyclic_shift}
 \title{Confidence Intervals Using a Cyclic Shift Significance Testing}
 \usage{
-\method{confint}{cyclic_shift}(object, parm, level = 0.95)
+\method{confint}{cyclic_shift}(object, parm, level = 0.95, ...)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
