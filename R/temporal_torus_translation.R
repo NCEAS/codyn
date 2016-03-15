@@ -24,7 +24,7 @@ cyclic_shift <- function(df, time.var="year",
                          species.var="species",
                          abundance.var="abundance",
                          replicate.var,
-                         FUN,
+                         method,
                          bootnumber,
                          average.replicates=TRUE){
 
@@ -36,16 +36,8 @@ cyclic_shift <- function(df, time.var="year",
   }
 
   if (missing(replicate.var)) {
-    check_single_onerep(df, time.var = time.var, species.var = species.var)
 
-    out <- replicate(bootnumber,
-                     FUN(
-                       shuffle_community(
-                         transpose_community(df,
-                                             time.var,
-                                             species.var,
-                                             abundance.var)
-                       )))
+
 
   } else {
 
@@ -54,9 +46,16 @@ cyclic_shift <- function(df, time.var="year",
 
     df_to_split <- df[order(df[[replicate.var]]), ]
     X <- split(df_to_split, df_to_split[replicate.var])
-    lout <- lapply(X, cyclic_shift, time.var, species.var, abundance.var, FUN, bootnumber)
+    out <- lapply(X, cyclic_shift,
+                  time.var = time.var,
+                  species.var = species.var,
+                  abundance.var = abundance.var,
+                  method = method, bootnumber = bootnumber)
+
   }
 
+
+  # obs <- FUN()
   shift <- structure(list(out = out), class = "cyclic_shift")
 
   return(shift)
@@ -163,4 +162,21 @@ shuffle_community <- function(comdat){
   names(rand.comdat) <- names(comdat)
   row.names(rand.comdat) <- row.names(comdat)
   return(rand.comdat)
+}
+
+
+null_single_onerep <- function(df, time.var, species.var,
+                               abundance.var, bootnumber, method){
+  check_single_onerep(df, time.var = time.var, species.var = species.var)
+
+  comm_data <- transpose_community(df,
+                                   time.var,
+                                   species.var,
+                                   abundance.var)
+
+  replicate(bootnumber,
+            method(
+              shuffle_community(comm_data)
+            ))
+  ### to here
 }

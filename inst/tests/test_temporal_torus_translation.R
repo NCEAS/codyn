@@ -53,7 +53,9 @@ test_that("temporal_torus_translation loads and returns correct result", {
   rand.col.1 <-sort(as.matrix(myresults[,1]))
   dat.col.1 <-sort(as.matrix(datmat[,1]))
   expect_equal(rand.col.1, dat.col.1)
+})
 
+test_that("cyclic_shift returns correct result", {
   expect_error(cyclic_shift(dat1, time.var = "year", species.var = "species",
                             abundance.var = "subplot",
                             codyn:::variance_ratio_matrixdata,
@@ -61,9 +63,9 @@ test_that("temporal_torus_translation loads and returns correct result", {
                "not a numeric or integer vector")
 
   # Test the cyclic_shift function
-  myresults <- cyclic_shift(dat1, "year", "species",
-                            "abundance",
-                            codyn:::variance_ratio_matrixdata,
+  myresults <- cyclic_shift(dat1, time.var = "year", species.var = "species",
+                            abundance.var = "abundance",
+                            FUN = codyn:::variance_ratio_matrixdata,
                             bootnumber = 1)
 
   expect_is(myresults, "cyclic_shift")
@@ -73,19 +75,31 @@ test_that("temporal_torus_translation loads and returns correct result", {
 
   expect_is(myresults$out, "numeric")
   #test that does not generate the same value every time
-  myresults2 <- cyclic_shift(dat1, "year",
-                             "species",
-                             "abundance",
-                             codyn:::variance_ratio_matrixdata,
+  myresults2 <- cyclic_shift(dat1, time.var = "year",
+                             species.var = "species",
+                             abundance.var = "abundance",
+                             FUN = codyn:::variance_ratio_matrixdata,
                              bootnumber = 1)
 
   expect_false(myresults$out == myresults2$out)
 
   #test that is not sensitive to different column names
-  myresults3 <- cyclic_shift(dat2, "yr",  "sp", "abund", codyn:::variance_ratio_matrixdata, bootnumber = 1)
+  myresults3 <- cyclic_shift(dat2, time.var = "yr",
+                             species.var = "sp", abundance.var = "abund",
+                             FUN = codyn:::variance_ratio_matrixdata, bootnumber = 1)
   expect_equal(length(myresults3), 1)
   expect_is(myresults3$out, "numeric")
+})
 
+test_that("cyclic_shift works with replicates", {
+
+  cyclic_shift(knz_001d2,
+               replicate.var="sub", species.var="sp", time.var="yr",
+               abundance.var="abund",
+               method=variance_ratio_matrixdata,
+               bootnumber=2)
+
+})
 
   #Test the confint.cyclic_shift function
   # myresults <- confint(dat1, replicate.var = NA,
@@ -96,9 +110,9 @@ test_that("temporal_torus_translation loads and returns correct result", {
   #                      li = 0.025, ui = 0.975, average.replicates = FALSE)
 
   #Test that returns an error when abundance is a character or factor column
-  expect_error(confint.cyclic_shift(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randcharacter", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
-
-    expect_error(confint.cyclic_shift(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randfactor", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
+  # expect_error(confint.cyclic_shift(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randcharacter", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
+  #
+  #   expect_error(confint.cyclic_shift(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randfactor", FUN=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
 
 
 
