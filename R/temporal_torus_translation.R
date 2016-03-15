@@ -35,10 +35,10 @@ cyclic_shift <- function(df, time.var="year",
     assertthat::assert_that(is.factor(df[[replicate.var]]))
   }
 
-  if(is.na(replicate.var)){
- check_single_onerep(df, time.var, species.var)
+  if (missing(replicate.var)) {
+    check_single_onerep(df, time.var = time.var, species.var = species.var)
 
-  out <- replicate(bootnumber,
+    out <- replicate(bootnumber,
                    FUN(
                      shuffle_community(
                        transpose_community(df,
