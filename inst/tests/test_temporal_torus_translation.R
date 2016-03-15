@@ -100,11 +100,24 @@ test_that("cyclic_shift returns correct result", {
 
 test_that("cyclic_shift works with replicates", {
 
-  cyclic_shift(knz_001d2,
-               replicate.var="sub", species.var="sp", time.var="yr",
-               abundance.var="abund",
-               method=variance_ratio_matrixdata,
-               bootnumber=2)
+  # cyclic_shift(knz_001d2,
+  #              replicate.var="sub", species.var="sp", time.var="yr",
+  #              abundance.var="abund",
+  #              method=variance_ratio_matrixdata,
+  #              bootnumber=2)
+
+})
+
+test_that("confint.cyclic_shift works as expected",{
+
+  # Test the cyclic_shift function
+  myresults_conf <- cyclic_shift(dat1, time.var = "year", species.var = "species",
+                            abundance.var = "abundance",
+                            method = codyn:::variance_ratio_matrixdata,
+                            bootnumber = 10)
+
+
+  confint(myresults_conf)
 
 })
 
