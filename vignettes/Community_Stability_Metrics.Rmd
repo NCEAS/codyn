@@ -81,7 +81,7 @@ The variance ratio remains widely used but has been subject to a number of criti
 `variance_ratio` uses the temporal torus translation to conduct null modeling for significance tests. In this method a starting time point is randomly selected for each species' time series. This generates a null community matrix in which species abundances vary independently but within-species autocorrelation is maintained (for each species, the time series is disrupted only once). 
 
 If a replicate column is specified, the default `variance_ratio` setting calculates a null variance ratio for each replicate in the dataset, averages these values, and repeats as many times as specified by `bootnumber`. This vector of averaged, null variance ratios is then sampled for lower and upper confidence intervals, which are returned along with the average observed variance ratio. 
-```{r results='asis'}
+```{r results='asis', eval=FALSE}
 KNZ_variance_ratio <- variance_ratio(df = knz_001d, 
                                    species.var = "species", 
                                    time.var = "year",
@@ -94,7 +94,7 @@ kable(KNZ_variance_ratio)
 
 
 Alternatively, if a replicate column is specified and  `average.replicates` is set to `FALSE`, the function will return a vector of null variance ratios for each replicate in the dataset, and return the subsequent confidence intervals and observed variance ratios for each replicate.
-```{r results='asis'}
+```{r results='asis', eval=FALSE}
 KNZ_variance_ratio_avgrep <- variance_ratio(knz_001d, 
                                           time.var = "year",
                                           species.var = "species",
@@ -108,7 +108,7 @@ kable(head(KNZ_variance_ratio_avgrep))
 
 
 If `replicate.var` is left as `NA` the function assumes that there is a single observation for each species within a given time period.
-```{r results='asis'}
+```{r results='asis', eval=FALSE}
 KNZ_A1_variance_ratio <- variance_ratio(df = subset(knz_001d, subplot=="A_1"), 
                                       time.var = "year", 
                                       species.var = "species",  
