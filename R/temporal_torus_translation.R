@@ -97,12 +97,12 @@ cyclic_shift <- function(df, time.var="year",
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @import stats
 #' @export
-confint.cyclic_shift <- function(object, parm, level = 0.95, ...){
+confint.cyclic_shift <- function(object, parm = "out", level = 0.95, ...){
 
   li <- (1 - level)/2
   ui <- 1 - li
 
-  out <- object$out
+  out <- object[[parm]]
 
 #   if (is.na(replicate.var)) {
 
