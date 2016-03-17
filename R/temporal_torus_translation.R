@@ -40,7 +40,7 @@ cyclic_shift <- function(df, time.var="year",
                                    species.var,
                                    abundance.var)
 
-  replicate(bootnumber,
+  out <- replicate(bootnumber,
             method(
               shuffle_community(comm_data)
             ))
