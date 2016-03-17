@@ -67,8 +67,8 @@
 #'  res_withinreplicates <- variance_ratio(knz_001d, time.var = "year", species.var = "species",
 #'  abundance.var = "abundance", bootnumber = 1, replicate = "subplot", average.replicates = FALSE)
 variance_ratio <- function(df, time.var, species.var, abundance.var,
-                           bootnumber, replicate.var=NA,
-                           li=0.025, ui=0.975,  average.replicates=TRUE) {
+                           bootnumber, replicate.var = NA,
+                           average.replicates = TRUE, ...) {
 
   # check to make sure abundance is numeric data
   check_numeric(df, time.var, abundance.var)
