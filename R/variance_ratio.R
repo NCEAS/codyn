@@ -21,7 +21,7 @@
 #' @param bootnumber The number of null model iterations used to calculated confidence intervals
 #' @param li The lower confidence interval, defaults to lowest 2.5\% CI
 #' @param ui The upper confidence interval, defaults to upper 97.5\% CI
-#' @param replicate.var The name of the optional replicate column
+#' @param replicate.var The name of the (optional) replicate column. Must be a factor.
 #' @param average.replicates If true returns the variance ratio and CIs averaged
 #' across replicates; if false returns the variance ratio and CI for each replicate
 #' @return The variance_ratio function returns a data frame with the following attributes:
@@ -83,11 +83,9 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
 
     # if multiple replicates, check all replicates have values
     check_single(df, time.var, species.var, replicate.var)
-    df[replicate.var] <- if(is.factor(df[[replicate.var]]) == TRUE) {
-      factor(df[[replicate.var]])
-    } else {
-      df[replicate.var]
-    }
+    ## if you give a replicate, it must be a factor. This gives users responsibility for order.
+    assertthat::assert_that(is.factor(df[[replicate.var]]))
+
 
     # calculate average variance ratio across replicates
     if(average.replicates == TRUE) {
