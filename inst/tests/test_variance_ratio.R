@@ -38,21 +38,35 @@ test_that("variance_ratio function returns correct result", {
                               replicate.var = "subplot")
 
 
-    expect_equal(class(myresults), "data.frame")
+    expect_is(myresults, "data.frame")
     expect_equal(nrow(myresults), 1)
     expect_equal(myresults$VR, 1.01443, tolerance = 0.00001)
 
 
     # test that works regardless of order of the input replicates
-    knz_001dreorder <- knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
-    myresults_reorder <- variance_ratio(knz_001dreorder, time.var="year", species.var="species",
-                                      abundance.var="abundance",  bootnumber=1, replicate="subplot")
+    knz_001dreorder <- knz_001d[order(knz_001d$abundance,
+                                      knz_001d$year,
+                                      knz_001d$species),]
+
+    myresults_reorder <- variance_ratio(knz_001dreorder,
+                                        time.var = "year",
+                                        species.var = "species",
+                                      abundance.var = "abundance",
+                                      bootnumber = 1,
+                                      replicate = "subplot")
+
+
     expect_equal(myresults[,4], myresults_reorder[,4])
 
     ##test that works regardless of order of the input replicates if average.replicates=F
     #test the class returned with default settings
-    myresultsnoavg<-variance_ratio(knz_001d, time.var="year", species.var="species",
-                              abundance.var="abundance",  bootnumber=1, replicate="subplot", average.replicates = F)
+    myresultsnoavg <- variance_ratio(knz_001d,
+                                     time.var = "year",
+                                     species.var = "species",
+                                     abundance.var = "abundance",
+                                     bootnumber = 1, replicate = "subplot",
+                                     average.replicates = FALSE)
+
     expect_equal(class(myresultsnoavg), "data.frame")
     expect_equal(nrow(myresultsnoavg), 20)
     expect_equal(myresultsnoavg[1,5], 0.9694810, tolerance=0.00001)
