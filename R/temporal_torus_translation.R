@@ -28,34 +28,26 @@ cyclic_shift <- function(df, time.var="year",
                          bootnumber,
                          average.replicates=TRUE){
 
+  ## match arg to check method name
+  ## switch to go from character to function
+
   assertthat::assert_that(is.numeric(df[[abundance.var]]))
 
+  check_single_onerep(df, time.var = time.var, species.var = species.var)
 
-  if (missing(replicate.var)) {
+  comm_data <- transpose_community(df,
+                                   time.var,
+                                   species.var,
+                                   abundance.var)
 
-    out <- null_single_onerep(df = df, time.var = time.var,
-                              species.var = species.var,
-                              abundance.var = abundance.var,
-                              bootnumber = bootnumber, method = method)
-
-  } else {
-    ## if you give a replicate, it must be a factor. This gives users responsibility for order.
-    assertthat::assert_that(is.factor(df[[replicate.var]]))
-
-    check_single(df, time.var, species.var, replicate.var)
-
-    df_to_split <- df[order(df[[replicate.var]]), ]
-    X <- split(df_to_split, df_to_split[replicate.var])
-    out <- lapply(X, null_single_onerep,
-                  time.var = time.var,
-                  species.var = species.var,
-                  abundance.var = abundance.var,
-                  method = method, bootnumber = bootnumber)
-
-  }
+  replicate(bootnumber,
+            method(
+              shuffle_community(comm_data)
+            ))
 
 
-  # obs <- FUN()
+
+  # add the method part in here
   shift <- structure(list(out = out), class = "cyclic_shift")
 
   return(shift)
@@ -165,21 +157,4 @@ shuffle_community <- function(comdat){
   names(rand.comdat) <- names(comdat)
   row.names(rand.comdat) <- row.names(comdat)
   return(rand.comdat)
-}
-
-
-null_single_onerep <- function(df, time.var, species.var,
-                               abundance.var, bootnumber, method){
-  check_single_onerep(df, time.var = time.var, species.var = species.var)
-
-  comm_data <- transpose_community(df,
-                                   time.var,
-                                   species.var,
-                                   abundance.var)
-
-  replicate(bootnumber,
-            method(
-              shuffle_community(comm_data)
-            ))
-  ### to here
 }
