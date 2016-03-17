@@ -67,16 +67,18 @@
 #'  res_withinreplicates <- variance_ratio(knz_001d, time.var = "year", species.var = "species",
 #'  abundance.var = "abundance", bootnumber = 1, replicate = "subplot", average.replicates = FALSE)
 variance_ratio <- function(df, time.var, species.var, abundance.var,
-                           bootnumber, replicate.var = NA,
+                           bootnumber, replicate.var,
                            average.replicates = TRUE, ...) {
 
   # check to make sure abundance is numeric data
   check_numeric(df, time.var, abundance.var)
 
   # if no replicates, calculate single variance ratio
-  if(is.na(replicate.var)) {
+  if  (missing(replicate.var)) {
+
     check_single_onerep(df, time.var, species.var)
     VR <- variance_ratio_longformdata(df, time.var, species.var, abundance.var)
+
   } else {
 
     # if multiple replicates, check all replicates have values
