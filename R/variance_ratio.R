@@ -68,7 +68,7 @@
 #'  abundance.var = "abundance", bootnumber = 1, replicate = "subplot", average.replicates = FALSE)
 variance_ratio <- function(df, time.var, species.var, abundance.var,
                            bootnumber, replicate.var,
-                           average.replicates = TRUE, ...) {
+                           average.replicates = TRUE, level = 0.95, ...) {
 
   # check to make sure abundance is numeric data
   check_numeric(df, time.var, abundance.var)
@@ -97,25 +97,67 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
       X <- split(df, df[replicate.var])
 
       VR <- mean(unlist(lapply(X, FUN = variance_ratio_longformdata, time.var, species.var, abundance.var)))
+
+      ##
+      null_list <- lapply(X, FUN = cyclic_shift,  time.var = time.var,
+                          species.var = species.var,
+                          abundance.var = abundance.var,
+                          method = variance_ratio_matrixdata,
+                          bootnumber = bootnumber)
+
+      ## confidence intervals
+      null_output <- lapply(null_list, `[[`, i = "out")
+
+      null_means <- vector(mode = "numeric", length = bootnumber)
+
+      for (B in 1:bootnumber) {
+        null_means[B] <- mean(vapply(null_output, `[[`, 1, i = B))
+      }
+
+      li <- (1 - level)/2
+      ui <- 1 - li
+      lowerCI <- quantile(null_means, li)
+      upperCI <- quantile(null_means, ui)
+      nullmean <- mean(null_means)
+      nullout <- data_frame(lowerCI = lowerCI,
+                            upperCI = upperCI,
+                            nullmean =  nullmean)
+
+      # bind actual value and CI
+      output <- cbind(nullout, VR)
+
     } else {
 
       # calculate the variance ratio for replicate
       check_multispp(df, species.var, replicate.var)
       df <- df[order(df[[replicate.var]]),]
       X <- split(df, df[replicate.var])
-      VR <- do.call("rbind", lapply(X, FUN = variance_ratio_longformdata, time.var, species.var, abundance.var))
+
+      ## also do separate null models (ie on split list)
+      null_list <- lapply(X, FUN = cyclic_shift,  time.var = time.var,
+                          species.var = species.var,
+                          abundance.var = abundance.var,
+                          method = variance_ratio_matrixdata,
+                          bootnumber = bootnumber)
+      ## calculate confidence intervals for each:
+      null_intervals <- lapply(null_list, confint)
+
+      ## combine as data.frames and preserve replicate var
+      nullout <- purrr::map_df(null_intervals, as.data.frame, .id = replicate.var)
+
+      VR_list <- lapply(X, FUN = variance_ratio_longformdata,
+                        time.var, species.var, abundance.var)
+
+      VRout <- purrr::map_df(VR_list, ~data.frame(VR = .), .id = replicate.var)
+
+      output <- merge(nullout, VRout, by = replicate.var)
+
     }
   }
 
-  # calculate null model CI
-  nullout <- confint.cyclic_shift(df, time.var, species.var,
-                                  abundance.var, variance_ratio_matrixdata,
-                                  bootnumber,  li, ui,
-                                  replicate.var, average.replicates)
-  # bind actual value and CI
-  output <- (cbind(nullout, VR))
+  ## result
   row.names(output) <- NULL
-  return(as.data.frame(output))
+  return(output)
 }
 
 ############################################################################
@@ -133,7 +175,7 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
 #' @import stats
 variance_ratio_matrixdata <- function(comdat){
     check_sppvar(comdat)
-    all.cov <- cov(comdat, use="pairwise.complete.obs")
+    all.cov <- cov(comdat, use = "pairwise.complete.obs")
     col.var <- apply(comdat, 2, var)
     com.var <- sum(all.cov)
     pop.var <- sum(col.var)
