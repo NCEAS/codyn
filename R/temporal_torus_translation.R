@@ -23,10 +23,8 @@
 cyclic_shift <- function(df, time.var="year",
                          species.var="species",
                          abundance.var="abundance",
-                         replicate.var,
                          method,
-                         bootnumber,
-                         average.replicates=TRUE){
+                         bootnumber){
 
   ## match arg to check method name
   ## switch to go from character to function
