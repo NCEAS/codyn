@@ -88,10 +88,14 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
 
 
     # calculate average variance ratio across replicates
-    if(average.replicates == TRUE) {
+    if (average.replicates == TRUE) {
+      ## check the data
       check_multispp(df, species.var, replicate.var)
+
+      # split the dataset into replicates, according to replicate.var
       df <- df[order(df[[replicate.var]]),]
       X <- split(df, df[replicate.var])
+
       VR <- mean(unlist(lapply(X, FUN = variance_ratio_longformdata, time.var, species.var, abundance.var)))
     } else {
 
