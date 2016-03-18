@@ -79,6 +79,19 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
     check_single_onerep(df, time.var, species.var)
     VR <- variance_ratio_longformdata(df, time.var, species.var, abundance.var)
 
+    ## null models
+
+    nullval <- cyclic_shift(df, time.var = time.var,
+                            species.var = species.var,
+                            abundance.var = abundance.var,
+                            method = variance_ratio_matrixdata,
+                            bootnumber = bootnumber)
+
+    nullout <- confint(nullval)
+
+    # bind actual value and CI
+    output <- cbind(nullout, VR)
+
   } else {
 
     # if multiple replicates, check all replicates have values
@@ -119,7 +132,7 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
       lowerCI <- quantile(null_means, li)
       upperCI <- quantile(null_means, ui)
       nullmean <- mean(null_means)
-      nullout <- data_frame(lowerCI = lowerCI,
+      nullout <- data.frame(lowerCI = lowerCI,
                             upperCI = upperCI,
                             nullmean =  nullmean)
 
