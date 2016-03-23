@@ -9,11 +9,11 @@
 Temporal diversity indices and community stability metrics for ecologists.
 }
 \details{
-The functions in \code{codyn} implement metrics that are explicitly temporal, and include the option to  calculate them over multiple replicates. 
-Functions fall into two categories: temporal diversity indices and community stability metrics. 
-The diversity indices in \code{codyn} are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. 
-Specifically, \code{codyn} includes functions to calculate species turnover, mean rank shifts and lags in community similarity between time points. 
-The community stability metrics in \code{codyn} calculate overall stability and patterns of species covariance and synchrony over time. 
+The functions in \code{codyn} implement metrics that are explicitly temporal, and include the option to  calculate them over multiple replicates.
+Functions fall into two categories: temporal diversity indices and community stability metrics.
+The diversity indices in \code{codyn} are temporal analogs to traditional diversity indices such as richness and rank-abundance curves.
+Specifically, \code{codyn} includes functions to calculate species turnover, mean rank shifts and lags in community similarity between time points.
+The community stability metrics in \code{codyn} calculate overall stability and patterns of species covariance and synchrony over time.
 Finally, \code{codyn} contains vignettes that describe methods and reproduce figures from published papers to help users contextualize and apply functions to their own data.
 Work on this package was supported by NSF-ABI grant #1262458
 }
@@ -27,15 +27,14 @@ Work on this package was supported by NSF-ABI grant #1262458
  \item{\code{\link[=community_stability]{community_stability}}}{: Calculates community stability over time}
  \item{\code{\link[=variance_ratio]{variance_ratio}}}{: Computes the ratio of the variance of aggregate species abundances in a community }
  \item{\code{\link[=synchrony]{synchrony}}}{: Calculates the degree synchrony in species abundances}
- \item{\code{\link[=temporal_torus_translation]{temporal_torus_translation}}}{: Calculates a null test statistic using a temporal modification of the torus translation}
- \item{\code{\link[=temporal_torus_translation_CI]{temporal_torus_translation_CI}}}{: Returns confidence intervals calculated from a temporal modification of the torus translation}
+ \item{\code{\link[=cyclic_shift]{temporal_torus_translation}}}{: Calculates a test statistic on a null ecological community created via cyclic shifts. \code{confint} provides mean and confidence intervals of this null distribution}
 }
 }
 \author{
 \itemize{
  \item{Lauren Hallett \email{lauren.m.hallett@gmail.com}}
  \item{Sydney K. Jones \email{syd@sevilleta.unm.edu}}
- \item{Andrew A. MacDonald \email{aammacdonald@gmail.com}}
+ \item{A. Andrew A. MacDonald \email{aammacdonald@gmail.com}}
  \item{Matthew B. Jones \email{jones@nceas.ucsb.edu}}
  \item{Dan F. B. Flynn \email{flynn@fas.harvard.edu}}
  \item{Peter Slaughter \email{slaughter@nceas.ucsb.edu}}
