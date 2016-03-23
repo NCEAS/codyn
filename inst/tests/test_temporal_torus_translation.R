@@ -101,11 +101,15 @@ test_that("cyclic_shift returns correct result", {
 
 test_that("cyclic_shift works with replicates", {
 
-  # cyclic_shift(knz_001d2,
-  #              replicate.var="sub", species.var="sp", time.var="yr",
-  #              abundance.var="abund",
-  #              method=variance_ratio_matrixdata,
-  #              bootnumber=2)
+  shift_with_rep <- cyclic_shift(knz_001d2,
+                                 replicate.var = "sub", species.var = "sp",
+                                 time.var = "yr",
+                                 abundance.var = "abund",
+                                 FUN = variance_ratio_matrixdata,
+                                 bootnumber = 10)
+
+  ## supposed to be a test for "it ran, and the output is the right length"
+  expect_that(length(shift_with_rep$out), equals(10))
 
 })
 
