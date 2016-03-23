@@ -63,17 +63,10 @@ cyclic_shift <- function(df, time.var, species.var, abundance.var,
 #' It does so by employing a cyclic shift that creates a null community by randomly selecting different starting points for each species' time series. This generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Harms et al. 2001, Hallett et al. 2014).
 #' This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of the test statistic.
 #' If the data frame includes multiple replicates, the test statistics for the null communities are averaged within each iteration unless specified otherwise.
-#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
-#' @param time.var The name of the time column
-#' @param species.var The name of the species column
-#' @param abundance.var The name of the abundance column
-#' @param FUN A function to calculate on the null community that requires a species x time matrix
-#' @param bootnumber The number of null model iterations used to calculated confidence intervals
-#' @param replicate.var The name of the replication column from df
-#' @param li The lower confidence interval, defaults to lowest 2.5\% CI
-#' @param ui The upper confidence interval, defaults to upper 97.5\% CI
-#' @param average.replicates If true returns the CIs averaged across replicates; if false returns the CI for each replicate
-#' @return The confint.cyclic_shift function returns a dataframe with the following attributes:
+#' @param object An object of class \code{cyclic_shift}
+#' @param parm which parameter is to be given a confidence interval. At present there is only one option: the mean of the null distribution. Defaults to "out", referring to the null distribution in objects of class \code{cyclic_shift}.
+#' @param level the confidence level required.
+#' @return A dataframe with the following columns:
 #' \itemize{
 #'  \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
 #'  \item{upperCI: }{A numeric column with the highest confidence interval value.}
@@ -92,7 +85,7 @@ cyclic_shift <- function(df, time.var, species.var, abundance.var,
 #'
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @export
-confint.cyclic_shift <- function(object, parm = "out", level = 0.95, ...){
+confint.cyclic_shift <- function(object, parm = "out", level = 0.95){
 
   li <- (1 - level)/2
   ui <- 1 - li

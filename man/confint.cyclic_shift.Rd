@@ -4,31 +4,17 @@
 \alias{confint.cyclic_shift}
 \title{Confidence Intervals Using a Cyclic Shift Significance Testing}
 \usage{
-\method{confint}{cyclic_shift}(object, parm = "out", level = 0.95, ...)
+\method{confint}{cyclic_shift}(object, parm = "out", level = 0.95)
 }
 \arguments{
-\item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
+\item{object}{An object of class \code{cyclic_shift}}
 
-\item{time.var}{The name of the time column}
+\item{parm}{which parameter is to be given a confidence interval. At present there is only one option: the mean of the null distribution. Defaults to "out", referring to the null distribution in objects of class \code{cyclic_shift}.}
 
-\item{species.var}{The name of the species column}
-
-\item{abundance.var}{The name of the abundance column}
-
-\item{FUN}{A function to calculate on the null community that requires a species x time matrix}
-
-\item{bootnumber}{The number of null model iterations used to calculated confidence intervals}
-
-\item{replicate.var}{The name of the replication column from df}
-
-\item{li}{The lower confidence interval, defaults to lowest 2.5\% CI}
-
-\item{ui}{The upper confidence interval, defaults to upper 97.5\% CI}
-
-\item{average.replicates}{If true returns the CIs averaged across replicates; if false returns the CI for each replicate}
+\item{level}{the confidence level required.}
 }
 \value{
-The confint.cyclic_shift function returns a dataframe with the following attributes:
+A dataframe with the following columns:
 \itemize{
  \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
  \item{upperCI: }{A numeric column with the highest confidence interval value.}
