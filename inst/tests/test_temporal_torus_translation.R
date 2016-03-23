@@ -38,27 +38,27 @@ dat4<-subset(knz_001d, subplot=="A_1"|subplot=="A_2")
 
 
 
-test_that("temporal_torus_translation loads and returns correct result", {
+test_that("utility functions work properly", {
   #make a species matrix
 
-  datmat<-transpose_community(dat1, "year", "species", "abundance")
+  datmat <- codyn:::transpose_community(dat1, "year", "species", "abundance")
 
   #Test the shuffle_community function
   myresults <- codyn:::shuffle_community(datmat)
-  expect_true(is.data.frame(myresults))
+  expect_is(myresults, "data.frame")
 
   #test that does not generate the same matrix each time
-  myresults2<-codyn:::shuffle_community(datmat)
-  myresults3<-sort(as.vector(myresults==myresults2))
+  myresults2 <- codyn:::shuffle_community(datmat)
+  myresults3 <- sort(as.vector(myresults == myresults2))
 
-  expect_true(any(as.vector(myresults==myresults2) == FALSE))
+  expect_true(any(as.vector(myresults == myresults2) == FALSE))
 
   #test that random matrix has same dimensions as datmat
   expect_equal(dim(myresults), dim(datmat))
 
   #test that myresults has the same values as datmat, if both are sorted
-  rand.col.1 <-sort(as.matrix(myresults[,1]))
-  dat.col.1 <-sort(as.matrix(datmat[,1]))
+  rand.col.1 <- sort(as.matrix(myresults[,1]))
+  dat.col.1 <- sort(as.matrix(datmat[,1]))
   expect_equal(rand.col.1, dat.col.1)
 })
 
