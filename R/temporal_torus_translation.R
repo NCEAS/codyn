@@ -20,11 +20,8 @@
 #'
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @export
-cyclic_shift <- function(df, time.var="year",
-                         species.var="species",
-                         abundance.var="abundance",
-                         method,
-                         bootnumber){
+cyclic_shift <- function(df, time.var, species.var, abundance.var,
+                         replicate.var=NA, FUN, bootnumber){
 
   ## match arg to check method name
   ## switch to go from character to function
