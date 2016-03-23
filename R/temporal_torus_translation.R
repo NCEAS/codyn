@@ -28,19 +28,28 @@ cyclic_shift <- function(df, time.var, species.var, abundance.var,
 
   assertthat::assert_that(is.numeric(df[[abundance.var]]))
 
-  check_single_onerep(df, time.var = time.var, species.var = species.var)
+  if (is.na(replicate.var)) {
+    check_single_onerep(df, time.var = time.var, species.var = species.var)
 
-  comm_data <- transpose_community(df,
-                                   time.var,
-                                   species.var,
-                                   abundance.var)
+    out <- cyclic_shift_onerep(df = df, time.var = time.var,
+                               species.var = species.var,
+                               abundance.var = abundance.var, FUN = FUN,
+                               bootnumber = bootnumber)
+  } else {
+    df[replicate.var] <- if (is.factor(df[[replicate.var]]) == TRUE) {
+      factor(df[[replicate.var]])
+    } else {
+      df[replicate.var]
+    }
 
-  out <- replicate(bootnumber,
-            method(
-              shuffle_community(comm_data)
-            ))
-
-
+    check_single(df, time.var, species.var, replicate.var)
+    df <- df[order(df[[replicate.var]]),]
+    X <- split(df, df[replicate.var])
+    lout <- lapply(X, cyclic_shift_onerep, time.var,
+                   species.var, abundance.var, FUN, bootnumber)
+    out <- do.call("rbind", lout)
+    out <- colMeans(out)
+  }
 
   # add the method part in here
   shift <- structure(list(out = out), class = "cyclic_shift")
