@@ -7,7 +7,9 @@
 #' @param time.var The name of the time column
 #' @param species.var The name of the species column
 #' @param abundance.var The name of the abundance column
+#' @param replicate.var The name of the replicate column. Defaults to \code{NA}, indicating no replicates (i.e., data are from a single plot).
 #' @param FUN A function to calculate on the null community
+#' @param bootnumber Number of null simulations to run.
 #' @return The cyclic_shift function returns the same output as the user-specified function, as calculated on a null community.
 #' @details The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' @examples
