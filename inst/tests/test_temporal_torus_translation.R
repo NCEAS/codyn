@@ -112,14 +112,15 @@ test_that("cyclic_shift works with replicates", {
 test_that("confint.cyclic_shift works as expected",{
 
   # Test the cyclic_shift function
-  myresults_conf <- cyclic_shift(dat1, time.var = "year", species.var = "species",
+  myresults_ <- cyclic_shift(dat1, time.var = "year", species.var = "species",
                             abundance.var = "abundance",
-                            method = codyn:::variance_ratio_matrixdata,
+                            FUN = codyn:::variance_ratio_matrixdata,
                             bootnumber = 10)
 
-
-  confint(myresults_conf)
-
+  myresults_conf <- confint(myresults_)
+  expect_is(myresults_conf, "data.frame")
+  expect_named(myresults_conf, c("lowerCI", "upperCI", "nullmean"))
+  expect_that(nrow(myresults_conf), equals(1))
 })
 
   #Test the confint.cyclic_shift function

@@ -105,7 +105,7 @@ confint.cyclic_shift <- function(object, parm = "out", level = 0.95, ...){
   lowerCI <- quantile(out, li)
   upperCI <- quantile(out, ui)
   nullmean <- mean(out)
-  output <- cbind(lowerCI, upperCI, nullmean)
+  output <- data.frame(lowerCI, upperCI, nullmean)
   row.names(output) <- NULL
 
   return(output)
