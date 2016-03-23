@@ -80,7 +80,7 @@ synchrony <- function(df, time.var="year", species.var="species", abundance.var=
 #'        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
 synch_onerep <- function(df, time.var, species.var, abundance.var,
                          metric = "Loreau") {
-    metric = match.arg(metric) # for partial argument matching
+    metric = match.arg(metric, choices = c("Loreau", "Gross")) # for partial argument matching
 
     #remove any species that were never present.
     df <- subset(df, abundance.var > 0)
