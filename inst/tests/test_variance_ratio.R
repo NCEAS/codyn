@@ -1,6 +1,9 @@
 context("variance ratio")
 
 
+# prepare data ----------------------------------------
+
+
 # Load our example data set
 data("knz_001d", package = "codyn")  # This doesn't work for CSV files :(
 expect_that(names(knz_001d)[4], equals("abundance"))
@@ -26,6 +29,9 @@ dat4 <- subset(knz_001d, subplot == "A_1" | subplot == "A_2")
 
 #make a species matrix
 datmat <- codyn:::transpose_community(dat1, "year",  "species", "abundance")
+
+
+# run tests -------------------------------------------
 
 
 test_that("variance_ratio function returns correct result", {
@@ -73,9 +79,12 @@ test_that("variance_ratio function returns correct result", {
 
 
     # test that works regardless of order of the input replicates
-    knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
-    myresults_reordernoavg<-variance_ratio(knz_001dreorder, time.var="year", species.var="species",
-                                      abundance.var="abundance",  bootnumber=1, replicate="subplot", average.replicates = F)
+    knz_001dreorder <- knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
+    myresults_reordernoavg <- variance_ratio(knz_001dreorder, time.var="year",
+                                             species.var="species",
+                                             abundance.var="abundance",
+                                             bootnumber=1, replicate="subplot",
+                                             average.replicates = FALSE)
     expect_equal(myresultsnoavg[,5], myresults_reordernoavg[,5])
     expect_equal(myresultsnoavg[,1], myresults_reordernoavg[,1])
 
