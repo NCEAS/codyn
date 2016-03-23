@@ -91,7 +91,6 @@ cyclic_shift <- function(df, time.var, species.var, abundance.var,
 #' Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.
 #'
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
-#' @import stats
 #' @export
 confint.cyclic_shift <- function(object, parm = "out", level = 0.95, ...){
 
@@ -100,10 +99,8 @@ confint.cyclic_shift <- function(object, parm = "out", level = 0.95, ...){
 
   out <- object[[parm]]
 
-  #   if (is.na(replicate.var)) {
-
-  lowerCI <- quantile(out, li)
-  upperCI <- quantile(out, ui)
+  lowerCI <- stats::quantile(out, li)
+  upperCI <- stats::quantile(out, ui)
   nullmean <- mean(out)
   output <- data.frame(lowerCI, upperCI, nullmean)
   row.names(output) <- NULL
