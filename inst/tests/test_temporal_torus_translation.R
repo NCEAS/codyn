@@ -127,17 +127,7 @@ test_that("confint.cyclic_shift works as expected",{
   expect_that(nrow(myresults_conf), equals(1))
 })
 
-  #Test the confint.cyclic_shift function
-  # myresults <- confint(dat1, replicate.var = NA,
-  #                      species.var = "species",
-  #                      time.var = "year",
-  #                      abundance.var = "abundance",
-  #                      method = variance_ratio_matrixdata, bootnumber = 2,
-  #                      li = 0.025, ui = 0.975, average.replicates = FALSE)
 
-  #Test that returns an error when abundance is a character or factor column
-  # expect_error(confint.cyclic_shift(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randcharacter", method=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
-  #
   #   expect_error(confint.cyclic_shift(knz_001d2, replicate.var="sub", species.var="sp", time.var="yr", abundance.var="randfactor", method=variance_ratio_matrixdata, bootnumber=2, li=0.025, ui=0.975, average.replicates=FALSE))
 
 
