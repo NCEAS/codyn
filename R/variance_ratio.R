@@ -67,16 +67,19 @@
 #'  res_withinreplicates <- variance_ratio(knz_001d, time.var = "year", species.var = "species",
 #'  abundance.var = "abundance", bootnumber = 1, replicate = "subplot", average.replicates = FALSE)
 variance_ratio <- function(df, time.var, species.var, abundance.var,
-                           bootnumber, replicate.var,
+                           bootnumber, replicate.var = NA,
                            average.replicates = TRUE, level = 0.95, ...) {
 
   # check to make sure abundance is numeric data
   check_numeric(df, time.var, abundance.var)
 
   # if no replicates, calculate single variance ratio
-  if  (missing(replicate.var)) {
+  if  (is.na(replicate.var)) {
 
+    ## check the structure of the data
     check_single_onerep(df, time.var, species.var)
+
+    ## calculate observed variance ratio
     VR <- variance_ratio_longformdata(df, time.var, species.var, abundance.var)
 
     ## null models
@@ -84,7 +87,7 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
     nullval <- cyclic_shift(df, time.var = time.var,
                             species.var = species.var,
                             abundance.var = abundance.var,
-                            method = variance_ratio_matrixdata,
+                            FUN = variance_ratio_matrixdata,
                             bootnumber = bootnumber)
 
     nullout <- confint(nullval)
@@ -96,9 +99,6 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
 
     # if multiple replicates, check all replicates have values
     check_single(df, time.var, species.var, replicate.var)
-    ## if you give a replicate, it must be a factor. This gives users responsibility for order.
-    assertthat::assert_that(is.factor(df[[replicate.var]]))
-
 
     # calculate average variance ratio across replicates
     if (average.replicates == TRUE) {
@@ -109,34 +109,19 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
       df <- df[order(df[[replicate.var]]),]
       X <- split(df, df[replicate.var])
 
+      ## observed variance ratio
       VR <- mean(unlist(lapply(X, FUN = variance_ratio_longformdata, time.var, species.var, abundance.var)))
 
-      ##
-      null_list <- lapply(X, FUN = cyclic_shift,  time.var = time.var,
-                          species.var = species.var,
-                          abundance.var = abundance.var,
-                          method = variance_ratio_matrixdata,
-                          bootnumber = bootnumber)
+      ## Use cyclic_shift to calculate the null distribution
+      nullval <- cyclic_shift(df = df, time.var = time.var,
+                              species.var = species.var,
+                              abundance.var = abundance.var,
+                              replicate.var = replicate.var,
+                              FUN = variance_ratio_matrixdata,
+                              bootnumber = bootnumber)
 
-      ## confidence intervals
-      null_output <- lapply(null_list, `[[`, i = "out")
+      nullout <- confint(nullval)
 
-      null_means <- vector(mode = "numeric", length = bootnumber)
-
-      for (B in 1:bootnumber) {
-        null_means[B] <- mean(vapply(null_output, `[[`, 1, i = B))
-      }
-
-      li <- (1 - level)/2
-      ui <- 1 - li
-      lowerCI <- quantile(null_means, li)
-      upperCI <- quantile(null_means, ui)
-      nullmean <- mean(null_means)
-      nullout <- data.frame(lowerCI = lowerCI,
-                            upperCI = upperCI,
-                            nullmean =  nullmean)
-
-      # bind actual value and CI
       output <- cbind(nullout, VR)
 
     } else {
@@ -146,22 +131,41 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
       df <- df[order(df[[replicate.var]]),]
       X <- split(df, df[replicate.var])
 
+      ## workaround, necessary because you are not allowed to pass an argument called FUN to lapply
+      cyclic_shift_nofun <- function(f = variance_ratio_matrixdata, ...){
+        function(...) {
+          cyclic_shift(FUN = f, ...)
+        }
+      }
+
       ## also do separate null models (ie on split list)
-      null_list <- lapply(X, FUN = cyclic_shift,  time.var = time.var,
+      null_list <- lapply(X = X, FUN = cyclic_shift_nofun(),
+                          time.var = time.var,
                           species.var = species.var,
                           abundance.var = abundance.var,
-                          method = variance_ratio_matrixdata,
+                          replicate.var = NA,
                           bootnumber = bootnumber)
       ## calculate confidence intervals for each:
       null_intervals <- lapply(null_list, confint)
 
       ## combine as data.frames and preserve replicate var
-      nullout <- purrr::map_df(null_intervals, as.data.frame, .id = replicate.var)
+      repnames <- lapply(names(null_intervals), as.data.frame)
+      ## combine replicate names with intervals, then combine them all
+      nullout <- do.call("rbind", Map(cbind, repnames, null_intervals))
+
+      ## use the replicate.var name
+      names(nullout)[1] <- replicate.var
 
       VR_list <- lapply(X, FUN = variance_ratio_longformdata,
                         time.var, species.var, abundance.var)
 
-      VRout <- purrr::map_df(VR_list, ~data.frame(VR = .), .id = replicate.var)
+      ## combine as data.frames and preserve replicate var
+      VRnames <- lapply(names(VR_list), as.data.frame)
+      VR_df <- lapply(VR_list, as.data.frame)
+      ## combine replicate names with intervals, then combine them all
+      VRout <- do.call("rbind", Map(cbind, VRnames, VR_df))
+
+      names(VRout) <- c(replicate.var, "VR")
 
       output <- merge(nullout, VRout, by = replicate.var)
 
