@@ -191,11 +191,10 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
 #'
 #' @param comdat A community dataframe
 #' @return var.ratio The variance ratio of the community
-#' @import stats
 variance_ratio_matrixdata <- function(comdat){
     check_sppvar(comdat)
-    all.cov <- cov(comdat, use = "pairwise.complete.obs")
-    col.var <- apply(comdat, 2, var)
+    all.cov <- stats::cov(comdat, use = "pairwise.complete.obs")
+    col.var <- apply(comdat, 2, stats::var)
     com.var <- sum(all.cov)
     pop.var <- sum(col.var)
     var.ratio <- com.var/pop.var
