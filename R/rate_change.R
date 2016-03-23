@@ -122,17 +122,16 @@ rate_change_interval <- function(df, time.var="year", species.var="species", abu
 
 #' Get lagged distances for a single replicate
 #' @description Returns a data frame with two columns, interval and distance. The interval is
-#' the number of time steps between two communities, while distance is the 
+#' the number of time steps between two communities, while distance is the
 #' euclidean distance of community change within one replicate lagged across invtervals.
 #' @param df data frame to compute the slope of community change for
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a data frame containing of time lags by species distances
-#' @import stats
 lagged_distances <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
     df <- transpose_community(df, time.var, species.var, abundance.var)
-    DM <- dist(df, method="euclidean", diag = FALSE, upper = FALSE)
+    DM <- stats::dist(df, method="euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
     rownums = row(DM)
     colnums = col(DM)
