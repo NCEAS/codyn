@@ -4,7 +4,7 @@
 \alias{confint.cyclic_shift}
 \title{Confidence Intervals Using a Cyclic Shift Significance Testing}
 \usage{
-\method{confint}{cyclic_shift}(object, parm = "out", level = 0.95)
+\method{confint}{cyclic_shift}(object, parm = "out", level = 0.95, ...)
 }
 \arguments{
 \item{object}{An object of class \code{cyclic_shift}}
@@ -12,6 +12,8 @@
 \item{parm}{which parameter is to be given a confidence interval. At present there is only one option: the mean of the null distribution. Defaults to "out", referring to the null distribution in objects of class \code{cyclic_shift}.}
 
 \item{level}{the confidence level required.}
+
+\item{...}{further arguments to \code{quantile}}
 }
 \value{
 A dataframe with the following columns:
