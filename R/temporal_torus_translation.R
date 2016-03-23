@@ -131,3 +131,18 @@ shuffle_community <- function(comdat){
   row.names(rand.comdat) <- row.names(comdat)
   return(rand.comdat)
 }
+
+
+#' A function to calculate a non-S3 cyclic shift on one replicate
+#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @param time.var The name of the time column
+#' @param species.var The name of the species column
+#' @param abundance.var The name of the abundance column
+#' @param FUN A function to calculate on the null community
+#' @param bootnumber The number of null model iterations returned
+#' @return out A vector of  test statistics calculated on the null community
+cyclic_shift_onerep <- function(df, time.var, species.var,  abundance.var, FUN, bootnumber){
+  if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
+  out<-replicate(bootnumber, FUN(shuffle_community(transpose_community(df, time.var,  species.var, abundance.var))))
+  return(out)
+}
