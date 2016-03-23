@@ -120,9 +120,9 @@ kable(KNZ_A1_variance_ratio)
 #### General torus translation function
 `codyn` also includes the option to apply the temporal torus translation for other test statistics:
 
-- `temporal_torus_translation`  returns the output of a user-specified function when applied to a null community for functions that require a species x time matrix.
+- `cyclic_shift`  returns the output of a user-specified function when applied to a null community for functions that require a species x time matrix.
 
-- `temporal_torus_translation_CI` returns the confidence intervals for a user-specified function that returns a single-value test statistic and requires a species x time matrix.
+- `confint` returns the confidence intervals for a user-specified function that returns a single-value test statistic and requires a species x time matrix.
 
 ####  Variance ratio and species richness
 A second criticism of the variance ratio is that it is sensitive to species richness. This is a particular concern when the metric is used to compare communities that have different levels of species richness. The most conservative approach is to restrict use of the variance ratio to two-species communities [@hector2010]. Comparing the effect size of the observed versus null variance ratio can also account for richness differences between communities. Two alternative metrics that quantify species asynchrony have been developed in part to respond to this issue.
