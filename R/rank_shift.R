@@ -1,10 +1,10 @@
 #' @title Mean Rank Shifts
-#' @description A measure of the relative change in species rank abundances, which indicates shifts in relative abundances over time (Collins et al. 2008).  
+#' @description A measure of the relative change in species rank abundances, which indicates shifts in relative abundances over time (Collins et al. 2008).
 #' Mean rank shifts are calculated as the average difference in species' ranks between consecutive time periods, among species that are present across the entire time series.
 #' @param df A data frame containing time, species and abundance columns and an optional column of replicates
-#' @param time.var The name of the time column 
-#' @param species.var The name of the species column 
-#' @param abundance.var The name of the abundance column 
+#' @param time.var The name of the time column
+#' @param species.var The name of the species column
+#' @param abundance.var The name of the abundance column
 #' @param replicate.var The name of the optional replicate column
 #' @return The mean_rank_shift function returns a data frame with the following attributes:
 #' \itemize{
@@ -16,21 +16,21 @@
 #' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 #' @references  Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark.  (2008) "Rank clocks and plant community dynamics." Ecology 89, no. 12: 3534-41.
-#' @examples 
+#' @examples
 #'  # Calculate mean rank shifts within replicates
 #'  data(knz_001d)
-#'  
-#'  myoutput <- mean_rank_shift(knz_001d,  time.var = "year", species.var = "species", 
+#'
+#'  myoutput <- mean_rank_shift(knz_001d,  time.var = "year", species.var = "species",
 #'  abundance.var = "abundance", replicate.var = "subplot")
-#'  
+#'
 #'  # Calculate mean rank shifts for a data frame with no replication
-#'  
-#'  myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), time.var = "year", 
+#'
+#'  myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), time.var = "year",
 #'  species.var = "species",abundance.var = "abundance")
 #' @export
 mean_rank_shift <- function(df, time.var = "year", species.var = "species",
                     abundance.var = "abundance", replicate.var = as.character(NA)) {
-  
+
     check_numeric(df, time.var, abundance.var)
   if(is.na(replicate.var)) {
       check_single_onerep(df, time.var, species.var)
@@ -53,12 +53,12 @@ mean_rank_shift <- function(df, time.var = "year", species.var = "species",
     }
     return(output)
 }
-  
-  
+
+
 
 ############################################################################
 #
-# Private functions: these are internal functions not intended for reuse.  
+# Private functions: these are internal functions not intended for reuse.
 # Future package releases may change these without notice. External callers
 # should not use them.
 #
@@ -76,32 +76,38 @@ mean_rank_shift <- function(df, time.var = "year", species.var = "species",
 #' @param abundance.var The abundance variable
 #' @return a dataframe, showing years compared
 meanrank <- function(comm_data, time.var = "year",
-                     species.var = "species", abundance.var = "abundance") {
+                     species.var = "species",
+                     abundance.var = "abundance") {
     ## split data by year
-    yearlist <- split(comm_data, comm_data[[time.var]])
-    ## Compare consecutive pairs of years
-    y1 <- yearlist[-length(yearlist)]
-    y2 <- yearlist[-1]
 
-    commonspp <- Map(df_intersect, y1, y2, dataname = species.var)
+  for (v in c(time.var, species.var, abundance.var)){
+    assertthat::assert_that(assertthat::has_name(comm_data, v))
+  }
 
-    names(commonspp) <- Map(function(x, y) paste0(x, "-", y), names(y1), names(y2))
+  yearlist <- split(comm_data, comm_data[[time.var]])
+  ## Compare consecutive pairs of years
+  y1 <- yearlist[-length(yearlist)]
+  y2 <- yearlist[-1]
 
-    abdname1 <- paste0(abundance.var,"1")
-    abdname2 <- paste0(abundance.var,"2")
-    rank1 <- ""   # Note: initialized rank1 and rank2 simply to eliminate R CMD check NOTE
-    rank2 <- ""
-    ranknames <- lapply(commonspp, function(x) cbind(x,
-                                                     rank1 = rank(x[[abdname1]]),
-                                                     rank2 = rank(x[[abdname2]])
-    ))
+  commonspp <- Map(df_intersect, y1, y2, dataname = species.var)
 
-    rankdiff <- lapply(ranknames,
-                       function(x) transform(x, abs_ch_rank = abs(rank2 - rank1)))
+  names(commonspp) <- Map(function(x, y) paste0(x, "-", y), names(y1), names(y2))
 
-    MRS <- sapply(rankdiff, function(x) mean(x$abs_ch_rank))
+  abdname1 <- paste0(abundance.var,"1")
+  abdname2 <- paste0(abundance.var,"2")
+  rank1 <- ""   # Note: initialized rank1 and rank2 simply to eliminate R CMD check NOTE
+  rank2 <- ""
+  ranknames <- lapply(commonspp, function(x) cbind(x,
+                                                   rank1 = rank(x[[abdname1]]),
+                                                   rank2 = rank(x[[abdname2]])
+  ))
 
-    data.frame(year_pair = names(MRS), MRS, row.names = NULL)
+  rankdiff <- lapply(ranknames,
+                     function(x) transform(x, abs_ch_rank = abs(rank2 - rank1)))
+
+  MRS <- sapply(rankdiff, function(x) mean(x$abs_ch_rank))
+
+  data.frame(year_pair = names(MRS), MRS, row.names = NULL)
 }
 
 
@@ -113,13 +119,13 @@ meanrank <- function(comm_data, time.var = "year",
 #' @param dataname The name of the column on which the two datasets will be joined and intersected
 df_intersect <- function(df1, df2, dataname = "species") {
   commspp <- intersect(df1[[dataname]], df2[[dataname]])
-  
+
   ## select out the dataname columsn from df1 and df2
   df1dataname<-data.frame(df1[[dataname]])
   names(df1dataname)=dataname
   df2dataname<-data.frame(df2[[dataname]])
   names(df2dataname)=dataname
-  
+
   ## rename df1 and df2 columns
   df1[[dataname]]<-NULL
   df2[[dataname]]<-NULL

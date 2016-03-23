@@ -4,8 +4,8 @@
 \alias{cyclic_shift}
 \title{Cyclic shift}
 \usage{
-cyclic_shift(df, time.var = "year", species.var = "species",
-  abundance.var = "abundance", FUN, bootnumber)
+cyclic_shift(df, time.var, species.var, abundance.var, replicate.var = NA,
+  FUN, bootnumber)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
@@ -16,7 +16,11 @@ cyclic_shift(df, time.var = "year", species.var = "species",
 
 \item{abundance.var}{The name of the abundance column}
 
+\item{replicate.var}{The name of the replicate column. Defaults to \code{NA}, indicating no replicates (i.e., data are from a single plot).}
+
 \item{FUN}{A function to calculate on the null community}
+
+\item{bootnumber}{Number of null simulations to run.}
 }
 \value{
 The cyclic_shift function returns the same output as the user-specified function, as calculated on a null community.

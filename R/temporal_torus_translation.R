@@ -7,7 +7,9 @@
 #' @param time.var The name of the time column
 #' @param species.var The name of the species column
 #' @param abundance.var The name of the abundance column
+#' @param replicate.var The name of the replicate column. Defaults to \code{NA}, indicating no replicates (i.e., data are from a single plot).
 #' @param FUN A function to calculate on the null community
+#' @param bootnumber Number of null simulations to run.
 #' @return The cyclic_shift function returns the same output as the user-specified function, as calculated on a null community.
 #' @details The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' @examples
@@ -20,10 +22,41 @@
 #'
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @export
-cyclic_shift <- function(df, time.var="year", species.var="species",  abundance.var="abundance", FUN, bootnumber){
-  if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
-  out<-replicate(bootnumber, FUN(shuffle_community(transpose_community(df, time.var,  species.var, abundance.var))))
-  return(out)
+cyclic_shift <- function(df, time.var, species.var, abundance.var,
+                         replicate.var=NA, FUN, bootnumber){
+
+  ## match arg to check method name
+  ## switch to go from character to function
+
+  assertthat::assert_that(is.numeric(df[[abundance.var]]))
+
+  if (is.na(replicate.var)) {
+    check_single_onerep(df, time.var = time.var, species.var = species.var)
+
+    out <- cyclic_shift_onerep(df = df, time.var = time.var,
+                               species.var = species.var,
+                               abundance.var = abundance.var, FUN = FUN,
+                               bootnumber = bootnumber)
+  } else {
+    df[replicate.var] <- if (is.factor(df[[replicate.var]]) == TRUE) {
+      factor(df[[replicate.var]])
+    } else {
+      df[replicate.var]
+    }
+
+    check_single(df, time.var, species.var, replicate.var)
+    df <- df[order(df[[replicate.var]]),]
+    X <- split(df, df[replicate.var])
+    lout <- lapply(X, cyclic_shift_onerep, time.var,
+                   species.var, abundance.var, FUN, bootnumber)
+    out <- do.call("rbind", lout)
+    out <- colMeans(out)
+  }
+
+  # add the method part in here
+  shift <- structure(list(out = out), class = "cyclic_shift")
+
+  return(shift)
 }
 
 
@@ -32,17 +65,11 @@ cyclic_shift <- function(df, time.var="year", species.var="species",  abundance.
 #' It does so by employing a cyclic shift that creates a null community by randomly selecting different starting points for each species' time series. This generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Harms et al. 2001, Hallett et al. 2014).
 #' This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of the test statistic.
 #' If the data frame includes multiple replicates, the test statistics for the null communities are averaged within each iteration unless specified otherwise.
-#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
-#' @param time.var The name of the time column
-#' @param species.var The name of the species column
-#' @param abundance.var The name of the abundance column
-#' @param FUN A function to calculate on the null community that requires a species x time matrix
-#' @param bootnumber The number of null model iterations used to calculated confidence intervals
-#' @param replicate.var The name of the replication column from df
-#' @param li The lower confidence interval, defaults to lowest 2.5\% CI
-#' @param ui The upper confidence interval, defaults to upper 97.5\% CI
-#' @param average.replicates If true returns the CIs averaged across replicates; if false returns the CI for each replicate
-#' @return The confint.cyclic_shift function returns a dataframe with the following attributes:
+#' @param object An object of class \code{cyclic_shift}
+#' @param parm which parameter is to be given a confidence interval. At present there is only one option: the mean of the null distribution. Defaults to "out", referring to the null distribution in objects of class \code{cyclic_shift}.
+#' @param level the confidence level required.
+#' @param ... further arguments to \code{quantile}
+#' @return A dataframe with the following columns:
 #' \itemize{
 #'  \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
 #'  \item{upperCI: }{A numeric column with the highest confidence interval value.}
@@ -60,47 +87,20 @@ cyclic_shift <- function(df, time.var="year", species.var="species",  abundance.
 #' Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.
 #'
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
-#' @import stats
 #' @export
-confint.cyclic_shift <- function(df, time.var="year", species.var="species",  abundance.var="abundance", FUN, bootnumber,
-                                 li=0.025, ui=0.975, replicate.var=NA, average.replicates=T){
-  if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
+confint.cyclic_shift <- function(object, parm = "out", level = 0.95, ...){
 
-  if(is.na(replicate.var)){
-    check_single_onerep(df, time.var, species.var)
-    out <- replicate(bootnumber, FUN(shuffle_community(transpose_community(df, time.var,  species.var, abundance.var))))
-    lowerCI <- quantile(out, li)
-    upperCI <-quantile(out, ui)
-    nullmean <- mean(out)
-    output <- cbind(lowerCI, upperCI, nullmean)
-    row.names(output) <- NULL
+  li <- (1 - level)/2
+  ui <- 1 - li
 
-  } else {
-    df[replicate.var] <- if(is.factor(df[[replicate.var]]) == TRUE){factor(df[[replicate.var]])} else {df[replicate.var]}
-    check_single(df, time.var, species.var, replicate.var)
-    df <- df[order(df[[replicate.var]]),]
-    X <- split(df, df[replicate.var])
-    lout <- lapply(X, cyclic_shift, time.var, species.var, abundance.var, FUN, bootnumber)
+  out <- object[[parm]]
 
-    if(average.replicates  ==  TRUE){
-      out <- do.call("rbind", lout)
-      out <- colMeans(out)
-      lowerCI <- quantile(out, li)
-      upperCI <-quantile(out, ui)
-      nullmean <- mean(out)
-      output <- as.data.frame(cbind(lowerCI, upperCI, nullmean))
-      row.names(output) <- NULL
-    }
+  lowerCI <- stats::quantile(out, li, ...)
+  upperCI <- stats::quantile(out, ui, ...)
+  nullmean <- mean(out)
+  output <- data.frame(lowerCI, upperCI, nullmean)
+  row.names(output) <- NULL
 
-    else {
-      lowerCI <- do.call("rbind", lapply(lout, quantile, li))
-      upperCI <- do.call("rbind", lapply(lout, quantile, ui))
-      nullmean <- do.call("rbind", lapply(lout, mean))
-      reps <- unique(df[replicate.var])
-      output <- cbind(reps, lowerCI, upperCI, nullmean)
-      names(output)[2:3]=c("lowerCI", "upperCI")
-    }
-  }
   return(output)
 }
 
@@ -132,4 +132,19 @@ shuffle_community <- function(comdat){
   names(rand.comdat) <- names(comdat)
   row.names(rand.comdat) <- row.names(comdat)
   return(rand.comdat)
+}
+
+
+#' A function to calculate a non-S3 cyclic shift on one replicate
+#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @param time.var The name of the time column
+#' @param species.var The name of the species column
+#' @param abundance.var The name of the abundance column
+#' @param FUN A function to calculate on the null community
+#' @param bootnumber The number of null model iterations returned
+#' @return out A vector of  test statistics calculated on the null community
+cyclic_shift_onerep <- function(df, time.var, species.var,  abundance.var, FUN, bootnumber){
+  if(!is.numeric(df[[abundance.var]])) { stop("Abundance variable is not numeric") }
+  out<-replicate(bootnumber, FUN(shuffle_community(transpose_community(df, time.var,  species.var, abundance.var))))
+  return(out)
 }

@@ -1,11 +1,6 @@
 context("rank_shift")
 
 test_that("rank_shift loads and returns correct result", {
-    # Ensure that trivial tests work correctly
-    expect_that(length("a"), equals(1))
-
-    library(codyn)
-
     # Load our example data set
     data(knz_001d)
     #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
@@ -24,29 +19,46 @@ test_that("rank_shift loads and returns correct result", {
 
     #give new column names
   	knz_001d2 <- knz_001d
-  	names(knz_001d2)=c("sp", "yr", "sub", "abund")
+  	names(knz_001d2) <- c("sp", "yr", "sub", "abund")
   	#add a random character and factor column
-  	knz_001d2$randcharacter<-"rchar"
-  	knz_001d2$randfactor<-as.factor(knz_001d2$randcharacter)
+  	knz_001d2$randcharacter <- "rchar"
+  	knz_001d2$randfactor <- as.factor(knz_001d2$randcharacter)
   	#take a subset
-  	dat1 <- subset(knz_001d, knz_001d$subplot=="A_1")
+  	dat1 <- subset(knz_001d, knz_001d$subplot == "A_1")
   	#rename the subset
-  	dat2<-dat1
-  	names(dat2)=c("sp", "yr", "sub", "abund")
+  	dat2 <- dat1
+  	names(dat2) <-  c("sp", "yr", "sub", "abund")
   	#make subplot a character
-  	dat3<-dat1
-  	dat3$subplot<-as.character(dat3$subplot)
+  	dat3 <- dat1
+  	dat3$subplot <- as.character(dat3$subplot)
 
+  	## meanrank() recognizes correct names
+
+  	expect_error(meanrank(dat1, time.var = "pippin",
+  	                      species.var = "species",
+  	                      abundance.var = "abundance"))
+  	expect_error(meanrank(dat1, time.var = "year",
+  	                      species.var = "meriadoc",
+  	                      abundance.var = "abundance"))
+  	expect_error(meanrank(dat1, time.var = "year",
+  	                      species.var = "species",
+  	                      abundance.var = "samwise"))
 
 	#test the get_slope function
-  	myresults<-meanrank(dat1, "year", "species", "abundance")
+  	myresults <- meanrank(dat1, time.var = "year",
+  	                      species.var = "species",
+  	                      abundance.var = "abundance")
   	expect_that(class(myresults[,2]), equals("numeric"))
   	expect_that(length(myresults), equals(2))
   	#test that meanrank function works with different column names
-  	myresults2<-meanrank(dat2,  "yr", "sp", "abund")
+  	myresults2 <- meanrank(dat2,  time.var = "yr",
+  	                       species.var = "sp",
+  	                       abundance.var = "abund")
   	expect_that(myresults2, equals(myresults))
   	#test that gives a warning if running on factor instead of numeric
-  	expect_error(meanrank(dat2, "yr", "sp", "subplot"))
+  	expect_error(meanrank(dat2, time.var = "yr",
+  	                      species.var = "sp",
+  	                      abundance.var = "subplot"))
 
 	#test the mean_rank_shift function
   	#test that works on a single replicate
@@ -89,11 +101,11 @@ test_that("rank_shift loads and returns correct result", {
 
   	# test that works regardless of order of the input replicates
   	knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
-  	myresults<-mean_rank_shift(knz_001d, time.var="year", species.var="species", abundance.var="abundance", 
+  	myresults<-mean_rank_shift(knz_001d, time.var="year", species.var="species", abundance.var="abundance",
   	                            replicate.var="subplot")
-  	
-  	myresults_reorder<-mean_rank_shift(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance", 
+
+  	myresults_reorder<-mean_rank_shift(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance",
   	                            replicate.var="subplot")
   	expect_equal(myresults, myresults_reorder)
-  	
+
 })

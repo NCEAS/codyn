@@ -4,8 +4,7 @@
 \alias{synch_onerep}
 \title{A function to calculate species synchrony over time within one replicate}
 \usage{
-synch_onerep(df, time.var, species.var, abundance.var, metric = c("Loreau",
-  "Gross"))
+synch_onerep(df, time.var, species.var, abundance.var, metric = "Loreau")
 }
 \arguments{
 \item{df}{A dataframe containing rep, time, species and abundance columns}
@@ -20,7 +19,7 @@ synch_onerep(df, time.var, species.var, abundance.var, metric = c("Loreau",
 The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014}
 }
 \value{
-output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony. 
+output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony.
        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
 }
 \description{
