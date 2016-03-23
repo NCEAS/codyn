@@ -72,7 +72,7 @@ test_that("cyclic_shift returns correct result", {
   # Test the cyclic_shift function
   myresults <- cyclic_shift(dat1, time.var = "year", species.var = "species",
                             abundance.var = "abundance",
-                            method = codyn:::variance_ratio_matrixdata,
+                            FUN = codyn:::variance_ratio_matrixdata,
                             bootnumber = 1)
 
   expect_is(myresults, "cyclic_shift")
@@ -85,7 +85,7 @@ test_that("cyclic_shift returns correct result", {
   myresults2 <- cyclic_shift(dat1, time.var = "year",
                              species.var = "species",
                              abundance.var = "abundance",
-                             method = codyn:::variance_ratio_matrixdata,
+                             FUN = codyn:::variance_ratio_matrixdata,
                              bootnumber = 1)
 
   expect_false(myresults$out == myresults2$out)
@@ -93,7 +93,8 @@ test_that("cyclic_shift returns correct result", {
   #test that is not sensitive to different column names
   myresults3 <- cyclic_shift(dat2, time.var = "yr",
                              species.var = "sp", abundance.var = "abund",
-                             method = codyn:::variance_ratio_matrixdata, bootnumber = 1)
+                             FUN = codyn:::variance_ratio_matrixdata,
+                             bootnumber = 1)
   expect_equal(length(myresults3), 1)
   expect_is(myresults3$out, "numeric")
 })
