@@ -19,8 +19,7 @@
 #' @param species.var The name of the species column
 #' @param abundance.var The name of the abundance column
 #' @param bootnumber The number of null model iterations used to calculated confidence intervals
-#' @param li The lower confidence interval, defaults to lowest 2.5\% CI
-#' @param ui The upper confidence interval, defaults to upper 97.5\% CI
+#' @param level The confidence level for the null mean.
 #' @param replicate.var The name of the (optional) replicate column. Must be a factor.
 #' @param average.replicates If true returns the variance ratio and CIs averaged
 #' across replicates; if false returns the variance ratio and CI for each replicate
@@ -68,7 +67,7 @@
 #'  abundance.var = "abundance", bootnumber = 1, replicate = "subplot", average.replicates = FALSE)
 variance_ratio <- function(df, time.var, species.var, abundance.var,
                            bootnumber, replicate.var = NA,
-                           average.replicates = TRUE, level = 0.95, ...) {
+                           average.replicates = TRUE, level = 0.95) {
 
   # check to make sure abundance is numeric data
   check_numeric(df, time.var, abundance.var)
@@ -135,7 +134,7 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
       X <- split(df, df[replicate.var])
 
       ## workaround, necessary because you are not allowed to pass an argument called FUN to lapply
-      cyclic_shift_nofun <- function(f = variance_ratio_matrixdata, ...){
+      cyclic_shift_nofun <- function(f = variance_ratio_matrixdata){
         function(...) {
           cyclic_shift(FUN = f, ...)
         }

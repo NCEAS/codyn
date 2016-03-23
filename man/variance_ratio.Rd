@@ -5,7 +5,7 @@
 \title{Variance Ratio}
 \usage{
 variance_ratio(df, time.var, species.var, abundance.var, bootnumber,
-  replicate.var = NA, average.replicates = TRUE, level = 0.95, ...)
+  replicate.var = NA, average.replicates = TRUE, level = 0.95)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
@@ -23,9 +23,7 @@ variance_ratio(df, time.var, species.var, abundance.var, bootnumber,
 \item{average.replicates}{If true returns the variance ratio and CIs averaged
 across replicates; if false returns the variance ratio and CI for each replicate}
 
-\item{li}{The lower confidence interval, defaults to lowest 2.5\% CI}
-
-\item{ui}{The upper confidence interval, defaults to upper 97.5\% CI}
+\item{level}{The confidence level for the null mean.}
 }
 \value{
 The variance_ratio function returns a data frame with the following attributes:
