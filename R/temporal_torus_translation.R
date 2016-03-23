@@ -91,36 +91,14 @@ confint.cyclic_shift <- function(object, parm = "out", level = 0.95, ...){
 
   out <- object[[parm]]
 
-#   if (is.na(replicate.var)) {
+  #   if (is.na(replicate.var)) {
 
-    lowerCI <- quantile(out, li)
-    upperCI <- quantile(out, ui)
-    nullmean <- mean(out)
-    output <- cbind(lowerCI, upperCI, nullmean)
-    row.names(output) <- NULL
+  lowerCI <- quantile(out, li)
+  upperCI <- quantile(out, ui)
+  nullmean <- mean(out)
+  output <- cbind(lowerCI, upperCI, nullmean)
+  row.names(output) <- NULL
 
-  # } else {
-  #
-  #   ## simple workaround, a model for how this function will need to work
-  #   lout <- lapply(lout, `[[`, i = "out")
-  #
-  #   if (average.replicates  ==  TRUE) {
-  #     out <- do.call("rbind", lout)
-  #     out <- colMeans(out)
-  #     lowerCI <- quantile(out, li)
-  #     upperCI <- quantile(out, ui)
-  #     nullmean <- mean(out)
-  #     output <- as.data.frame(cbind(lowerCI, upperCI, nullmean))
-  #     row.names(output) <- NULL
-  #   } else {
-  #     lowerCI <- do.call("rbind", lapply(lout, quantile, li))
-  #     upperCI <- do.call("rbind", lapply(lout, quantile, ui))
-  #     nullmean <- do.call("rbind", lapply(lout, mean))
-  #     reps <- unique(df[replicate.var])
-  #     output <- cbind(reps, lowerCI, upperCI, nullmean)
-  #     names(output)[2:3] <- c("lowerCI", "upperCI")
-  #   }
-  # }
   return(output)
 }
 
