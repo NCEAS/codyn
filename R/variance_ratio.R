@@ -97,6 +97,9 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
 
   } else {
 
+    ## drop any unusued levels
+    df <- droplevels(df)
+
     # if multiple replicates, check all replicates have values
     check_single(df, time.var, species.var, replicate.var)
 
