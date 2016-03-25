@@ -9,7 +9,7 @@ test_that("rank_shift loads and returns correct result", {
 
     
     # Basic test if mean rank produces data frame with right structure and values
-    result <- meanrank(knz_001d, "year", "species", "abundance")
+    result <- rank_onerep(knz_001d, "year", "species", "abundance")
     expect_that(length(names(result)), equals(2))
     expect_that(names(result)[[1]], matches("year_pair"))
     expect_that(class(result[,1]), matches("factor"))
@@ -34,31 +34,31 @@ test_that("rank_shift loads and returns correct result", {
   	dat3 <- dat1
   	dat3$subplot <- as.character(dat3$subplot)
 
-  	## meanrank() recognizes correct names
+  	## rank_onerep() recognizes correct names
 
-  	expect_error(meanrank(dat1, time.var = "pippin",
+  	expect_error(rank_onerep(dat1, time.var = "pippin",
   	                      species.var = "species",
   	                      abundance.var = "abundance"))
-  	expect_error(meanrank(dat1, time.var = "year",
+  	expect_error(rank_onerep(dat1, time.var = "year",
   	                      species.var = "meriadoc",
   	                      abundance.var = "abundance"))
-  	expect_error(meanrank(dat1, time.var = "year",
+  	expect_error(rank_onerep(dat1, time.var = "year",
   	                      species.var = "species",
   	                      abundance.var = "samwise"))
 
 	#test the get_slope function
-  	myresults <- meanrank(dat1, time.var = "year",
+  	myresults <- rank_onerep(dat1, time.var = "year",
   	                      species.var = "species",
   	                      abundance.var = "abundance")
   	expect_that(class(myresults[,2]), equals("numeric"))
   	expect_that(length(myresults), equals(2))
-  	#test that meanrank function works with different column names
-  	myresults2 <- meanrank(dat2,  time.var = "yr",
+  	#test that rank_onerep function works with different column names
+  	myresults2 <- rank_onerep(dat2,  time.var = "yr",
   	                       species.var = "sp",
   	                       abundance.var = "abund")
   	expect_that(myresults2, equals(myresults))
   	#test that gives a warning if running on factor instead of numeric
-  	expect_error(meanrank(dat2, time.var = "yr",
+  	expect_error(rank_onerep(dat2, time.var = "yr",
   	                      species.var = "sp",
   	                      abundance.var = "subplot"))
 
