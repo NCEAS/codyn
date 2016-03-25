@@ -10,28 +10,29 @@ test_that("turnover loads and returns correct result", {
     
     #give new column names
     knz_001d2 <- knz_001d
-    names(knz_001d2)=c("sp", "yr", "sub", "abund")
+    names(knz_001d2) = c("sp", "yr", "sub", "abund")
     
     #add a random character and factor column
-    knz_001d2$randcharacter<-sample(letters, size = nrow(knz_001d2), replace = T)
-    knz_001d2$randfactor<-as.factor(knz_001d2$randcharacter)
+    knz_001d2$randcharacter <- sample(letters, size = nrow(knz_001d2), replace = T)
+    knz_001d2$randfactor <- as.factor(knz_001d2$randcharacter)
     
     #take a subset
     dat1 <- subset(knz_001d, knz_001d$subplot=="A_1")
     
     #rename the subset
-    dat2<-dat1
-    names(dat2)=c("sp", "yr", "sub", "abund")
+    dat2 <- dat1
+    names(dat2) = c("sp", "yr", "sub", "abund")
     
     #make subplot a character
-    dat3<-dat1
-    dat3$subplot<-as.character(dat3$subplot)
+    dat3 <- dat1
+    dat3$subplot <- as.character(dat3$subplot)
     
     #take a two replicate subset
-    dat4<-subset(knz_001d, subplot=="A_1"|subplot=="A_2")
+    dat4 <- subset(knz_001d, subplot == "A_1"|subplot == "A_2")
     
     # test that calculation from turnover is correct and does not regress
-    myresults<-turnover(knz_001d, time.var="year", species.var="species", abundance.var="abundance", 
+    myresults <- turnover(knz_001d, time.var="year", species.var="species", 
+                        abundance.var="abundance", 
                         replicate.var="subplot", 
                         metric="total")
     expect_equal(class(myresults), "data.frame")
@@ -40,14 +41,15 @@ test_that("turnover loads and returns correct result", {
     expect_equal(sum(myresults[,1]), 116.2359, tolerance=0.00001)
     
     # test that works regardless of order of the input replicates
-    knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
-    myresults_reorder<-turnover(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance", 
+    knz_001dreorder <- knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
+    myresults_reorder <- turnover(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance", 
                                 replicate.var="subplot", 
                                 metric="total")
     expect_equal(myresults, myresults_reorder)
     
     #test that works regardless of whether parameter is specified or just ordered
-    myresults2<-turnover(df=knz_001d, replicate.var="subplot",
+    myresults2 <- turnover(df=knz_001d, replicate.var="subplot", time.var = "year",
+                         species.var = "species", abundance.var = "abundance",
                          metric="total")    
     expect_identical(myresults, myresults2)
     
@@ -80,13 +82,13 @@ test_that("turnover loads and returns correct result", {
     # total turnover: 4 shared species. 1 disappears, 2 appear. Total richness is 7
     
     # default for turnover_twoyears is total; partial matching also being tested
-    expect_equal(turnover_twoyears(test.spp1, test.spp2), (2 + 1) / 7)
+    expect_equal(turnover_twoyears(test.spp1, test.spp2, species.var = "species"), (2 + 1) / 7)
     
-    expect_equal(turnover_twoyears(test.spp1, test.spp2, metric = "tot"), (2 + 1) / 7)
+    expect_equal(turnover_twoyears(test.spp1, test.spp2, species.var = "species", metric = "tot"), (2 + 1) / 7)
     
-    expect_equal(turnover_twoyears(test.spp1, test.spp2, metric = "dis"), 1 / 7)
+    expect_equal(turnover_twoyears(test.spp1, test.spp2, species.var = "species", metric = "dis"), 1 / 7)
     
-    expect_equal(turnover_twoyears(test.spp1, test.spp2, metric = "app"), 2 / 7)
+    expect_equal(turnover_twoyears(test.spp1, test.spp2, species.var = "species", metric = "app"), 2 / 7)
     
     # adding a test to make sure that the output actually is the metric specified
     tot <- turnover(knz_001d, time.var="year", species.var="species", abundance.var="abundance", replicate.var="subplot", metric = "total")

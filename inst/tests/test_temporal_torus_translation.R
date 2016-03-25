@@ -67,7 +67,7 @@ test_that("cyclic_shift returns correct result", {
                             abundance.var = "subplot",
                             codyn:::variance_ratio_matrixdata,
                             bootnumber = 1),
-               "not a numeric or integer vector")
+               "Abundance variable is not numeric")
 
   # Test the cyclic_shift function
   myresults <- cyclic_shift(dat1, time.var = "year", species.var = "species",

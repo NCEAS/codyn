@@ -34,18 +34,35 @@
 #' rate_change(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
 #' rate_change(knz_001d, replicate.var = "subplot") # across all subplots
 #' @export
-rate_change <- function(df, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA) {
+rate_change <- function(df, time.var, 
+                        species.var, 
+                        abundance.var, 
+                        replicate.var = NA) {
+  
+  # check time and abundance are numeric
   check_numeric(df, time.var, abundance.var)
+  
   if(is.na(replicate.var)) {
-        check_single_onerep(df, time.var, species.var)
-        output <- lagged_slope(df, time.var, species.var, abundance.var)
+        
+      # check there unique species x time combinations
+      check_single_onerep(df, time.var, species.var)
+    
+      # calculate rate change
+      output <- lagged_slope(df, time.var, species.var, abundance.var)
+        
     } else {
+      
+        # check there unique species x time x replicate combinations
         check_single(df, time.var, species.var, replicate.var)
+      
+        # remove unused levels if replicate.var is a factor
         df[replicate.var] <- if(is.factor(df[[replicate.var]])) {
             factor(df[[replicate.var]])
         } else {
             df[replicate.var]
         }
+        
+        # sort and apply rate change to all replicates
         df <- df[order(df[[replicate.var]]),]
         X <- split(df, df[replicate.var])
         out <- lapply(X, FUN=lagged_slope, time.var, species.var, abundance.var)
@@ -53,6 +70,8 @@ rate_change <- function(df, time.var="year", species.var="species", abundance.va
         output <- cbind(reps, do.call("rbind", out))
         names(output) = c(replicate.var, "rate_change")
     }
+  
+    # results
     return(output)
 }
 
@@ -86,19 +105,35 @@ rate_change <- function(df, time.var="year", species.var="species", abundance.va
 #' rate_change_interval(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
 #' rate_change_interval(knz_001d, replicate.var = "subplot") # across all subplots
 #' @export
-rate_change_interval <- function(df, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA) {
-    stopifnot(is.numeric(df[[time.var]]))
-    stopifnot(is.numeric(df[[abundance.var]]))
+rate_change_interval <- function(df, time.var, 
+                                 species.var, 
+                                 abundance.var, 
+                                 replicate.var=NA) {
+ 
+  # check time and abundance are numeric
+  check_numeric(df, time.var, abundance.var)
+  
     if(is.na(replicate.var)) {
+       
+        # check there unique species x time combinations
         check_single_onerep(df, time.var, species.var)
+      
+        #  calculate rate change intervals
         output <- lagged_distances(df, time.var, species.var, abundance.var)
-    } else {
+    
+        } else {
+          
+        # check there unique species x time x replicate combinations
         check_single(df, time.var, species.var, replicate.var)
+          
+        # remove unused levels if replicate.var is a factor
         df[replicate.var] <- if(is.factor(df[[replicate.var]])) {
             factor(df[[replicate.var]])
         } else {
             df[replicate.var]
         }
+        
+        # sort and apply rate change interval to all replicates
         df <- df[order(df[[replicate.var]]),]
         X <- split(df, df[replicate.var])
         out <- lapply(X, FUN=lagged_distances, time.var, species.var, abundance.var)
@@ -108,7 +143,9 @@ rate_change_interval <- function(df, time.var="year", species.var="species", abu
         out_rep <- mapply(function(x, y) "[<-"(x, replicate.var, value = y) ,
                       out, ID, SIMPLIFY = FALSE)
         output <- do.call("rbind", out_rep)
-    }
+        }
+  
+    # results
     return(output)
 }
 
@@ -129,7 +166,7 @@ rate_change_interval <- function(df, time.var="year", species.var="species", abu
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a data frame containing of time lags by species distances
-lagged_distances <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
+lagged_distances <- function(df, time.var, species.var, abundance.var) {
     df <- transpose_community(df, time.var, species.var, abundance.var)
     DM <- stats::dist(df, method = "euclidean", diag = FALSE, upper = FALSE)
     DM <- as.matrix(DM)
@@ -148,7 +185,7 @@ lagged_distances <- function(df, time.var="year", species.var="species", abundan
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return a slope of time lags by species distances
-lagged_slope <- function(df, time.var="year", species.var="species", abundance.var="abundance") {
+lagged_slope <- function(df, time.var, species.var, abundance.var) {
     results <- lagged_distances(df, time.var, species.var, abundance.var)
     lm_coefficents <- stats::lm(distance ~ interval, data = results)
     slope <- coef(lm_coefficents)[["interval"]]

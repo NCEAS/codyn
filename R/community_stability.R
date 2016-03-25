@@ -22,11 +22,14 @@
 #' community_stability(knz_001d, replicate.var = "subplot") # across all subplots
 #' @export
 
-community_stability <- function(df, time.var = "year",
-                                abundance.var = "abundance",
+community_stability <- function(df, time.var,
+                                abundance.var,
                                 replicate.var = NA){
+  
+  # check time and abundance are numeric
   check_numeric(df, time.var, abundance.var)
 
+  # remove zeros  
   df <- df[which(df[[abundance.var]] > 0),]
 
   if (is.na(replicate.var)) {
@@ -41,10 +44,12 @@ community_stability <- function(df, time.var = "year",
     df <- df[order(df[[replicate.var]]),]
     df <- droplevels(df)
 
-    #sum abundance within a replicate and year
+    # sum abundance within a replicate and year, sort
     aggform <- as.formula(paste(abundance.var, "~", replicate.var, "+", time.var, sep = ""))
     data2 <- aggregate(aggform, data = df, sum)
     data2 <- data2[order(data2[[replicate.var]]),]
+    
+    # caculate stability on all reps
     X <- split(data2, data2[replicate.var])
     out <- lapply(X, stability_onerep, abundance.var)
     reps <- unique(data2[replicate.var])
@@ -54,6 +59,7 @@ community_stability <- function(df, time.var = "year",
 
   }
 
+  # result
   row.names(output) <- NULL
   return(output)
 }
@@ -75,7 +81,7 @@ community_stability <- function(df, time.var = "year",
 #' @param df A dataframe containing x column
 #' @param x The column to calculate stability on
 #' @return Stability of x, calculated as the mean/sd
-stability_onerep <- function(df,  x){
+stability_onerep <- function(df, x){
 
   assertthat::assert_that(assertthat::has_name(df, x))
   assertthat::assert_that(is.numeric(df[[x]]))

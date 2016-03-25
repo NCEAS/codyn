@@ -64,12 +64,12 @@ test_that("synchrony loads and returns correct result", {
     expect_that((myresults6[1,2]), equals(myresults3))
 
     #test that works with multiple replicates
-    myresults7<-synchrony(knz_001d, replicate.var="subplot", time.var="year", abundance.var="abundance")
+    myresults7<-synchrony(knz_001d, replicate.var="subplot", time.var="year", abundance.var="abundance", species.var = "species")
     expect_that(myresults6[1,2], equals(myresults7[1,2]))
 
     # test that works regardless of order of the input replicates
     knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
-    myresults_reorder<-synchrony(knz_001dreorder, replicate.var="subplot", time.var="year", abundance.var="abundance")
+    myresults_reorder<-synchrony(knz_001dreorder, replicate.var="subplot", time.var="year", abundance.var="abundance", species.var = "species")
     expect_equal(myresults7, myresults_reorder)
 
 
@@ -88,11 +88,16 @@ test_that("synchrony loads and returns correct result", {
     # For the "Gross" metric, if a species doesn't vary at all over the time series it omits that species from focal species list and gives warning.
     # E.g, in KNZ_001d subplot D_5, salvia azurea has an abundance of 3 across the time series.
     dat5 <- knz_001d[knz_001d$subplot == "D_5",]
-    expect_warning(synchrony(dat5, replicate.var = NA, metric = "G"))
+    expect_warning(synchrony(dat5, replicate.var = NA, species.var = "species", time.var = "year", 
+                             abundance.var = "abundance", metric = "G"))
 
     # Checks Loreau method with the same subplot, for a single plot vs whole dataset
-    myres7 <- synchrony(dat5, replicate.var = NA, metric = "L")
-    myres8 <- synchrony(knz_001d, replicate.var = "subplot", metric = "L")
+    myres7 <- synchrony(dat5, replicate.var = NA, species.var = "species", time.var = "year", 
+                        abundance.var = "abundance",
+                        metric = "L")
+    myres8 <- synchrony(knz_001d, replicate.var = "subplot", 
+                        species.var = "species", time.var = "year", 
+                        abundance.var = "abundance", metric = "L")
     expect_equal(myres7, myres8[myres8$subplot=="D_5","synchrony"])
 
     #test that Gross works with multiple replicates

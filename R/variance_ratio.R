@@ -5,7 +5,7 @@
 #' indicates predominately positive covariance among species and a variance
 #' ratio < 1 indicates predominately negative covariance (Schluter 1984).
 #'
-#' Includes a null modeling option to test if the variance ratio significantly
+#' Includes a cyclic shift null modeling option to test if the variance ratio significantly
 #' differs from 1. The null community is created by randomly selecting different
 #' starting points for each species' time series, which generates a community in
 #' which species abundances vary independently but within-species autocorrelation
@@ -19,10 +19,10 @@
 #' @param species.var The name of the species column
 #' @param abundance.var The name of the abundance column
 #' @param bootnumber The number of null model iterations used to calculated confidence intervals
-#' @param level The confidence level for the null mean.
-#' @param replicate.var The name of the (optional) replicate column. Must be a factor.
+#' @param level The confidence level for the null mean
+#' @param replicate.var The name of the (optional) replicate column
 #' @param average.replicates If true returns the variance ratio and CIs averaged
-#' across replicates; if false returns the variance ratio and CI for each replicate
+#' across replicates; if false returns the variance ratio and CI for each replicate. Defaults to true.
 #' @return The variance_ratio function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{VR: }{A numeric column with the actual variance ratio value.}
@@ -65,9 +65,13 @@
 #'
 #'  res_withinreplicates <- variance_ratio(knz_001d, time.var = "year", species.var = "species",
 #'  abundance.var = "abundance", bootnumber = 1, replicate = "subplot", average.replicates = FALSE)
-variance_ratio <- function(df, time.var, species.var, abundance.var,
-                           bootnumber, replicate.var = NA,
-                           average.replicates = TRUE, level = 0.95) {
+variance_ratio <- function(df, time.var, 
+                           species.var, 
+                           abundance.var,
+                           bootnumber, 
+                           replicate.var = NA,
+                           average.replicates = TRUE, 
+                           level = 0.95) {
 
   # check to make sure abundance is numeric data
   check_numeric(df, time.var, abundance.var)
@@ -82,7 +86,6 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
     VR <- variance_ratio_longformdata(df, time.var, species.var, abundance.var)
 
     ## null models
-
     nullval <- cyclic_shift(df, time.var = time.var,
                             species.var = species.var,
                             abundance.var = abundance.var,
@@ -96,7 +99,7 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
 
   } else {
 
-    ## drop any unusued levels
+    ## drop any unused levels
     df <- droplevels(df)
 
     # if multiple replicates, check all replicates have values
@@ -147,11 +150,13 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
                           abundance.var = abundance.var,
                           replicate.var = NA,
                           bootnumber = bootnumber)
-      ## calculate confidence intervals for each:
+      
+      ## calculate confidence intervals for each
       null_intervals <- lapply(null_list, confint)
 
       ## combine as data.frames and preserve replicate var
       repnames <- lapply(names(null_intervals), as.data.frame)
+      
       ## combine replicate names with intervals, then combine them all
       nullout <- do.call("rbind", Map(cbind, repnames, null_intervals))
 
@@ -164,6 +169,7 @@ variance_ratio <- function(df, time.var, species.var, abundance.var,
       ## combine as data.frames and preserve replicate var
       VRnames <- lapply(names(VR_list), as.data.frame)
       VR_df <- lapply(VR_list, as.data.frame)
+      
       ## combine replicate names with intervals, then combine them all
       VRout <- do.call("rbind", Map(cbind, VRnames, VR_df))
 

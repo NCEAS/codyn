@@ -34,10 +34,14 @@
 #' synchrony(knz_001d, replicate.var = "subplot", metric="Gross") # With Gross et al. (2014) metric.
 #' }
 #' @export
-synchrony <- function(df, time.var="year", species.var="species", abundance.var="abundance", metric="Loreau", replicate.var=NA) {
+synchrony <- function(df, time.var, 
+                      species.var, 
+                      abundance.var, 
+                      metric = "Loreau", replicate.var = NA) {
 
   check_numeric(df, time.var, abundance.var)
-  # check to see if there are actual replicates without specifying replicate.var
+  
+  # remove unused levels if replicate.var is a factor
   if(is.na(replicate.var) == TRUE){
     check_single_onerep(df, time.var, species.var)
         output <- synch_onerep(df, time.var, species.var, abundance.var, metric)
@@ -47,8 +51,14 @@ synchrony <- function(df, time.var="year", species.var="species", abundance.var=
       } else {
         df[replicate.var]
       }
+
+      # check there  is more than one species
       check_multispp(df, species.var, replicate.var)
+      
+      # check there unique species x time combinations
       check_single(df, time.var, species.var, replicate.var)
+      
+      # sort and apply synchrony to all replicates
       df <- df[order(df[[replicate.var]]),]
       X <- split(df, df[replicate.var])
       out <- lapply(X, FUN=synch_onerep, time.var, species.var, abundance.var, metric)
@@ -56,9 +66,12 @@ synchrony <- function(df, time.var="year", species.var="species", abundance.var=
       output <- cbind(reps, do.call("rbind", out))
       names(output) = c(replicate.var, "synchrony")
       row.names(output) <- NULL
-    }
-    return(output)
-}
+    
+      }
+    
+  # result
+  return(output)
+  }
 
 ############################################################################
 #
@@ -84,6 +97,7 @@ synch_onerep <- function(df, time.var, species.var, abundance.var,
 
     #remove any species that were never present.
     df <- subset(df, abundance.var > 0)
+    
     #fill in 0s
     spplist <- unique(df[species.var])
     yearlist <- unique(df[time.var])
@@ -139,6 +153,7 @@ synch_onerep <- function(df, time.var, species.var, abundance.var,
           subout$sppcor <- as.numeric(as.character(subout$sppcor))
           corout <- rbind(corout, subout)
         }
+        
         #average correlation for the community
         synchrony <- mean(corout$sppcor)
       }

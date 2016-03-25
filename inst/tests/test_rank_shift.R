@@ -6,8 +6,10 @@ test_that("rank_shift loads and returns correct result", {
     #knz_001d <- read.csv(system.file("extdata", "knz_001d.csv", package="codyn"), sep=",", header=TRUE)
     expect_that(names(knz_001d)[4], equals("abundance"))
 
+
+    
     # Basic test if mean rank produces data frame with right structure and values
-    result <- meanrank(knz_001d)
+    result <- meanrank(knz_001d, "year", "species", "abundance")
     expect_that(length(names(result)), equals(2))
     expect_that(names(result)[[1]], matches("year_pair"))
     expect_that(class(result[,1]), matches("factor"))

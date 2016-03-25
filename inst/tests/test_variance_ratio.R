@@ -124,6 +124,15 @@ test_that("variance_ratio function returns correct result", {
                                 abundance.var = "abundance",
                                 bootnumber = 10,
                                 replicate.var = "subplot")
+    
+    kzcharacter <- knz_001d
+    kzcharacter$subplot <- as.character(kzcharacter$subplot)
+    myresults6.5 <- variance_ratio(kzcharacter, time.var = "year",
+                                 species.var = "species",
+                                 abundance.var = "abundance",
+                                 bootnumber = 10,
+                                 replicate.var = "subplot",
+                                 average.replicates = F)
 
     #test that gives same for a single rep if average reps is false
     myresults7 <- variance_ratio(dat3, time.var = "year",
