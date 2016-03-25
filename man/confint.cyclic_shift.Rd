@@ -38,8 +38,6 @@ a1_cyclic <- cyclic_shift(subset(knz_001d, subplot == "A_1"),
 
 # Return CI on a1_cyclic
 confint(a1_cyclic)
-# or
-confint.cyclic_shift(a1_cyclic)
 }
 \references{
 Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.
