@@ -29,7 +29,7 @@ Many traditional measure of community structure represent a â€˜snapshot in timeâ
 ##Community Stability Metrics
 Ecologists have long debated the relationship between species diversity and stability. Unstable species populations may stabilize aggregate community properties if a decrease in one species is compensated for by an increase in another. In a time series, this should be reflected by a pattern in which species negatively covary or fluctuate asynchronously while total community stability remains relatively stable. `codyn` includes a function to characterize community stability, `community_stability`, and three metrics to characterize species covariance and asynchrony:
 
-- `variance_ratio` characterizes species covariance [@schluter1984; @houlahan2007], and includes a null-modeling approach to test significance [@hallett2014]. Null modeling is built-in to the `variance_ratio` function. Two additional functions, `temporal_torus_translation` and `temporal_torus_translation_CI`, allow this method to be generalized to other test statistics.
+- `variance_ratio` characterizes species covariance [@schluter1984; @houlahan2007], and includes a null-modeling approach to test significance [@hallett2014]. Null modeling is built-in to the `variance_ratio` function. Two additional functions, `cyclic_shift` and `confint.cyclic_shift`, allow this method to be generalized to other test statistics.
 
 - `synchrony` has two options. The first compares the variance of the aggregated community with the variance of individual components [@loreau2008]. The second compares the average correlation of each individual species with the rest of the aggregated community [@gross2014].
 
