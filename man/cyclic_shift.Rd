@@ -2,7 +2,7 @@
 % Please edit documentation in R/temporal_torus_translation.R
 \name{cyclic_shift}
 \alias{cyclic_shift}
-\title{Cyclic shift}
+\title{Cyclic Shift Permutations}
 \usage{
 cyclic_shift(df, time.var, species.var, abundance.var, replicate.var = NA,
   FUN, bootnumber)
@@ -20,16 +20,18 @@ cyclic_shift(df, time.var, species.var, abundance.var, replicate.var = NA,
 
 \item{FUN}{A function to calculate on the null community}
 
-\item{bootnumber}{Number of null simulations to run.}
+\item{bootnumber}{Number of null simulations to run}
 }
 \value{
-The cyclic_shift function returns the same output as the user-specified function, as calculated on a null community.
+The cyclic_shift function returns an S3 object of class "cyclic_shift" and param "out".
+The length of the "out" param  is the number of null iterations as specified by bootnumber.
+If multiple replicates are specified, null values are averaged among replicates for each interation, but a different cyclic shift permutation is applied to each replicate within an interation.
 }
 \description{
-Performs a user-specified function on a null ecological community created via cyclic shifts (Harms et al. 2001, Hallett et al. 2014).
+Performs a user-specified function on a null ecological community created via cyclic shift permutations (Harms et al. 2001, Hallett et al. 2014).
 The null community is formed by randomly selected different starting years for the time series of each species.
 This generates a null community matrix in which species abundances vary independently but within-species autocorrelation is maintained.
-The user-specified function must require a species x time matrix input.
+The user-specified function must require a species x time input.
 }
 \details{
 The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
@@ -37,8 +39,12 @@ The input data frame needs to contain columns for time, species and abundance; t
 \examples{
 # Calculate a covariance matrix on a null community
 data(knz_001d)
-a1_cyclic <- cyclic_shift(subset(knz_001d, subplot=="A_1"), time.var="year",
-species.var="species", abundance.var="abundance", FUN=cov, bootnumber = 10)
+a1_cyclic <- cyclic_shift(subset(knz_001d, subplot == "A_1"),
+                   time.var = "year",
+                   species.var = "species",
+                   abundance.var = "abundance",
+                   FUN = cov,
+                   bootnumber = 10)
 }
 \references{
 Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.

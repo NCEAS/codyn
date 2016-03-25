@@ -20,13 +20,18 @@
 #'  # Calculate mean rank shifts within replicates
 #'  data(knz_001d)
 #'
-#'  myoutput <- mean_rank_shift(knz_001d,  time.var = "year", species.var = "species",
-#'  abundance.var = "abundance", replicate.var = "subplot")
+#'  myoutput <- mean_rank_shift(knz_001d,  
+#'                      time.var = "year", 
+#'                      species.var = "species",
+#'                      abundance.var = "abundance", 
+#'                      replicate.var = "subplot")
 #'
 #'  # Calculate mean rank shifts for a data frame with no replication
 #'
-#'  myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), time.var = "year",
-#'  species.var = "species",abundance.var = "abundance")
+#'  myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), 
+#'                            time.var = "year",
+#'                            species.var = "species",
+#'                            abundance.var = "abundance")
 #' @export
 mean_rank_shift <- function(df, time.var, 
                             species.var,

@@ -28,10 +28,23 @@
 #' Loreau, Michel, and Claire de Mazancourt. (2008) "Species synchrony and its drivers: Neutral and nonneutral community dynamics in fluctuating environments." The American Naturalist 172, no. 2: E48-66. doi:10.1086/589746.
 #' @examples
 #' data(knz_001d)
-#' synchrony(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
+#' synchrony(knz_001d[knz_001d$subplot=="A_1",],
+#'                      time.var = "year", 
+#'                      species.var = "species",
+#'                      abundance.var = "abundance") # for one subplot
 #' \dontrun{
-#' synchrony(knz_001d, replicate.var = "subplot") # across all subplots
-#' synchrony(knz_001d, replicate.var = "subplot", metric="Gross") # With Gross et al. (2014) metric.
+#' synchrony(knz_001d, 
+#'              time.var = "year", 
+#'              species.var = "species",
+#'              abundance.var = "abundance",
+#'              replicate.var = "subplot") # across all subplots
+#'              
+#' synchrony(knz_001d,  
+#'              time.var = "year", 
+#'              species.var = "species",
+#'              abundance.var = "abundance",
+#'              replicate.var = "subplot", 
+#'              metric="Gross") # With Gross et al. (2014) metric.
 #' }
 #' @export
 synchrony <- function(df, time.var, 

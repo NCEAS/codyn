@@ -2,7 +2,7 @@
 % Please edit documentation in R/temporal_torus_translation.R
 \name{confint.cyclic_shift}
 \alias{confint.cyclic_shift}
-\title{Confidence Intervals Using a Cyclic Shift Significance Testing}
+\title{Confidence Intervals from a Cyclic Shift Permutation}
 \usage{
 \method{confint}{cyclic_shift}(object, parm = "out", level = 0.95, ...)
 }
@@ -21,22 +21,25 @@ A dataframe with the following columns:
  \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
  \item{upperCI: }{A numeric column with the highest confidence interval value.}
  \item{nullMean: }{A numeric column with the average value of the specified test statistic when calculated on a null community.}
- \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
 }
 }
 \description{
-Calculates confidence intervals for a user-specified test statistic that derives from a species x time matrix.
-It does so by employing a cyclic shift that creates a null community by randomly selecting different starting points for each species' time series. This generates a community in which species abundances vary independently but within-species autocorrelation is maintained (Harms et al. 2001, Hallett et al. 2014).
-This randomization is repeated a user-specific number of times and confidence intervals are reported for the resultant null distribution of the test statistic.
-If the data frame includes multiple replicates, the test statistics for the null communities are averaged within each iteration unless specified otherwise.
+Calculates confidence intervals for the S3 object produced by \code{cyclic_shift}
 }
-\details{
-This function was developed to be applied to the variance ratio; to use it for that purpose see the variance_ratio function.
-It is included as a general function here but has very specific requirements. Namely, it is only relevant for functions that return single values, and for which varying species abundances independently is an acceptable way to develop a null test statistic value.
+\examples{
+# Calculate a covariance matrix on a null community
+data(knz_001d)
+a1_cyclic <- cyclic_shift(subset(knz_001d, subplot == "A_1"),
+                   time.var = "year",
+                   species.var = "species",
+                   abundance.var = "abundance",
+                   FUN = cov,
+                   bootnumber = 10)
 
-If applying this function to test statistics other the variance ratio, the input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
-If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
-Null model confidence intervals default to the standard lowest 2.5\% and upper 97.5\% of the null distribution, typically these do not need to be change, but they can be user-modified to set more stringent CIs.
+# Return CI on a1_cyclic
+confint(a1_cyclic)
+# or
+confint.cyclic_shift(a1_cyclic)
 }
 \references{
 Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.

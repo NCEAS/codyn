@@ -38,13 +38,18 @@ If multiple replicates are included in the data frame, that column should be spe
 # Calculate mean rank shifts within replicates
  data(knz_001d)
 
- myoutput <- mean_rank_shift(knz_001d,  time.var = "year", species.var = "species",
- abundance.var = "abundance", replicate.var = "subplot")
+ myoutput <- mean_rank_shift(knz_001d,
+                     time.var = "year",
+                     species.var = "species",
+                     abundance.var = "abundance",
+                     replicate.var = "subplot")
 
  # Calculate mean rank shifts for a data frame with no replication
 
- myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), time.var = "year",
- species.var = "species",abundance.var = "abundance")
+ myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"),
+                           time.var = "year",
+                           species.var = "species",
+                           abundance.var = "abundance")
 }
 \references{
 Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark.  (2008) "Rank clocks and plant community dynamics." Ecology 89, no. 12: 3534-41.

@@ -43,10 +43,23 @@ If multiple replicates are included in the data frame, that column should be spe
 }
 \examples{
 data(knz_001d)
-synchrony(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
+synchrony(knz_001d[knz_001d$subplot=="A_1",],
+                     time.var = "year",
+                     species.var = "species",
+                     abundance.var = "abundance") # for one subplot
 \dontrun{
-synchrony(knz_001d, replicate.var = "subplot") # across all subplots
-synchrony(knz_001d, replicate.var = "subplot", metric="Gross") # With Gross et al. (2014) metric.
+synchrony(knz_001d,
+             time.var = "year",
+             species.var = "species",
+             abundance.var = "abundance",
+             replicate.var = "subplot") # across all subplots
+
+synchrony(knz_001d,
+             time.var = "year",
+             species.var = "species",
+             abundance.var = "abundance",
+             replicate.var = "subplot",
+             metric="Gross") # With Gross et al. (2014) metric.
 }
 }
 \references{

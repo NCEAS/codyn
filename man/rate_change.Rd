@@ -46,8 +46,16 @@ which returns the full set of community distance values and associated time lag 
 }
 \examples{
 data(knz_001d)
-rate_change(knz_001d[knz_001d$subplot=="A_1",]) # for one subplot
-rate_change(knz_001d, replicate.var = "subplot") # across all subplots
+rate_change(knz_001d[knz_001d$subplot=="A_1",],
+                       time.var = "year",
+                       species.var = "species",
+                       abundance.var = "abundance") # for one subplot
+
+rate_change(knz_001d,
+             time.var = "year",
+             species.var = "species",
+             abundance.var = "abundance",
+             replicate.var = "subplot") # across all subplots
 }
 \references{
 Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates andpatterns of variability in ecological communities. - Oikos 91: 285-293.

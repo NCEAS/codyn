@@ -45,13 +45,27 @@ If multiple replicates are included in the data frame, that column should be spe
 data(knz_001d)
 
  # Calculate relative total turnover within replicates
- total.res <- turnover(df=knz_001d,  replicate.var="subplot")
+ total.res <- turnover(df=knz_001d,
+               time.var = "year",
+               species.var = "species",
+               abundance.var = "abundance",
+               replicate.var="subplot")
 
  # Calculate relative species appearances within replicates
- appear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="appearance")
+ appear.res <- turnover(df=knz_001d,
+               time.var = "year",
+               species.var = "species",
+               abundance.var = "abundance",
+               replicate.var="subplot",
+               metric="appearance")
 
  # Calculate relative species disappearances within replicates
- disappear.res <- turnover(df=knz_001d, replicate.var="subplot", metric="disappearance")
+ disappear.res <- turnover(df=knz_001d,
+               time.var = "year",
+               species.var = "species",
+               abundance.var = "abundance",
+               replicate.var="subplot",
+               metric="disappearance")
 }
 \references{
 Cleland, Elsa E., Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Katherine L. Gross, Laureano A. Gherardi, Lauren M. Hallett, et al. (2013) "Sensitivity of grassland plant community composition to spatial vs. temporal variation in precipitation." Ecology 94, no. 8: 1687-96.
