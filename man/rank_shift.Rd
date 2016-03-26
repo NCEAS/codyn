@@ -19,7 +19,7 @@ rank_shift(df, time.var, species.var, abundance.var,
 \item{replicate.var}{The name of the optional replicate column}
 }
 \value{
-The mean_rank_shift function returns a data frame with the following attributes:
+rank_shift returns a data frame with the following columns:
 \itemize{
  \item{time.var_pair: }{A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".}
  \item{MRS: }{A numeric column with the mean rank shift values.}

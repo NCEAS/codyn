@@ -6,7 +6,7 @@
 #' @param species.var The name of the species column
 #' @param abundance.var The name of the abundance column
 #' @param replicate.var The name of the optional replicate column
-#' @return The mean_rank_shift function returns a data frame with the following attributes:
+#' @return rank_shift returns a data frame with the following columns:
 #' \itemize{
 #'  \item{time.var_pair: }{A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".}
 #'  \item{MRS: }{A numeric column with the mean rank shift values.}
@@ -94,7 +94,7 @@ rank_shift <- function(df, time.var,
 #' @param species.var The name of the species column
 #' @param abundance.var The name of the abundance column
 #' @param replicate.var The name of the optional replicate column
-#' @return The mean_rank_shift function returns a data frame with the following attributes:
+#' @return mean_rank_shift returns a data frame with the following columns:
 #' \itemize{
 #'  \item{time.var_pair: }{A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".}
 #'  \item{MRS: }{A numeric column with the mean rank shift values.}
