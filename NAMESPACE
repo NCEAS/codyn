@@ -3,7 +3,7 @@
 S3method(confint,cyclic_shift)
 export(community_stability)
 export(cyclic_shift)
-export(mean_rank_shift)
+export(rank_shift)
 export(rate_change)
 export(rate_change_interval)
 export(synchrony)

@@ -20,40 +20,40 @@
 #'  # Calculate mean rank shifts within replicates
 #'  data(knz_001d)
 #'
-#'  myoutput <- mean_rank_shift(knz_001d,  
-#'                      time.var = "year", 
+#'  myoutput <- mean_rank_shift(knz_001d,
+#'                      time.var = "year",
 #'                      species.var = "species",
-#'                      abundance.var = "abundance", 
+#'                      abundance.var = "abundance",
 #'                      replicate.var = "subplot")
 #'
 #'  # Calculate mean rank shifts for a data frame with no replication
 #'
-#'  myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), 
+#'  myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"),
 #'                            time.var = "year",
 #'                            species.var = "species",
 #'                            abundance.var = "abundance")
 #' @export
-mean_rank_shift <- function(df, time.var, 
+rank_shift <- function(df, time.var,
                             species.var,
-                            abundance.var, 
+                            abundance.var,
                             replicate.var = as.character(NA)) {
 
     # check time and abundance are numeric
     check_numeric(df, time.var, abundance.var)
-  
+
   if(is.na(replicate.var)) {
-    
+
       # check there unique species x time combinations
       check_single_onerep(df, time.var, species.var)
-    
+
       # calculate mean rank shift
       output <- rank_onerep(df, time.var, species.var, abundance.var)
-    
+
       } else {
-        
+
         # check there unique species x time x replicate combinations
         check_single(df, time.var, species.var, replicate.var)
-        
+
         # remove unused levels if replicate.var is a factor, sort
         df[replicate.var] <- if(is.factor(df[[replicate.var]]) == TRUE) {
                 factor(df[[replicate.var]])
@@ -61,7 +61,7 @@ mean_rank_shift <- function(df, time.var,
                 df[replicate.var]
             }
         df<-df[order(df[[replicate.var]]),]
-        
+
         # apply mean rank shift to all replicates
         X <- split(df, df[replicate.var])
         out <- (lapply(X, FUN = rank_onerep, time.var, species.var, abundance.var))
@@ -71,7 +71,7 @@ mean_rank_shift <- function(df, time.var,
         output<-do.call("rbind", out)
         row.names(output)<-NULL
       }
-  
+
     # results
     return(output)
 }
@@ -86,6 +86,16 @@ mean_rank_shift <- function(df, time.var,
 #
 ############################################################################
 
+mean_rank_shift <- function(df, time.var,
+                            species.var,
+                            abundance.var,
+                            replicate.var = as.character(NA)){
+  .Deprecated("rank_shift")
+
+  rank_shift(df = df, time.var = time.var,
+             species.var = species.var, abundance.var = abundance.var,
+             replicate.var = replicate.var)
+}
 
 
 #' Function for calculating mean rank shifts
@@ -107,7 +117,7 @@ rank_onerep <- function(df, time.var,
   }
 
   yearlist <- split(df, df[[time.var]])
-  
+
   ## Compare consecutive pairs of years
   y1 <- yearlist[-length(yearlist)]
   y2 <- yearlist[-1]
