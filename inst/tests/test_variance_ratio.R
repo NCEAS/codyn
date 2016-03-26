@@ -48,6 +48,13 @@ test_that("variance_ratio function returns correct result", {
     expect_equal(nrow(myresults), 1)
     expect_equal(myresults$VR, 1.01443, tolerance = 0.00001)
 
+    expect_warning(variance_ratio(knz_001d, time.var = "year",
+                                  species.var = "species",
+                                  abundance.var = "abundance",
+                                  bootnumber = 1,
+                                  replicate.var = "subplot",
+                                  li = 0.025))
+
 
     # test that works regardless of order of the input replicates
     knz_001dreorder <- knz_001d[order(knz_001d$abundance,
@@ -124,7 +131,7 @@ test_that("variance_ratio function returns correct result", {
                                 abundance.var = "abundance",
                                 bootnumber = 10,
                                 replicate.var = "subplot")
-    
+
     kzcharacter <- knz_001d
     kzcharacter$subplot <- as.character(kzcharacter$subplot)
     myresults6.5 <- variance_ratio(kzcharacter, time.var = "year",
