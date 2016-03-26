@@ -2,6 +2,7 @@
 % Please edit documentation in R/temporal_torus_translation.R
 \name{cyclic_shift}
 \alias{cyclic_shift}
+\alias{temporal_torus_translation}
 \title{Cyclic Shift Permutations}
 \usage{
 cyclic_shift(df, time.var, species.var, abundance.var, replicate.var = NA,
@@ -39,11 +40,11 @@ The input data frame needs to contain columns for time, species and abundance; t
 \examples{
 # Calculate a covariance matrix on a null community
 data(knz_001d)
-a1_cyclic <- cyclic_shift(subset(knz_001d, subplot == "A_1"), 
+a1_cyclic <- cyclic_shift(subset(knz_001d, subplot == "A_1"),
                    time.var = "year",
-                   species.var = "species", 
-                   abundance.var = "abundance", 
-                   FUN = cov, 
+                   species.var = "species",
+                   abundance.var = "abundance",
+                   FUN = cov,
                    bootnumber = 10)
 }
 \references{

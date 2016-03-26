@@ -5,7 +5,7 @@
 \title{Variance Ratio}
 \usage{
 variance_ratio(df, time.var, species.var, abundance.var, bootnumber,
-  replicate.var = NA, average.replicates = TRUE, level = 0.95)
+  replicate.var = NA, average.replicates = TRUE, level = 0.95, li, ui)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
@@ -20,10 +20,14 @@ variance_ratio(df, time.var, species.var, abundance.var, bootnumber,
 
 \item{replicate.var}{The name of the (optional) replicate column}
 
-\item{average.replicates}{If true returns the variance ratio and CIs averaged
-across replicates; if false returns the variance ratio and CI for each replicate. Defaults to true.}
+\item{average.replicates}{If true returns the variance ratio and CIs averaged}
 
 \item{level}{The confidence level for the null mean}
+
+\item{li}{(deprecated) lower confidence interval}
+
+\item{ui}{(deprecated) upper confidence interval
+across replicates; if false returns the variance ratio and CI for each replicate. Defaults to true.}
 }
 \value{
 The variance_ratio function returns a data frame with the following attributes:
@@ -79,21 +83,21 @@ but they can be user-modified to set more stringent CIs.
  # Here the null model is repeated once, for final use it is recommended to set a
  # large bootnumber (eg, 10000)
 
- res_averagedreplicates <- variance_ratio(knz_001d, 
-               time.var = "year", 
+ res_averagedreplicates <- variance_ratio(knz_001d,
+               time.var = "year",
                species.var = "species",
-               abundance.var = "abundance", 
-               bootnumber = 1, 
+               abundance.var = "abundance",
+               bootnumber = 1,
                replicate = "subplot")
 
  #Calculate the variance ratio and CIs for each replicate
 
- res_withinreplicates <- variance_ratio(knz_001d, 
-               time.var = "year", 
+ res_withinreplicates <- variance_ratio(knz_001d,
+               time.var = "year",
                species.var = "species",
-               abundance.var = "abundance", 
-               bootnumber = 1, 
-               replicate = "subplot", 
+               abundance.var = "abundance",
+               bootnumber = 1,
+               replicate = "subplot",
                average.replicates = FALSE)
 }
 
