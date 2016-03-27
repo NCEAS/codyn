@@ -1,4 +1,5 @@
 #' @title Cyclic Shift Permutations
+#' @aliases temporal_torus_translation
 #' @description Performs a user-specified function on a null ecological community created via cyclic shift permutations (Harms et al. 2001, Hallett et al. 2014).
 #' The null community is formed by randomly selected different starting years for the time series of each species.
 #' This generates a null community matrix in which species abundances vary independently but within-species autocorrelation is maintained.
@@ -17,22 +18,22 @@
 #' @examples
 #' # Calculate a covariance matrix on a null community
 #' data(knz_001d)
-#' a1_cyclic <- cyclic_shift(subset(knz_001d, subplot == "A_1"), 
+#' a1_cyclic <- cyclic_shift(subset(knz_001d, subplot == "A_1"),
 #'                    time.var = "year",
-#'                    species.var = "species", 
-#'                    abundance.var = "abundance", 
-#'                    FUN = cov, 
+#'                    species.var = "species",
+#'                    abundance.var = "abundance",
+#'                    FUN = cov,
 #'                    bootnumber = 10)
 #' @references
 #' Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.
 #'
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @export
-cyclic_shift <- function(df, time.var, 
-                         species.var, 
+cyclic_shift <- function(df, time.var,
+                         species.var,
                          abundance.var,
-                         replicate.var=NA, 
-                         FUN, 
+                         replicate.var=NA,
+                         FUN,
                          bootnumber){
 
   ## match arg to check method name
@@ -40,9 +41,9 @@ cyclic_shift <- function(df, time.var,
 
   # check time and abundance are numeric
   check_numeric(df, time.var, abundance.var)
-  
+
   if (is.na(replicate.var)) {
-    
+
     # check there unique species x time combinations
     check_single_onerep(df, time.var = time.var, species.var = species.var)
 
@@ -52,7 +53,7 @@ cyclic_shift <- function(df, time.var,
                                abundance.var = abundance.var, FUN = FUN,
                                bootnumber = bootnumber)
   } else {
-    
+
     # remove unused levels if replicate.var is a factor
     df[replicate.var] <- if (is.factor(df[[replicate.var]]) == TRUE) {
       factor(df[[replicate.var]])
@@ -62,15 +63,15 @@ cyclic_shift <- function(df, time.var,
 
     # check there unique species x time x replicate combinations
     check_single(df, time.var, species.var, replicate.var)
-    
+
     # sort and apply cyclic shift to all reps
     df <- df[order(df[[replicate.var]]),]
     X <- split(df, df[replicate.var])
     lout <- lapply(X, cyclic_shift_onerep, time.var,
                    species.var, abundance.var, FUN, bootnumber)
     out <- do.call("rbind", lout)
-    
-    # take the mean value of each bootnumber interation across reps 
+
+    # take the mean value of each bootnumber interation across reps
     out <- colMeans(out)
   }
 
@@ -96,13 +97,13 @@ cyclic_shift <- function(df, time.var,
 #' @examples
 #' # Calculate a covariance matrix on a null community
 #' data(knz_001d)
-#' a1_cyclic <- cyclic_shift(subset(knz_001d, subplot == "A_1"), 
+#' a1_cyclic <- cyclic_shift(subset(knz_001d, subplot == "A_1"),
 #'                    time.var = "year",
-#'                    species.var = "species", 
-#'                    abundance.var = "abundance", 
-#'                    FUN = cov, 
+#'                    species.var = "species",
+#'                    abundance.var = "abundance",
+#'                    FUN = cov,
 #'                    bootnumber = 10)
-#'  
+#'
 #' # Return CI on a1_cyclic
 #' confint(a1_cyclic)
 #' @references
@@ -110,8 +111,8 @@ cyclic_shift <- function(df, time.var,
 #'
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
 #' @export
-confint.cyclic_shift <- function(object, 
-                                 parm = "out", 
+confint.cyclic_shift <- function(object,
+                                 parm = "out",
                                  level = 0.95, ...){
 
   # set lower and upper confidence intervals
@@ -148,21 +149,21 @@ confint.cyclic_shift <- function(object,
 #' @param comdat A community dataframe
 #' @return rand.comdat A randomized community dataframe
 shuffle_community <- function(comdat){
-  
+
   # create empty matrix with same number of rows, columns as comdat
   nr <- nrow(comdat)
   nc <- ncol(comdat)
   rand.comdat <- matrix(NA, nrow = nr, ncol = nc)
   rand.start <- sample.int(nr, nc, replace = TRUE)
-  
-  # fill in the matrix with cyclic-shifted time series 
+
+  # fill in the matrix with cyclic-shifted time series
   for (i in seq_len(nc)) {
     rand.comdat[, i] <- permute::shuffleSeries(comdat[,i])
   }
   rand.comdat <- as.data.frame(rand.comdat)
   names(rand.comdat) <- names(comdat)
   row.names(rand.comdat) <- row.names(comdat)
-  
+
   # return the null community generated via cyclic shifts
   return(rand.comdat)
 }
@@ -176,19 +177,32 @@ shuffle_community <- function(comdat){
 #' @param FUN A function to calculate on the null community
 #' @param bootnumber The number of null model iterations returned
 #' @return out A vector of  test statistics calculated on the null community
-cyclic_shift_onerep <- function(df, 
-                                time.var, 
-                                species.var,  
-                                abundance.var, 
-                                FUN, 
+cyclic_shift_onerep <- function(df,
+                                time.var,
+                                species.var,
+                                abundance.var,
+                                FUN,
                                 bootnumber){
-  
+
   # check time and abundance are numeric
   check_numeric(df, time.var, abundance.var)
-  
+
   # calculate the test statistic specified by FUN on null communities as many times specified by bootnumber
   out <- replicate(bootnumber, FUN(shuffle_community(transpose_community(df, time.var,  species.var, abundance.var))))
-  
+
   # results
   return(out)
+}
+
+temporal_torus_translation <- function(df, time.var="year",
+                                       species.var="species",
+                                       abundance.var="abundance", FUN){
+  .Deprecated("cyclic_shift")
+
+  cyclic_shift(df = df, time.var = time.var,
+                species.var = species.var,
+                abundance.var = abundance.var,
+                replicate.var = NA,
+                FUN = FUN,
+                bootnumber = 1)
 }

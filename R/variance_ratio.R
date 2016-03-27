@@ -22,6 +22,8 @@
 #' @param level The confidence level for the null mean
 #' @param replicate.var The name of the (optional) replicate column
 #' @param average.replicates If true returns the variance ratio and CIs averaged
+#' @param li (deprecated) lower confidence interval
+#' @param ui (deprecated) upper confidence interval
 #' across replicates; if false returns the variance ratio and CI for each replicate. Defaults to true.
 #' @return The variance_ratio function returns a data frame with the following attributes:
 #' \itemize{
@@ -58,29 +60,36 @@
 #'  # Here the null model is repeated once, for final use it is recommended to set a
 #'  # large bootnumber (eg, 10000)
 #'
-#'  res_averagedreplicates <- variance_ratio(knz_001d, 
-#'                time.var = "year", 
+#'  res_averagedreplicates <- variance_ratio(knz_001d,
+#'                time.var = "year",
 #'                species.var = "species",
-#'                abundance.var = "abundance", 
-#'                bootnumber = 1, 
+#'                abundance.var = "abundance",
+#'                bootnumber = 1,
 #'                replicate = "subplot")
 #'
 #'  #Calculate the variance ratio and CIs for each replicate
 #'
-#'  res_withinreplicates <- variance_ratio(knz_001d, 
-#'                time.var = "year", 
+#'  res_withinreplicates <- variance_ratio(knz_001d,
+#'                time.var = "year",
 #'                species.var = "species",
-#'                abundance.var = "abundance", 
-#'                bootnumber = 1, 
-#'                replicate = "subplot", 
+#'                abundance.var = "abundance",
+#'                bootnumber = 1,
+#'                replicate = "subplot",
 #'                average.replicates = FALSE)
-variance_ratio <- function(df, time.var, 
-                           species.var, 
+variance_ratio <- function(df, time.var,
+                           species.var,
                            abundance.var,
-                           bootnumber, 
+                           bootnumber,
                            replicate.var = NA,
-                           average.replicates = TRUE, 
-                           level = 0.95) {
+                           average.replicates = TRUE,
+                           level = 0.95, li, ui) {
+
+  ## check for use of li, ui
+
+  if ((!missing(li) | !missing(ui))) {
+    warning("argument li and ui are deprecated; please use level instead.",
+            call. = FALSE)
+  }
 
   # check to make sure abundance is numeric data
   check_numeric(df, time.var, abundance.var)
@@ -159,13 +168,13 @@ variance_ratio <- function(df, time.var,
                           abundance.var = abundance.var,
                           replicate.var = NA,
                           bootnumber = bootnumber)
-      
+
       ## calculate confidence intervals for each
       null_intervals <- lapply(null_list, confint)
 
       ## combine as data.frames and preserve replicate var
       repnames <- lapply(names(null_intervals), as.data.frame)
-      
+
       ## combine replicate names with intervals, then combine them all
       nullout <- do.call("rbind", Map(cbind, repnames, null_intervals))
 
@@ -178,7 +187,7 @@ variance_ratio <- function(df, time.var,
       ## combine as data.frames and preserve replicate var
       VRnames <- lapply(names(VR_list), as.data.frame)
       VR_df <- lapply(VR_list, as.data.frame)
-      
+
       ## combine replicate names with intervals, then combine them all
       VRout <- do.call("rbind", Map(cbind, VRnames, VR_df))
 

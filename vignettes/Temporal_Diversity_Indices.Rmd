@@ -19,7 +19,7 @@ Many measures of community structure, such as diversity indices and rank-abundan
 
 - `turnover` calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
 
-- `mean_rank_shift` quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive time points. 
+- `rank_shift` quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive time points. 
 This metric goes hand-in-hand with "rank clocks," a useful visualization tool of shifts in species ranks. 
 
 - `rate_change` analyzes differences in species composition between samples at increasing time lags. It reflects the rate of directional change in community composition. The associated function `rate_change_interval` returns the full set of community distance values and associated time lag intervals 
@@ -182,16 +182,16 @@ ggplot(aggdat, aes(year, abundance, color = species)) +
 
 ### Mean rank shifts
 
-The `mean_rank_shift` function describes relative changes in species rank abundances, which indicate the degree of species reording between two time points. This metric is calculated as:
+The `rank_shift` function describes relative changes in species rank abundances, which indicate the degree of species reording between two time points. This metric is calculated as:
 
 $$ MRS = {\sum_{i=1}^{N} (|R_i,t+1 - R_i,t|})/N $$
 
 where $N$ is the number of species in common in both time points, $t$ is the time point, $R_i,t$ is the relative rank of species $i$ in time $t$.
 
-`mean_rank_shift` requires a data frame with columns for species, time and abundance, and includes an optional argument to specify a column for spatial replicates.
+`rank_shift` requires a data frame with columns for species, time and abundance, and includes an optional argument to specify a column for spatial replicates.
 
 ```{r}
-KNZ_rankshift <- mean_rank_shift(df=collins08,
+KNZ_rankshift <- rank_shift(df=collins08,
                         time.var = "year",
                         species.var = "species",
                         abundance.var = "abundance", 
@@ -203,9 +203,9 @@ KNZ_rankshift$year <- as.numeric(substr(KNZ_rankshift$year_pair, 6,9))
 kable(head(KNZ_rankshift))
 ```
 
-If `replicate.var` is not specified but the dataset in fact includes replicates, `mean_rank_shift` will be calculated using all species present in the datset. For `collins08`, this would return mean rank shifts for the burned and unburned areas combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
+If `replicate.var` is not specified but the dataset in fact includes replicates, `rank_shift` will be calculated using all species present in the datset. For `collins08`, this would return mean rank shifts for the burned and unburned areas combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
 ```{r}
-KNZ_rankshift_agg <- mean_rank_shift(df = collins08,
+KNZ_rankshift_agg <- rank_shift(df = collins08,
                         time.var = "year",
                         species.var = "species",
                         abundance.var = "abundance")

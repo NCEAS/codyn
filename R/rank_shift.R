@@ -6,7 +6,7 @@
 #' @param species.var The name of the species column
 #' @param abundance.var The name of the abundance column
 #' @param replicate.var The name of the optional replicate column
-#' @return The mean_rank_shift function returns a data frame with the following attributes:
+#' @return rank_shift returns a data frame with the following columns:
 #' \itemize{
 #'  \item{time.var_pair: }{A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".}
 #'  \item{MRS: }{A numeric column with the mean rank shift values.}
@@ -20,40 +20,40 @@
 #'  # Calculate mean rank shifts within replicates
 #'  data(knz_001d)
 #'
-#'  myoutput <- mean_rank_shift(knz_001d,  
-#'                      time.var = "year", 
+#'  myoutput <- rank_shift(knz_001d,
+#'                      time.var = "year",
 #'                      species.var = "species",
-#'                      abundance.var = "abundance", 
+#'                      abundance.var = "abundance",
 #'                      replicate.var = "subplot")
 #'
 #'  # Calculate mean rank shifts for a data frame with no replication
 #'
-#'  myoutput_singlerep <- mean_rank_shift(subset(knz_001d, subplot=="A_1"), 
+#'  myoutput_singlerep <- rank_shift(subset(knz_001d, subplot=="A_1"),
 #'                            time.var = "year",
 #'                            species.var = "species",
 #'                            abundance.var = "abundance")
 #' @export
-mean_rank_shift <- function(df, time.var, 
+rank_shift <- function(df, time.var,
                             species.var,
-                            abundance.var, 
+                            abundance.var,
                             replicate.var = as.character(NA)) {
 
     # check time and abundance are numeric
     check_numeric(df, time.var, abundance.var)
-  
+
   if(is.na(replicate.var)) {
-    
+
       # check there unique species x time combinations
       check_single_onerep(df, time.var, species.var)
-    
+
       # calculate mean rank shift
       output <- rank_onerep(df, time.var, species.var, abundance.var)
-    
+
       } else {
-        
+
         # check there unique species x time x replicate combinations
         check_single(df, time.var, species.var, replicate.var)
-        
+
         # remove unused levels if replicate.var is a factor, sort
         df[replicate.var] <- if(is.factor(df[[replicate.var]]) == TRUE) {
                 factor(df[[replicate.var]])
@@ -61,7 +61,7 @@ mean_rank_shift <- function(df, time.var,
                 df[replicate.var]
             }
         df<-df[order(df[[replicate.var]]),]
-        
+
         # apply mean rank shift to all replicates
         X <- split(df, df[replicate.var])
         out <- (lapply(X, FUN = rank_onerep, time.var, species.var, abundance.var))
@@ -71,7 +71,7 @@ mean_rank_shift <- function(df, time.var,
         output<-do.call("rbind", out)
         row.names(output)<-NULL
       }
-  
+
     # results
     return(output)
 }
@@ -86,6 +86,34 @@ mean_rank_shift <- function(df, time.var,
 #
 ############################################################################
 
+#' @title Mean Rank Shifts
+#' @description A measure of the relative change in species rank abundances, which indicates shifts in relative abundances over time (Collins et al. 2008).
+#' Mean rank shifts are calculated as the average difference in species' ranks between consecutive time periods, among species that are present across the entire time series.
+#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @param time.var The name of the time column
+#' @param species.var The name of the species column
+#' @param abundance.var The name of the abundance column
+#' @param replicate.var The name of the optional replicate column
+#' @return mean_rank_shift returns a data frame with the following columns:
+#' \itemize{
+#'  \item{time.var_pair: }{A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".}
+#'  \item{MRS: }{A numeric column with the mean rank shift values.}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
+#' }
+#' @details
+#' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
+#' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
+#' @export
+mean_rank_shift <- function(df, time.var,
+                            species.var,
+                            abundance.var,
+                            replicate.var = as.character(NA)){
+  .Deprecated("rank_shift")
+
+  rank_shift(df = df, time.var = time.var,
+             species.var = species.var, abundance.var = abundance.var,
+             replicate.var = replicate.var)
+}
 
 
 #' Function for calculating mean rank shifts
@@ -107,7 +135,7 @@ rank_onerep <- function(df, time.var,
   }
 
   yearlist <- split(df, df[[time.var]])
-  
+
   ## Compare consecutive pairs of years
   y1 <- yearlist[-length(yearlist)]
   y2 <- yearlist[-1]
