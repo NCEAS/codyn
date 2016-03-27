@@ -120,7 +120,7 @@ kable(KNZ_A1_variance_ratio)
 #### General cyclic shift function
 `codyn` also includes the option to apply a cyclic shift permutation on other test statistics:
 
-- `cyclic_shift`  returns an S3 oject of test statistics from a user-specified function when applied to a null community generated via a cyclic shift permutation. It requires a dataframe with a `species.var`, `time.var` and `abundance.var` column, and optional `replicate.var` column. The user-specified function should operate on a community matrix (e.g., `cov`).
+- `cyclic_shift`  returns an S3 object of test statistics from a user-specified function when applied to a null community generated via a cyclic shift permutation. It requires a dataframe with a `species.var`, `time.var` and `abundance.var` column, and optional `replicate.var` column. The user-specified function should operate on a community matrix (e.g., `cov`).
 
 The length of the "out" param in the object is the number of null iterations as specified by `bootnumber`). If multiple replicates are specified, null values are averaged among replicates for each  interation, but a different cyclic shift permutation is applied to each replicate within an interation. 
 
