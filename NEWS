@@ -10,6 +10,7 @@ BUG FIXES
 
 * selectively import from stats and assertthat (#64)
 * adjustments to coding consistency (#63)
+* import 'stats' and 'permute' package methods (#69)
 * Improved function and parameter names
 
 Version 1.0.1
