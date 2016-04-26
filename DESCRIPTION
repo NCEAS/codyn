@@ -1,6 +1,6 @@
 Package: codyn
 Title: Community Dynamics Metrics
-Version: 1.0.1.9000
+Version: 1.1.0
 Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")),
     person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")),
     person("A. Andrew M.", "MacDonald", email="a.a.m.macdonald@gmail.com", role=c("aut")),
@@ -10,7 +10,7 @@ Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", rol
     person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")),
     person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")),
     person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
-Date: 2016-01-14
+Date: 2016-04-26
 Description: A toolbox of ecological community dynamics metrics that are
     explicitly temporal. Functions fall into two categories: temporal diversity
     indices and community stability metrics. The diversity indices are temporal
