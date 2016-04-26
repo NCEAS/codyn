@@ -46,6 +46,7 @@
 #'              replicate.var = "subplot", 
 #'              metric="Gross") # With Gross et al. (2014) metric.
 #' }
+#' @importFrom stats aggregate as.formula sd
 #' @export
 synchrony <- function(df, time.var, 
                       species.var, 

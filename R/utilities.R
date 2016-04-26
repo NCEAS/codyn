@@ -94,6 +94,7 @@ check_multispp <- function(df, species.var, replicate.var){
 
 #' Utility function to stop calculations if the species never change in a replicate
 #' @param comdat A community dataframe
+#' @importFrom stats var
 check_sppvar <- function(comdat){
   sppvar <- sum(apply(comdat, 2, var))
   if(sppvar == 0)

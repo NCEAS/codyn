@@ -52,6 +52,7 @@
 #'
 #'  Schluter, Dolph. (1984) "A Variance Test for Detecting Species Associations,
 #'  with Some Example Applications." Ecology 65, no. 3: 998-1005. doi:10.2307/1938071.
+#' @importFrom stats aggregate confint
 #' @export
 #' @examples
 #'  data(knz_001d)

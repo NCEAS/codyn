@@ -41,6 +41,7 @@
 #'              species.var = "species",
 #'              abundance.var = "abundance",
 #'              replicate.var = "subplot") # across all subplots
+#' @importFrom stats coef
 #' @export
 rate_change <- function(df, time.var, 
                         species.var, 

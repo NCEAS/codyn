@@ -28,6 +28,7 @@
 #' Hallett, Lauren M., Joanna S. Hsu, Elsa E. Cleland, Scott L. Collins, Timothy L. Dickson, Emily C. Farrer, Laureano A. Gherardi, et al. "Biotic Mechanisms of Community Stability Shift along a Precipitation Gradient." Ecology 95, no. 6 (2014): 1693-1700.
 #'
 #' Harms, Kyle E., Richard Condit, Stephen P. Hubbell, and Robin B. Foster. "Habitat Associations of Trees and Shrubs in a 50-Ha Neotropical Forest Plot." Journal of Ecology 89, no. 6 (2001): 947-59.
+#' @importFrom stats confint
 #' @export
 cyclic_shift <- function(df, time.var,
                          species.var,
@@ -148,6 +149,7 @@ confint.cyclic_shift <- function(object,
 #'
 #' @param comdat A community dataframe
 #' @return rand.comdat A randomized community dataframe
+#' @importFrom permute shuffleSeries
 shuffle_community <- function(comdat){
 
   # create empty matrix with same number of rows, columns as comdat

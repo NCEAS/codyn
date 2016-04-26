@@ -25,6 +25,7 @@
 #'                      time.var = "year", 
 #'                      abundance.var = "abundance",
 #'                      replicate.var = "subplot") # across all subplots
+#' @importFrom stats aggregate as.formula sd
 #' @export
 
 community_stability <- function(df, time.var,
