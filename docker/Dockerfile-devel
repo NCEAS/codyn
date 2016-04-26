@@ -2,6 +2,9 @@
 FROM rocker/rstudio-daily:verse
 MAINTAINER Matt Jones jones@nceas.ucsb.edu
 
+RUN R --no-save --vanilla -e \
+    'options(repos = c(CRAN = "https://cran.rstudio.com")); install.packages("permute")'
+
 # Add the texlive path from our linked container
 ENV PATH $PATH:/usr/local/texlive/2014/bin/x86_64-linux/
 

@@ -2,6 +2,9 @@
 FROM rocker/ropensci
 MAINTAINER Matt Jones jones@nceas.ucsb.edu
 
+RUN R --no-save --vanilla -e \
+    'options(repos = c(CRAN = "https://cran.rstudio.com")); install.packages("permute")'
+
 # Copy check script into the container
 COPY docker /root
 
