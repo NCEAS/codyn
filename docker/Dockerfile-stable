@@ -2,6 +2,8 @@
 FROM rocker/ropensci
 MAINTAINER Matt Jones jones@nceas.ucsb.edu
 
+RUN apt-get install -y xvfb xauth xfonts-base
+
 RUN R --no-save --vanilla -e \
     'options(repos = c(CRAN = "https://cran.rstudio.com")); install.packages("permute")'
 
