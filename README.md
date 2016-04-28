@@ -16,7 +16,7 @@ The functions in `codyn` implement metrics that are explicitly temporal, and inc
 
 For an overview of __codyn__, see:
     
-    - Hallett et al. (2016) *codyn: An R package of community dynamics metrics*. Methods in Ecology and Evolution. http://doi.org/10.1111/2041-210X.12569
+- Hallett et al. (2016) *codyn: An R package of community dynamics metrics*. Methods in Ecology and Evolution. http://doi.org/10.1111/2041-210X.12569
 
 ## Installation
 From CRAN, the package can be installed using standard tools:
