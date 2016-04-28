@@ -15,6 +15,7 @@ A package to analyze long-term ecological community datasets.
 The functions in `codyn` implement metrics that are explicitly temporal, and include the option to calculate them over multiple replicates. Functions fall into two categories: temporal diversity indices and community stability metrics. The diversity indices in `codyn` are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. Specifically, `codyn` includes functions to calculate species turnover, mean rank shifts and lags in community similarity between time points. The community stability metrics in `codyn` calculate overall stability and patterns of species covariance and synchrony over time. Finally, `codyn` contains vignettes that describe methods and reproduce figures from published papers to help users contextualize and apply functions to their own data.
 
 For an overview of __codyn__, see:
+    
     - Hallett et al. (2016) *codyn: An R package of community dynamics metrics*. Methods in Ecology and Evolution. http://doi.org/10.1111/2041-210X.12569
 
 ## Installation
