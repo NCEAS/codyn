@@ -62,51 +62,51 @@ test_that("rank_shift loads and returns correct result", {
   	                      species.var = "sp",
   	                      abundance.var = "subplot"))
 
-	#test the mean_rank_shift function
+	#test the rank_shift function
   	#test that works on a single replicate
-  	myresults3<-mean_rank_shift(dat1, replicate.var=NA, time.var="year", species.var="species", abundance.var="abundance")
+  	myresults3<-rank_shift(dat1, replicate.var=NA, time.var="year", species.var="species", abundance.var="abundance")
   	expect_that(myresults3, equals(myresults2))
 
   	#test that works whether replicate is a character or factor
-  	myresults4<-mean_rank_shift(dat3, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
+  	myresults4<-rank_shift(dat3, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
   	expect_that((myresults4[2,2]), equals(myresults3[2,2]))
 
   	#test that works with multiple replicates
-  	myresults5<-mean_rank_shift(knz_001d, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
+  	myresults5<-rank_shift(knz_001d, replicate.var="subplot", time.var="year", species.var="species", abundance.var="abundance")
   	expect_that(myresults4[2,2], equals(myresults5[2,2]))
 
     #test that works with different column names
-  	myresults6<-mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
+  	myresults6<-rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
   	expect_that(myresults6[2,2], equals(myresults5[2,2]))
 
 	#test that works regardless of whether parameter is specified or just ordered
-  	myresults7<-mean_rank_shift(knz_001d,  "year", "species", "abundance", "subplot")
+  	myresults7<-rank_shift(knz_001d,  "year", "species", "abundance", "subplot")
   	expect_that(myresults7, is_identical_to(myresults5))
 
 	#test that works with different column orders if names specified
-  	myresults8<-mean_rank_shift(knz_001d, abundance.var="abundance", replicate.var="subplot", species.var="species", time.var="year")
+  	myresults8<-rank_shift(knz_001d, abundance.var="abundance", replicate.var="subplot", species.var="species", time.var="year")
   	expect_that(myresults8, is_identical_to(myresults5))
 
   	#test that works with different column names
-  	myresults9<-mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
+  	myresults9<-rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
   	expect_that(myresults9[2,2], equals(myresults5[2,2]))
 
 	#test that it works even if there are additional unused columns
   	knz_001d3<-knz_001d
   	knz_001d3$site<-"KNZ"
-  	myresults10<-mean_rank_shift(knz_001d3, "year", "species", "abundance", "subplot")
+  	myresults10<-rank_shift(knz_001d3, "year", "species", "abundance", "subplot")
   	expect_that(myresults10, is_identical_to(myresults5))
 
   	#test that gives error when abundance column is a character or factor
-  	expect_error(mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randcharacter"))
-  	expect_error(mean_rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randfactor"))
+  	expect_error(rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randcharacter"))
+  	expect_error(rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="randfactor"))
 
   	# test that works regardless of order of the input replicates
   	knz_001dreorder <-knz_001d[order(knz_001d$abundance, knz_001d$year, knz_001d$species),]
-  	myresults<-mean_rank_shift(knz_001d, time.var="year", species.var="species", abundance.var="abundance",
+  	myresults<-rank_shift(knz_001d, time.var="year", species.var="species", abundance.var="abundance",
   	                            replicate.var="subplot")
 
-  	myresults_reorder<-mean_rank_shift(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance",
+  	myresults_reorder<-rank_shift(knz_001dreorder, time.var="year", species.var="species", abundance.var="abundance",
   	                            replicate.var="subplot")
   	expect_equal(myresults, myresults_reorder)
 
