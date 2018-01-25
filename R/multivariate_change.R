@@ -6,8 +6,9 @@
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var the neame of the optional treatment column
-
-
+#' 
+#' @importFrom vegan vegdist betadisper
+#' 
 multivariate_change <- function(df, time.var, species.var, abundance.var, replicate.var, treatment.var = NULL){
   
   df <- as.data.frame(df)
@@ -39,7 +40,6 @@ multivariate_change <- function(df, time.var, species.var, abundance.var, replic
 #######Private Functions
 
 mult_change <- function(df, time.var, species.var, abundance.var, replicate.var){
-  require(vegan)
 
   #get years
 timestep <- sort(unique(df[[time.var]]))

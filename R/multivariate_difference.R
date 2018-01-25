@@ -7,6 +7,8 @@
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var the name of the treatment column
 #' 
+#' @importFrom vegan vegdist betadisper
+#' 
 multivariate_difference <- function(df, time.var=NULL, species.var, abundance.var, replicate.var, treatment.var){
   
   if(is.null(time.var)){
@@ -33,12 +35,11 @@ multivariate_difference <- function(df, time.var=NULL, species.var, abundance.va
 ###private functions
 
 mult_diff <- function(df, species.var, abundance.var, replicate.var, treatment.var){
-  require(vegan)
-  
+
   #transpose data
   df2<-subset(df, select = c(species.var, abundance.var, replicate.var, treatment.var))
   df2$id <- paste(df2[[treatment.var]], df2[[replicate.var]], sep="##")
-  species<-codyn:::transpose_community(df2, 'id', species.var, abundance.var)
+  species <- transpose_community(df2, 'id', species.var, abundance.var)
   species$id <- row.names(species)
   speciesid <- do.call(rbind.data.frame, strsplit(species$id, split="##"))
   colnames(speciesid)[1] <- treatment.var
