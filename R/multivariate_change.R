@@ -9,6 +9,7 @@
 #' 
 #' @importFrom vegan vegdist betadisper
 #' 
+#' @export
 multivariate_change <- function(df, time.var, species.var, abundance.var, replicate.var, treatment.var = NULL){
   
   df <- as.data.frame(df)

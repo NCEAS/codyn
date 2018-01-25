@@ -6,6 +6,7 @@
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var the name of the treatment column
+#' @export
 #' 
 #' @importFrom vegan vegdist betadisper
 #' 

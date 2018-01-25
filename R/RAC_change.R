@@ -8,7 +8,7 @@
 #' @param replicate.var The name of the optional replicate column 
 #' 
 #' 
-#' TO DO: Add time.var_pair
+#' @export
 
 RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var=NULL) {
   if(is.null(replicate.var)){

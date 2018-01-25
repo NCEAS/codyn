@@ -14,8 +14,7 @@
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column.}
 #'  \item{rank: }{A numeric column with the species rank; a rank of 1 indicates the species was most abundant in that time period. Species that are not present in that time period have the largest rank value.}
 #' }
-#' @export
-#' 
+#'
 add_ranks_time <- function(df, time.var, 
                            species.var, 
                            abundance.var,  
