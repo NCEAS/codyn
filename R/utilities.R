@@ -101,3 +101,94 @@ check_sppvar <- function(comdat){
     stop("One or more replicates consist of species that never vary;
          please remove these replicates before calculation")}
 
+#' Utility function to calculate richness
+#' @param x Vector of abundance of each species
+S <- function(x){
+  x1 <- x[x!=0 & !is.na(x)]
+  stopifnot(x1==as.numeric(x1))
+  length(x1)
+}
+
+#' Utility function to calculate EQ evenness from Smith and Wilson 1996
+#' @param x Vector of abundance of each species
+#' If all abundances are equal it returns a 1
+EQ <- function(x){
+  x1 <- x[x!=0 & !is.na(x)]
+  if (length(x1) == 1) {
+    return(NA)
+  }
+  if (abs(max(x1) - min(x1)) < .Machine$double.eps^0.5) {##bad idea to test for zero, so this is basically doing the same thing testing for a very small number
+    return(1)
+  }
+  r <- rank(x1, ties.method = "average")
+  r_scale <- r/max(r)
+  x_log <- log(x1)
+  fit <- lm(r_scale~x_log)
+  b <- fit$coefficients[[2]]
+  2/pi*atan(b)
+}
+
+trt_perms <- function(df, treatment.var) {
+  
+  ## create a dataframe of all unique treatment combinations
+  namesvector = unique(df[[treatment.var]])
+  
+  myperms <- as.data.frame(cbind(cola = as.character(), colb = as.character()))
+  for (i in 1:length(namesvector)) {
+    cola <- as.character(namesvector[i])
+    for (j in i:length(namesvector)) {
+      if(i != j){
+        colb <- as.character(namesvector[j])
+        suba <- cbind(cola, colb)
+        myperms <- rbind(suba, myperms)
+      }
+    }
+  }
+  
+  names(myperms) <- c(treatment.var, paste(treatment.var, "2", sep = ""))
+  
+  return(myperms)
+}
+
+rep_perms <- function(df, replicate.var) {
+  
+  namesvector = unique(df[[replicate.var]]) 
+  
+  myperms <- as.data.frame(cbind(cola=as.character(), colb = as.character()))
+  
+  for (i in 1:length(namesvector)) {
+    cola <- as.character(namesvector[i])
+    
+    for (j in i:length(namesvector)) {
+      if(i != j) {
+        colb <- as.character(namesvector[j])
+        suba <- cbind(cola, colb)
+        myperms <- rbind(suba, myperms)
+      }
+    }
+  }
+  
+  names(myperms) <- c(replicate.var, paste(replicate.var, "2", sep = ""))
+  return(myperms)
+  
+}
+
+#' Add zeros to a long-form species and abundace dataframe
+#'
+#' @param df A dataframe containing time.var, species.var and abundance.var columns
+#' @param time.var The name of the time column from df
+#' @param species.var The name of the species column from df
+#' @param abundance.var The name of the abundance column from df
+#' @return A dataframe with the same columns as df, but with zeros added for species that were present at some point in the time series but not the particular time period.
+#' 
+fill_zeros_rep <- function(df, replicate.var, species.var, abundance.var){
+  df2 <- subset(df, select = c(replicate.var,species.var,abundance.var))
+  if(any(is.na(df2[[species.var]]))) stop("Species names are missing")
+  wide <- reshape(df2, idvar = replicate.var, timevar = species.var, direction = "wide")
+  wide[is.na(wide)] <- 0
+  
+  long<-reshape(wide, idvar = replicate.var, ids = replicate.var, time = names(wide), timevar = abundance.var, direction = "long")
+  colnames(long)[3] <- abundance.var
+  
+  return(long)
+}
