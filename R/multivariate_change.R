@@ -48,7 +48,7 @@ timestep <- sort(unique(df[[time.var]]))
 #transpose data
 df2<-subset(df, select = c(time.var, species.var, abundance.var, replicate.var))
 df2$id <- paste(df2[[time.var]], df2[[replicate.var]], sep="##")
-species<-codyn:::transpose_community(df2, 'id', species.var, abundance.var)
+species <- transpose_community(df2, 'id', species.var, abundance.var)
 species$id <- row.names(species)
 speciesid <- do.call(rbind.data.frame, strsplit(species$id, split="##"))
 colnames(speciesid)[1] <- "time_forfixxyz"
