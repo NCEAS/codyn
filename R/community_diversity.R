@@ -7,8 +7,8 @@
 #' @param replicate.var The name of the optional replicate column 
 #' @param metric The diversity metric to return:
 #' \itemize{
-#'  \item{"Shannon": }{The default metric, calculates Shannon diversity.}
-#'  \item{"Simpson": }{Calculates Simpson diversity.}
+#'  \item{"Shannon": }{The default metric, calculates Shannon's diversity.}
+#'  \item{"Simpson": }{Calculates Inverse of Simpson's diversity.}
 #' }
 #' 
 #' @return The community_diversity function returns a data frame with the following attributes:
@@ -16,7 +16,7 @@
 #'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
 #'  \item{Shannon: }{A numeric column of Shannons diversity if metric = "Shannon"}
-#'  \item{Simpson: }{A numeric column of Simpsons diversity if metric = "Simpson"}
+#'  \item{Simpson: }{A numeric column of Simpsons diversity if metric = "InvSimpson"}
 #' }
 #' @examples
 #' data(pplots)
@@ -30,7 +30,7 @@
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     abundance.var = "relative_cover", 
-#'                     metric = "Simpson") # for Simpson's diversity metric
+#'                     metric = "InvSimpson") # for Inverse of Simpson's diversity metric
 #'
 #' #Example with no replicates
 #' community_diversity(subset(pplots, plot==25), 
@@ -48,7 +48,7 @@
 community_diversity <- function(df,  time.var = NULL, 
                                 abundance.var, 
                                 replicate.var = NULL,  
-                                metric = c("Shannon", "Simpson")) {
+                                metric = c("Shannon", "InvSimpson")) {
   
   # verify metric choice
   metric <- match.arg(metric)
@@ -63,7 +63,7 @@ community_diversity <- function(df,  time.var = NULL,
   
   if(metric == "Shannon") {
       comdiv <- aggregate(myformula, data = df, FUN = function(x) diversity = Shannon(x))
-  } else if(metric == "Simpson") {
+  } else if(metric == "InvSimpson") {
       comdiv <- aggregate(myformula, data = df, FUN = function(x) diversity = Simpson(x))
   }
   
@@ -85,7 +85,7 @@ community_diversity <- function(df,  time.var = NULL,
 #' @param x the vector of abundances of each species
 #' @param N the total abundance
 #' @param p the vector of relative abundances of each species
-Simpson <- function(x, N = sum(x[x!=0&!is.na(x)]), ps = x[x!=0&!is.na(x)]/N, p2=ps*ps ){
+InvSimpson <- function(x, N = sum(x[x!=0&!is.na(x)]), ps = x[x!=0&!is.na(x)]/N, p2=ps*ps ){
   D <- sum(p2)
   1/D
 }

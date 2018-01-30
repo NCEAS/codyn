@@ -49,7 +49,7 @@
 community_structure <- function(df,  time.var = NULL, 
                                 abundance.var, 
                                 replicate.var = NULL, 
-                                metric = c("EQ", "Simpson")) {
+                                metric = c("EQ", "SimpsonEvenness")) {
                                   
   # verify metric choice
   metric <- match.arg(metric)
@@ -67,7 +67,7 @@ community_structure <- function(df,  time.var = NULL,
       data.frame,
       aggregate(myformula, data = df,
                 FUN = function(x) c(SpR = S(x), evenness = EQ(x))))
-  } else if(metric == "Simpson"){
+  } else if(metric == "SimpsonEvenness"){
     comstruct <- do.call(
       data.frame,
       aggregate(myformula, data = df,
