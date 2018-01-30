@@ -24,26 +24,25 @@
 #' community_diversity(subset(pplots, plot==25|plot==6), 
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
-#'                     abundance.var = "relative_cover")# For Shannon's diversity metric
+#'                     abundance.var = "relative_cover") # for Shannon's diversity metric
 #'
 #' community_diversity(subset(pplots, plot==25|plot==6), 
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     abundance.var = "relative_cover", 
-#'                     metric = "Simpson") #For Simpson's diversity metric
+#'                     metric = "Simpson") # for Simpson's diversity metric
 #'
 #' #Example with no replicates
 #' community_diversity(subset(pplots, plot==25), 
 #'                     time.var="year", 
-#'                     abundance.var = "relative_cover")#for Shannon's diversity metric
+#'                     abundance.var = "relative_cover") # for Shannon's diversity metric
 #'
 #' #Example with only a single time point
 #' community_diversity(subset(pplots, year==2002&plot==25|year==2002&plot==6), 
 #'                     replicate.var = "plot", 
-#'                     abundance.var = "relative_cover")# For Shannon's diversity metric
+#'                     abundance.var = "relative_cover") # for Shannon's diversity metric
 #'
 #'
-
 #' @export
 #'
 community_diversity <- function(df,  time.var = NULL, 
