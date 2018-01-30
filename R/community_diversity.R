@@ -64,7 +64,7 @@ community_diversity <- function(df,  time.var = NULL,
   if(metric == "Shannon") {
       comdiv <- aggregate(myformula, data = df, FUN = function(x) diversity = Shannon(x))
   } else if(metric == "InvSimpson") {
-      comdiv <- aggregate(myformula, data = df, FUN = function(x) diversity = Simpson(x))
+      comdiv <- aggregate(myformula, data = df, FUN = function(x) diversity = InvSimpson(x))
   }
   
   names(comdiv)[names(comdiv) == abundance.var] <- metric
