@@ -1,6 +1,6 @@
 #' @title Community Diversity
 #' @description Calculates Shannon's or Simpson's diversity of a community.  
-#' @param df A data frame containing species and abundance columns and optional columns of time and/or replicates. Note that at least time.var or replicate.var must be specified.
+#' @param df A data frame containing species and abundance columns and optional columns of time and/or replicate. Note that at least time.var or replicate.var must be specified.
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
