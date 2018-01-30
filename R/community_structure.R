@@ -20,24 +20,24 @@
 #'  \item{Simpson: }{A numeric column of Simpsons evenness if evenness = "SimpEven"}
 #' }
 #' @references Smith, B. and Wilson, J. B. 1996. A consumer's guide to evnness indices. Oikos 76: 70-82.
-#' @example 
+#' @example
 #' data(pplots)
 #' #Example with both time and replicates
 #' community_structure(subset(pplots, plot==25|plot==6), 
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
-#'                     abundance.var = "relative_cover")# For EQ evenness metric
+#'                     abundance.var = "relative_cover") # for EQ evenness metric
 #'
 #' community_structure(subset(pplots, plot==25|plot==6), 
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     abundance.var = "relative_cover", 
-#'                     metric = "SimpEven") #For Simpson's evenness metric
+#'                     metric = "SimpEven") # for Simpson's evenness metric
 #'
 #' #Example with no replicates
 #' community_structure(subset(pplots, plot==25), 
 #'                     time.var="year", 
-#'                     abundance.var = "relative_cover")#for EQ evenness metric
+#'                     abundance.var = "relative_cover") # for EQ evenness metric
 #'
 #' #Example with only a single time point
 #' community_structure(subset(pplots, year==2002&plot==25|year==2002&plot==6), 
@@ -45,62 +45,41 @@
 #'                     abundance.var = "relative_cover")# For EQ evenness metric
 #'
 #' @export
-#'
 
 community_structure <- function(df,  time.var = NULL, 
                                 abundance.var, 
                                 replicate.var = NULL, 
-                                evenness = "EQ") {
-  
+                                metric = c("EQ", "Simpson")) {
+                                  
+  # verify metric choice
+  metric <- match.arg(metric)
+
   if(is.null(replicate.var)) {
     myformula <- as.formula(paste(abundance.var, "~", time.var))
-    
-    if(evenness == "EQ") {
-    comstruct <- do.call(data.frame,aggregate(myformula, data = df, FUN = function(x) c(SpR = S(x), evenness = EQ(x))))
-    names(comstruct)[2] <- "richness"
-    names(comstruct)[3] <- "evenness_EQ"
-    
-    } else {
-      
-    comstruct <- do.call(data.frame,aggregate(myformula, data = df, FUN = function(x) c(SpR = S(x), evenness = SimpEven(x))))
-    names(comstruct)[2] <- "richness"
-    names(comstruct)[3] <- "evenness_Simpson"
-    
-    } 
-    
+  } else if(is.null(time.var)) {
+    myformula <- as.formula(paste(abundance.var, "~", replicate.var))
   } else {
-    
-    if(is.null(time.var)) {
-      myformula <- as.formula(paste(abundance.var, "~", replicate.var))
-      
-      if(evenness == "EQ") {
-        comstruct <- do.call(data.frame,aggregate(myformula, data = df, FUN = function(x) c(SpR = S(x), evenness = EQ(x))))
-        names(comstruct)[2] <- "richness"
-        names(comstruct)[3] <- "evenness_EQ"
-        
-      } else {
-        comstruct <- do.call(data.frame,aggregate(myformula, data = df, FUN = function(x) c(SpR = S(x), evenness = SimpEven(x))))
-        names(comstruct)[2] <- "richness"
-        names(comstruct)[3] <- "evenness_Simpson"
-      }
-      
-    } else {
     myformula <- as.formula(paste(abundance.var, "~", time.var, "+", replicate.var))
-  
-    if(evenness == "EQ"){
-    comstruct <- do.call(data.frame, aggregate(myformula, data = df, FUN = function(x) c(SpR = S(x), evenness = EQ(x))))
-    names(comstruct)[3] <- "richness"
-    names(comstruct)[4] <- "evenness_EQ"
-    
-  } else {
-    comstruct <- do.call(data.frame,aggregate(myformula, data = df, FUN = function(x) c(SpR = S(x), evenness = SimpEven(x))))
-    names(comstruct)[3] <- "richness"
-    names(comstruct)[4] <- "evenness_Simpson"
   }
-    }
-  }
+
+  if(metric == "EQ") {
+    comstruct <- do.call(
+      data.frame,
+      aggregate(myformula, data = df,
+                FUN = function(x) c(SpR = S(x), evenness = EQ(x))))
+  } else if(metric == "Simpson"){
+    comstruct <- do.call(
+      data.frame,
+      aggregate(myformula, data = df,
+                FUN = function(x) c(SpR = S(x), evenness = SimpEven(x))))
+  } 
+
+  idx <- which(names(comstruct) == paste(abundance.var, 'SpR', sep = '.'))
+  names(comstruct)[idx] <- "richness"
+  idx <- which(names(comstruct) == paste(abundance.var, 'evenness', sep = '.'))
+  names(comstruct)[idx] <- metric
   
-    return(comstruct)
+  return(comstruct)
 }
 
 
@@ -121,6 +100,3 @@ SimpEven <- function(x, S = length(x[x != 0 & !is.na(x)]), N = sum(x[x != 0 & !i
   D <- sum(p2)
   (1/D)/S
 }
-
-
-

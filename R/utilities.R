@@ -117,7 +117,7 @@ EQ <- function(x){
   if (length(x1) == 1) {
     return(NA)
   }
-  if (abs(max(x1) - min(x1)) < .Machine$double.eps^0.5) {##bad idea to test for zero, so this is basically doing the same thing testing for a very small number
+  if (abs(max(x1) - min(x1)) < .Machine$double.eps^0.5) {
     return(1)
   }
   r <- rank(x1, ties.method = "average")
@@ -128,6 +128,11 @@ EQ <- function(x){
   2/pi*atan(b)
 }
 
+#' A utility function to get all pairwise treatment combinations
+#'
+#' @param df A dataframe containing a treatment.var column
+#' @param treatment.var The name of the treatment column from df
+#' @return A dataframe with two columns, treatment.var and treatment.var2
 trt_perms <- function(df, treatment.var) {
   
   ## create a dataframe of all unique treatment combinations
@@ -150,6 +155,11 @@ trt_perms <- function(df, treatment.var) {
   return(myperms)
 }
 
+#' A utility function to get all pairwise replicate combinations
+#'
+#' @param df A dataframe containing a replicate column
+#' @param replicate.var The name of the replicate column from df
+#' @return A dataframe with two columns, replicate.var and replicate.var2
 rep_perms <- function(df, replicate.var) {
   
   namesvector = unique(df[[replicate.var]]) 
