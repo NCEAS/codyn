@@ -64,7 +64,7 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var=N
     df12 <- merge(df1, df2,  by=c(species.var,replicate.var, time.var), all=T)
     df12<-subset(df12, df12[[paste(abundance.var, ".x", sep = "")]]!=0|df12[[paste(abundance.var, ".y", sep = "")]]!=0)
     
-    #what does this step do? Why is it necessary?
+    # remove rows with NA abundance for either time point and create splitvariable
     df12<-subset(df12, !is.na(df12[[paste(abundance.var, ".x", sep = "")]]) & !is.na(df12[[paste(abundance.var, ".y", sep = "")]]))
     df12$splitvariable <- paste(df12[[replicate.var]], df12[[time.var]], sep="##") 
     
