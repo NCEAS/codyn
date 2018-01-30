@@ -1,11 +1,11 @@
 #' @title Community Diversity
-#' @description 
-#' @param df A data frame containing species and abundance columns and optional columns of time point and/or replicates. Note that at least time.var or replicate.var must be specified.
+#' @description Calculates Shannon's or Simpson's diversity of a community.  
+#' @param df A data frame containing species and abundance columns and optional columns of time and/or replicates. Note that at least time.var or replicate.var must be specified.
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column 
-#' @param diversity The diversity metric to return:
+#' @param metric The diversity metric to return:
 #' \itemize{
 #'  \item{"Shannon": }{The default metric, calculates Shannon diversity.}
 #'  \item{"Simpson": }{Calculates Simpson diversity.}
@@ -14,10 +14,36 @@
 #' @return The community_diversity function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
-#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if specified.}
-#'  \item{Shannon: }{A numeric column of Shannons diversity if diversity = "Shannon"}
-#'  \item{Simpson: }{A numeric column of Simpsons diversity if diversity = "Simpson"}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
+#'  \item{Shannon: }{A numeric column of Shannons diversity if metric = "Shannon"}
+#'  \item{Simpson: }{A numeric column of Simpsons diversity if metric = "Simpson"}
 #' }
+#' @examples
+#' data(pplots)
+#' #Example with both time and replicates
+#' community_diversity(subset(pplots, plot==25|plot==6), 
+#'                     time.var="year", 
+#'                     replicate.var = "plot", 
+#'                     abundance.var = "relative_cover")# For Shannon's diversity metric
+#'
+#' community_diversity(subset(pplots, plot==25|plot==6), 
+#'                     time.var="year", 
+#'                     replicate.var = "plot", 
+#'                     abundance.var = "relative_cover", 
+#'                     metric = "Simpson") #For Simpson's diversity metric
+#'
+#' #Example with no replicates
+#' community_diversity(subset(pplots, plot==25), 
+#'                     time.var="year", 
+#'                     abundance.var = "relative_cover")#for Shannon's diversity metric
+#'
+#' #Example with only a single time point
+#' community_diversity(subset(pplots, year==2002&plot==25|year==2002&plot==6), 
+#'                     replicate.var = "plot", 
+#'                     abundance.var = "relative_cover")# For Shannon's diversity metric
+#'
+#'
+
 #' @export
 #'
 community_diversity <- function(df,  time.var = NULL, 
