@@ -1,6 +1,6 @@
 #' @title Community Structure
-#' @description 
-#' @param df A data frame containing species and abundance columns and optional columns of time point and/or replicates. Note that at least time.var or replicate.var must be specified.
+#' @description Calculates species richness and evenness of a community. Evenness may be calculated as either Simpson's (1/D/S) or as EQ.
+#' @param df A data frame containing species and abundance columns and optional columns of time and/or replicate. Note that at least time.var or replicate.var must be specified.
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
@@ -19,6 +19,31 @@
 #'  \item{Shannon: }{A numeric column of EQ evenness if evenness = "EQ"}
 #'  \item{Simpson: }{A numeric column of Simpsons evenness if evenness = "SimpEven"}
 #' }
+#' @references Smith, B. and Wilson, J. B. 1996. A consumer's guide to evnness indices. Oikos 76: 70-82.
+#' @example 
+#' data(pplots)
+#' #Example with both time and replicates
+#' community_structure(subset(pplots, plot==25|plot==6), 
+#'                     time.var="year", 
+#'                     replicate.var = "plot", 
+#'                     abundance.var = "relative_cover")# For EQ evenness metric
+#'
+#' community_structure(subset(pplots, plot==25|plot==6), 
+#'                     time.var="year", 
+#'                     replicate.var = "plot", 
+#'                     abundance.var = "relative_cover", 
+#'                     metric = "SimpEven") #For Simpson's evenness metric
+#'
+#' #Example with no replicates
+#' community_structure(subset(pplots, plot==25), 
+#'                     time.var="year", 
+#'                     abundance.var = "relative_cover")#for EQ evenness metric
+#'
+#' #Example with only a single time point
+#' community_structure(subset(pplots, year==2002&plot==25|year==2002&plot==6), 
+#'                     replicate.var = "plot", 
+#'                     abundance.var = "relative_cover")# For EQ evenness metric
+#'
 #' @export
 #'
 
