@@ -16,7 +16,7 @@
 #'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
 #'  \item{Shannon: }{A numeric column of Shannons diversity if metric = "Shannon"}
-#'  \item{Simpson: }{A numeric column of Simpsons diversity if metric = "InvSimpson"}
+#'  \item{Simpson: }{A numeric column of Simpsons diversity if metric = "InverseSimpson"}
 #' }
 #' @examples
 #' data(pplots)
@@ -30,7 +30,7 @@
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     abundance.var = "relative_cover", 
-#'                     metric = "InvSimpson") # for Inverse of Simpson's diversity metric
+#'                     metric = "InverseSimpson") # for Inverse of Simpson's diversity metric
 #'
 #' #Example with no replicates
 #' community_diversity(subset(pplots, plot==25), 
@@ -44,30 +44,27 @@
 #'
 #'
 #' @export
-#'
 community_diversity <- function(df,  time.var = NULL, 
                                 abundance.var, 
                                 replicate.var = NULL,  
-                                metric = c("Shannon", "InvSimpson")) {
+                                metric = c("Shannon", "InverseSimpson")) {
   
   # verify metric choice
   metric <- match.arg(metric)
-  
+
+  # specify aggregate formula from arguments
   if(is.null(replicate.var)) {
-    myformula <- as.formula(paste(abundance.var, "~", time.var))
+    by <- time.var
   } else if(is.null(time.var)) {
-    myformula <- as.formula(paste(abundance.var, "~", replicate.var))
+    by <- replicate.var
   } else {
-    myformula <- as.formula(paste(abundance.var, "~", time.var, "+", replicate.var))
+    by <- c(time.var, replicate.var)
   }
-  
-  if(metric == "Shannon") {
-      comdiv <- aggregate(myformula, data = df, FUN = function(x) diversity = Shannon(x))
-  } else if(metric == "InvSimpson") {
-      comdiv <- aggregate(myformula, data = df, FUN = function(x) diversity = InvSimpson(x))
-  }
-  
-  names(comdiv)[names(comdiv) == abundance.var] <- metric
+
+  # get function for chosen metric, and calculate output
+  diversity <- get(metric)
+  comdiv <- aggregate.data.frame(df[abundance.var], df[by], FUN = diversity)
+  names(comdiv) <- c(by, paste(abundance.var, metric, sep = '.'))
   
   return(comdiv)
 }
@@ -85,7 +82,7 @@ community_diversity <- function(df,  time.var = NULL,
 # @param x the vector of abundances of each species
 # @param N the total abundance
 # @param p the vector of relative abundances of each species
-InvSimpson <- function(x, N = sum(x[x!=0&!is.na(x)]), ps = x[x!=0&!is.na(x)]/N, p2=ps*ps ){
+InverseSimpson <- function(x, N = sum(x[x!=0&!is.na(x)]), ps = x[x!=0&!is.na(x)]/N, p2=ps*ps ){
   D <- sum(p2)
   1/D
 }
