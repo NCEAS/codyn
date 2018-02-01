@@ -120,12 +120,12 @@ EQ <- function(x){
   if (abs(max(x1) - min(x1)) < .Machine$double.eps^0.5) {
     return(1)
   }
-  r <- rank(x1, ties.method = "average")
+  r <- rank(-x1, ties.method = "average")
   r_scale <- r/max(r)
   x_log <- log(x1)
   fit <- lm(r_scale~x_log)
   b <- fit$coefficients[[2]]
-  2/pi*atan(b)
+  -2/pi*atan(b)
 }
 
 #' A utility function to get all pairwise treatment combinations
