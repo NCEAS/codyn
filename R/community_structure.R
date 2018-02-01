@@ -38,12 +38,12 @@
 #' community_structure(subset(pplots, plot==25), 
 #'                     time.var="year", 
 #'                     abundance.var = "relative_cover",
-#'                     metric = "Evar) # for Evar evenness metric
+#'                     metric = "Evar") # for Evar evenness metric
 #'
 #' #Example with only a single time point
 #' community_structure(subset(pplots, year==2002&plot==25|year==2002&plot==6), 
 #'                     replicate.var = "plot", 
-#'                     abundance.var = "relative_cover")# For EQ evenness metric
+#'                     abundance.var = "relative_cover") # for EQ evenness metric
 #'
 #' @export
 
@@ -66,7 +66,7 @@ community_structure <- function(df,  time.var = NULL,
 
   # get function for chosen metric, and calculate output
   evenness <- get(metric)
-  comstruct <- aggregate(myformula, data = df,
+  comstruct <- aggregate.data.frame(df[abundance.var], df[by],
                          FUN = function(x) cbind(S(x), evenness(x)))
   colnames(comstruct[[abundance.var]]) <- c('richness', metric)
   comstruct <- do.call(data.frame, comstruct)
