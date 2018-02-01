@@ -81,19 +81,19 @@ community_diversity <- function(df,  time.var = NULL,
 ############################################################################
 
 
-#' A function to calculate Simpson's Divsersity from Smith and Wilson 1996
-#' @param x the vector of abundances of each species
-#' @param N the total abundance
-#' @param p the vector of relative abundances of each species
+# A function to calculate Simpson's Divsersity from Smith and Wilson 1996
+# @param x the vector of abundances of each species
+# @param N the total abundance
+# @param p the vector of relative abundances of each species
 InvSimpson <- function(x, N = sum(x[x!=0&!is.na(x)]), ps = x[x!=0&!is.na(x)]/N, p2=ps*ps ){
   D <- sum(p2)
   1/D
 }
 
-#' A function to calculate Shannon's Divsersity 
-#' @param x the vector of abundances of each species
-#' @param N the total abundance
-#' @param p the vector of relative abundances of each species
+# A function to calculate Shannon's Divsersity 
+# @param x the vector of abundances of each species
+# @param N the total abundance
+# @param p the vector of relative abundances of each species
 Shannon <- function(x, N = sum(x[x!=0&!is.na(x)]), ps = x[x!=0&!is.na(x)]/N ){
   -sum(ps*log(ps))
 }
