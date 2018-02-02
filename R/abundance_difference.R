@@ -21,7 +21,7 @@
 #' }
 #' @details 
 #' @references 
-@examples 
+#' @examples 
 #' data(pplots) 
 #' # With block and no time 
 #' abundance_difference(df = subset(pplots, year == 2002&block<3), 
