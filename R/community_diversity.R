@@ -51,6 +51,9 @@ community_diversity <- function(df,  time.var = NULL,
   
   # verify metric choice
   metric <- match.arg(metric)
+  
+  # check no NAs in abundance column
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance values are missing")
 
   # specify aggregate formula from arguments
   if(is.null(replicate.var)) {
@@ -82,7 +85,7 @@ community_diversity <- function(df,  time.var = NULL,
 # @param x the vector of abundances of each species
 # @param N the total abundance
 # @param p the vector of relative abundances of each species
-InverseSimpson <- function(x, N = sum(x[x!=0&!is.na(x)]), ps = x[x!=0&!is.na(x)]/N, p2=ps*ps ){
+InverseSimpson <- function(x, N = sum(x[x != 0]), ps = x[x != 0]/N, p2=ps*ps ){
   D <- sum(p2)
   1/D
 }
@@ -91,7 +94,7 @@ InverseSimpson <- function(x, N = sum(x[x!=0&!is.na(x)]), ps = x[x!=0&!is.na(x)]
 # @param x the vector of abundances of each species
 # @param N the total abundance
 # @param p the vector of relative abundances of each species
-Shannon <- function(x, N = sum(x[x!=0&!is.na(x)]), ps = x[x!=0&!is.na(x)]/N ){
+Shannon <- function(x, N = sum(x[x != 0]), ps = x[x != 0]/N ){
   -sum(ps*log(ps))
 }
 

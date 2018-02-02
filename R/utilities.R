@@ -104,7 +104,7 @@ check_sppvar <- function(comdat){
 #' Utility function to calculate richness
 #' @param x Vector of abundance of each species
 S <- function(x){
-  x1 <- x[x!=0 & !is.na(x)]
+  x1 <- x[x!=0]
   stopifnot(x1==as.numeric(x1))
   length(x1)
 }
@@ -113,7 +113,7 @@ S <- function(x){
 #' @param x Vector of abundance of each species
 #' If all abundances are equal it returns a 1
 EQ <- function(x){
-  x1 <- x[x!=0 & !is.na(x)]
+  x1 <- x[x != 0]
   if (length(x1) == 1) {
     return(NA)
   }

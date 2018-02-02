@@ -54,6 +54,9 @@ community_structure <- function(df,  time.var = NULL,
                                   
   # verify metric choice
   metric <- match.arg(metric)
+  
+  # check no NAs in abundance column
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance values are missing")
 
   # specify aggregate formula from arguments
   if(is.null(replicate.var)) {
@@ -88,7 +91,7 @@ community_structure <- function(df,  time.var = NULL,
 # @param x the vector of abundances of each species
 # @param N the total abundance
 # @param p the vector of relative abundances of each species
-SimpsonEvenness <- function(x, S = length(x[x != 0 & !is.na(x)]), N = sum(x[x != 0 & !is.na(x)]), ps = x[x != 0 & !is.na(x)]/N, p2 = ps*ps ){
+SimpsonEvenness <- function(x, S = length(x[x != 0 & !is.na(x)]), N = sum(x[x != 0 & !is.na(x)]), ps = x[x != 0]/N, p2 = ps*ps ){
   D <- sum(p2)
   (1/D)/S
 }
@@ -98,7 +101,7 @@ SimpsonEvenness <- function(x, S = length(x[x != 0 & !is.na(x)]), N = sum(x[x !=
 #' @param x the vector of abundances of each species
 
 Evar <- function(x, S = length(x)) {
-  x1 <- x[x!=0 & !is.na(x)]
+  x1 <- x[x!=0]
   lnx <- log(x1)
   theta <- (S - 1) / S * var(lnx)
   return(1 - 2 / pi * atan(theta))
