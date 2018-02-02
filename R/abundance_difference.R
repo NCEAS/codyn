@@ -22,397 +22,133 @@
 #' @details 
 #' @references 
 #' @examples 
-#' data(pplots) 
-#' # With block and no time 
-#' abundance_difference(df = subset(pplots, year == 2002&block<3), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      treatment.var = 'treatment', 
-#'                      block.var = "block", 
+#' data(pplots)
+#' # With block and no time
+#' df <- subset(pplots, year == 2002 & block < 3)
+#' abundance_difference(df = df,
+#'                      species.var = "species",
+#'                      abundance.var = "relative_cover",
+#'                      treatment.var = 'treatment',
+#'                      block.var = "block",
 #'                      replicate.var = "plot")
-#' # With blocks and time 
-#' abundance_difference(df = subset(pplots, year < 2004&block<3), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      treatment.var = 'treatment', 
-#'                      block.var = "block", 
+#' # With blocks and time
+#' df <- subset(pplots, year < 2004 & block < 3)
+#' abundance_difference(df = df,
+#'                      species.var = "species",
+#'                      abundance.var = "relative_cover",
+#'                      treatment.var = 'treatment',
+#'                      block.var = "block",
 #'                      replicate.var = "plot",
 #'                      time.var = "year")
-#' #pooling by treatment no time
-#' abundance_difference(df = subset(pplots, time == 2002), 
-#'                      species.var = "species", 
-#'                      abundance.var = "abundance", 
-#'                      treatment.var = 'treatment', 
-#'                      pool="YES", 
-#'                      replicate.var = "replicate")
-#  #pooling by treatment with time
-#' abundance_difference(df = subset(pplots, time < 2004), 
-#'                      species.var = "species", 
-#'                      abundance.var = "abundance", 
-#'                      treatment.var = 'treatment', 
-#'                      pool="YES", 
-#'                      replicate.var = "replicate")
-#' #All pairwise replicates with treatment and no time
-#' abundance_difference(df=subset(pplots, year==2002&plot==25|year==2002&plot==6), 
+#' # Pooling by treatment no time
+#' df <- subset(pplots, year == 2002)
+#' abundance_difference(df = df,
 #'                      species.var = "species",
-#'                      abundance.var = "relative_cover", 
+#'                      abundance.var = "relative_cover",
+#'                      treatment.var = 'treatment',
+#'                      pool = TRUE,
+#'                      replicate.var = "plot")
+#' # Pooling by treatment with time
+#' df <- subset(pplots, year < 2004)
+#' abundance_difference(df = df,
+#'                      species.var = "species",
+#'                      abundance.var = "relative_cover",
+#'                      treatment.var = 'treatment',
+#'                      pool = TRUE,
+#'                      replicate.var = "plot",
+#'                      time.var = "year")
+#' # All pairwise replicates with treatment and no time
+#' df <- subset(pplots, year == 2002 & plot %in% c(6, 25, 32))
+#' abundance_difference(df = df,
+#'                      species.var = "species",
+#'                      abundance.var = "relative_cover",
 #'                      replicate.var = "plot",
 #'                      treatment.var = "treatment")
-#' #All pairwise replicates with treatment
-#' abundance_difference(df=subset(pplots, year<2004&plot==25|year < 2004&plot==6), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot", 
-#'                      time.var="year",
-#'                      treatment.var = "treatment")
-#' #All pairwise replicates without treatment and no time
-#' abundance_difference(df=subset(pplots, year==2002&plot==25|year==2002&plot==6), 
+#' # All pairwise replicates with treatment
+#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' abundance_difference(df = df,
 #'                      species.var = "species",
-#'                      abundance.var = "relative_cover", 
+#'                      abundance.var = "relative_cover",
+#'                      replicate.var = "plot",
+#'                      time.var = "year",
+#'                      treatment.var = "treatment")
+#' # All pairwise replicates without treatment and no time
+#' df <- subset(pplots, year == 2002 & plot %in% c(6, 25, 32))
+#' abundance_difference(df = df,
+#'                      species.var = "species",
+#'                      abundance.var = "relative_cover",
 #'                      replicate.var = "plot")
-#' #All pairwise replicates without treatment
-#' abundance_difference(df=subset(pplots, year<2004&plot==25|year < 2004&plot==6), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot", 
-#'                      time.var="year")
-
+#' # All pairwise replicates without treatment
+#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' abundance_difference(df = df,
+#'                      species.var = "species",
+#'                      abundance.var = "relative_cover",
+#'                      replicate.var = "plot",
+#'                      time.var = "year")
 #' @export
-abundance_difference <- function(df, time.var = NULL, 
-                                 species.var, 
-                                 abundance.var, 
-                                 replicate.var, 
-                                 treatment.var = NULL, 
-                                 pool="NO", 
+abundance_difference <- function(df, time.var = NULL, species.var, 
+                                 abundance.var, replicate.var,
+                                 treatment.var = NULL, pool = FALSE, 
                                  block.var = NULL) {
 
-  if(!is.null(block.var)) {
-    
-    if(length(unique(df[[block.var]]))*length(unique(df[[treatment.var]])) != length(unique(df[[replicate.var]]))) stop("There is not one replicate per treatment in a block")
-    
-    myperms <- trt_perms(df, treatment.var)
-    
-     if(is.null(time.var)) {
-       
-       #rank species in each replicate
-       rep_trt <- unique(subset(df, select = c(replicate.var, treatment.var, block.var)))
-       rankdf <- add_ranks_replicate(df, time.var = NULL, species.var, abundance.var, replicate.var)
-       rankdf1 <- merge(rankdf, rep_trt, by = replicate.var)
-      
-       ## Create a second rankdf with a renamed treatment.var column
-       rankdf2 <- rankdf1
-       rankdf2[[paste(treatment.var, "2", sep = "")]] <- rankdf2[[treatment.var]]
-       rankdf2[[treatment.var]] <- NULL
-       
-       ## Merge rankdf with all possible permutations of treatment combinations
-       rankdfall <- merge(rankdf1, myperms, all.y = T)
-       
-       ## Merge the data together (for all possible permutations of treatments) within a block
-       ranktog <- merge(rankdfall, rankdf2, by = c(species.var, block.var, paste(treatment.var, "2", sep = "")))
-      
-       ## Create a variable to split on (block as well as unique treatment combos)
-       ranktog$splitvariable <- paste(ranktog[[block.var]], ranktog[[treatment.var]], ranktog[[paste(treatment.var, "2", sep = "")]], sep = "##")
-       
-       ## Split the dataframe
-       X <- split(ranktog, ranktog$splitvariable)
-       
-       ## Apply the  RAC function for differences
-       out <- lapply(X, FUN = abund_diff, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = "")) 
-       ID <- unique(names(out))
-       out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
-                     out, ID, SIMPLIFY = FALSE)
-       output <- do.call("rbind", out)  
-       
-       ## Add in the identifying column names
-       outnames <- data.frame(do.call('rbind', strsplit(as.character(output$splitvariable), '##', fixed = TRUE)))
-       names(outnames) = c(block.var, treatment.var, paste(treatment.var, "2", sep = ""))
-       output$splitvariable <- NULL
-       output <- cbind(outnames, output)
-       
-       } else {
-      
-      #rank species in each replicate
-      rep_trt <- unique(subset(df, select = c(replicate.var, treatment.var, block.var)))
-      rankdf <- add_ranks_replicate(df, time.var, species.var, abundance.var, replicate.var)
-      rankdf1 <- merge(rankdf, rep_trt, by = replicate.var)
-      
-      ## Create a second rankdf with a renamed treatment.var column
-      rankdf2 <- rankdf1
-      rankdf2[[paste(treatment.var, "2", sep = "")]] <- rankdf2[[treatment.var]]
-      rankdf2[[treatment.var]] <- NULL
-      
-      ## Merge rankdf with all possible permutations of treatment combinations
-      rankdfall <- merge(rankdf1, myperms, all.y = T)
-      
-      ## Merge the data together (for all possible permutations of treatments) within a block
-      ranktog <- merge(rankdfall, rankdf2, by = c(time.var, species.var, block.var, paste(treatment.var, "2", sep = "")))
-      
-      ## Create a variable to split on (block, time, and unique treatment combos)
-      ranktog$splitvariable <- paste(ranktog[[time.var]], ranktog[[block.var]], ranktog[[treatment.var]], ranktog[[paste(treatment.var, "2", sep = "")]], sep = "##")
-      
-      ## Split the dataframe
-      X <- split(ranktog, ranktog$splitvariable)
-      
-      ## Apply the  RAC function for differences
-      out <- lapply(X, FUN = abund_diff, species.var, paste(abundance.var, ".x", sep = ""), paste(abundance.var, ".y", sep = "")) 
-      ID <- unique(names(out))
-      out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
-                    out, ID, SIMPLIFY = FALSE)
-      output <- do.call("rbind", out)  
-      
-      ## Add in the identifying column names
-      outnames <- data.frame(do.call('rbind', strsplit(as.character(output$splitvariable), '##', fixed = TRUE)))
-      names(outnames) = c(time.var, block.var, treatment.var, paste(treatment.var, "2", sep = ""))
-      output$splitvariable <- NULL
-      output <- cbind(outnames, output)
-      
-    }
-    
+  if (!is.null(block.var)) {
+    reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
+    reps_obs <- length(unique(df[[replicate.var]]))
+    if (reps_exp != reps_obs)
+      stop("There is not one replicate per treatment in a block")
+    cross.var <- treatment.var
+  } else if (pool) {
+    cross.var <- treatment.var
   } else {
-    
-    if(pool=="YES"){
-      
-      myperms <- trt_perms(df, treatment.var)
-      
-    if(is.null(time.var)){
-      ##pool data into treatment and rank
-      rankdf <- pool_replicates(df, time.var, species.var, abundance.var, replicate.var, treatment.var)
-      
-      ## Create a second rankdf with a renamed treatment.var column
-      rankdf2 <- rankdf
-      rankdf2[[paste(treatment.var, "2", sep = "")]] <- rankdf2[[treatment.var]]
-      rankdf2[[treatment.var]] <- NULL
-      
-      ## Merge rankdf with all possible permutations of treatment combinations
-      rankdfall <- merge(rankdf, myperms, all.y = T)
-      
-      ## Merge the data together (for all possible permutations of treatments) within a block
-      ranktog <- merge(rankdfall, rankdf2, by = c(species.var, paste(treatment.var, "2", sep = "")))
-      
-      ## Create a variable to split on (block as well as unique treatment combos)
-      ranktog$splitvariable <- paste(ranktog[[treatment.var]], ranktog[[paste(treatment.var, "2", sep = "")]], sep = "##")
-      
-      ## Split the dataframe
-      X <- split(ranktog, ranktog$splitvariable)
-      
-      ## Apply the  RAC function for differences
-      out <- lapply(X, FUN = abund_diff, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = "")) 
-      ID <- unique(names(out))
-      out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
-                    out, ID, SIMPLIFY = FALSE)
-      output <- do.call("rbind", out)  
-      
-      ## Add in the identifying column names
-      outnames <- data.frame(do.call('rbind', strsplit(as.character(output$splitvariable), '##', fixed = TRUE)))
-      names(outnames) = c(treatment.var, paste(treatment.var, "2", sep=""))
-      output$splitvariable <- NULL
-      output <- cbind(outnames, output)
-      
-    } else {
-        
-        rankdf <- pool_replicates(df, time.var, species.var, abundance.var, replicate.var, treatment.var)
-        
-        ## Create a second rankdf with a renamed treatment.var column
-        rankdf2 <- rankdf
-        rankdf2[[paste(treatment.var, "2", sep = "")]] <- rankdf2[[treatment.var]]
-        rankdf2[[treatment.var]] <- NULL
-        
-        ## Merge rankdf with all possible permutations of treatment combinations
-        rankdfall <- merge(rankdf, myperms, all.y = T)
-        
-        ## Merge the data together (for all possible permutations of treatments) within a block
-        ranktog <- merge(rankdfall, rankdf2, by = c(time.var, species.var, paste(treatment.var, "2", sep = "")))
-        
-        ## Create a variable to split on (block, time, and unique treatment combos)
-        ranktog$splitvariable <- paste(ranktog[[time.var]], ranktog[[treatment.var]], ranktog[[paste(treatment.var, "2", sep = "")]], sep = "##")
-        
-        ## Split the dataframe
-        X <- split(ranktog, ranktog$splitvariable)
-        
-        ## Apply the  RAC function for differences
-        out <- lapply(X, FUN = abund_diff, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = "")) 
-        ID <- unique(names(out))
-        out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
-                      out, ID, SIMPLIFY = FALSE)
-        output <- do.call("rbind", out)  
-        
-        ## Add in the identifying column names
-        outnames <- data.frame(do.call('rbind', strsplit(as.character(output$splitvariable), '##', fixed = TRUE)))
-        names(outnames) = c(time.var, treatment.var, paste(treatment.var, "2", sep = ""))
-        output$splitvariable <- NULL
-        output <- cbind(outnames, output)
-        
-      }
-      
-    } else {
-      
-       if(is.null(treatment.var)){
-         
-        myperms <- rep_perms(df, replicate.var) 
-         
-         if(is.null(time.var)){
-           
-           rankdf <- add_ranks_replicate(df, time.var=NULL, species.var, abundance.var, replicate.var)
+    cross.var <- replicate.var
+  }
 
-           ## Create a second rankdf with a renamed replicate.var column
-           rankdf2 <- rankdf
-           rankdf2[[paste(replicate.var, "2", sep = "")]] <- as.factor(rankdf2[[replicate.var]])
-           rankdf2[[replicate.var]] <- NULL
-           
-           ## Merge rankdf with all possible permutations of treatment combinations
-           rankdfall <- merge(rankdf, myperms, all.y = T)
-           
-           ## Merge the data together
-           ranktog <- merge(rankdfall, rankdf2, by=c(species.var, paste(replicate.var, "2", sep="")))
-           
-           ## Create a variable to split on (each replicate combination)
-           ranktog$splitvariable <- paste(ranktog[[replicate.var]], ranktog[[paste(replicate.var, "2", sep = "")]], sep = "##")
-           
-           ## Split the dataframe
-           X <- split(ranktog, ranktog$splitvariable)
-           
-           ## Apply the  RAC function for differences
-           out <- lapply(X, FUN = abund_diff, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = "")) 
-           ID <- unique(names(out))
-           out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
-                         out, ID, SIMPLIFY = FALSE)
-           output <- do.call("rbind", out)  
-           
-           ## Add in the identifying column names
-           outnames <- data.frame(do.call('rbind', strsplit(as.character(output$splitvariable), '##', fixed=TRUE)))
-           names(outnames) = c(replicate.var, paste(replicate.var, "2", sep = ""))
-           output$splitvariable <- NULL
-           output <- cbind(outnames, output)
-           
-         } else {
-           
-        rankdf <- add_ranks_replicate(df, time.var, species.var, abundance.var, replicate.var)
-        
-        ## Create a second rankdf with a renamed replicate.var column
-        rankdf2 <- rankdf
-        rankdf2[[paste(replicate.var, "2", sep = "")]] <- as.factor(rankdf2[[replicate.var]])
-        rankdf2[[replicate.var]] <- NULL
-        
-        ## Merge rankdf with all possible permutations of treatment combinations
-        rankdfall <- merge(rankdf, myperms, all.y = T)
-        
-        ## Merge the data together
-        ranktog <- merge(rankdfall, rankdf2, by = c(species.var, time.var, paste(replicate.var, "2", sep = "")))
-        
-        ## Create a variable to split on (each replicate combination)
-        ranktog$splitvariable <- paste(ranktog[[time.var]], ranktog[[replicate.var]], ranktog[[paste(replicate.var, "2", sep = "")]], sep = "##")
-        
-        ## Split the dataframe
-        X <- split(ranktog, ranktog$splitvariable)
-        
-        ## Apply the  RAC function for differences
-        out <- lapply(X, FUN = abund_diff, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = "")) 
-        ID <- unique(names(out))
-        out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
-                      out, ID, SIMPLIFY = FALSE)
-        output <- do.call("rbind", out)  
-        
-        ## Add in the identifying column names
-        outnames <- data.frame(do.call('rbind', strsplit(as.character(output$splitvariable), '##', fixed=TRUE)))
-        names(outnames) = c(time.var, replicate.var, paste(replicate.var, "2", sep = ""))
-        output$splitvariable <- NULL
-        output <- cbind(outnames, output)
-        
-      }
-          } else {
-        
-     myperms <- rep_perms(df, replicate.var)
-        
-        #create replicate treatment for reference
-        rep_trt <- unique(subset(df, select = c(replicate.var, treatment.var)))
-        rep_trt2 <- rep_trt
-        rep_trt2[[paste(replicate.var, "2", sep = "")]] <- as.factor(rep_trt2[[replicate.var]])
-        rep_trt2[[replicate.var]] <- NULL
-        rep_trt2[[paste(treatment.var, "2", sep = "")]] <- as.factor(rep_trt2[[treatment.var]])
-        rep_trt2[[treatment.var]] <- NULL
-        
-        if(is.null(time.var)){
-          rankdf <- add_ranks_replicate(df, time.var = NULL, species.var, abundance.var, replicate.var)
-          
-          ## Create a second rankdf with a renamed replicate.var column
-          rankdf2 <- rankdf
-          rankdf2[[paste(replicate.var, "2", sep = "")]] <- as.factor(rankdf2[[replicate.var]])
-          rankdf2[[replicate.var]] <- NULL
-          
-          ## Merge rankdf with all possible permutations of treatment combinations
-          rankdfall <- merge(rankdf, myperms, all.y = T)
-          
-          ## Merge the data together
-          ranktog <- merge(rankdfall, rankdf2, by = c(species.var, paste(replicate.var, "2", sep = "")))
-          
-          ## Create a variable to split on (each replicate combination)
-          ranktog$splitvariable <- paste(ranktog[[replicate.var]], ranktog[[paste(replicate.var, "2", sep = "")]], sep = "##")
-          
-          ## Split the dataframe
-          X <- split(ranktog, ranktog$splitvariable)
-          
-          ## Apply the  RAC function for differences
-          out <- lapply(X, FUN = abund_diff, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = "")) 
-          ID <- unique(names(out))
-          out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
-                        out, ID, SIMPLIFY = FALSE)
-          output <- do.call("rbind", out)  
-          
-          ## Add in the identifying column names
-          outnames <- data.frame(do.call('rbind', strsplit(as.character(output$splitvariable), '##', fixed = TRUE)))
-          names(outnames) = c(replicate.var, paste(replicate.var, "2", sep=""))
-          output$splitvariable <- NULL
-          output <- cbind(outnames, output)
-          
-          output <- merge(output, rep_trt, by = replicate.var)
-          output <- merge(output, rep_trt2, by = paste(replicate.var, "2", sep = ""))
-        
-          } else {
-            
-          rankdf <- add_ranks_replicate(df, time.var, species.var, abundance.var, replicate.var)
-          
-          ## Create a second rankdf with a renamed replicate.var column
-          rankdf2 <- rankdf
-          rankdf2[[paste(replicate.var, "2", sep = "")]] <- as.factor(rankdf2[[replicate.var]])
-          rankdf2[[replicate.var]] <- NULL
-          
-          ## Merge rankdf with all possible permutations of treatment combinations
-          rankdfall <- merge(rankdf, myperms, all.y = T)
-          
-          ## Merge the data together
-          ranktog <- merge(rankdfall, rankdf2, by = c(species.var, time.var, paste(replicate.var, "2", sep = "")))
-          
-          ## Create a variable to split on (each replicate combination)
-          ranktog$splitvariable <- paste(ranktog[[time.var]], ranktog[[replicate.var]], ranktog[[paste(replicate.var, "2", sep = "")]], sep = "##")
-          
-          ## Split the dataframe
-          X <- split(ranktog, ranktog$splitvariable)
-          
-          ## Apply the  RAC function for differences
-          out <- lapply(X, FUN = abund_diff, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = "")) 
-          ID <- unique(names(out))
-          out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
-                        out, ID, SIMPLIFY = FALSE)
-          output <- do.call("rbind", out)  
-          
-          ## Add in the identifying column names
-          outnames <- data.frame(do.call('rbind', strsplit(as.character(output$splitvariable), '##', fixed = TRUE)))
-          names(outnames) = c(time.var, replicate.var, paste(replicate.var, "2", sep=""))
-          output$splitvariable <- NULL
-          output <- cbind(outnames, output)
-          
-          output <- merge(output, rep_trt, by = replicate.var)
-          output <- merge(output, rep_trt2, by = paste(replicate.var, "2", sep=""))
-          
-          }
-          }
-    }
+  if (pool) {
+    rankdf <- pool_replicates(df, time.var, species.var, abundance.var, replicate.var, treatment.var)
+  } else {
+    # rank species in each replicate
+    rep_trt <- unique(df[c(replicate.var, treatment.var, block.var)])
+    rankdf <- add_ranks_replicate(df, time.var, species.var, abundance.var, replicate.var)
+    rankdf <- merge(rankdf, rep_trt, by = replicate.var)
   }
   
+  # cross join for pairwise comparisons
+  splitvars <- c(species.var, block.var, time.var)
+  cross.var.x <- paste(cross.var, 'x', sep = '.')
+  cross.var.y <- paste(cross.var, 'y', sep = '.')
+  rankdf <- lapply(split(rankdf, rankdf[splitvars]),
+                   function(x) {
+                     y <- x
+                     y[splitvars] <- NULL
+                     cross <- merge(x, y, by = NULL)
+                     idx <- as.integer(cross[[cross.var.x]])
+                     idx <- idx < as.integer(cross[[cross.var.y]])
+                     cross[idx,]
+                   })
+  ranktog <- do.call(rbind, c(rankdf, list(make.row.names = FALSE)))
+  
+  # split on treatment pairs (and block if not null)
+  splitvars <- c(block.var, time.var, cross.var.x, cross.var.y)
+  ranktog_split <- split(ranktog,
+                         ranktog[splitvars], 
+                         sep = "##")
+  ranktog_split <- lapply(ranktog_split,
+                          FUN = abund_diff, species.var, abundance.var)
+  unsplit <- lapply(ranktog_split, nrow)
+  unsplit <- rep(names(unsplit), unsplit)
+  output <- do.call(rbind, c(ranktog_split, list(make.row.names = FALSE)))
+  output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
+
+  if (is.null(block.var) & !pool & !is.null(treatment.var)) {
+    # add treatment for reference
+    output <- merge(output, merge(rep_trt, rep_trt, by = NULL))
+  }
+  
+  ## FIXME reset column types based on df
+
 return(output)
   
 }
-
 
 ############################################################################
 #
@@ -422,13 +158,11 @@ return(output)
 #
 ############################################################################
 
+abund_diff <- function(df, species.var, abundance.var) {
 
-abund_diff <- function(df, species.var, abundance.var1, abundance.var2) {
-      
-      df$abund_diff <- df[[abundance.var1]] - df[[abundance.var2]]
-      df <- subset(df, select = c(species.var, "abund_diff"))
-     
-      return(df)
-    }
+  abundance.var.x <- paste(abundance.var, 'x', sep = '.')
+  abundance.var.y <- paste(abundance.var, 'y', sep = '.')
+  df[['difference']] <- df[[abundance.var.x]] - df[[abundance.var.y]]
 
-
+  return(df[c(species.var, 'difference')])
+}
