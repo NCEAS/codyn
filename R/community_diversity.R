@@ -67,7 +67,7 @@ community_diversity <- function(df,  time.var = NULL,
   # get function for chosen metric, and calculate output
   diversity <- get(metric)
   comdiv <- aggregate.data.frame(df[abundance.var], df[by], FUN = diversity)
-  names(comdiv) <- c(by, paste(abundance.var, metric, sep = '.'))
+  names(comdiv) <- c(by, metric)
   
   return(comdiv)
 }

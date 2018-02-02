@@ -71,8 +71,8 @@ community_structure <- function(df,  time.var = NULL,
   evenness <- get(metric)
   comstruct <- aggregate.data.frame(df[abundance.var], df[by],
                          FUN = function(x) cbind(S(x), evenness(x)))
-  colnames(comstruct[[abundance.var]]) <- c('richness', metric)
   comstruct <- do.call(data.frame, comstruct)
+  names(comstruct) <- c(by, 'richness', metric)
 
   return(comstruct)
 }
