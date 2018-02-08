@@ -1,5 +1,5 @@
 #' @title  Abundance Differences
-#' @description #### NEED TO ADD A DESCRIPTION#####
+#' @description Calculates the difference in abudnace of a species between to samples. There are three ways differences can be calcualted. 1) Between treamtents within a block. Here, block.var and treatment.var need to be specified. 2) Between treatments, pooling all replicates into a single species pool. Here pool = TRUE, treatment.var needs to be specified, and block.var will be NULL. 3) All pairwise combinations between all replicates. Here block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, in the output the treatment that each replicate belongs to will also be listed.
 #' @param df A data frame containing an optional time column and requred species, abundance, replicate and optional treatment columns and optional block column
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
@@ -7,20 +7,20 @@
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
+#' @param pool An argument to allow values to be pooled within treatment. The default value is "FALSE", a value of "TRUE" takes the average abundance of all species within a treatment at a given time point prior to comparisons.
 #' 
 #' @return The abundance_difference function returns a data frame with the following attributes:
 #' \itemize{
-#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared.}
-#'  \item{replicate.var2: }{A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared.}
-#'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
 #'  \item{species.var: }{A column that has same name and type as the species.var column.}
-#'  \item{abund_diff: }{A numeric column of the abundance differences between replicates.}
-#'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, represents the first treatment being compared, if treatment.var is specified.}
-#'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared, if treatment.var is specified.}
+#'  \item{abund_diff: }{A numeric column of the abundance differences between the two samples being compared (replicates or treatments).}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var = NULL.}
+#'  \item{replicate.var2: }{A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Note, a replicate.var column will be returned only when pool is FALSE and block.var = NULL.}
+#'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
+#'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, represents the first treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
+#'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
 #'  \item{block.var: }{A column that has same name and type as the block.var column, if block.var is specified.}
 #' }
-#' @details 
-#' @references 
+#' @references Avolio et al. OUR PAPER
 #' @examples 
 #' data(pplots)
 #' # With block and no time

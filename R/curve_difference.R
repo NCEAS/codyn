@@ -1,80 +1,90 @@
 #' @title Curve Differences
-#' @description 
-#' @param df A data frame containing a species, abundance, and replicate columns and optional optional time, treatment, and block columns
+#' @description Calculates the difference between two rank abundance curves. There are three ways differences can be calculated. 1) Between all treatments within a block. Here, block.var and treatment.var need to be specified. 2) Between all treatments by taking the average species abundance of all species across all replicates within a treatment to create a single species pool. Here pool = TRUE, treatment.var needs to be specified, and block.var will be NULL. 3) Between all replicates. Here block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, in the output the treatment that each replicate belongs to will also be listed.
+#' @param df A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var The name of the optional treatment column
-#' @param pool An argument to allow values to be pooled within treatment. The default value is "NO", a value of "YES" pools within treatment prior to comparisons.
+#' @param pool An argument to allow values to be pooled within treatment. The default value is "FALSE", a value of "TRUE" takes the average abundance of all species within a treatment at a given time point prior to comparisons.
 #' @param block.var The name of the optional block column
 #'  
 #' @return The curve_difference function returns a data frame with the following attributes:
 #' \itemize{
+#'  \item{species.var: }{A column that has same name and type as the species.var column.}
+#'  \item{curve_diff: }{A numeric column of the difference in curves between the two samples being compared (replicates or treatments).}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var = NULL.}
+#'  \item{replicate.var2: }{A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Note, a replicate.var column will be returned only when pool is FALSE and block.var = NULL.}
 #'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
-#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Returned if there is no block.var specified and if pool = "NO".}
-#'  \item{replicate.var2: }{A column that has same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Returned if there is no block.var specified and if pool = "NO".}
-#'  \item{treatment.var: }{A column that has the same name and type as the treatment.var column, represents the first replicate being compared. Only returned if treatment.var is specified.}
-#'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second replicate being compared. Only returned if treatment.var is specified.}
-#'  \item{block.var: }{A column that has the same name and type as the block.var column, if block.var is specified.}
-#'  \item{curve_diff: }{A numeric column of the difference in curves among compared replicates or treatments.}
+#'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, represents the first treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
+#'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
+#'  \item{block.var: }{A column that has same name and type as the block.var column, if block.var is specified.}
 #' }
-#' #' @examples 
-#' data(pplots) 
-#' # With block and no time 
-#' curve_difference(df = subset(pplots, year == 2002&block<3), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      treatment.var = 'treatment', 
-#'                      block.var = "block", 
-#'                      replicate.var = "plot")
-#' # With blocks and time 
-#' curve_difference(df = subset(pplots, year < 2004&block<3), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      treatment.var = 'treatment', 
-#'                      block.var = "block", 
-#'                      replicate.var = "plot",
-#'                      time.var = "year")
-#' #pooling by treatment no time
-#' curve_difference(df = subset(pplots, time == 2002), 
-#'                      species.var = "species", 
-#'                      abundance.var = "abundance", 
-#'                      treatment.var = 'treatment', 
-#'                      pool="YES", 
-#'                      replicate.var = "replicate")
-#  #pooling by treatment with time
-#' curve_difference(df = subset(pplots, time < 2004), 
-#'                      species.var = "species", 
-#'                      abundance.var = "abundance", 
-#'                      treatment.var = 'treatment', 
-#'                      pool="YES", 
-#'                      replicate.var = "replicate")
-#' #All pairwise replicates with treatment and no time
-#' curve_difference(df=subset(pplots, year==2002&plot==25|year==2002&plot==6), 
-#'                      species.var = "species",
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot",
-#'                      treatment.var = "treatment")
-#' #All pairwise replicates with treatment
-#' curve_difference(df=subset(pplots, year<2004&plot==25|year < 2004&plot==6), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot", 
-#'                      time.var="year",
-#'                      treatment.var = "treatment")
-#' #All pairwise replicates without treatment and no time
-#' curve_difference(df=subset(pplots, year==2002&plot==25|year==2002&plot==6), 
-#'                      species.var = "species",
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot")
-#' #All pairwise replicates without treatment
-#' curve_difference(df=subset(pplots, year<2004&plot==25|year < 2004&plot==6), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot", 
-#'                      time.var="year")
-
+#' @references Avolio et al. OUR PAPER.
+#' @examples 
+#' data(pplots)
+#' # With block and no time
+#' df <- subset(pplots, year == 2002 & block < 3)
+#' curve_difference(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  treatment.var = 'treatment',
+#'                  block.var = "block",
+#'                  replicate.var = "plot")
+#' # With blocks and time
+#' df <- subset(pplots, year < 2004 & block < 3)
+#' curve_difference(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  treatment.var = 'treatment',
+#'                  block.var = "block",
+#'                  replicate.var = "plot",
+#'                  time.var = "year")
+#' # Pooling by treatment no time
+#' df <- subset(pplots, year == 2002)
+#' curve_difference(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  treatment.var = 'treatment',
+#'                  pool = "YES",
+#'                  replicate.var = "plot")
+#' # Pooling by treatment with time
+#' df <- subset(pplots, year < 2004)
+#' curve_difference(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  treatment.var = 'treatment',
+#'                  pool = "YES",
+#'                  replicate.var = "plot",
+#'                  time.var = "year")
+#' # All pairwise replicates with treatment and no time
+#' df <- subset(pplots, year == 2002 & plot %in% c(6, 25, 32))
+#' curve_difference(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  replicate.var = "plot",
+#'                  treatment.var = "treatment")
+#' # All pairwise replicates with treatment
+#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' curve_difference(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  replicate.var = "plot",
+#'                  time.var = "year",
+#'                  treatment.var = "treatment")
+#' # All pairwise replicates without treatment and no time
+#' df <- subset(pplots, year == 2002 & plot %in% c(6, 25, 32))
+#' curve_difference(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  replicate.var = "plot")
+#' # All pairwise replicates without treatment
+#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' curve_difference(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  replicate.var = "plot",
+#'                  time.var = "year")
 #' @export
 #'
 

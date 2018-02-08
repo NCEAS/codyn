@@ -1,68 +1,90 @@
-#' @title pool replicates into treatments and add ranks
-#' @description pool replicates into treatments and add ranks
-#' @param df A data frame containing an optional time column and requred species, abundance, replicate and optional treatment columns and optional block column
+#' @title Rank Abundance Curve Differences
+#' @description Calculates differences between to samples for four aspects of rank abundance curves (richness, evenness, rank, species composition). There are three ways differences can be calculated. 1) Between treatments within a block. Here, block.var and treatment.var need to be specified. 2) Between treatments, pooling all replicates into a single species pool. Here pool = TRUE, treatment.var needs to be specified, and block.var will be NULL. 3) All pairwise combinations between all replicates. Here block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, in the output the treatment that each replicate belongs to will also be listed.
+#' @param df A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
+#' #' @return The RAC_difference function returns a data frame with the following attributes:
+#' \itemize{
+#'  \item{richness_diff: }{A numeric column that is the difference between the compared samples (treatments or replicates) in species richness divided by the total number of species in both samples.}
+#'  \item{evenness_diff: }{A numeric column of the difference between the compared samples (treatments or replicates) in evenness (measured using the EQ metric) divided by the total number of species in both samples.}
+#'  \item{rank_diff: }{A numeric column of the average difference between the compared samples (treatments or replicates) in species' ranks divided by the total number of species in both samples. Species that are not present in both samples are given the S+1 rank in the sample it is absent in, where S is the number of species in that sample.}
+#'  \item{species_diff: }{A numeric column of the number of species that are different between the compared samples (treatments or replicates) divided by the total number of species in both samples. This is equivelant to the Jaccard Index.}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var = NULL.}
+#'  \item{replicate.var2: }{A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Note, a replicate.var column will be returned only when pool is FALSE and block.var = NULL.}
+#'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
+#'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, represents the first treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
+#'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
+#'  \item{block.var: }{A column that has same name and type as the block.var column, if block.var is specified.}
+#' }
+#' @references Avolio et al. OUR PAPER
 #' @examples 
-#' data(pplots) 
-#' # With block and no time 
-#' RAC_difference(df = subset(pplots, year == 2002&block<3), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      treatment.var = 'treatment', 
-#'                      block.var = "block", 
-#'                      replicate.var = "plot")
-#' # With blocks and time 
-#' RAC_difference(df = subset(pplots, year < 2004&block<3), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      treatment.var = 'treatment', 
-#'                      block.var = "block", 
-#'                      replicate.var = "plot",
-#'                      time.var = "year")
-#' #pooling by treatment no time
-#' RAC_difference(df = subset(pplots, time == 2002), 
-#'                      species.var = "species", 
-#'                      abundance.var = "abundance", 
-#'                      treatment.var = 'treatment', 
-#'                      pool="YES", 
-#'                      replicate.var = "replicate")
-#  #pooling by treatment with time
-#' RAC_difference(df = subset(pplots, time < 2004), 
-#'                      species.var = "species", 
-#'                      abundance.var = "abundance", 
-#'                      treatment.var = 'treatment', 
-#'                      pool="YES", 
-#'                      replicate.var = "replicate")
-#' #All pairwise replicates with treatment and no time
-#' RAC_difference(df=subset(pplots, year==2002&plot==25|year==2002&plot==6), 
-#'                      species.var = "species",
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot",
-#'                      treatment.var = "treatment")
-#' #All pairwise replicates with treatment
-#' RAC_difference(df=subset(pplots, year<2004&plot==25|year < 2004&plot==6), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot", 
-#'                      time.var="year",
-#'                      treatment.var = "treatment")
-#' #All pairwise replicates without treatment and no time
-#' RAC_difference(df=subset(pplots, year==2002&plot==25|year==2002&plot==6), 
-#'                      species.var = "species",
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot")
-#' #All pairwise replicates without treatment
-#' RAC_difference(df=subset(pplots, year<2004&plot==25|year < 2004&plot==6), 
-#'                      species.var = "species", 
-#'                      abundance.var = "relative_cover", 
-#'                      replicate.var = "plot", 
-#'                      time.var="year")
-
+#' data(pplots)
+#' # With block and no time
+#' df <- subset(pplots, year == 2002 & block < 3)
+#' RAC_difference(df = df,
+#'                species.var = "species",
+#'                abundance.var = "relative_cover",
+#'                treatment.var = 'treatment',
+#'                block.var = "block",
+#'                replicate.var = "plot")
+#' # With blocks and time
+#' df <- subset(pplots, year < 2004 & block < 3)
+#' RAC_difference(df = df,
+#'                species.var = "species",
+#'                abundance.var = "relative_cover",
+#'                treatment.var = 'treatment',
+#'                block.var = "block",
+#'                replicate.var = "plot",
+#'                time.var = "year")
+#' # Pooling by treatment no time
+#' df <- subset(pplots, year == 2002)
+#' RAC_difference(df = df,
+#'                species.var = "species",
+#'                abundance.var = "relative_cover",
+#'                treatment.var = 'treatment',
+#'                pool = "YES",
+#'                replicate.var = "plot")
+#' # Pooling by treatment with time
+#' df <- subset(pplots, year < 2004)
+#' RAC_difference(df = df,
+#'                species.var = "species",
+#'                abundance.var = "relative_cover",
+#'                treatment.var = 'treatment',
+#'                pool = "YES",
+#'                replicate.var = "plot",
+#'                time.var = "year")
+#' # All pairwise replicates with treatment and no time
+#' df <- subset(pplots, year == 2002 & plot %in% c(6, 25, 32))
+#' RAC_difference(df = df,
+#'                species.var = "species",
+#'                abundance.var = "relative_cover",
+#'                replicate.var = "plot",
+#'                treatment.var = "treatment")
+#' # All pairwise replicates with treatment
+#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' RAC_difference(df = df,
+#'                species.var = "species",
+#'                abundance.var = "relative_cover",
+#'                replicate.var = "plot",
+#'                time.var = "year",
+#'                treatment.var = "treatment")
+#' # All pairwise replicates without treatment and no time
+#' df <- subset(pplots, year == 2002 & plot %in% c(6, 25, 32))
+#' RAC_difference(df = df,
+#'                species.var = "species",
+#'                abundance.var = "relative_cover",
+#'                replicate.var = "plot")
+#' # All pairwise replicates without treatment
+#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' RAC_difference(df = df,
+#'                species.var = "species",
+#'                abundance.var = "relative_cover",
+#'                replicate.var = "plot",
+#'                time.var = "year")
 #' @export
 
 
