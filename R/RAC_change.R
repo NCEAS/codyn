@@ -1,13 +1,19 @@
-##calculating RAC changes
 #' @title Rank Abundance Curve Changes
-#' @description 
+#' @description Calculates change of the five aspects of rank abundance curves (richness, evenness, rank, species gains, and species losses) for a replicate between two consequtive time points.
 #' @param df A data frame containing time, species and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column 
-#' 
-#' 
+#' @return The RAC_change function returns a data frame with the following attributes:
+#' \itemize{
+#'  \item{richness_change: }{A numeric column that is the difference between the compared samples (treatments or replicates) in species richness divided by the total number of species in both samples.}
+#'  \item{evenness_change: }{A numeric column of the difference between the compared samples (treatments or replicates) in evenness (measured using the EQ metric) divided by the total number of species in both samples.}
+#'  \item{rank_change: }{A numeric column of the average difference between the compared samples (treatments or replicates) in species' ranks divided by the total number of species in both samples. Species that are not present in both samples are given the S+1 rank in the sample it is absent in, where S is the number of species in that sample.}
+#'  \item{species_diff: }{A numeric column of the number of species that are different between the compared samples (treatments or replicates) divided by the total number of species in both samples. This is equivelant to the Jaccard Index.}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var = NULL.}
+#'  \item{time.var: }{A column that has the same name and type as the time.var column.}
+#' }
 #' @export
 
 RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var=NULL) {

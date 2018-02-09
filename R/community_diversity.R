@@ -90,7 +90,7 @@ InverseSimpson <- function(x, N = sum(x[x != 0]), ps = x[x != 0]/N, p2=ps*ps ){
   1/D
 }
 
-# A function to calculate Shannon's Divsersity 
+# A function to calculate Shannon's Diversity 
 # @param x the vector of abundances of each species
 # @param N the total abundance
 # @param p the vector of relative abundances of each species

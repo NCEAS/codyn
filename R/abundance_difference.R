@@ -1,6 +1,6 @@
 #' @title  Abundance Differences
-#' @description Calculates the difference in abudnace of a species between to samples. There are three ways differences can be calcualted. 1) Between treamtents within a block. Here, block.var and treatment.var need to be specified. 2) Between treatments, pooling all replicates into a single species pool. Here pool = TRUE, treatment.var needs to be specified, and block.var will be NULL. 3) All pairwise combinations between all replicates. Here block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, in the output the treatment that each replicate belongs to will also be listed.
-#' @param df A data frame containing an optional time column and requred species, abundance, replicate and optional treatment columns and optional block column
+#' @description Calculates the difference in abudnace of a species between to samples. There are three ways differences can be calculated. 1) Between treatments within a block. Here, block.var and treatment.var need to be specified. 2) Between treatments, pooling all replicates into a single species pool. Here pool = TRUE, treatment.var needs to be specified, and block.var will be NULL. 3) All pairwise combinations between all replicates. Here block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, in the output the treatment that each replicate belongs to will also be listed.
+#' @param df A data frame containing species, abundance, replicate columns and optional time, treatment and block columns.
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
@@ -158,6 +158,10 @@ return(output)
 #
 ############################################################################
 
+# A function to calculate abundance differences for a species between two samples 
+# @param df a dataframe
+# @param species.var the name of the species column
+# @param abundance.var the name of the abundance column
 abund_diff <- function(df, species.var, abundance.var) {
 
   abundance.var.x <- paste(abundance.var, 'x', sep = '.')
