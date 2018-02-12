@@ -7,7 +7,7 @@
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
-#' #' @return The RAC_difference function returns a data frame with the following attributes:
+#' @return The RAC_difference function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{richness_diff: }{A numeric column that is the difference between the compared samples (treatments or replicates) in species richness divided by the total number of species in both samples.}
 #'  \item{evenness_diff: }{A numeric column of the difference between the compared samples (treatments or replicates) in evenness (measured using the EQ metric) divided by the total number of species in both samples.}
