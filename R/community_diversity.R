@@ -53,7 +53,7 @@ community_diversity <- function(df,  time.var = NULL,
   metric <- match.arg(metric)
   
   # check no NAs in abundance column
-  if(any(is.na(df[[abundance.var]]))) stop("Abundance values are missing")
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
 
   # specify aggregate formula from arguments
   if(is.null(replicate.var)) {
