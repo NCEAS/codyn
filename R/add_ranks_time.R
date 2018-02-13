@@ -1,20 +1,20 @@
-#' @title Add Ranks for Time Periods
-#'@description Ranks species by abundance in each year
-#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
-#' @param time.var The name of the time column 
-#' @param species.var The name of the species column 
-#' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the optional replicate column 
-#' 
-#' @return The add_ranks function returns a data frame with the following attributes:
-#' \itemize{
-#'  \item{time.var: }{A column containing the second time point; the name and type of this column is the same as the time.var column in the input dataframe.}
-#'  \item{abundance.var: }{A column that has same name and type as the abundance.var column.}
-#'  \item{species.var: }{A column that has same name and type as the species.var column.}
-#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column.}
-#'  \item{rank: }{A numeric column with the species rank; a rank of 1 indicates the species was most abundant in that time period. Species that are not present in that time period have the largest rank value.}
-#' }
-#'
+# @title Add Ranks for Time Periods
+#@description Ranks species by abundance in each year
+# @param df A data frame containing time, species and abundance columns and an optional column of replicates
+# @param time.var The name of the time column 
+# @param species.var The name of the species column 
+# @param abundance.var The name of the abundance column 
+# @param replicate.var The name of the optional replicate column 
+# 
+# @return The add_ranks function returns a data frame with the following attributes:
+# \itemize{
+#  \item{time.var: }{A column containing the second time point; the name and type of this column is the same as the time.var column in the input dataframe.}
+#  \item{abundance.var: }{A column that has same name and type as the abundance.var column.}
+#  \item{species.var: }{A column that has same name and type as the species.var column.}
+#  \item{replicate.var: }{A column that has same name and type as the replicate.var column.}
+#  \item{rank: }{A numeric column with the species rank; a rank of 1 indicates the species was most abundant in that time period. All species that are not present in that time period have the rank value S+1 where S is the number of species in the sample.}
+# }
+#
 add_ranks_time <- function(df, time.var, 
                            species.var, 
                            abundance.var,  
@@ -102,8 +102,6 @@ add_ranks_time <- function(df, time.var,
   return(rank)
 }
 
-
-
 ############################################################################
 #
 # Private functions: these are internal functions not intended for reuse.
@@ -112,14 +110,13 @@ add_ranks_time <- function(df, time.var,
 #
 ############################################################################
 
-#' Add zeros to a long-form species and abundace dataframe
-#'
-#' @param df A dataframe containing time.var, species.var and abundance.var columns
-#' @param time.var The name of the time column from df
-#' @param species.var The name of the species column from df
-#' @param abundance.var The name of the abundance column from df
-#' @return A dataframe with the same columns as df, but with zeros added for species that were present at some point in the time series but not the particular time period.
-#' 
+# A function to add zeros to a long-form species and abundace dataframe
+# @param df A dataframe containing time.var, species.var and abundance.var columns
+# @param time.var The name of the time column from df
+# @param species.var The name of the species column from df
+# @param abundance.var The name of the abundance column from df
+# @return A dataframe with the same columns as df, but with zeros added for species that were present at some point in the time series but not the particular time period.
+
 fill_zeros <- function(df, time.var, species.var, abundance.var){
   df2 <- subset(df, select = c(time.var,species.var,abundance.var))
   if(any(is.na(df2[[species.var]]))) stop("Species names are missing")

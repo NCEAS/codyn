@@ -1,6 +1,6 @@
-#' @title Curve Shape Changes
-#' @description The curve_change function compares the areas of difference between two curves that are consecutive time steps. It is optional to do this for replicates. For this to work, there must be more than 1 species in a plot at both time points, and when included, the replicate must also be measured at both time points.
-#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @title Curve Changes
+#' @description Calculates the area difference between two rank abundance curves between two consecutive time periods. If replicate is specified, it must be measued in both time points, otherwise it will be dropped for that time period comparision. Also, a replicate must have more than a single species in both time periods.
+#' @param df A data frame containing time, species, and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
@@ -8,12 +8,28 @@
 #'  
 #' @return The curve_change function returns a data frame with the following attributes:
 #' \itemize{
-#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if specified.}
 #'  \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
-#'  \item{curve_change: }{A numeric column of the differences in curves between time points.}
+#'  \item{curve_change: }{A numeric column of the change in curves between time points.}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if specified.}
 #' }
-#' @export
+#' @references Avolio et al.OUR PAPER
+#' @examples 
+#' data(pplots)
+#' # Without replicates
+#' df <- subset(pplots, plot == 25)
+#' curve_change(df = df,
+#'            species.var = "species",
+#'            abundance.var = "relative_cover",
+#'            time.var = "year")
 #'
+#' # With replicates
+#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' curve_change(df = df,
+#'            species.var = "species",
+#'            abundance.var = "relative_cover",
+#'            replicate.var = "plot",
+#'            time.var = "year")
+#' @export
 curve_change <- function(df, time.var, 
                          species.var, 
                          abundance.var, 
@@ -95,7 +111,12 @@ curve_change <- function(df, time.var,
 # should not use them.
 #
 ############################################################################
-    
+
+# A function calculate the curve changes between two time peroids
+# @param df a dataframe
+# @param time.var the name of the time column
+# @param relrank the name of the relative rank of each species in the sample
+# @param cumabund the name of the cumulative abundance of each species in the sample  
 curvechange <- function(df, time.var, relrank, cumabund) {
     
     df <- df[order(df[[time.var]], df$cumabund),]

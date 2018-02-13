@@ -1,19 +1,37 @@
 #' @title Rank Abundance Curve Changes
-#' @description Calculates change of the five aspects of rank abundance curves (richness, evenness, rank, species gains, and species losses) for a replicate between two consequtive time points.
-#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @description Calculates change of the five aspects of rank abundance curves (richness, evenness, rank, species gains, and species losses) for a replicate between two consecutive time points.
+#' @param df A data frame containing time, species, and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column 
 #' @return The RAC_change function returns a data frame with the following attributes:
 #' \itemize{
-#'  \item{richness_change: }{A numeric column that is the difference between the compared samples (treatments or replicates) in species richness divided by the total number of species in both samples.}
-#'  \item{evenness_change: }{A numeric column of the difference between the compared samples (treatments or replicates) in evenness (measured using the EQ metric) divided by the total number of species in both samples.}
-#'  \item{rank_change: }{A numeric column of the average difference between the compared samples (treatments or replicates) in species' ranks divided by the total number of species in both samples. Species that are not present in both samples are given the S+1 rank in the sample it is absent in, where S is the number of species in that sample.}
-#'  \item{species_diff: }{A numeric column of the number of species that are different between the compared samples (treatments or replicates) divided by the total number of species in both samples. This is equivelant to the Jaccard Index.}
-#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var = NULL.}
-#'  \item{time.var: }{A column that has the same name and type as the time.var column.}
+##'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
+#'  \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
+#'  \item{richness_change: }{A numeric column that is the change in richness between the two consecutive time peroids for a repicate divided by the total number of species in both time periods.}
+#'  \item{evenness_change: }{A numeric column that is the change in evenness (measured with EQ) between the two consecutive time peroids for a repicate divided by the total number of species in both time periods.}
+#'  \item{rank_change: }{A numeric column that is the average change in rank of a species between the two consecutive time peroids for a repicate divided by the total number of species in both time periods. Species that are not present in both time periods are given the S+1 rank in the sample it is absent in, where S is the number of species in that sample.}
+#'  \item{gains: }{A numeric column of the number of species that are present at time period 2 that were not present at time period 1 for a replicate divided by the total number of species in both time periods. This is equivelant to the turnover function with metric = "appearances".}
+#'  \item{losses: }{A numeric column of the number of species that are not present at time period 2 but were  present at time period 1 for a replicate divided by the total number of species in both time periods. This is equivelant to the turnover function with metric = "disappearance".}
 #' }
+#' @references Avolio et al.OUR PAPER
+#' @examples 
+#' data(pplots)
+#' # Without replicates
+#' df <- subset(pplots, plot == 25)
+#' RAC_change(df = df,
+#'            species.var = "species",
+#'            abundance.var = "relative_cover",
+#'            time.var = "year")
+#'
+#' # With replicates
+#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' RAC_change(df = df,
+#'            species.var = "species",
+#'            abundance.var = "relative_cover",
+#'            replicate.var = "plot",
+#'            time.var = "year")
 #' @export
 
 RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var=NULL) {
@@ -96,11 +114,21 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var=N
   return(output)
 }
 
-### PRIVATE FUNCTIONS ###
+############################################################################
+#
+# Private functions: these are internal functions not intended for reuse.
+# Future package releases may change these without notice. External callers
+# should not use them.
+#
+############################################################################
 
-
-## function for the richness and evenness differences, gains and losses, and rankshifts returning a dataframe with those and the MRSc output
-#rename this
+# A function to calculate RAC changes for a replicate between two consecutive time points 
+# @param df a dataframe
+# @param time.var the name of the time column
+# @param rank.var1 the name of the speices rank column for the first time peroid
+# @param rank.var2 the name of the species rank column for the second time period
+# @param abundance.var1 the name of the abundance column for the first time peroid
+# @param abundance.var2 the name of the abundance column for the second time period
 SERGL <- function(df, time.var, rank.var1, rank.var2, abundance.var1, abundance.var2){
   #ricness and evenness differences
   s_t1 <- S(df[[abundance.var1]])

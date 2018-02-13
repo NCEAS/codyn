@@ -1,6 +1,6 @@
 #' @title Species Abundance Changes
-#' @description 
-#' @param df A data frame containing time, species and abundance columns and an optional column of replicates
+#' @description Calculates the abundance change for species in a replicate between two consecutive time points.
+#' @param df A data frame containing time, species, and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
@@ -11,14 +11,26 @@
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
 #'  \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
 #'  \item{species.var: }{A column that has same name and type as the species.var column.}
-#'  \item{abund_change: }{A numeric column of the abundance differences between timepoints}
+#'  \item{abund_change: }{A numeric column of the change in abundance between consecutive timepoints. A postive value occurs when a species increases in abundnace over time, and a negative value when a species decreases in abundance over time.}
 #' }
-#' @details 
-#' @references 
-#' @example 
+#' @references Avolio et al. OUR PAPER
+#' @examples 
+#' data(pplots)
+#' # Without replicates
+#' df <- subset(pplots, plot == 25)
+#' abundance_change(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  time.var = "year")
+#'
+#' # With replicates
+#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' abundance_change(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  replicate.var = "plot",
+#'                  time.var = "year")
 #' @export
-
-
 abundance_change <- function(df, time.var, 
                              species.var, 
                              abundance.var, 
@@ -113,6 +125,12 @@ abundance_change <- function(df, time.var,
 #
 ############################################################################
 
+# A function to calculate abundance changes for a species between two consecutive time points 
+# @param df a dataframe
+# @param species.var the name of the species column
+# @param time.var the name of the time column
+# @param abundance.var1 the name of the abundance column for the first time peroid
+# @param abundance.var2 the name of the abundance column for the second time period
 abundchange <- function(df, time.var, species.var, abundance.var1, abundance.var2){
 
   time1.1 <- unique(df$time1)

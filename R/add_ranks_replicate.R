@@ -1,21 +1,20 @@
-#' @title Add Ranks for Replicates
-#'@description Ranks species by abundance in each replicate
-#' @param df A data frame containing species, abundance and replicate columns and an optional column of time points
-#' @param time.var The name of the optional time column 
-#' @param species.var The name of the species column 
-#' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the replicate column 
-#' 
-#' @return The add_ranks function returns a data frame with the following attributes:
-#' \itemize{
-#'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
-#'  \item{abundance.var: }{A column that has same name and type as the abundance.var column.}
-#'  \item{species.var: }{A column that has same name and type as the species.var column.}
-#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column.}
-#'  \item{rank: }{A numeric column with the species rank; a rank of 1 indicates the species was most abundant in that time period. Species that are not present in that time period have the largest rank value.}
-#' }
-#' @export
-#' 
+# @title Add Ranks for Replicates
+#@description Ranks species by abundance in each replicate. For species that are not present at a time point, adds gives the rank S+1, where S is the total number of species in the replicate at that time point.
+# @param df A data frame containing species, abundance and replicate columns and an optional column of time points
+# @param time.var The name of the optional time column 
+# @param species.var The name of the species column 
+# @param abundance.var The name of the abundance column 
+# @param replicate.var The name of the replicate column 
+# 
+# @return The add_ranks function returns a data frame with the following attributes:
+# \itemize{
+#  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
+#  \item{abundance.var: }{A column that has same name and type as the abundance.var column.}
+#  \item{species.var: }{A column that has same name and type as the species.var column.}
+#  \item{replicate.var: }{A column that has same name and type as the replicate.var column.}
+#  \item{rank: }{A numeric column with the species rank; a rank of 1 indicates the species was most abundant in that time period. All species that are not present in that time period have the rank value S+1 where S is the number of species in the sample.}
+# }
+ 
 add_ranks_replicate <- function(df, time.var = NULL, 
                                 species.var, 
                                 abundance.var, 
@@ -103,14 +102,3 @@ add_ranks_replicate <- function(df, time.var = NULL,
   
   return(rank)
 }
-
-
-
-############################################################################
-#
-# Private functions: these are internal functions not intended for reuse.
-# Future package releases may change these without notice. External callers
-# should not use them.
-#
-############################################################################
-

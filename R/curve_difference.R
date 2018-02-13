@@ -1,5 +1,5 @@
 #' @title Curve Differences
-#' @description Calculates the difference between two rank abundance curves. There are three ways differences can be calculated. 1) Between all treatments within a block. Here, block.var and treatment.var need to be specified. 2) Between all treatments by taking the average species abundance of all species across all replicates within a treatment to create a single species pool. Here pool = TRUE, treatment.var needs to be specified, and block.var will be NULL. 3) Between all replicates. Here block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, in the output the treatment that each replicate belongs to will also be listed.
+#' @description Calculates the area difference between two rank abundance curves. There are three ways differences can be calculated. 1) Between all treatments within a block (note: block.var and treatment.var need to be specified. 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var = NULL. 3) All pairwise combinations between all replicates (note:block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
 #' @param df A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
@@ -11,13 +11,12 @@
 #'  
 #' @return The curve_difference function returns a data frame with the following attributes:
 #' \itemize{
-#'  \item{species.var: }{A column that has same name and type as the species.var column.}
-#'  \item{curve_diff: }{A numeric column of the difference in curves between the two samples being compared (replicates or treatments).}
+#'  \item{curve_diff: }{A numeric column of the area difference in curves between the two samples being compared (replicates or treatments).}
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var = NULL.}
 #'  \item{replicate.var2: }{A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Note, a replicate.var column will be returned only when pool is FALSE and block.var = NULL.}
 #'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
-#'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, represents the first treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
-#'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
+#'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, represents the first treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is specified, or treatment.var is specified.}
+#'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is specified, or treatment.var is specified.}
 #'  \item{block.var: }{A column that has same name and type as the block.var column, if block.var is specified.}
 #' }
 #' @references Avolio et al. OUR PAPER.
@@ -295,7 +294,12 @@ return(output)
 #
 ############################################################################
 
- relrank <- function(df, species.var, abundance.var, replicate.var ) {
+# A function to rank species in a sample by replicate
+# @param df a dataframe
+# @param species.var the name of the species column
+# @param abundance.var the name of the abundance column
+# @param replicate.var the name of the replicate column
+ relrank <- function(df, species.var, abundance.var, replicate.var) {
   
  df <- subset(df, select = c(species.var, abundance.var, replicate.var))
  df[[replicate.var]]<-as.character(df[[replicate.var]])
@@ -310,8 +314,12 @@ return(output)
  
  }
  
- 
- relrank_trt <- function(df, species.var, abundance.var, treatment.var ) {
+# A function to rank species in a sample by treatment
+# @param df a dataframe
+# @param species.var the name of the species column
+# @param abundance.var the name of the abundance column
+# @param treatment.var the name of the treatment column
+relrank_trt <- function(df, species.var, abundance.var, treatment.var ) {
    
    df <- subset(df, select = c(species.var, abundance.var, treatment.var))
    df[[treatment.var]]<-as.factor(as.character(df[[treatment.var]]))
@@ -325,8 +333,12 @@ return(output)
    return(relrank)
  }
   
- 
- curve_diff <- function(df, treatment.var, relrank, cumabund) {
+# A function calculate the curve difference between two treatments
+# @param df a dataframe
+# @param treatment.var the name of the treatment column
+# @param relrank the name of the relative rank of each species in the sample
+# @param cumabund the name of the cumulative abundance of each species in the sample
+curve_diff <- function(df, treatment.var, relrank, cumabund) {
    
    #determine all pairwise comparisions
    myperms <- trt_perms(df, treatment.var)
@@ -359,8 +371,13 @@ return(output)
      return(cc_out)
 
 } 
-    
- curve_diff_rep <- function(df, replicate.var, relrank, cumabund) {
+  
+# A function calculate the curve difference between two replicates
+# @param df a dataframe
+# @param replicate.var the name of the replicate column
+# @param relrank the name of the relative rank of each species in the sample
+# @param cumabund the name of the cumulative abundance of each species in the sample  
+curve_diff_rep <- function(df, replicate.var, relrank, cumabund) {
    
    df <- df[order(df[[replicate.var]]),]
    

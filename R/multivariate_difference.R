@@ -1,15 +1,39 @@
 #'@title Multivariate differences in composition and dispersion
-#' @description 
+#'@description Calculates the difference in composition and dispersion between treatments based off a Bray-Curtis dissimilarity matrix at a single point in time. Composition difference is the euclidean distance between the centroids of different treatments. Dispersion difference is the difference of average dispersion of each replicate to its centroid between two treatments.
 #' @param df A data frame containing an optional time column, species, abundance and replicate, and treatment columns
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var the name of the treatment column
-#' @export
-#' 
+#' @return The multivariate_difference function returns a data frame with the following attributes:
+#' \itemize{
+#'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
+#'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it.}
+#'  \item{composition_diff: }{A numeric column that is the euclidean distance between the centroids of two treatments at a single point in time.}
+#'  \item{abs_dispersion_diff: }{A numeric column that is the absolute value of the difference in the average dispersion of the replicates around the centriod for the two treatments.}
+#'  \item{trt_greater_disp: }{A column that has same type as the treatment.var column, and specifies which of the two  treatments has greater dispersion.}
+#'  \item{time.var: }{A characteric column that has the same name and type as the time.var column, if specified.}
+#' }
+#' @references Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson?
 #' @importFrom vegan vegdist betadisper
-#' 
+#' @examples  
+#' data(pplots)
+#' #Without time
+#' df <- subset(pplots, year == 2002)
+#' multivariate_difference(df, 
+#'                         replicate.var = "plot", 
+#'                         treatment.var = "treatment", 
+#'                         species.var = "species", 
+#'                         abundance.var = "relative_cover")
+#' #With time
+#' multivariate_difference(pplots, 
+#'                         time.var = "year", 
+#'                         replicate.var = "plot", 
+#'                         species.var = "species", 
+#'                         abundance.var = "relative_cover", 
+#'                         treatment.var = "treatment")
+#' @export
 multivariate_difference <- function(df, time.var=NULL, species.var, abundance.var, replicate.var, treatment.var){
   
   if(is.null(time.var)){
@@ -33,7 +57,19 @@ multivariate_difference <- function(df, time.var=NULL, species.var, abundance.va
   return(output)
 }
 
-###private functions
+############################################################################
+#
+# Private functions: these are internal functions not intended for reuse.
+# Future package releases may change these without notice. External callers
+# should not use them.
+#
+############################################################################
+
+# A function calculate the community compositon difference (the distance between the centriods of two treatments) and absolute dispersion difference (the absolute difference in the average dispersion of the replicates around the centriod for the two treatments).
+# @param df a dataframe
+# @param species.var the name of the species column
+# @param replicate.var the name of the replicate column
+# @param treatment.var the name of the treatment column
 
 mult_diff <- function(df, species.var, abundance.var, replicate.var, treatment.var){
 
@@ -54,7 +90,7 @@ mult_diff <- function(df, species.var, abundance.var, replicate.var, treatment.v
   #calculate distances of each plot to treatment centroid (i.e., dispersion)
   disp <- betadisper(bc, species3[[treatment.var]], type="centroid")
   
-  #getting distances between treatments; these centroids are in BC space, so that's why this uses euclidean distances
+  #getting distances between treatments with euclidean distances
   cent_dist <- as.data.frame(as.matrix(vegdist(disp$centroids, method="euclidean")))
   
   #extracting all treatment differences
