@@ -16,8 +16,9 @@
 #'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if specified.}
 #'  \item{richness: }{A numeric column of species richness}
-#'  \item{Shannon: }{A numeric column of EQ evenness if evenness = "EQ"}
-#'  \item{Simpson: }{A numeric column of Simpsons evenness if evenness = "SimpEven"}
+#'  \item{EQ: }{A numeric column of EQ evenness if evenness = "EQ"}
+#'  \item{SimpsonEvenness: }{A numeric column of Simpsons evenness if evenness = "SimpsonEveness"}
+#'  \item{Evar: }{A numeric column of Evar evenness if evenness = "Evar"}
 #' }
 #' @references Smith, B. and Wilson, J. B. 1996. A consumer's guide to evnness indices. Oikos 76: 70-82.
 #' @examples
@@ -56,7 +57,7 @@ community_structure <- function(df,  time.var = NULL,
   metric <- match.arg(metric)
   
   # check no NAs in abundance column
-  if(any(is.na(df[[abundance.var]]))) stop("Abundance values are missing")
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
 
   # specify aggregate formula from arguments
   if(is.null(replicate.var)) {
@@ -86,12 +87,13 @@ community_structure <- function(df,  time.var = NULL,
 #
 ############################################################################
 
-# A function to calculate E1/D (inverse of Simpson's) from Smith and Wilson 1996
+# A function to calculate 1/D (inverse of Simpson's) from Smith and Wilson 1996
 # @param S the number of species in the sample
 # @param x the vector of abundances of each species
 # @param N the total abundance
-# @param p the vector of relative abundances of each species
-SimpsonEvenness <- function(x, S = length(x[x != 0 & !is.na(x)]), N = sum(x[x != 0 & !is.na(x)]), ps = x[x != 0]/N, p2 = ps*ps ){
+# @param ps the vector of relative abundances of each species
+# @param p2 the vector of the square of relative abundances
+SimpsonEvenness <- function(x, S = length(x[x != 0]), N = sum(x[x != 0]), ps = x[x != 0]/N, p2 = ps*ps ){
   D <- sum(p2)
   (1/D)/S
 }
