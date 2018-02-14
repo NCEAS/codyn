@@ -40,7 +40,7 @@ check_names <- function(given, data) {
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 check_single_onerep <- function(df, time.var, species.var){
-  if(max(table(df[[time.var]], df[[species.var]]))>1) warning("Either data span multiple replicates with no replicate.var specified or multiple records within years for some species") }
+  if(max(table(df[[time.var]], df[[species.var]]))>1) stop("Either data span multiple replicates with no replicate.var specified or multiple records within years for some species") }
 
 #' Utility function to ensure only a single record exists for a given species within one replicate, for one time point.
 #' @param df A dataframe containing time.var, species.var, and replicate.var columns
