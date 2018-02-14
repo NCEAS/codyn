@@ -11,7 +11,7 @@
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
 #'  \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
 #'  \item{species.var: }{A column that has same name and type as the species.var column.}
-#'  \item{abund_change: }{A numeric column of the change in abundance between consecutive timepoints. A postive value occurs when a species increases in abundnace over time, and a negative value when a species decreases in abundance over time.}
+#'  \item{change: }{A numeric column of the change in abundance between consecutive timepoints. A postive value occurs when a species increases in abundnace over time, and a negative value when a species decreases in abundance over time.}
 #' }
 #' @references Avolio et al. OUR PAPER
 #' @examples 
@@ -36,7 +36,13 @@ abundance_change <- function(df, time.var,
                              abundance.var, 
                              replicate.var = NULL) {
   
-  if(is.null(replicate.var)) {
+    # check no NAs in abundance column
+    if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
+  
+    if(is.null(replicate.var)) {
+      
+      # check there unique species x time combinations
+      check_single_onerep(df, time.var, species.var)
     
     rankdf <- add_ranks_time(df, time.var, species.var, abundance.var, replicate.var = NULL)
     
@@ -69,6 +75,9 @@ abundance_change <- function(df, time.var,
     output <- do.call("rbind", out)  
 
   } else {
+    
+    # check unique species x time x replicate combinations
+    check_single(df, time.var, species.var, replicate.var)
     
     rankdf <- add_ranks_time(df,  time.var, species.var, abundance.var, replicate.var)
     
@@ -136,10 +145,10 @@ abundchange <- function(df, time.var, species.var, abundance.var1, abundance.var
   time1.1 <- unique(df$time1)
   time1.2 <- unique(df[[time.var]])
   
-  df$abund_change <- df[[abundance.var1]] - df[[abundance.var2]]
+  df$change <- df[[abundance.var1]] - df[[abundance.var2]]
   df$time_pair <- paste(time1.1, time1.2, sep = "-")
   
-  df <- subset(df, select = c("time_pair", species.var, "abund_change"))
+  df <- subset(df, select = c("time_pair", species.var, "change"))
   
   colnames(df)[1] <- paste(time.var, "pair", sep="_")
   

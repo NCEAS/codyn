@@ -35,8 +35,13 @@ curve_change <- function(df, time.var,
                          abundance.var, 
                          replicate.var = NULL) {
   
+  # check no NAs in abundance column
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
 
   if(is.null(replicate.var)) {
+    
+    # check there unique species x time combinations
+    check_single_onerep(df, time.var, species.var)
   
   df <- subset(df, select = c(time.var, species.var, abundance.var))
   relrank <- subset(df, df[[abundance.var]] != 0)
@@ -60,6 +65,11 @@ curve_change <- function(df, time.var,
   }
   
   } else {
+    
+    # check unique species x time x replicate combinations
+    check_single(df, time.var, species.var, replicate.var)
+    
+    
     df <- subset(df, select = c(time.var, species.var, abundance.var, replicate.var))
     relrank <- subset(df, df[[abundance.var]] != 0)
     relrank$rep_time <- paste(relrank[[replicate.var]], relrank[[time.var]], sep = "_")

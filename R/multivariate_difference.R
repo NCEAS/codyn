@@ -36,6 +36,9 @@
 #' @export
 multivariate_difference <- function(df, time.var=NULL, species.var, abundance.var, replicate.var, treatment.var){
   
+  # check no NAs in abundance column
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
+  
   if(is.null(time.var)){
     
     output <- mult_diff(df, species.var, abundance.var, replicate.var, treatment.var)

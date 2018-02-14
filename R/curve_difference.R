@@ -96,6 +96,9 @@ curve_difference <- function(df, time.var=NULL,
                              block.var=NULL){
   
   df<-as.data.frame(df)
+  
+  # check no NAs in abundance column
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
 
   if(!is.null(block.var)) {
     

@@ -37,8 +37,14 @@
 #' @export
 multivariate_change <- function(df, time.var, species.var, abundance.var, replicate.var, treatment.var = NULL){
   
-  df <- as.data.frame(df)
+  # check no NAs in abundance column
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
   
+  # check unique species x time x replicate combinations
+  check_single(df, time.var, species.var, replicate.var)
+  
+    df <- as.data.frame(df)
+
     if(is.null(treatment.var)){
   
       mult_com_change <- mult_change(df, time.var, species.var, abundance.var, replicate.var)

@@ -91,6 +91,9 @@
 
 RAC_difference <- function(df, time.var=NULL, species.var, abundance.var, replicate.var, treatment.var=NULL, pool="NO", block.var=NULL){
 
+  # check no NAs in abundance column
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
+  
   if(!is.null(block.var)){
     
     if(length(unique(df[[block.var]]))*length(unique(df[[treatment.var]])) != length(unique(df[[replicate.var]]))) stop("There is not one replicate per treatment in a block")

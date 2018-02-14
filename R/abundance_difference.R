@@ -12,7 +12,7 @@
 #' @return The abundance_difference function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{species.var: }{A column that has same name and type as the species.var column.}
-#'  \item{abund_diff: }{A numeric column of the abundance differences between the two samples being compared (replicates or treatments).}
+#'  \item{difference: }{A numeric column of the abundance differences between the two samples being compared (replicates or treatments).}
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool = FALSE or block.var = NULL.}
 #'  \item{replicate.var2: }{A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Note, a replicate.var column will be returned only when pool = FALSE and block.var = NULL.}
 #'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
@@ -91,6 +91,9 @@ abundance_difference <- function(df, time.var = NULL, species.var,
                                  treatment.var = NULL, pool = FALSE, 
                                  block.var = NULL) {
 
+  # check no NAs in abundance column
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
+  
   if (!is.null(block.var)) {
     reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
     reps_obs <- length(unique(df[[replicate.var]]))

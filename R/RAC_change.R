@@ -35,7 +35,14 @@
 #' @export
 
 RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var=NULL) {
+  
+  # check no NAs in abundance column
+  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
+  
   if(is.null(replicate.var)){
+    
+    # check there unique species x time combinations
+    check_single_onerep(df, time.var, species.var)
   
   rankdf <- add_ranks_time(df, time.var, species.var, abundance.var, replicate.var=NULL)
   
@@ -66,6 +73,9 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var=N
   output <- do.call("rbind", out)  
 }
   else{
+    
+    # check unique species x time x replicate combinations
+    check_single(df, time.var, species.var, replicate.var)
     
     rankdf <- add_ranks_time(df,  time.var, species.var, abundance.var, replicate.var)
     
