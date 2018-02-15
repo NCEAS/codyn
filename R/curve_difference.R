@@ -165,7 +165,7 @@ curve_difference <- function(df, time.var=NULL,
       spave <- spave[spave[[abundance.var]] != 0,]
       
       #rank each species by treatment
-      relrankdf1<-relrank_trt(spave, species.var, abundance.var, treatment.var)
+      relrankdf1<-relrank(spave, species.var, abundance.var, treatment.var)
       
       #calcualte curve difference
       output <- curve_diff (relrankdf1, treatment.var, relrank, cumabund) 
@@ -192,7 +192,7 @@ curve_difference <- function(df, time.var=NULL,
         
         #rank each species by treatment, time
         X <- split(spave, spave[[time.var]])
-        out <- lapply(X, FUN = relrank_trt, species.var, abundance.var, treatment.var) 
+        out <- lapply(X, FUN = relrank, species.var, abundance.var, treatment.var) 
         ID <- unique(names(out))
         out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
                       out, ID, SIMPLIFY = FALSE)
@@ -216,7 +216,7 @@ curve_difference <- function(df, time.var=NULL,
            relrankdf1 <- relrank(df, species.var, abundance.var, replicate.var) 
           
            #split by time and calcualte curve difference
-           output <- curve_diff_rep (relrankdf1, replicate.var, relrank, cumabund)
+           output <- curve_diff (relrankdf1, replicate.var, relrank, cumabund)
           
           } else {
        
@@ -230,7 +230,7 @@ curve_difference <- function(df, time.var=NULL,
         
         #split by time and calcualte curve difference
         X <- split(relrankdf1, relrankdf1[[time.var]])
-        out <- lapply(X, FUN=curve_diff_rep, replicate.var, relrank, cumabund) 
+        out <- lapply(X, FUN=curve_diff, replicate.var, relrank, cumabund) 
         ID <- unique(names(out))
         out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
                       out, ID, SIMPLIFY = FALSE)
@@ -252,7 +252,7 @@ curve_difference <- function(df, time.var=NULL,
         relrankdf1 <- relrank(df, species.var, abundance.var, replicate.var) 
         
         #split by time and calcualte curve difference
-        output <- curve_diff_rep (relrankdf1, replicate.var, relrank, cumabund)
+        output <- curve_diff (relrankdf1, replicate.var, relrank, cumabund)
         
         #merge in trt info
         output <- merge(output, rep_trt, by = replicate.var)
@@ -270,7 +270,7 @@ curve_difference <- function(df, time.var=NULL,
           
           #split by time and calcualte curve difference
           X <- split(relrankdf1, relrankdf1[[time.var]])
-          out <- lapply(X, FUN=curve_diff_rep, replicate.var, relrank, cumabund) 
+          out <- lapply(X, FUN=curve_diff, replicate.var, relrank, cumabund) 
           ID <- unique(names(out))
           out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
                         out, ID, SIMPLIFY = FALSE)
@@ -302,6 +302,7 @@ return(output)
 # @param species.var the name of the species column
 # @param abundance.var the name of the abundance column
 # @param replicate.var the name of the replicate column
+# NOTE: when ranks are assigned by treatment and not replicate, treatment is fed into replicate.var
  relrank <- function(df, species.var, abundance.var, replicate.var) {
   
  df <- subset(df, select = c(species.var, abundance.var, replicate.var))
@@ -316,31 +317,13 @@ return(output)
  return(relrank)
  
  }
- 
-# A function to rank species in a sample by treatment
-# @param df a dataframe
-# @param species.var the name of the species column
-# @param abundance.var the name of the abundance column
-# @param treatment.var the name of the treatment column
-relrank_trt <- function(df, species.var, abundance.var, treatment.var ) {
-   
-   df <- subset(df, select = c(species.var, abundance.var, treatment.var))
-   df[[treatment.var]]<-as.factor(as.character(df[[treatment.var]]))
-   relrank <- subset(df, df[[abundance.var]]!=0)
-   relrank$rank <- ave(relrank[[abundance.var]], relrank[[treatment.var]], FUN = function(x) rank(-x, ties.method = "average"))
-   relrank$maxrank = ave(relrank$rank, relrank[[treatment.var]], FUN = function(x) max(x))
-   relrank$relrank = relrank$rank/relrank$maxrank
-   relrank <- relrank[order(relrank[[treatment.var]], -relrank[[abundance.var]]),]
-   relrank$cumabund <- ave(relrank[[abundance.var]], relrank[[treatment.var]], FUN = function(x) cumsum(x))
-   
-   return(relrank)
- }
-  
+
 # A function calculate the curve difference between two treatments
 # @param df a dataframe
 # @param treatment.var the name of the treatment column
 # @param relrank the name of the relative rank of each species in the sample
 # @param cumabund the name of the cumulative abundance of each species in the sample
+# NOTE: when doing on replicates not treatments, replicate is fed in as the treatment variable
 curve_diff <- function(df, treatment.var, relrank, cumabund) {
    
    #determine all pairwise comparisions
@@ -374,45 +357,3 @@ curve_diff <- function(df, treatment.var, relrank, cumabund) {
      return(cc_out)
 
 } 
-  
-# A function calculate the curve difference between two replicates
-# @param df a dataframe
-# @param replicate.var the name of the replicate column
-# @param relrank the name of the relative rank of each species in the sample
-# @param cumabund the name of the cumulative abundance of each species in the sample  
-curve_diff_rep <- function(df, replicate.var, relrank, cumabund) {
-   
-   df <- df[order(df[[replicate.var]]),]
-   
-   #determine all pairwise comparisions
-   myperms <- rep_perms(df, replicate.var)
-   rep1 <- as.character(myperms[[replicate.var]])
-   rep2 <- as.character(myperms[[paste(replicate.var, 2, sep="")]])
-   
-   
-   cc_out<-data.frame() 
-   
-   for(i in 1:(length(rep1))) {
-     subset_t1 <- df[df[[replicate.var]] == rep1[i],]
-     subset_t1 <- subset_t1[order(subset_t1$cumabund),]
-     subset_t2 <- df[df[[replicate.var]] == rep2[i],]
-     subset_t2 <- subset_t2[order(subset_t2$cumabund),]
-     
-     sf1 <- stepfun(subset_t1$relrank, c(0, subset_t1$cumabund))
-     sf2 <- stepfun(subset_t2$relrank, c(0, subset_t2$cumabund))
-     r <- sort(unique(c(0, subset_t1$relrank, subset_t2$relrank)))
-     h <- abs(sf1(r) - sf2(r))
-     w <- c(diff(r), 0)
-     CC=sum(w*h)
-     
-     output=data.frame(rep1 = rep1[i], rep2 = rep2[i], curve_diff=CC)
-     colnames(output)[1] <- replicate.var
-     colnames(output)[2] <- paste(replicate.var, 2, sep = "")
-     
-     cc_out <- rbind(cc_out, output)
-   }
-   
-   return(cc_out)
-   
- } 
-   
