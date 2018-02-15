@@ -41,11 +41,17 @@ multivariate_difference <- function(df, time.var=NULL, species.var, abundance.va
   
   if(is.null(time.var)){
     
+    # check there unique species x time combinations
+    check_single_onerep(df, replicate.var, species.var)
+    
     output <- mult_diff(df, species.var, abundance.var, replicate.var, treatment.var)
     
   }
   
   else{
+    
+    # check unique species x time x replicate combinations
+    check_single(df, time.var, species.var, replicate.var)
     
     df <- df[order(df[[time.var]]),]
     X <- split(df, df[time.var])
