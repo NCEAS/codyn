@@ -94,6 +94,17 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
   
+  #check no species are repeated
+  if (is.null(time.var)){
+    # check there unique species x time combinations
+    check_single_onerep(df, replicate.var, species.var)
+  }
+  else {
+    # check unique species x time x replicate combinations
+    check_single(df, time.var, species.var, replicate.var)
+  }
+  
+  
   if (!is.null(block.var)) {
     reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
     reps_obs <- length(unique(df[[replicate.var]]))
@@ -117,21 +128,20 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   
   # cross join for pairwise comparisons
   splitvars <- c(species.var, block.var, time.var)
-  cross.var.x <- paste(cross.var, 'x', sep = '.')
-  cross.var.y <- paste(cross.var, 'y', sep = '.')
+  cross.var2 <- paste(cross.var, 2, sep = '')
   rankdf <- lapply(split(rankdf, rankdf[splitvars]),
                    function(x) {
                      y <- x
                      y[splitvars] <- NULL
-                     cross <- merge(x, y, by = NULL)
-                     idx <- as.integer(cross[[cross.var.x]])
-                     idx <- idx < as.integer(cross[[cross.var.y]])
+                     cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
+                     idx <- as.integer(cross[[cross.var]])
+                     idx <- idx < as.integer(cross[[cross.var2]])
                      cross[idx,]
                    })
   ranktog <- do.call(rbind, c(rankdf, list(make.row.names = FALSE)))
   
   # split on treatment pairs (and block if not null)
-  splitvars <- c(block.var, time.var, cross.var.x, cross.var.y)
+  splitvars <- c(block.var, time.var, cross.var, cross.var2)
   ranktog_split <- split(ranktog,
                          ranktog[splitvars], 
                          sep = "##")
@@ -167,9 +177,8 @@ return(output)
 # @param abundance.var the name of the abundance column
 abund_diff <- function(df, species.var, abundance.var) {
 
-  abundance.var.x <- paste(abundance.var, 'x', sep = '.')
-  abundance.var.y <- paste(abundance.var, 'y', sep = '.')
-  df[['difference']] <- df[[abundance.var.x]] - df[[abundance.var.y]]
+  abundance.var2 <- paste(abundance.var, 2, sep = '')
+  df[['difference']] <- df[[abundance.var]] - df[[abundance.var2]]
 
   return(df[c(species.var, 'difference')])
 }
