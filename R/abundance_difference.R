@@ -144,7 +144,7 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   splitvars <- c(block.var, time.var, cross.var, cross.var2)
   ranktog_split <- split(ranktog,
                          ranktog[splitvars], 
-                         sep = "##")
+                         sep = "##", drop = TRUE)
   ranktog_split <- lapply(ranktog_split,
                           FUN = abund_diff, species.var, abundance.var)
   unsplit <- lapply(ranktog_split, nrow)
