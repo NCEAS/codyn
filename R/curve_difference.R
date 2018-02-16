@@ -39,14 +39,7 @@
 #'                  block.var = "block",
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
-#' # Pooling by treatment no time
-#' df <- subset(pplots, year == 2002)
-#' curve_difference(df = df,
-#'                  species.var = "species",
-#'                  abundance.var = "relative_cover",
-#'                  treatment.var = 'treatment',
-#'                  pool = "YES",
-#'                  replicate.var = "plot")
+#' 
 #' # Pooling by treatment with time
 #' df <- subset(pplots, year < 2004)
 #' curve_difference(df = df,
@@ -56,13 +49,7 @@
 #'                  pool = "YES",
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
-#' # All pairwise replicates with treatment and no time
-#' df <- subset(pplots, year == 2002 & plot %in% c(6, 25, 32))
-#' curve_difference(df = df,
-#'                  species.var = "species",
-#'                  abundance.var = "relative_cover",
-#'                  replicate.var = "plot",
-#'                  treatment.var = "treatment")
+#' 
 #' # All pairwise replicates with treatment
 #' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
 #' curve_difference(df = df,
@@ -71,12 +58,7 @@
 #'                  replicate.var = "plot",
 #'                  time.var = "year",
 #'                  treatment.var = "treatment")
-#' # All pairwise replicates without treatment and no time
-#' df <- subset(pplots, year == 2002 & plot %in% c(6, 25, 32))
-#' curve_difference(df = df,
-#'                  species.var = "species",
-#'                  abundance.var = "relative_cover",
-#'                  replicate.var = "plot")
+#' 
 #' # All pairwise replicates without treatment
 #' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
 #' curve_difference(df = df,
@@ -85,209 +67,119 @@
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
 #' @export
-#'
+curve_difference <- function(df, time.var = NULL, species.var, 
+                                abundance.var, replicate.var,
+                                treatment.var = NULL, pool = FALSE, 
+                                block.var = NULL) {
 
-curve_difference <- function(df, time.var=NULL, 
-                             species.var, 
-                             abundance.var, 
-                             replicate.var, 
-                             treatment.var=NULL, 
-                             pool="NO", 
-                             block.var=NULL){
-  
   df<-as.data.frame(df)
+# check no NAs in abundance column
+if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
+
+#check no species are repeated
+if (is.null(time.var)){
+  # check there unique species x time combinations
+  check_single_onerep(df, replicate.var, species.var)
+} else {
+  # check unique species x time x replicate combinations
+  check_single(df, time.var, species.var, replicate.var)
+}
+
+
+if (!is.null(block.var)) {
+  reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
+  reps_obs <- length(unique(df[[replicate.var]]))
+  if (reps_exp != reps_obs)
+    stop("There is not one replicate per treatment in a block")
+  cross.var <- treatment.var
+  rep_trt <- unique(subset(df, select = c(replicate.var, treatment.var, block.var)))
+} else if (pool) {
+  cross.var <- treatment.var
+} else {
+  cross.var <- replicate.var
+}
+
+# specify aggregate formula from arguments
+
+if (pool) {
   
-  # check no NAs in abundance column
-  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
-
-  if(!is.null(block.var)) {
-    
-    if(length(unique(df[[block.var]]))*length(unique(df[[treatment.var]])) != length(unique(df[[replicate.var]]))) stop("There is not one replicate per treatment in a block")
-    
-    if(is.null(time.var)) {
-       
-       #rank species in each replicate and calculate relative rank and cumulative abundance
-       rep_trt <- unique(subset(df, select = c(replicate.var, treatment.var, block.var)))
-       relrankdf <- relrank(df, species.var, abundance.var, replicate.var)
-       relrankdf1 <- merge(relrankdf, rep_trt, by=replicate.var)
-      
-       #split by block and calculate curve difference
-       X <- split(relrankdf1, relrankdf1[[block.var]])
-       out <- lapply(X, FUN = curve_diff, treatment.var, relrank, cumabund) 
-       ID <- unique(names(out))
-       out <- mapply(function(x, y) "[<-"(x, block.var, value = y) ,
-                     out, ID, SIMPLIFY = FALSE)
-       output <- do.call("rbind", out)  
-       
-       } else {
-         
-      #rank species in each replicate and time and calculate relative rank and cumulative abundance
-      rep_trt <- unique(subset(df, select = c(replicate.var, treatment.var, block.var)))
-      X <- split(df, df[[time.var]])
-      out <- lapply(X, FUN = relrank, species.var, abundance.var, replicate.var) 
-      ID <- unique(names(out))
-      out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                    out, ID, SIMPLIFY = FALSE)
-      output <- do.call("rbind", out) 
-      relrankdf1 <- merge(output, rep_trt, by=replicate.var)
-      
-      #split by block and time and calcualte curve difference
-      relrankdf1$splitvariable <- paste(relrankdf1[[block.var]], relrankdf1[[time.var]], sep = "##")
-      X <- split(relrankdf1, relrankdf1$splitvariable)
-      out <- lapply(X, FUN = curve_diff, treatment.var, relrank, cumabund) 
-      ID <- unique(names(out))
-      out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
-                    out, ID, SIMPLIFY = FALSE)
-      output <- do.call("rbind", out)  
-      
-      ## Add in the identifying column names
-      outnames <- data.frame(do.call('rbind', strsplit(as.character(output$splitvariable),'##',fixed=TRUE)))
-      names(outnames) = c(block.var, time.var)
-      output$splitvariable <- NULL
-      output <- cbind(outnames, output)
-      
-    }
-    
+  rep_trt<-unique(subset(df, select = c(replicate.var, treatment.var)))
+ 
+  #need to add the casting long step...
+  #NO TIME
+  # apply fill_zeros
+  out <- fill_zeros_rep (df, replicate.var, species.var, abundance.var)
+  allsp <- merge(out, rep_trt, by=replicate.var)
+  
+  #WITH TIME
+  
+  # sort and apply fill_zeros to all time steps
+  df <- df[order(df[[time.var]]),]
+  X <- split(df, df[time.var])
+  out <- lapply(X, FUN = fill_zeros_rep, replicate.var, species.var, abundance.var)
+  ID <- unique(names(out))
+  out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
+                out, ID, SIMPLIFY = FALSE)
+  out2 <- do.call("rbind", out)
+  
+  allsp <- merge(out2, rep_trt, by=replicate.var)
+  
+   # specify aggregate formula from arguments
+  if(is.null(time.var)) {
+    by <- c(species.var, treatment.var)
   } else {
-    
-    if(pool=="YES") {
-      
-    if(is.null(time.var)) {
-      rep_trt<-unique(subset(df, select = c(replicate.var, treatment.var)))
-      
-      # apply fill_zeros
-      out <- fill_zeros_rep (df, replicate.var, species.var, abundance.var)
-      allsp <- merge(out, rep_trt, by=replicate.var)
-      
-      #get averages of each species by treatment
-      myformula <- as.formula(paste(abundance.var, "~", treatment.var, "+", species.var))
-      spave <- aggregate(myformula, FUN=mean, data=allsp)
-      spave <- spave[spave[[abundance.var]] != 0,]
-      
-      #rank each species by treatment
-      relrankdf1<-relrank(spave, species.var, abundance.var, treatment.var)
-      
-      #calcualte curve difference
-      output <- curve_diff (relrankdf1, treatment.var, relrank, cumabund) 
-
-    } else {
-      
-        rep_trt<-unique(subset(df, select = c(replicate.var, treatment.var)))
-        
-        # sort and apply fill_zeros to all time steps
-        df <- df[order(df[[time.var]]),]
-        X <- split(df, df[time.var])
-        out <- lapply(X, FUN = fill_zeros_rep, replicate.var, species.var, abundance.var)
-        ID <- unique(names(out))
-        out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                      out, ID, SIMPLIFY = FALSE)
-        out2 <- do.call("rbind", out)
-        
-        allsp <- merge(out2, rep_trt, by=replicate.var)
-        
-        #get averages of each species by treatment
-        myformula <- as.formula(paste(abundance.var, "~", treatment.var, "+", species.var, "+", time.var))
-        spave <- aggregate(myformula, FUN=mean, data=allsp)
-        spave <- spave[spave[[abundance.var]] != 0,]
-        
-        #rank each species by treatment, time
-        X <- split(spave, spave[[time.var]])
-        out <- lapply(X, FUN = relrank, species.var, abundance.var, treatment.var) 
-        ID <- unique(names(out))
-        out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                      out, ID, SIMPLIFY = FALSE)
-        relrankdf1 <- do.call("rbind", out) 
-        
-        #split by time and calcualte curve difference
-        X <- split(relrankdf1, relrankdf1[[time.var]])
-        out <- lapply(X, FUN = curve_diff, treatment.var, relrank, cumabund) 
-        ID <- unique(names(out))
-        out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                      out, ID, SIMPLIFY = FALSE)
-        output <- do.call("rbind", out)  
-    }
-      
-    } else {
-        
-       if(is.null(treatment.var)) {
-
-         if(is.null(time.var)) {
-           #rank species in each replicate and time and calculate relative rank and cumulative abundance
-           relrankdf1 <- relrank(df, species.var, abundance.var, replicate.var) 
-          
-           #split by time and calcualte curve difference
-           output <- curve_diff (relrankdf1, replicate.var, relrank, cumabund)
-          
-          } else {
-       
-        #rank species in each replicate and time and calculate relative rank and cumulative abundance
-        X1 <- split(df, df[[time.var]])
-        out1 <- lapply(X1, FUN=relrank, species.var, abundance.var, replicate.var) 
-        ID1 <- unique(names(out1))
-        out1 <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                       out1, ID1, SIMPLIFY = FALSE)
-        relrankdf1 <- do.call("rbind", out1) 
-        
-        #split by time and calcualte curve difference
-        X <- split(relrankdf1, relrankdf1[[time.var]])
-        out <- lapply(X, FUN=curve_diff, replicate.var, relrank, cumabund) 
-        ID <- unique(names(out))
-        out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                      out, ID, SIMPLIFY = FALSE)
-        output <- do.call("rbind", out)  
-        
-          }
-        
-          } else {
-        #get trts
-        rep_trt <- unique(subset(df, select = c(replicate.var, treatment.var)))
-        rep_trt2 <- rep_trt
-        rep_trt2[[paste(replicate.var, "2", sep = "")]] <- as.factor(rep_trt2[[replicate.var]])
-        rep_trt2[[replicate.var]] <- NULL
-        rep_trt2[[paste(treatment.var, "2", sep = "")]] <- as.factor(rep_trt2[[treatment.var]])
-        rep_trt2[[treatment.var]] <- NULL
-      if(is.null(time.var)){
-        
-        #rank species in each replicate and time and calculate relative rank and cumulative abundance
-        relrankdf1 <- relrank(df, species.var, abundance.var, replicate.var) 
-        
-        #split by time and calcualte curve difference
-        output <- curve_diff (relrankdf1, replicate.var, relrank, cumabund)
-        
-        #merge in trt info
-        output <- merge(output, rep_trt, by = replicate.var)
-        output <- merge(output, rep_trt2, by = paste(replicate.var, "2", sep=""))
-        
-        } else {
-          
-        #rank species in each replicate and time and calculate relative rank and cumulative abundance
-          X1 <- split(df, df[[time.var]])
-          out1 <- lapply(X1, FUN=relrank, species.var, abundance.var, replicate.var) 
-          ID1 <- unique(names(out1))
-          out1 <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                         out1, ID1, SIMPLIFY = FALSE)
-          relrankdf1 <- do.call("rbind", out1) 
-          
-          #split by time and calcualte curve difference
-          X <- split(relrankdf1, relrankdf1[[time.var]])
-          out <- lapply(X, FUN=curve_diff, replicate.var, relrank, cumabund) 
-          ID <- unique(names(out))
-          out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                        out, ID, SIMPLIFY = FALSE)
-          output <- do.call("rbind", out)  
-          
-          #merge in trt info
-          output <- merge(output, rep_trt, by = replicate.var)
-          output <- merge(output, rep_trt2, by = paste(replicate.var, "2", sep=""))
-      }
-      }
-      }
+    by <- c(species.var, treatment.var, time.var)
   }
   
+  spave <- aggregate.data.frame(allsp[abundance.var], df[by], FUN = mean)
+  spave <- spave[spave[[abundance.var]] != 0,]
+  
+  relrankdf1<-relrank(spave, species.var, abundance.var, treatment.var, time.var)
+
+} else {
+  # rank species in each replicate
+  rep_trt <- unique(df[c(replicate.var, treatment.var, block.var)])
+  rankdf <- add_ranks_replicate(df, time.var, species.var, abundance.var, replicate.var)
+  rankdf <- merge(rankdf, rep_trt, by = replicate.var)
+}
+
+# cross join for pairwise comparisons
+splitvars <- c(species.var, block.var, time.var)
+cross.var2 <- paste(cross.var, 2, sep = '')
+rankdf <- lapply(split(rankdf, rankdf[splitvars]),
+                 function(x) {
+                   y <- x
+                   y[splitvars] <- NULL
+                   cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
+                   idx <- as.integer(cross[[cross.var]])
+                   idx <- idx < as.integer(cross[[cross.var2]])
+                   cross[idx,]
+                 })
+ranktog <- do.call(rbind, c(rankdf, list(make.row.names = FALSE)))
+
+# split on treatment pairs (and block if not null)
+splitvars <- c(block.var, time.var, cross.var, cross.var2)
+ranktog_split <- split(ranktog,
+                       ranktog[splitvars], 
+                       sep = "##", drop = TRUE)
+ranktog_split <- lapply(ranktog_split,
+                        FUN = curve_diff, treatment.var, relrank, cumabund)
+
+unsplit <- lapply(ranktog_split, nrow)
+unsplit <- rep(names(unsplit), unsplit)
+output <- do.call(rbind, c(ranktog_split, list(make.row.names = FALSE)))
+output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
+
+if (is.null(block.var) & !pool & !is.null(treatment.var)) {
+  # add treatment for reference
+  output <- merge(output, merge(rep_trt, rep_trt, by = NULL, suffixes = c('', '2')))
+}
+
+## FIXME reset column types based on df
+
 return(output)
 
-  }
-
+}
 
 ############################################################################
 #
