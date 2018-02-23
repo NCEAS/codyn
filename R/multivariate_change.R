@@ -108,8 +108,11 @@ disp <- betadisper(bc, species3[[time.var]], type="centroid")
 cent_dist <- as.matrix(vegdist(disp$centroids, method="euclidean"))
 
 ##extracting only the comparisions, year x to year x+1.
-cent_dist_yrs <- data.frame(time1 = timestep[1:length(timestep)-1], time2 = timestep[2:length(timestep)],
-                         composition_change = diag(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist)-1)]))
+cent_dist_yrs <- data.frame(
+  time1 = timestep[1:length(timestep)-1],
+  time2 = timestep[2:length(timestep)],
+  composition_change = diag(
+    as.matrix(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist)-1)])))
 
 #collecting and labeling distances to centroid from betadisper to get a measure of dispersion and then take the mean for a year
 disp2 <- data.frame(time=species2[[time.var]],
