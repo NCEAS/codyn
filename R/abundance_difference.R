@@ -87,7 +87,6 @@ abundance_difference <- function(df, time.var = NULL, species.var,
     check_single(df, time.var, species.var, replicate.var)
   }
   
-  
   if (!is.null(block.var)) {
     reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
     reps_obs <- length(unique(df[[replicate.var]]))
@@ -137,12 +136,19 @@ abundance_difference <- function(df, time.var = NULL, species.var,
 
   if (is.null(block.var) & !pool & !is.null(treatment.var)) {
     # add treatment for reference
-    output <- merge(output, merge(rep_trt, rep_trt, by = NULL))
+    output <- merge(output, merge(rep_trt, rep_trt, by = NULL, suffixes = c('', '2')))
   }
   
   ## FIXME reset column types based on df
 
-return(output)
+output_order <- c(
+  species.var,
+  time.var,
+  block.var,
+  replicate.var, paste(replicate.var, 2, sep = ''),
+  treatment.var, paste(treatment.var, 2, sep = ''),
+  'difference')
+return(output[intersect(output_order, names(output))])
   
 }
 
