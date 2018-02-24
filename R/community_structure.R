@@ -48,7 +48,7 @@
 #' df <- subset(pplots, plot == 25 & year == 2002)
 #' community_structure(df, 
 #'                     abundance.var = "relative_cover") # for EQ evenness metric
-#'
+#' @importFrom stats aggregate.data.frame
 #' @export
 
 community_structure <- function(df,  time.var = NULL, 

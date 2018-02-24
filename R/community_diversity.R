@@ -44,6 +44,7 @@
 #' df <- subset(pplots, plot == 25 & year == 2002)
 #' community_diversity(df,
 #'                     abundance.var = "relative_cover") # for Shannon's diversity metric
+#' @importFrom stats aggregate.data.frame
 #' @export
 community_diversity <- function(df,  time.var = NULL, 
                                 abundance.var, 

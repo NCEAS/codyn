@@ -77,7 +77,7 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
   
-  #check no species are repeated
+  # check no species are repeated
   if (is.null(time.var)){
     # check there unique species x time combinations
     check_single_onerep(df, replicate.var, species.var)
@@ -124,29 +124,23 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   
   # split on treatment pairs (and block if not null)
   splitvars <- c(block.var, time.var, cross.var, cross.var2)
-  ranktog_split <- split(ranktog,
-                         ranktog[splitvars], 
-                         sep = "##", drop = TRUE)
+  ranktog_split <- split(ranktog, ranktog[splitvars], drop = TRUE)
   ranktog_split <- lapply(ranktog_split,
                           FUN = abund_diff, species.var, abundance.var)
-  unsplit <- lapply(ranktog_split, nrow)
-  unsplit <- rep(names(unsplit), unsplit)
   output <- do.call(rbind, c(ranktog_split, list(make.row.names = FALSE)))
-  output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
 
   if (is.null(block.var) & !pool & !is.null(treatment.var)) {
     # add treatment for reference
-    output <- merge(output, merge(rep_trt, rep_trt, by = NULL, suffixes = c('', '2')))
+    output <- merge(output,
+                    merge(rep_trt, rep_trt, by = NULL, suffixes = c('', '2')))
   }
-  
-  ## FIXME reset column types based on df
 
 output_order <- c(
-  species.var,
   time.var,
   block.var,
   replicate.var, paste(replicate.var, 2, sep = ''),
   treatment.var, paste(treatment.var, 2, sep = ''),
+  species.var,
   'difference')
 return(output[intersect(output_order, names(output))])
   
@@ -168,6 +162,7 @@ abund_diff <- function(df, species.var, abundance.var) {
 
   abundance.var2 <- paste(abundance.var, 2, sep = '')
   df[['difference']] <- df[[abundance.var]] - df[[abundance.var2]]
+  df[c(abundance.var, abundance.var2)] <- NULL
 
-  return(df[c(species.var, 'difference')])
+  return(df)
 }

@@ -20,7 +20,8 @@
 #'  \item{block.var: }{A column that has same name and type as the block.var column, if block.var is specified.}
 #' }
 #' @references Avolio et al. OUR PAPER.
-#' @examples 
+#' @examples
+#' \dontrun{
 #' data(pplots)
 #' # With block and no time
 #' df <- subset(pplots, year == 2002 & block < 3)
@@ -66,6 +67,7 @@
 #'                  abundance.var = "relative_cover",
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
+#' }
 #' @export
 curve_difference <- function(df, time.var = NULL, species.var, 
                                 abundance.var, replicate.var,
@@ -109,12 +111,8 @@ if (pool) {
   splitvars <- c(time.var)
   X <- split(df, df[splitvars])
   out <- lapply(X, FUN = fill_zeros_rep, replicate.var, species.var, abundance.var)
-  ID <- unique(names(out))
-  out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                out, ID, SIMPLIFY = FALSE)
-  out2 <- do.call("rbind", out)
-  allsp <- merge(out2, rep_trt, by=replicate.var)
-  
+  allsp <- do.call(rbind, c(out, list(make.row.names = FALSE)))
+
   # specify aggregate formula from arguments
   if(is.null(time.var)) {
     by <- c(species.var, treatment.var)

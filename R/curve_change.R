@@ -147,5 +147,4 @@ curvechange <- function(df, time.var, relrank, cumabund) {
     colnames(output)[1]<-paste(time.var, "pair", sep = "_")
     
     return(output)
-    } 
-  
+}

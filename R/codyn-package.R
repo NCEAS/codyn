@@ -81,3 +81,12 @@ NULL
 #' @usage data(knz_001d)
 #' @format A data frame with 8768 rows and 4 variables
 NULL
+
+#' Data
+#' 
+#' @docType data
+#' @keywords datasets
+#' @name pplots
+#' @usage data(pplots)
+#' @format A data frame with 1232 rows and 6 variables
+NULL

@@ -49,7 +49,7 @@
 #'                species.var = "species",
 #'                abundance.var = "relative_cover",
 #'                treatment.var = 'treatment',
-#'                pool = "YES",
+#'                pool = TRUE,
 #'                replicate.var = "plot",
 #'                time.var = "year")
 #' 

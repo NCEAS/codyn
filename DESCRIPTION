@@ -24,7 +24,8 @@ Depends:
 Imports:
     assertthat,
     stats,
-    permute
+    permute,
+    vegan
 Suggests:
     testthat,
     knitr,

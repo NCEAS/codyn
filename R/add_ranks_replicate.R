@@ -1,5 +1,5 @@
 # @title Add Ranks for Replicates
-#@description Ranks species by abundance in each replicate. For species that are not present at a time point, adds gives the rank S+1, where S is the total number of species in the replicate at that time point.
+# @description Ranks species by abundance in each replicate. For species that are not present at a time point, adds gives the rank S+1, where S is the total number of species in the replicate at that time point.
 # @param df A data frame containing species, abundance and replicate columns and an optional column of time points
 # @param time.var The name of the optional time column 
 # @param species.var The name of the species column 
@@ -75,11 +75,7 @@ add_ranks_replicate <- function(df, time.var = NULL,
     df <- df[order(df[[time.var]]),]
     X <- split(df, df[time.var])
     out <- lapply(X, FUN = fill_zeros_rep, replicate.var, species.var, abundance.var)
-    ID <- unique(names(out))
-    out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                  out, ID, SIMPLIFY = FALSE)
-    allsp <- do.call("rbind", out)
-    
+    allsp <- do.call(rbind, c(out, list(make.row.names = FALSE)))
     
     ###make zero abundant species have the rank S+1 (the size of the species pool plus 1)
     ##pull out zeros

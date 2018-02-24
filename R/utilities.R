@@ -112,6 +112,7 @@ S <- function(x){
 #' Utility function to calculate EQ evenness from Smith and Wilson 1996
 #' @param x Vector of abundance of each species
 #' If all abundances are equal it returns a 1
+#' @importFrom stats lm
 EQ <- function(x){
   x1 <- x[x != 0]
   if (length(x1) == 1) {
@@ -191,14 +192,49 @@ rep_perms <- function(df, replicate.var) {
 #' @param abundance.var The name of the abundance column from df
 #' @return A dataframe with the same columns as df, but with zeros added for species that were present at some point in the time series but not the particular time period.
 #' 
-fill_zeros_rep <- function(df, replicate.var, species.var, abundance.var){
-  df2 <- subset(df, select = c(replicate.var,species.var,abundance.var))
-  if(any(is.na(df2[[species.var]]))) stop("Species names are missing")
-  wide <- reshape(df2, idvar = replicate.var, timevar = species.var, direction = "wide")
-  wide[is.na(wide)] <- 0
-  
-  long<-reshape(wide, idvar = replicate.var, ids = replicate.var, time = names(wide), timevar = abundance.var, direction = "long")
-  colnames(long)[3] <- abundance.var
-  
-  return(long)
+fill_zeros_rep <- function(df, replicate.var, species.var, abundance.var) {
+  ## FIXME is replicate.var unnecessary?
+  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
+  full <- merge(
+    unique(df[setdiff(names(df), c(species.var, abundance.var))]), ##FIXME I don't trust this logic, what vars define unique community
+    unique(df[species.var])
+  )
+  df <- merge(df, full, all = TRUE)
+  df[is.na(df)] <- 0
+
+  return(df)
 }
+
+#' @title Add abundance ranks
+#' @description Rank species by abundance, by specified groupig. Species with
+#'   zero abundance receive rank S+1, where S is the total number of species in
+#'   the group.
+#' @param df A data frame containing species, abundance and replicate and/or
+#'   time indications.
+#' @param species.var The name of the species column
+#' @param abundance.var The name of the abundance column
+#' @param replicate.var The name of the optional replicate column
+#' @param time.var The name of the optional time column
+#' 
+#' @return The add_ranks function returns a data frame with the following
+#'   attributes:
+#'   \itemize{
+#'     \item{time.var: }{A column that has the same name and type as the
+#'     time.var column, if time.var is specified.}
+#'     \item{abundance.var: }{A column that has same name and type as the
+#'     abundance.var column.}
+#'     \item{species.var: }{A column that has same name and type as the
+#'     species.var column.}
+#'     \item{replicate.var: }{A column that has same name and type as the
+#'     replicate.var column.}
+#'     \item{rank: }{A numeric column with the species rank; a rank of 1
+#'     indicates the species was most abundant in that time period. All species
+#'     that are not present in that time period have the rank value S+1 where S
+#'     is the number of species in the sample.
+#'     }
+#'   }
+add_ranks <- function(df, species.var, abundance.var,
+                      replicate.var = NULL, time.var = NULL) {
+  
+}
+

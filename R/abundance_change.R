@@ -70,9 +70,8 @@ abundance_change <- function(df, time.var,
     df12 <- df12[order(df12[[time.var]]),]
     X <- split(df12, df12[[time.var]])
     
-    
     out <- lapply(X, FUN = abundchange, time.var, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = "")) 
-    output <- do.call("rbind", out)  
+    output <- do.call(rbind, c(out, make.row.names = FALSE))  
 
   } else {
     
@@ -100,14 +99,14 @@ abundance_change <- function(df, time.var,
     df12 <- merge(df1, df2,  by = c(species.var,replicate.var, time.var), all = T)
     df12<-subset(df12, df12[[paste(abundance.var, ".x", sep = "")]] !=0 | df12[[paste(abundance.var, ".y", sep = "")]] !=0)
     df12<-subset(df12, !is.na(df12[[paste(abundance.var, ".x", sep = "")]]) & !is.na(df12[[paste(abundance.var, ".y", sep = "")]]))
-    df12$splitvariable <- paste(df12[[replicate.var]], df12[[time.var]], sep = "##") 
+    df12$splitvariable <- paste(df12[[replicate.var]], df12[[time.var]], sep = "##")
     
     # sort and apply turnover to all replicates
     df12 <- df12[order(df12$splitvariable),]
     X <- split(df12, df12$splitvariable)
     
     
-    out <- lapply(X, FUN = abundchange, time.var, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = "")) 
+    out <- lapply(X, FUN = abundchange, time.var, species.var, paste(abundance.var, ".x", sep = ""),paste(abundance.var, ".y", sep = ""))
     ID <- unique(names(out))
     out <- mapply(function(x, y) "[<-"(x, "splitvariable", value = y) ,
                   out, ID, SIMPLIFY = FALSE)
