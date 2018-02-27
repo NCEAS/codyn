@@ -142,6 +142,7 @@ output_order <- c(
   treatment.var, paste(treatment.var, 2, sep = ''),
   species.var,
   'difference')
+
 return(output[intersect(output_order, names(output))])
   
 }
