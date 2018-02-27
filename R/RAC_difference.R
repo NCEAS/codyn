@@ -174,8 +174,6 @@ SERSp <- function(df, rank.var, rank.var2, abundance.var, abundance.var2){
   
   df <- subset(df, df[[abundance.var]]!=0 | df[[abundance.var2]]!=0)
   
-  df <- subset(df, !is.na(df[[abundance.var]]) & !is.na(df[[abundance.var2]]))
-  
   #ricness and evenness differences
   s_t1 <- S(df[[abundance.var]])
   e_t1 <- EQ(as.numeric(df[[abundance.var]]))
