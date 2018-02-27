@@ -38,18 +38,33 @@ curve_change <- function(df, time.var,
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
 
-  if(is.null(replicate.var)) {
-    
-    # check there unique species x time combinations
+  # check unique species x time x replicate combinations
+  if(is.null(replicate.var)){
     check_single_onerep(df, time.var, species.var)
+  } else {
+    check_single(df, time.var, species.var, replicate.var)
+  }
   
-  df <- subset(df, select = c(time.var, species.var, abundance.var))
+  
+  df <- subset(df, select = c(time.var, species.var, abundance.var, replicate.var))
   relrank <- subset(df, df[[abundance.var]] != 0)
-  relrank$rank <- ave(relrank[[abundance.var]], relrank[[time.var]], FUN = function(x) rank(-x, ties.method = "average"))
-  relrank$maxrank = ave(relrank$rank, relrank[[time.var]], FUN = function(x) max(x))
+  
+  # specify aggregate formula from arguments
+  if(is.null(replicate.var)) {
+    by <- c(time.var)
+  } else {
+    by <- c(replicate.var, time.var)
+  }
+  
+  relrank$rank <- ave(relrank[[abundance.var]], relrank[by], FUN = function(x) rank(-x, ties.method = "average"))
+  relrank$maxrank = ave(relrank$rank, relrank[by], FUN = function(x) max(x))
   relrank$relrank = relrank$rank/relrank$maxrank
-  relrank <- relrank[order(relrank[[time.var]], -relrank[[abundance.var]]),]
-  relrank$cumabund <- ave(relrank[[abundance.var]], relrank[[time.var]], FUN = function(x) cumsum(x))
+  if(is.null(replicate.var)){
+    relrank <- relrank[order(relrank[[time.var]], -relrank[[abundance.var]]),]
+  } else {
+    relrank <- relrank[order(relrank[[time.var]], relrank[[replicate.var]], -relrank[[abundance.var]]),]
+  }
+  relrank$cumabund <- ave(relrank[[abundance.var]], relrank[by], FUN = function(x) cumsum(x))
  
   timestep<-sort(unique(relrank[[time.var]]))
   cc_out<-data.frame()
@@ -59,39 +74,14 @@ curve_change <- function(df, time.var,
     subset_t2 <- relrank[relrank[[time.var]] == timestep[i+1],]
     subset_t12 <- rbind(subset_t1, subset_t2)
     
-    output <- curvechange(subset_t12, time.var, relrank, cumabund)
-    cc_out <- rbind(cc_out, output)
-    
-  }
-  
-  } else {
-    
-    # check unique species x time x replicate combinations
-    check_single(df, time.var, species.var, replicate.var)
-    
-    
-    df <- subset(df, select = c(time.var, species.var, abundance.var, replicate.var))
-    relrank <- subset(df, df[[abundance.var]] != 0)
-    relrank$rep_time <- paste(relrank[[replicate.var]], relrank[[time.var]], sep = "_")
-    relrank$rank <- ave(relrank[[abundance.var]], relrank$rep_time, FUN = function(x) rank(-x, ties.method = "average"))
-    relrank$maxrank = ave(relrank$rank, relrank$rep_time, FUN = function(x) max(x))
-    relrank$relrank = relrank$rank/relrank$maxrank
-    relrank <- relrank[order(relrank[[time.var]], relrank[[replicate.var]], -relrank[[abundance.var]]),]
-    relrank$cumabund <- ave(relrank[[abundance.var]], relrank$rep_time, FUN = function(x) cumsum(x))
-    
-    timestep<-sort(unique(relrank[[time.var]]))
-    cc_out<-data.frame()
-    
-    for(i in 1:(length(timestep)-1)) {
-      
-      subset_t1 <- relrank[relrank[[time.var]] == timestep[i],]
-      subset_t2 <- relrank[relrank[[time.var]] == timestep[i+1],]
-      subset_t12 <- rbind(subset_t1, subset_t2)
-      
-      ##dropping plots that were not measured both years
+    if(is.null(replicate.var)){
+      output <- curvechange(subset_t12, time.var, relrank, cumabund)
+      cc_out <- rbind(cc_out, output)
+    } else {
+      #dropping plots that were not measured both years
       plots_t1 <- as.data.frame(unique(subset_t1[[replicate.var]]))
       colnames(plots_t1)[1] <- replicate.var
-
+      
       plots_t2 <- as.data.frame(unique(subset_t2[[replicate.var]]))
       colnames(plots_t2)[1] <- replicate.var
       
@@ -99,19 +89,28 @@ curve_change <- function(df, time.var,
       
       subset_t12_2 <- merge(plots_bothyrs, subset_t12, by=replicate.var)
       subset_t12_2[[replicate.var]]<-as.character(subset_t12_2[[replicate.var]])
+   
+      splitvars <- replicate.var
+      X <- split(subset_t12_2, 
+                 subset_t12_2[splitvars])
+      out <- lapply(X, 
+                    FUN=curvechange, time.var, relrank, cumabund) 
+      unsplit <- lapply(out, nrow)
+      unsplit <- rep(names(unsplit), unsplit)
+      output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
+      #output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
       
-      X <- split(subset_t12_2, subset_t12_2[[replicate.var]])
-      out <- lapply(X, FUN=curvechange, time.var, relrank, cumabund) 
-      ID <- unique(names(out))
-      out <- mapply(function(x, y) "[<-"(x, replicate.var, value = y) ,
-                    out, ID, SIMPLIFY = FALSE)
-       output <- do.call("rbind", out)
-      
-       cc_out <- rbind(cc_out, output)
+      cc_out <- rbind(cc_out, output)
     }
   }
     
-    return (cc_out)
+  output_order <- c(
+    paste(time.var,"pair", sep="_"),
+    replicate.var,
+    'curve_change')
+  
+  return(output[intersect(output_order, names(cc_out))])
+  
 }
     
 ############################################################################
