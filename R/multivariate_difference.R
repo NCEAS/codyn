@@ -53,17 +53,24 @@ multivariate_difference <- function(df, time.var=NULL, species.var, abundance.va
     # check unique species x time x replicate combinations
     check_single(df, time.var, species.var, replicate.var)
     
-    df <- df[order(df[[time.var]]),]
-    X <- split(df, df[time.var])
+    splitvars <- time.var
+    X <- split(df, 
+               df[splitvars],
+               sep = "##", drop = TRUE)
     out <- lapply(X, FUN = mult_diff, species.var, abundance.var, replicate.var, treatment.var)
-    ID <- unique(names(out))
-    out <- mapply(function(x, y) "[<-"(x, time.var, value = y) ,
-                  out, ID, SIMPLIFY = FALSE)
-    output <- do.call("rbind", out)
-    
+    unsplit <- lapply(out, nrow)
+    unsplit <- rep(names(unsplit), unsplit)
+    output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
+    output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
   }
   
-  return(output)
+  output_order <- c(
+    time.var,
+    treatment.var, paste(treatment.var, 2, sep = ''),
+    'composition_diff', 'abs_dispersion_diff', 'trt_greater_disp')
+  
+  return(output[intersect(output_order, names(output))])
+  
 }
 
 ############################################################################
