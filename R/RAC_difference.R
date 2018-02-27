@@ -145,7 +145,14 @@ RAC_difference <- function(df, time.var = NULL, species.var,
   
   ## FIXME reset column types based on df
   
-  return(output)
+  output_order <- c(
+    time.var,
+    block.var,
+    replicate.var, paste(replicate.var, 2, sep = ''),
+    treatment.var, paste(treatment.var, 2, sep = ''),
+    'richness_diff', 'evenness_diff', 'rank_diff', 'species_diff')
+  
+  return(output[intersect(output_order, names(output))])
   
 }
 
