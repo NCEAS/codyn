@@ -53,7 +53,7 @@
 #'                      time.var = "year")
 #' 
 #' # All pairwise replicates with treatment
-#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' df <- subset(pplots, year < 2004 & plot %in% c(21, 25, 32))
 #' abundance_difference(df = df,
 #'                      species.var = "species",
 #'                      abundance.var = "relative_cover",
@@ -62,7 +62,7 @@
 #'                      treatment.var = "treatment")
 #' 
 #' # All pairwise replicates without treatment
-#' df <- subset(pplots, year < 2004 & plot %in% c(6, 25, 32))
+#' df <- subset(pplots, year < 2004 & plot %in% c(21, 25, 32))
 #' abundance_difference(df = df,
 #'                      species.var = "species",
 #'                      abundance.var = "relative_cover",
