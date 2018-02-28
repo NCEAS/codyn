@@ -82,8 +82,22 @@ NULL
 #' @format A data frame with 8768 rows and 4 variables
 NULL
 
-#' Data
+#' Phosphorus plots data from Avolio et al. 2014
 #' 
+#' A dataset of tallgrass prairie plant composition in a nitrogen and phosphorus addition experiment at Konza Prairie, Manhattan Kansas (Avolio et al. 2014). This dataset is a subset of the full dataset.
+#'
+#' A data frame containing a column for replicate, year, species, abundance, block and treatment :
+#' \itemize{
+#'   \item plot: An integer column of spatial replicates with 18 levels (6-48)
+#'   \item year: An integer column of sampling time points
+#'   \item species: A factor column of species sampled
+#'   \item relative_cover: A numeric column of relatvie cover values
+#'   \item block: An interger column of dummy blocking variable, grouping treament plots into blocks
+#'   \item treatment: A factor column of nitorgen and phosphorus treatments applied to the plots
+#' }
+#'
+#' @source
+#' Avolio, ML, Koerner, S, La Pierre, K, Wilcox, K, Wilson, GTW, Smith, MD, Collins, S. 2014. Changes in plant community composition, not diversity, to a decade of nitrogen and phosphorus additions drive changes in aboveground productivity in a tallgrass prairie. Journal of Ecology. 102: 1649-1660.  
 #' @docType data
 #' @keywords datasets
 #' @name pplots
