@@ -55,13 +55,12 @@ multivariate_difference <- function(df, time.var=NULL, species.var, abundance.va
     
     splitvars <- time.var
     X <- split(df, 
-               df[splitvars],
-               sep = "##", drop = TRUE)
+               df[splitvars])
     out <- lapply(X, FUN = mult_diff, species.var, abundance.var, replicate.var, treatment.var)
     unsplit <- lapply(out, nrow)
     unsplit <- rep(names(unsplit), unsplit)
     output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-    output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
+    output[splitvars] <- do.call(rbind, as.list(unsplit))
   }
   
   output_order <- c(

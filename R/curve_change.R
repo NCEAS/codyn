@@ -74,10 +74,11 @@ curve_change <- function(df, time.var,
     subset_t2 <- relrank[relrank[[time.var]] == timestep[i+1],]
     subset_t12 <- rbind(subset_t1, subset_t2)
     
-    if(is.null(replicate.var)){
+  if(is.null(replicate.var)){
       output <- curvechange(subset_t12, time.var, relrank, cumabund)
       cc_out <- rbind(cc_out, output)
     } else {
+      
       #dropping plots that were not measured both years
       plots_t1 <- as.data.frame(unique(subset_t1[[replicate.var]]))
       colnames(plots_t1)[1] <- replicate.var
@@ -89,7 +90,7 @@ curve_change <- function(df, time.var,
       
       subset_t12_2 <- merge(plots_bothyrs, subset_t12, by=replicate.var)
       subset_t12_2[[replicate.var]]<-as.character(subset_t12_2[[replicate.var]])
-   
+      # doing curve change for each replicate between consecutive time periods
       splitvars <- replicate.var
       X <- split(subset_t12_2, 
                  subset_t12_2[splitvars])
@@ -98,8 +99,7 @@ curve_change <- function(df, time.var,
       unsplit <- lapply(out, nrow)
       unsplit <- rep(names(unsplit), unsplit)
       output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-      #output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
-      
+      output[splitvars] <- do.call(rbind, as.list(unsplit))
       cc_out <- rbind(cc_out, output)
     }
   }
@@ -109,7 +109,7 @@ curve_change <- function(df, time.var,
     replicate.var,
     'curve_change')
   
-  return(output[intersect(output_order, names(cc_out))])
+  return(cc_out[intersect(output_order, names(cc_out))])
   
 }
     

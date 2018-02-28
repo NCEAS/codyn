@@ -16,16 +16,14 @@
 #' @examples 
 #' data(pplots)
 #' #With treatment
-#' df <- subset(pplots, plot == 6)
-#' multivariate_change(df, 
+#'  multivariate_change(pplots, 
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     treatment.var = "treatment", 
 #'                     species.var = "species", 
 #'                     abundance.var = "relative_cover")
 #' #Without treatment
-#' df <- subset(pplots, plot==6)
-#' multivariate_change(df, 
+#' multivariate_change(pplots, 
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     species.var = "species", 
@@ -54,13 +52,12 @@ multivariate_change <- function(df, time.var, species.var, abundance.var, replic
   # calculate change for each treatment
   splitvars <- treatment.var
   X <- split(df, 
-             df[splitvars], 
-             sep = '##', drop = TRUE)
+             df[splitvars])
   out <- lapply(X, FUN = mult_change, time.var, species.var, abundance.var, replicate.var)
   unsplit <- lapply(out, nrow)
   unsplit <- rep(names(unsplit), unsplit)
   output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-  output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
+  output[splitvars] <- do.call(rbind, as.list(unsplit))
       }
     
     output_order <- c(
