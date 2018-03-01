@@ -145,44 +145,46 @@ if (pool) {
     }
 
 # split and run curve_diff
-  if (!is.null(block.var)) {
-#split on time and block
-splitvars <- c(time.var, block.var)
-  } else {
-  if (!is.null(time.var)){
-    splitvars <- time.var
-  } else {
+  if (is.null(block.var)&is.null(time.var)){
     if (pool){
-     output <- curve_diff(relrankdf1, treatment.var, relrank, cumabund)
+      output <- curve_diff(relrankdf1, treatment.var, relrank, cumabund)
     } else {
-     output <- curve_diff(relrankdf1, replicate.var, relrank, cumabund)
+      output <- curve_diff(relrankdf1, replicate.var, relrank, cumabund)
+      
     }
-  }
-}
-
-  relrankdf1_split <- split(relrankdf1,
-                            relrankdf1[splitvars],
-                            sep = "##", drop = TRUE)
-  if (!is.null(block.var) | pool){
-    #feed treatment into curve_diff
-    out <- lapply(relrankdf1_split,
-                               FUN = curve_diff, treatment.var, relrank, cumabund)
   } else {
-    #feed replicate into curve_diff
-    out <- lapply(relrankdf1_split,
-                               FUN = curve_diff, replicate.var, relrank, cumabund)
-  }
-
-  unsplit <- lapply(out, nrow)
-  unsplit <- rep(names(unsplit), unsplit)
-  output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-  output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
-
-    if (is.null(block.var)&!pool&!is.null(treatment.var)) {
-      # add treatment for reference
-      output <- merge(output, merge(rep_trt, rep_trt, by = NULL, suffixes = c('', '2')))
+    if (!is.null(block.var)) {
+      splitvars <- c(time.var, block.var)
+    } else {
+      if (!is.null(time.var)){
+        splitvars <- time.var
+      }
+    }
+    relrankdf1_split <- split(relrankdf1,
+                              relrankdf1[splitvars],
+                              sep = "##", drop = TRUE)
+    if (!is.null(block.var) | pool){
+      #feed treatment into curve_diff
+      out <- lapply(relrankdf1_split,
+                    FUN = curve_diff, treatment.var, relrank, cumabund)
+    } else {
+      #feed replicate into curve_diff
+      out <- lapply(relrankdf1_split,
+                    FUN = curve_diff, replicate.var, relrank, cumabund)
+    }
+    
+    unsplit <- lapply(out, nrow)
+    unsplit <- rep(names(unsplit), unsplit)
+    output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
+    output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
+  
+    }
+    
+  if (is.null(block.var)&!pool&!is.null(treatment.var)) {
+  # add treatment for reference
+  output <- merge(output, merge(rep_trt, rep_trt, by = NULL, suffixes = c('', '2')))
 }
-
+  
 ## FIXME reset column types based on df
 
   output_order <- c(
