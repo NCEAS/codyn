@@ -21,7 +21,6 @@
 #' }
 #' @references Avolio et al. OUR PAPER.
 #' @examples
-#' \dontrun{
 #' data(pplots)
 #' # With block and no time
 #' df <- subset(pplots, year == 2002 & block < 3)
@@ -67,7 +66,6 @@
 #'                  abundance.var = "relative_cover",
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
-#' }
 #' @export
 curve_difference <- function(df, time.var = NULL, species.var, 
                                 abundance.var, replicate.var,

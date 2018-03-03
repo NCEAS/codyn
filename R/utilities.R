@@ -184,23 +184,24 @@ rep_perms <- function(df, replicate.var) {
   
 }
 
-#' Add zeros to a long-form species and abundace dataframe
+#' Add zero abundances for missing species, on the assumption that any species
+#' in the \code{species.var} column should be included for every group defined
+#' by all the remaining colums save \code{abundance.var}.
 #'
-#' @param df A dataframe containing time.var, species.var and abundance.var columns
-#' @param time.var The name of the time column from df
+#' @param df A dataframe with species, abundances, and at least one other column
+#'   to group by
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
-#' @return A dataframe with the same columns as df, but with zeros added for species that were present at some point in the time series but not the particular time period.
-#' 
-fill_zeros_rep <- function(df, replicate.var, species.var, abundance.var) {
-  ## FIXME is replicate.var unnecessary?
+#' @return A dataframe with the same columns as df, but with zeros added for
+#'   species that are present in df, but not in a particular group.
+fill_zeros <- function(df, species.var, abundance.var) {
+
   if(any(is.na(df[[species.var]]))) stop("Species names are missing")
-  full <- merge(
-    unique(df[setdiff(names(df), c(species.var, abundance.var))]), ##FIXME I don't trust this logic, what vars define unique community
-    unique(df[species.var])
-  )
+  
+  mergevars <- !(names(df) %in% c(species.var, abundance.var))
+  full <- merge(unique(df[mergevars]), unique(df[species.var]))
   df <- merge(df, full, all = TRUE)
-  df[is.na(df)] <- 0
+  df[is.na(df[abundance.var]), abundance.var] <- 0
 
   return(df)
 }
@@ -209,32 +210,29 @@ fill_zeros_rep <- function(df, replicate.var, species.var, abundance.var) {
 #' @description Rank species by abundance, by specified groupig. Species with
 #'   zero abundance receive rank S+1, where S is the total number of species in
 #'   the group.
-#' @param df A data frame containing species, abundance and replicate and/or
-#'   time indications.
-#' @param species.var The name of the species column
+#' @param df A data frame containing a single record per species with its abundance
 #' @param abundance.var The name of the abundance column
-#' @param replicate.var The name of the optional replicate column
-#' @param time.var The name of the optional time column
 #' 
 #' @return The add_ranks function returns a data frame with the following
-#'   attributes:
+#'   additional column:
 #'   \itemize{
-#'     \item{time.var: }{A column that has the same name and type as the
-#'     time.var column, if time.var is specified.}
-#'     \item{abundance.var: }{A column that has same name and type as the
-#'     abundance.var column.}
-#'     \item{species.var: }{A column that has same name and type as the
-#'     species.var column.}
-#'     \item{replicate.var: }{A column that has same name and type as the
-#'     replicate.var column.}
 #'     \item{rank: }{A numeric column with the species rank; a rank of 1
 #'     indicates the species was most abundant in that time period. All species
 #'     that are not present in that time period have the rank value S+1 where S
 #'     is the number of species in the sample.
 #'     }
 #'   }
-add_ranks <- function(df, species.var, abundance.var,
-                      replicate.var = NULL, time.var = NULL) {
+add_ranks <- function(df, species.var, abundance.var) {
   
+  if (nrow(df) != nrow(unique(df[names(df) != abundance.var])))
+    stop('Input df has not been correctly split.')
+  
+  # get species richness, note that zero abunance does not contribute to S
+  S <- S(df[[abundance.var]])
+  # rank from high to low abundance
+  df[['rank']] <- rank(-df[[abundance.var]], ties.method = 'average')
+  # adjust ranks for species with zero abundance to S + 1
+  df[df[['rank']] > S, 'rank'] <- S + 1
+  
+  return(df)
 }
-

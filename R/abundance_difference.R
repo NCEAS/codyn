@@ -1,5 +1,13 @@
 #' @title  Abundance Differences
-#' @description Calculates the abundnace difference for species between two samples. There are three ways differences can be calculated. 1) Between treatments within a block (note: block.var and treatment.var need to be specified). 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var = NULL). 3) All pairwise combinations between all replicates (note: block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
+#' @description Calculates the abundnace difference for species between two
+#'   samples. There are three ways differences can be calculated. 1) Between
+#'   treatments within a block (note: block.var and treatment.var need to be
+#'   specified). 2) Between treatments, pooling all replicates into a single
+#'   species pool (note: pool = TRUE, treatment.var needs to be specified, and
+#'   block.var = NULL). 3) All pairwise combinations between all replicates
+#'   (note: block.var = NULL, pool = FALSE and specifying treatment.var is
+#'   optional. If treatment.var is specified, the treatment that each replicate
+#'   belongs to will also be listed in the output).
 #' @param df A data frame containing species, abundance, replicate columns and optional time, treatment and block columns.
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
@@ -100,21 +108,27 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   }
 
   if (pool) {
-    rankdf <- pool_replicates(df, time.var, species.var, abundance.var, replicate.var, treatment.var)
+    # pool and rank species in each replicate
+    rankdf <- pool_replicates(df, time.var, species.var, abundance.var,
+                              replicate.var, treatment.var)
   } else {
+    ## FIXME add zeros?
+    ## FIXME possibly adjust placement of add_zeros for all _difference funs, strip from pool_replicates
     # rank species in each replicate
-    rep_trt <- unique(df[c(replicate.var, treatment.var, block.var)])
-    rankdf <- add_ranks_replicate(df, time.var, species.var, abundance.var, replicate.var)
-    rankdf <- merge(rankdf, rep_trt, by = replicate.var)
+    by <- c(replicate.var, treatment.var, block.var)
+    rankdf <- do.call(rbind, c(
+      lapply(split(df, df[by], drop = TRUE),
+             FUN = add_ranks, species.var, abundance.var),
+      list(make.row.names = FALSE)))
   }
   
   # cross join for pairwise comparisons
-  splitvars <- c(species.var, block.var, time.var)
+  splitby <- c(species.var, block.var, time.var)
+  mergeby <- !(names(rankdf) %in% splitby)
   cross.var2 <- paste(cross.var, 2, sep = '')
-  rankdf <- lapply(split(rankdf, rankdf[splitvars]),
+  rankdf <- lapply(split(rankdf, rankdf[splitby], drop = TRUE),
                    function(x) {
-                     y <- x
-                     y[splitvars] <- NULL
+                     y <- x[mergeby]
                      cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
                      idx <- as.integer(cross[[cross.var]])
                      idx <- idx < as.integer(cross[[cross.var2]])
@@ -123,28 +137,22 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   ranktog <- do.call(rbind, c(rankdf, list(make.row.names = FALSE)))
   
   # split on treatment pairs (and block if not null)
-  splitvars <- c(block.var, time.var, cross.var, cross.var2)
-  ranktog_split <- split(ranktog, ranktog[splitvars], drop = TRUE)
-  ranktog_split <- lapply(ranktog_split,
-                          FUN = abund_diff, species.var, abundance.var)
+  by <- c(block.var, time.var, cross.var, cross.var2)
+  abundance.var2 <- paste(abundance.var, 2, sep = '')
+  ranktog_split <- lapply(split(ranktog, ranktog[by], drop = TRUE),
+                          FUN = abund_diff,
+                          species.var, abundance.var, abundance.var2)
   output <- do.call(rbind, c(ranktog_split, list(make.row.names = FALSE)))
 
-  if (is.null(block.var) & !pool & !is.null(treatment.var)) {
-    # add treatment for reference
-    output <- merge(output,
-                    merge(rep_trt, rep_trt, by = NULL, suffixes = c('', '2')))
-  }
+  output_order <- c(
+    time.var,
+    block.var,
+    replicate.var, paste(replicate.var, 2, sep = ''),
+    treatment.var, paste(treatment.var, 2, sep = ''),
+    species.var,
+    'difference')
 
-output_order <- c(
-  time.var,
-  block.var,
-  replicate.var, paste(replicate.var, 2, sep = ''),
-  treatment.var, paste(treatment.var, 2, sep = ''),
-  species.var,
-  'difference')
-
-return(output[intersect(output_order, names(output))])
-  
+  return(output[intersect(output_order, names(output))])
 }
 
 ############################################################################
@@ -159,9 +167,8 @@ return(output[intersect(output_order, names(output))])
 # @param df a dataframe
 # @param species.var the name of the species column
 # @param abundance.var the name of the abundance column
-abund_diff <- function(df, species.var, abundance.var) {
+abund_diff <- function(df, species.var, abundance.var, abundance.var2) {
 
-  abundance.var2 <- paste(abundance.var, 2, sep = '')
   df[['difference']] <- df[[abundance.var]] - df[[abundance.var2]]
   df[c(abundance.var, abundance.var2)] <- NULL
 

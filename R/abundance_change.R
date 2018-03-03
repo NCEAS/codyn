@@ -46,9 +46,24 @@ abundance_change <- function(df, time.var,
     check_single(df, time.var, species.var, replicate.var)
   }
   
-  #add ranks
-  rankdf <- add_ranks_time(df,  time.var, species.var, abundance.var, replicate.var)
-  
+  # add zeros for species absent from a time period within a replicate
+  if (is.null(replicate.var)) {
+    allsp <- fill_zeros(df, species.var, abundance.var)
+  } else {
+    by <- c(replicate.var)
+    allsp <- do.call(rbind, c(
+      lapply(split(df, df[by], drop = TRUE),
+        FUN = fill_zeros, species.var, abundance.var),
+      list(make.row.names = FALSE)))
+  }
+
+  # rank species in each time and optionally replicate
+  by <- c(time.var, replicate.var)
+  rankdf <- do.call(rbind, c(
+    lapply(split(allsp, allsp[by], drop = TRUE),
+           FUN = add_ranks, species.var, abundance.var),
+    list(make.row.names = FALSE)))
+
   time1 <- sort(unique(rankdf[[time.var]]))
   time2 <- c(time1[2:length(time1)], NA)
   
@@ -82,15 +97,13 @@ abundance_change <- function(df, time.var,
   output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
   
   output_order <- c(
-    paste(time.var,"pair", sep="_"),
+    paste(time.var, 'pair', sep = '_'), ## FIXEM why not time.var time.var2 cols?
     replicate.var,
     species.var,
     'change')
   
   return(output[intersect(output_order, names(output))])
-  
 }
-
 
 ############################################################################
 #

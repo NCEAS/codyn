@@ -1,6 +1,10 @@
 # @title Pool replicates into treatments and add ranks
-# @description This fucntion first takes the average abundnace of each species in a treatment across all replicates to create a single species pool replicates for each treatment. Then it add ranks to each species following the add_ranks functions
-# @param df A data frame containing an optional time column and requred species, abundance, replicate and treatment columns
+# @description This fucntion first takes the average abundnace of each species
+#   in a treatment across all replicates to create a single pooled
+#   replicate for each treatment. Then it add ranks to each species following
+#   the add_ranks function.
+# @param df A data frame containing an optional time column and requred species,
+#   abundance, replicate and treatment columns
 # @param time.var The name of the optional time column 
 # @param species.var The name of the species column 
 # @param abundance.var The name of the abundance column 
@@ -18,83 +22,31 @@
 pool_replicates <- function(df, time.var=NULL, species.var, abundance.var,
                             replicate.var, treatment.var) {
   
-  df<-as.data.frame(df)
+  df <- as.data.frame(df)
 
   # isolate rep-trts
   rep_trt <- unique(subset(df, select = c(replicate.var, treatment.var)))
   
-  if(is.null(time.var)) {
-  
-    # make wide to add zeros and long again and add back in treatments
-    long <- fill_zeros_rep(df, replicate.var, species.var, abundance.var)
-    allsp <- merge(long, rep_trt, by=replicate.var)
-    
-    # get averages of each species by treatment
-    myformula <- as.formula(paste(abundance.var, "~", treatment.var, "+", species.var))
-    spave <- aggregate(myformula, FUN=mean, data=allsp)
-    
-    # add ranks for present species
-    rank_pres <- subset(spave, spave[[abundance.var]]!=0)
-    rank_pres$rank <- ave(rank_pres[[abundance.var]],
-                          rank_pres[[treatment.var]],
-                          FUN = function(x) rank(-x, ties.method = "average"))
-    
-    # make zero abundant species have the rank S+1 (the size of the species pool plus 1)
-    ## pull out zeros
-    zeros <- subset(spave, spave[[abundance.var]]==0)
-    ## get species richness for each year
-    myformula <- as.formula(paste(abundance.var, "~", treatment.var))
-    SpR <- aggregate(myformula, FUN = S, data = spave)
-    colnames(SpR)[2] <- "S"
-    
-    ## merge together make zero abundances rank S+1
-    zero_rank <- merge(zeros, SpR, by = c(treatment.var))
-    zero_rank$rank <- zero_rank$S+1
-    zero_rank <- subset(zero_rank, select = -S)
-    
-    ## combine all
-    rankdf<-rbind(rank_pres, zero_rank)
+  # add zeros for species absent from a replicate within a treatment
+  if (is.null(time.var)) {
+    allsp <- fill_zeros(df, species.var, abundance.var) ## FIXME quietly keeps time if time.var = NULL, okay if unique by rep, but not otherwise
   } else {
-    
-    # sort and apply fill_zeros to all time steps
-    df <- df[order(df[[time.var]]),]
-    X <- split(df, df[time.var])
-    out <- lapply(X, FUN = fill_zeros_rep, replicate.var, species.var, abundance.var)
-    allsp <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-    
-    # get averages of each species by treatment
-    by <- c(treatment.var, species.var, time.var)
-    spave <- aggregate.data.frame(allsp[abundance.var], allsp[by], FUN = mean)
-    
-    
-    ## try this
-    splitvars <- c(treatment.var, time.var)
-    X <- split(spave, spave[splitvars])
-    out <- lapply(X, FUN = add_ranks, species.var, abundance.var, replicate.var, time.var)
-    rankdf <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-    ## end try this
-    
-    # add ranks for present species
-    rank_pres <- subset(spave, spave[[abundance.var]]!=0)
-    rank_pres$trt_time <- paste(rank_pres[[treatment.var]], rank_pres[[time.var]], sep="##")
-    rank_pres$rank <- ave(rank_pres[[abundance.var]], rank_pres$trt_time, FUN = function(x) rank(-x, ties.method = "average"))
-    rank_pres <- subset(rank_pres, select = -trt_time)
-    
-    # make zero abundant species have the rank S+1 (the size of the species pool plus 1)
-    ## pull out zeros
-    zeros <- subset(spave, spave[[abundance.var]]==0)
-    ## get species richness for each year
-    myformula <- as.formula(paste(abundance.var, "~", treatment.var, "+", time.var))
-    SpR <- aggregate(myformula, FUN = S, data = spave)
-    colnames(SpR)[3] <- "S"
-    
-    ## merge together make zero abundances rank S+1
-    zero_rank <- merge(zeros, SpR, by = c(treatment.var, time.var))
-    zero_rank$rank <- zero_rank$S+1
-    zero_rank <- subset(zero_rank, select = -S)
-    
-    ## combine all
-    rankdf<-rbind(rank_pres, zero_rank)
+    splitvars <- c(time.var)
+    splitdf <- split(df, df[splitvars], drop = TRUE)
+    allsp <- lapply(splitdf, FUN = fill_zeros, species.var, abundance.var)
+    allsp <- do.call(rbind, c(allsp, list(make.row.names = FALSE)))
   }
+  
+  # get averages of each species by treatment and (optionally) time
+  by <- c(time.var, treatment.var, species.var)
+  spave <- aggregate.data.frame(allsp[abundance.var], allsp[by], FUN = mean) ## FIXME other vars dropped
+  
+  # add ranks after splitting into (pooled) communities
+  splitvars <- c(treatment.var, time.var)
+  splitspave <- split(spave, spave[splitvars])
+  rankdf <- lapply(splitspave, FUN = add_ranks, species.var, abundance.var)
+  rankdf <- do.call(rbind, c(rankdf, list(make.row.names = FALSE)))
+  
   return(rankdf)
+  
 }
