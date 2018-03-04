@@ -1,17 +1,24 @@
 #' @title Species Abundance Changes
-#' @description Calculates the abundance change for species in a replicate between two consecutive time points.
-#' @param df A data frame containing time, species, and abundance columns and an optional column of replicates
+#' @description Calculates the abundance change for species in a replicate
+#'   between two consecutive time points.
+#' @param df A data frame containing time, species, and abundance columns and an
+#'   optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column 
 #' 
-#' @return The abundance_change function returns a data frame with the following attributes:
+#' @return The abundance_change function returns a data frame with the following
+#'   fields:
 #' \itemize{
-#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
-#'  \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
-#'  \item{species.var: }{A column that has same name and type as the species.var column.}
-#'  \item{change: }{A numeric column of the change in abundance between consecutive timepoints. A postive value occurs when a species increases in abundnace over time, and a negative value when a species decreases in abundance over time.}
+#'  \item{A column with the specified replicate.var, if it is specified.}
+#'  \item{A column with the specified time.var and a second column, with '2'
+#'  appended to the name, giving the time of the subtracted abundance.}
+#'  \item{A column with the specified species.var.}
+#'  \item{A numeric column of the change in abundance between consecutive
+#'  timepoints. A postive value occurs when a species increases in abundnace
+#'  over time, and a negative value when a species decreases in abundance over
+#'  time.}
 #' }
 #' @references Avolio et al. OUR PAPER
 #' @examples 
@@ -64,72 +71,34 @@ abundance_change <- function(df, time.var,
            FUN = add_ranks, species.var, abundance.var),
     list(make.row.names = FALSE)))
 
-  time1 <- sort(unique(rankdf[[time.var]]))
-  time2 <- c(time1[2:length(time1)], NA)
+  # merge subsets on time difference of one time step
+  cross.var <- time.var
+  split_by <- c(species.var, replicate.var)
+  merge_on <- !(names(rankdf) %in% split_by)
+  cross.var2 <- paste(cross.var, 2, sep = '')
+  rankdf_split <- lapply(split(rankdf, rankdf[split_by], drop = TRUE),
+                   function(x) {
+                     y <- x[merge_on]
+                     cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
+                     f <- factor(cross[[cross.var]])
+                     f2 <- factor(cross[[cross.var2]], levels = levels(f))
+                     idx <- (as.integer(f2) - as.integer(f)) == 1
+                     cross[idx, ]
+                   })
+  ranktog <- do.call(rbind, c(rankdf_split, list(make.row.names = FALSE)))
+
+  # remove species not present in either year
+  abundance.var2 <- paste(abundance.var, "2", sep = "")
+  idx <- ranktog[[abundance.var]] != 0 | ranktog[[abundance.var2]] != 0
+  output <- ranktog[idx, ]
   
-  # current year rankdf
-  df2 <- rankdf[which(rankdf[[time.var]]%in%time2),]
-  
-  # previous year rank df
-  mytimes <- data.frame(cbind(time1, time2))
-  names(mytimes) = c(time.var, "dummytime")
-  
-  df1 <- merge(rankdf, mytimes)
-  names(df1)[1] = 'time1'
-  names(df1)[[ncol(df1)]] = time.var
-  df1 <- subset(df1, !is.na(df1[[time.var]]))
-  
-  # merge: .x is for previous time point, .y for current time point, time.var corresponds to current (i.e., .y)
-  mergevars <- c(species.var, replicate.var, time.var)
-  df12 <- merge(df1, df2,  by = mergevars, all = T)
-  df12<-subset(df12, df12[[paste(abundance.var, ".x", sep = "")]] !=0 | df12[[paste(abundance.var, ".y", sep = "")]] !=0)
-  
-  # sort and apply turnover to all replicates for each time point
-  splitvars <- c(replicate.var, time.var)
-  X <- split(df12,
-             df12[splitvars], 
-             sep = "##", drop = TRUE)
-  out <- lapply(X, 
-                FUN = abundchange, time.var, species.var, paste(abundance.var, ".x", sep = ""), paste(abundance.var, ".y", sep = "")) 
-  unsplit <- lapply(out, nrow)
-  unsplit <- rep(names(unsplit), unsplit)
-  output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-  output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
-  
+  # append change column
+  output[['change']] <- output[[abundance.var]] - output[[abundance.var2]]
   output_order <- c(
-    paste(time.var, 'pair', sep = '_'), ## FIXEM why not time.var time.var2 cols?
+    time.var, paste(time.var, '2', sep = ''),
     replicate.var,
     species.var,
     'change')
   
   return(output[intersect(output_order, names(output))])
-}
-
-############################################################################
-#
-# Private functions: these are internal functions not intended for reuse.
-# Future package releases may change these without notice. External callers
-# should not use them.
-#
-############################################################################
-
-# A function to calculate abundance changes for a species between two consecutive time points 
-# @param df a dataframe
-# @param species.var the name of the species column
-# @param time.var the name of the time column
-# @param abundance.var1 the name of the abundance column for the first time peroid
-# @param abundance.var2 the name of the abundance column for the second time period
-abundchange <- function(df, time.var, species.var, abundance.var1, abundance.var2){
-  
-  time1.1 <- unique(df$time1)
-  time1.2 <- unique(df[[time.var]])
-  
-  df$change <- df[[abundance.var1]] - df[[abundance.var2]]
-  df$time_pair <- paste(time1.1, time1.2, sep = "-")
-  
-  df <- subset(df, select = c("time_pair", species.var, "change"))
-  
-  colnames(df)[1] <- paste(time.var, "pair", sep="_")
-  
-  return(df)
 }

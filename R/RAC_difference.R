@@ -161,12 +161,12 @@ RAC_difference <- function(df, time.var = NULL, species.var,
   }
   
   # cross join for pairwise comparisons
-  splitby <- c(species.var, block.var, time.var)
-  mergeby <- !(names(rankdf) %in% splitby)
+  split_by <- c(species.var, block.var, time.var)
+  merge_on <- !(names(rankdf) %in% split_by)
   cross.var2 <- paste(cross.var, 2, sep = '')
-  rankdf <- lapply(split(rankdf, rankdf[splitby]),
+  rankdf <- lapply(split(rankdf, rankdf[split_by]),
                    function(x) {
-                     y <- x[mergeby]
+                     y <- x[merge_on]
                      cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
                      idx <- as.integer(cross[[cross.var]])
                      idx <- idx < as.integer(cross[[cross.var2]])
@@ -214,7 +214,7 @@ SERSp <- function(df, species.var, abundance.var, abundance.var2) {
   if (nrow(out) != 1)
     stop('Input df has not been correctly split.')
   
-  df <- subset(df, df[[abundance.var]]!=0 | df[[abundance.var2]]!=0)
+  df <- subset(df, df[[abundance.var]] != 0 | df[[abundance.var2]] != 0)
   
   #ricness and evenness differences
   s_t1 <- S(df[[abundance.var]])

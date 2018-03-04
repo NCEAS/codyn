@@ -1,19 +1,39 @@
 #' @title Rank Abundance Curve Changes
-#' @description Calculates change of the five aspects of rank abundance curves (richness, evenness, rank, species gains, and species losses) for a replicate between two consecutive time points.
-#' @param df A data frame containing time, species, and abundance columns and an optional column of replicates
+#' @description Calculates change of the five aspects of rank abundance curves
+#'   (richness, evenness, rank, species gains, and species losses) for a
+#'   replicate between two consecutive time points.
+#' @param df A data frame containing time, species, and abundance columns and an
+#'   optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column 
-#' @return The RAC_change function returns a data frame with the following attributes:
+#' @return The RAC_change function returns a data frame with the following
+#'   attributes:
 #' \itemize{
-##'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
-#'  \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
-#'  \item{richness_change: }{A numeric column that is the change in richness between the two consecutive time peroids for a repicate divided by the total number of species in both time periods.}
-#'  \item{evenness_change: }{A numeric column that is the change in evenness (measured with EQ) between the two consecutive time peroids for a repicate divided by the total number of species in both time periods.}
-#'  \item{rank_change: }{A numeric column that is the average change in rank of a species between the two consecutive time peroids for a repicate divided by the total number of species in both time periods. Species that are not present in both time periods are given the S+1 rank in the sample it is absent in, where S is the number of species in that sample.}
-#'  \item{gains: }{A numeric column of the number of species that are present at time period 2 that were not present at time period 1 for a replicate divided by the total number of species in both time periods. This is equivelant to the turnover function with metric = "appearances".}
-#'  \item{losses: }{A numeric column of the number of species that are not present at time period 2 but were  present at time period 1 for a replicate divided by the total number of species in both time periods. This is equivelant to the turnover function with metric = "disappearance".}
+#'  \item{replicate.var: }{A column that has same name and type as the
+#'  replicate.var column, if replicate.var is specified.}
+#'  \item{time.var_pair: }{A characteric column that has the time points to be
+#'  compared, separated by a dash.}
+#'  \item{richness_change: }{A numeric column that is the change in richness
+#'  between the two consecutive time peroids for a repicate divided by the total
+#'  number of species in both time periods.}
+#'  \item{evenness_change: }{A numeric column that is the change in evenness
+#'  (measured with EQ) between the two consecutive time peroids for a repicate
+#'  divided by the total number of species in both time periods.}
+#'  \item{rank_change: }{A numeric column that is the average change in rank of
+#'  a species between the two consecutive time peroids for a repicate divided by
+#'  the total number of species in both time periods. Species that are not
+#'  present in both time periods are given the S+1 rank in the sample it is
+#'  absent in, where S is the number of species in that sample.}
+#'  \item{gains: }{A numeric column of the number of species that are present at
+#'  time period 2 that were not present at time period 1 for a replicate divided
+#'  by the total number of species in both time periods. This is equivelant to
+#'  the turnover function with metric = "appearances".}
+#'  \item{losses: }{A numeric column of the number of species that are not
+#'  present at time period 2 but were  present at time period 1 for a replicate
+#'  divided by the total number of species in both time periods. This is
+#'  equivelant to the turnover function with metric = "disappearance".}
 #' }
 #' @references Avolio et al.OUR PAPER
 #' @examples 
@@ -63,40 +83,37 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var=N
     lapply(split(allsp, allsp[by], drop = TRUE),
            FUN = add_ranks, species.var, abundance.var),
     list(make.row.names = FALSE)))
-
-  time1 <- sort(unique(rankdf[[time.var]]))
-  time2 <- c(time1[2:length(time1)], NA)
-    
-  # current year rankdf
-  df2 <- rankdf[which(rankdf[[time.var]]%in%time2),]
-    
-  # previous year rank df
-  mytimes <- data.frame(cbind(time1, time2))
-  names(mytimes) = c(time.var, "dummytime")
   
-  df1 <- merge(rankdf, mytimes)
-  names(df1)[1] <- 'time1'
-  names(df1)[[ncol(df1)]] <- time.var
-  df1 <- subset(df1, !is.na(df1[[time.var]]))
-    
-  # merge: .x is for previous time point, .y for current time point, time.var corresponds to current (i.e., .y)
-  mergevars <- c(species.var, replicate.var, time.var)
-  df12 <- merge(df1, df2,  by = mergevars, all = T)
-  df12<-subset(df12, df12[[paste(abundance.var, ".x", sep = "")]]!=0|df12[[paste(abundance.var, ".y", sep = "")]]!=0)
-  # sort and apply turnover to all replicates for each time point
-  splitvars <- c(replicate.var, time.var)
-  X <- split(df12,
-             df12[splitvars], 
-             sep = "##", drop = TRUE)
-  out <- lapply(X, 
-                FUN=SERGL, time.var, "rank.x", "rank.y", paste(abundance.var, ".x", sep = ""), paste(abundance.var, ".y", sep = ""))
-  unsplit <- lapply(out, nrow)
-  unsplit <- rep(names(unsplit), unsplit)
-  output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-  output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
+  # merge subsets on time difference of one time step
+  cross.var <- time.var
+  cross.var2 <- paste(cross.var, 2, sep = '')
+  split_by <- c(species.var, replicate.var)
+  merge_on <- !(names(rankdf) %in% split_by)
+  rankdf_split <- lapply(split(rankdf, rankdf[split_by], drop = TRUE),
+    function(x) {
+      y <- x[merge_on]
+      cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
+      f <- factor(cross[[cross.var]])
+      f2 <- factor(cross[[cross.var2]], levels = levels(f))
+      idx <- (as.integer(f2) - as.integer(f)) == 1
+      cross[idx, ]
+    })
+  ranktog <- do.call(rbind, c(rankdf_split, list(make.row.names = FALSE)))
+
+  # remove species not present in either year
+  abundance.var2 <- paste(abundance.var, "2", sep = "")
+  idx <- ranktog[[abundance.var]] != 0 | ranktog[[abundance.var2]] != 0
+  ranktog <- ranktog[idx, ]
+  
+  # apply turnover calculation to all replicates for each time point
+  by <- c(replicate.var, time.var)
+  ranktog_split <- lapply(split(ranktog, ranktog[by], drop = TRUE),
+                          FUN = SERGL,
+                          species.var, abundance.var, abundance.var2)
+  output <- do.call(rbind, c(ranktog_split, list(make.row.names = FALSE)))
   
   output_order <- c(
-    paste(time.var,"pair", sep="_"),
+    time.var, paste(time.var, 2, sep = ''),
     replicate.var,
     'richness_change', 'evenness_change', 'rank_change', 'gains', 'losses')
   
@@ -118,33 +135,33 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var=N
 # @param rank.var2 the name of the species rank column for the second time period
 # @param abundance.var1 the name of the abundance column for the first time peroid
 # @param abundance.var2 the name of the abundance column for the second time period
-SERGL <- function(df, time.var, rank.var1, rank.var2, abundance.var1, abundance.var2){
-  #ricness and evenness differences
-  s_t1 <- S(df[[abundance.var1]])
-  e_t1 <- EQ(as.numeric(df[[abundance.var1]]))
+SERGL <- function(df, species.var, abundance.var, abundance.var2) {
+  
+  out <- c(species.var, 'rank', 'rank2', abundance.var, abundance.var2)
+  out <- unique(df[!(names(df) %in% out)])
+  if (nrow(out) != 1)
+    stop('Input df has not been correctly split.')
+  
+  # ricness and evenness differences
+  s_t1 <- S(df[[abundance.var]])
+  e_t1 <- EQ(as.numeric(df[[abundance.var]]))
   s_t2 <- S(df[[abundance.var2]])
   e_t2 <- EQ(as.numeric(df[[abundance.var2]]))
   
-  sdiff <- abs(s_t1-s_t2)/nrow(df)
-  ediff <- abs(e_t1-e_t2)/nrow(df)
+  sdiff <- abs(s_t1-s_t2) / nrow(df)
+  ediff <- abs(e_t1-e_t2) / nrow(df)
   
-  #gains and losses
-  df$gain <- ifelse(df[[abundance.var1]]==0, 1, 0)
-  df$loss <- ifelse(df[[abundance.var2]]==0, 1, 0)
+  # gains and losses
+  df$gain <- ifelse(df[[abundance.var]] == 0, 1, 0)
+  df$loss <- ifelse(df[[abundance.var2]] == 0, 1, 0)
   
-  gain <- sum(df$gain)/nrow(df)
-  loss <- sum(df$loss)/nrow(df)
+  gain <- sum(df$gain) / nrow(df)
+  loss <- sum(df$loss) / nrow(df)
   
-  time1.1<-unique(df$time1)
-  time1.2<-unique(df[[time.var]])
+  mrsc <- mean(abs(df[['rank']] - df[['rank2']]) / nrow(df))
   
-  mrsc <- mean(abs(df[[rank.var1]]-df[[rank.var2]])/nrow(df))
+  metrics <- data.frame(richness_change = sdiff, evenness_change = ediff,
+                        rank_change = mrsc, gains = gain, losses = loss)
   
-  time_pair <- paste(time1.1, time1.2, sep="-")
-  
-  metrics <- data.frame(time=time_pair, richness_change=sdiff, evenness_change=ediff, rank_change=mrsc, gains=gain, losses=loss)
-  
-  colnames(metrics)[1]<-paste(time.var, "pair", sep="_")
-  
-  return(metrics)
+  return(cbind(out, metrics))
 }

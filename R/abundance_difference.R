@@ -151,12 +151,12 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   }
   
   # cross join for pairwise comparisons
-  splitby <- c(species.var, block.var, time.var)
-  mergeby <- !(names(rankdf) %in% splitby)
+  split_by <- c(species.var, block.var, time.var)
+  merge_on <- !(names(rankdf) %in% split_by)
   cross.var2 <- paste(cross.var, 2, sep = '')
-  rankdf <- lapply(split(rankdf, rankdf[splitby], drop = TRUE),
+  rankdf <- lapply(split(rankdf, rankdf[split_by], drop = TRUE),
                    function(x) {
-                     y <- x[mergeby]
+                     y <- x[merge_on]
                      cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
                      idx <- as.integer(cross[[cross.var]])
                      idx <- idx < as.integer(cross[[cross.var2]])
@@ -165,6 +165,7 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   ranktog <- do.call(rbind, c(rankdf, list(make.row.names = FALSE)))
   
   # split on treatment pairs (and block if not null)
+  ## FIXME why split for taking column differences
   by <- c(block.var, time.var, cross.var, cross.var2)
   abundance.var2 <- paste(abundance.var, 2, sep = '')
   ranktog_split <- lapply(split(ranktog, ranktog[by], drop = TRUE),

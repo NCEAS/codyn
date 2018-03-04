@@ -30,7 +30,7 @@
 #'                     abundance.var = "relative_cover")
 #'
 #' @importFrom vegan vegdist betadisper
-#'
+#' @importFrom stats aggregate as.formula
 #' @references Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson?
 #' @export
 multivariate_change <- function(df, time.var, species.var, abundance.var, replicate.var, treatment.var = NULL){

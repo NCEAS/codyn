@@ -17,6 +17,7 @@
 #' }
 #' @references Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson?
 #' @importFrom vegan vegdist betadisper
+#' @importFrom stats aggregate as.formula
 #' @examples  
 #' data(pplots)
 #' #Without time
