@@ -127,52 +127,26 @@ curve_difference <- function(df, time.var = NULL, species.var,
   
   if (pool) {
     #add zero abundnaces for missing species to get averages
-    if (is.null(time.var)) {
-      allsp <- fill_zeros(df, species.var, abundance.var)
-    } else {
+    if (!is.null(time.var)) {
       df <- df[order(df[[time.var]]), ]
-      splitvars <- time.var
-      X <- split(df, df[splitvars])
-      allsp <- do.call(rbind, c(
-        lapply(X, FUN = fill_zeros, species.var, abundance.var),
-        list(make.row.names = FALSE)))
     }
+    by <- c(time.var)
+    allsp <- split_apply_combine(df, by, FUN = fill_zeros, species.var, abundance.var)
 
-    #allsp <- merge(out2, rep_trt, by=replicate.var)
-    
     # specify aggregate formula from arguments
     by <- c(species.var, treatment.var, time.var)
     spave <- aggregate.data.frame(allsp[abundance.var], allsp[by], FUN = mean)
     spave <- spave[spave[[abundance.var]] != 0, ]
   
-    #rank each species by treatment and (time)
-    if(!is.null(time.var)) {
-      splitvars <- time.var
-      X <- split(spave, spave[splitvars])
-      out <- lapply(X, FUN = relrank, species.var, abundance.var, treatment.var) 
-      relrankdf1 <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-    } else {
-      relrankdf1 <- relrank(spave, species.var, abundance.var, treatment.var)
-    }
+    # rank each species by treatment and (time)
+    by <- c(time.var)
+    relrankdf1 <- split_apply_combine(spave, by, FUN = relrank,
+      species.var, abundance.var, treatment.var)
   } else {
-    
     #for block samples
-    if (!is.null(block.var)) {
-          splitvars <- c(time.var, block.var)
-          X <- split(df, df[splitvars])
-          out <- lapply(X, FUN = relrank, species.var, abundance.var, replicate.var) 
-          relrankdf1 <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-    } else {
-      #for replicate samples
-      if (!is.null(time.var)) {
-        splitvars <- time.var
-        X <- split(df, df[splitvars])
-        out <- lapply(X, FUN = relrank, species.var, abundance.var, replicate.var) 
-        relrankdf1 <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-      } else {
-        relrankdf1 <- relrank(df, species.var, abundance.var, replicate.var)
-      }
-    }
+    by <- c(time.var, block.var)
+    relrankdf1 <- split_apply_combine(df, by, FUN = relrank,
+      species.var, abundance.var, replicate.var)
   }
 
   # split and run curve_diff

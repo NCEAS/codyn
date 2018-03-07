@@ -54,38 +54,26 @@ abundance_change <- function(df, time.var,
   }
   
   # add zeros for species absent from a time period within a replicate
-  if (is.null(replicate.var)) {
-    allsp <- fill_zeros(df, species.var, abundance.var)
-  } else {
-    by <- c(replicate.var)
-    allsp <- do.call(rbind, c(
-      lapply(split(df, df[by], drop = TRUE),
-        FUN = fill_zeros, species.var, abundance.var),
-      list(make.row.names = FALSE)))
-  }
+  by <- c(replicate.var)
+  allsp <- split_apply_combine(df, by, FUN = fill_zeros, species.var, abundance.var)
 
   # rank species in each time and optionally replicate
   by <- c(time.var, replicate.var)
-  rankdf <- do.call(rbind, c(
-    lapply(split(allsp, allsp[by], drop = TRUE),
-           FUN = add_ranks, species.var, abundance.var),
-    list(make.row.names = FALSE)))
+  rankdf <- split_apply_combine(allsp, by, FUN = add_ranks, species.var, abundance.var)
 
   # merge subsets on time difference of one time step
   cross.var <- time.var
-  split_by <- c(species.var, replicate.var)
-  merge_on <- !(names(rankdf) %in% split_by)
   cross.var2 <- paste(cross.var, 2, sep = '')
-  rankdf_split <- lapply(split(rankdf, rankdf[split_by], drop = TRUE),
-                   function(x) {
-                     y <- x[merge_on]
-                     cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
-                     f <- factor(cross[[cross.var]])
-                     f2 <- factor(cross[[cross.var2]], levels = levels(f))
-                     idx <- (as.integer(f2) - as.integer(f)) == 1
-                     cross[idx, ]
-                   })
-  ranktog <- do.call(rbind, c(rankdf_split, list(make.row.names = FALSE)))
+  split_by <- c(replicate.var)
+  merge_on <- !(names(rankdf) %in% split_by)
+  ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
+      y <- x[merge_on]
+      cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
+      f <- factor(cross[[cross.var]])
+      f2 <- factor(cross[[cross.var2]], levels = levels(f))
+      idx <- (as.integer(f2) - as.integer(f)) == 1
+      cross[idx, ]
+  })
 
   # remove species not present in either year
   abundance.var2 <- paste(abundance.var, "2", sep = "")

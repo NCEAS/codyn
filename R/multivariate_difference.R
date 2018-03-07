@@ -35,7 +35,8 @@
 #'                         abundance.var = "relative_cover", 
 #'                         treatment.var = "treatment")
 #' @export
-multivariate_difference <- function(df, time.var=NULL, species.var, abundance.var, replicate.var, treatment.var){
+multivariate_difference <- function(df, time.var = NULL, species.var,
+                                    abundance.var, replicate.var, treatment.var) {
   
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
@@ -47,9 +48,7 @@ multivariate_difference <- function(df, time.var=NULL, species.var, abundance.va
     
     output <- mult_diff(df, species.var, abundance.var, replicate.var, treatment.var)
     
-  }
-  
-  else{
+  } else {
     
     # check unique species x time x replicate combinations
     check_single(df, time.var, species.var, replicate.var)
@@ -70,7 +69,6 @@ multivariate_difference <- function(df, time.var=NULL, species.var, abundance.va
     'composition_diff', 'abs_dispersion_diff', 'trt_greater_disp')
   
   return(output[intersect(output_order, names(output))])
-  
 }
 
 ############################################################################

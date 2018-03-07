@@ -181,3 +181,32 @@ add_ranks <- function(df, species.var, abundance.var) {
   
   return(df)
 }
+
+#' @title Faster split-apply-combine for data frames, when the FUN does not change
+#' the structure of its input.
+#' 
+#' @param df A data frame
+#' @param by The column(s) of the data frame that determine splits
+#' @param FUN The function applied to each data frame
+#' @param ... Additional parameters to FUN
+#' 
+#' @source \url{https://stackoverflow.com/a/9730292/687112}
+split_apply_combine <- function(df, by, FUN, ...) {
+  if (is.null(by)) {
+    # just apply
+    df <- FUN(df, ...)
+  } else {
+    # split (names get in the way)
+    dfs <- split(df, df[by], drop = TRUE)
+    dfs <- unname(dfs)
+    # apply
+    dfs <- lapply(dfs, FUN = FUN, ...)
+    # combine (flatten outer list, then flatten again across vectors from same column)
+    dfs <- unlist(dfs, recursive = FALSE, use.names = TRUE)
+    hdr <- unique(names(dfs))
+    idx <- seq_along(hdr)
+    df <- lapply(idx, function(i) unlist(dfs[i == idx], FALSE, FALSE))
+    names(df) <- hdr
+  }
+  as.data.frame(df)
+}

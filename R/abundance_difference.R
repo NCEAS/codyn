@@ -131,47 +131,31 @@ abundance_difference <- function(df, time.var = NULL, species.var,
     rankdf <- pool_replicates(df, time.var, species.var, abundance.var,
                               replicate.var, treatment.var)
   } else {
-    # add zeros for species absent from a replicate within a treatment
-    if (is.null(time.var)) {
-      allsp <- fill_zeros(df, species.var, abundance.var)
-    } else {
-      by <- c(time.var)
-      allsp <- do.call(rbind, c(
-        lapply(split(df, df[by], drop = TRUE),
-               FUN = fill_zeros, species.var, abundance.var),
-        list(make.row.names = FALSE)))
-    }
-    ## FIXME possibly adjust placement of add_zeros for all _difference funs, strip from pool_replicates
-    # rank species in each replicate
+    # add zeros for species absent from a replicate
+    by <- c(time.var)
+    allsp <- split_apply_combine(df, by, FUN = fill_zeros,
+      species.var, abundance.var)
+
+    # rank species in each replicate ## FIXME why add ranks?
     by <- c(replicate.var, treatment.var, block.var)
-    rankdf <- do.call(rbind, c(
-      lapply(split(allsp, allsp[by], drop = TRUE),
-             FUN = add_ranks, species.var, abundance.var),
-      list(make.row.names = FALSE)))
+    rankdf <- split_apply_combine(allsp, by,
+      FUN = add_ranks, species.var, abundance.var)
   }
   
   # cross join for pairwise comparisons
-  split_by <- c(species.var, block.var, time.var)
+  split_by <- c(block.var, time.var)
   merge_on <- !(names(rankdf) %in% split_by)
   cross.var2 <- paste(cross.var, 2, sep = '')
-  rankdf <- lapply(split(rankdf, rankdf[split_by], drop = TRUE),
-                   function(x) {
-                     y <- x[merge_on]
-                     cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
-                     idx <- as.integer(cross[[cross.var]])
-                     idx <- idx < as.integer(cross[[cross.var2]])
-                     cross[idx,]
-                   })
-  ranktog <- do.call(rbind, c(rankdf, list(make.row.names = FALSE)))
-  
-  # split on treatment pairs (and block if not null)
-  ## FIXME why split for taking column differences
-  by <- c(block.var, time.var, cross.var, cross.var2)
+  ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
+    y <- x[merge_on]
+    cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
+    idx <- as.integer(cross[[cross.var]]) < as.integer(cross[[cross.var2]])
+    cross[idx,]
+  })
+
+  # take abundance difference
   abundance.var2 <- paste(abundance.var, 2, sep = '')
-  ranktog_split <- lapply(split(ranktog, ranktog[by], drop = TRUE),
-                          FUN = abund_diff,
-                          species.var, abundance.var, abundance.var2)
-  output <- do.call(rbind, c(ranktog_split, list(make.row.names = FALSE)))
+  output <- abund_diff(ranktog, species.var, abundance.var, abundance.var2)
 
   output_order <- c(
     time.var,
