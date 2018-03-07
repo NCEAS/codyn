@@ -183,7 +183,7 @@ add_ranks <- function(df, species.var, abundance.var) {
 }
 
 #' @title Faster split-apply-combine for data frames, when the FUN does not change
-#' the structure of its input.
+#' the number, order, data type or levels of columns in \code{df}.
 #' 
 #' @param df A data frame
 #' @param by The column(s) of the data frame that determine splits
