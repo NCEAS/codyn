@@ -153,7 +153,7 @@ RAC_difference <- function(df, time.var = NULL, species.var,
         list(make.row.names = FALSE)))
     }
     # rank species in each replicate
-    by <- c(replicate.var, treatment.var, block.var)
+    by <- c(time.var, replicate.var, treatment.var, block.var)
     rankdf <- do.call(rbind, c(
       lapply(split(df, df[by], drop = TRUE),
              FUN = add_ranks, species.var, abundance.var),
