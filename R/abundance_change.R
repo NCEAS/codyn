@@ -57,16 +57,12 @@ abundance_change <- function(df, time.var,
   by <- c(replicate.var)
   allsp <- split_apply_combine(df, by, FUN = fill_zeros, species.var, abundance.var)
 
-  # rank species in each time and optionally replicate
-  by <- c(time.var, replicate.var)
-  rankdf <- split_apply_combine(allsp, by, FUN = add_ranks, species.var, abundance.var)
-
   # merge subsets on time difference of one time step
   cross.var <- time.var
   cross.var2 <- paste(cross.var, 2, sep = '')
   split_by <- c(replicate.var)
-  merge_on <- !(names(rankdf) %in% split_by)
-  ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
+  merge_on <- !(names(allsp) %in% split_by)
+  ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
       y <- x[merge_on]
       cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
       f <- factor(cross[[cross.var]])
