@@ -128,25 +128,20 @@ abundance_difference <- function(df, time.var = NULL, species.var,
 
   if (pool) {
     # pool and rank species in each replicate
-    rankdf <- pool_replicates(df, time.var, species.var, abundance.var,
+    allsp <- pool_replicates(df, time.var, species.var, abundance.var,
                               replicate.var, treatment.var)
   } else {
     # add zeros for species absent from a replicate
     by <- c(time.var)
     allsp <- split_apply_combine(df, by, FUN = fill_zeros,
       species.var, abundance.var)
-
-    # rank species in each replicate ## FIXME why add ranks?
-    by <- c(replicate.var, treatment.var, block.var)
-    rankdf <- split_apply_combine(allsp, by,
-      FUN = add_ranks, species.var, abundance.var)
   }
   
   # cross join for pairwise comparisons
   split_by <- c(block.var, time.var)
-  merge_on <- !(names(rankdf) %in% split_by)
+  merge_on <- !(names(allsp) %in% split_by)
   cross.var2 <- paste(cross.var, 2, sep = '')
-  ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
+  ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
     y <- x[merge_on]
     cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
     idx <- as.integer(cross[[cross.var]]) < as.integer(cross[[cross.var2]])
