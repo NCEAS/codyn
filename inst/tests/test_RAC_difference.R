@@ -8,7 +8,13 @@ context("RAC_difference")
 data("pplots", package = "codyn") 
 
 #take a subset without time 
-dat1 <- subset(pplots, plot %in% c(6,25) & year ==2002)
+dat1 <- subset(pplots, plot %in% c(6, 25) & year == 2002)
+
+#make a subset within a block and no time
+dat2 <- subset(pplots, plot %in% c(25, 29) & year == 2002)
+
+#make a subset for 2002 with just N1P0 and N2P0
+dat3 <- subset(pplots, treatment %in% c("N2P0", "N1P0") & year == 2002)
 
 #make missing abundance
 bdat <- dat1
@@ -45,37 +51,39 @@ test_that("RAC_difference function returns correct result", {
                                species.var = "species",
                                time.var = "year")
   
-  expect_equal(nrow(myresults2), 54)
-  expect_equal(ncol(myresults2), 8) ##this might need to be changed
+  expect_equal(nrow(myresults2), 612)
+  expect_equal(ncol(myresults2), 7) ##this might need to be changed
   
   #test the returned result with blocking and time
-  myresults2 <- RAC_difference(pplots, replicate.var = "plot",
+  myresults3 <- RAC_difference(dat2, replicate.var = "plot",
                                abundance.var = "relative_cover",
                                species.var = "species",
                                block.var = "block",
                                treatment.var = "treatment",
                                time.var = "year")
   
-  expect_is(myresults1, "data.frame")
-  expect_equal(nrow(myresults2), 1)
-  expect_equal(ncol(myresults2), 6)##this might need to be changes
-  expect_equal(myresults2$richness_diff, 0.1923077, tolerance = 0.00001)
-  expect_equal(myresults2$evenness_diff, 0.0002433149, tolerance = 0.000000001)
-  expect_equal(myresults2$rank_diff, 0.1449704, tolerance = 0.00001)
-  expect_equal(myresults2$species_diff, 0.4230769, tolerance = 0.00001)
+  expect_is(myresults3, "data.frame")
+  expect_equal(nrow(myresults3), 1)
+  expect_equal(ncol(myresults3), 10)##this might need to be changed
+  expect_equal(myresults3$richness_diff, 0, tolerance = 0.00001)
+  expect_equal(myresults3$evenness_diff, 4.817085e-05, tolerance = 0.000000001)
+  expect_equal(myresults3$rank_diff, 0.1404959, tolerance = 0.00001)
+  expect_equal(myresults3$species_diff, 0.3636364, tolerance = 0.00001)
   
   #test the returned result with pooling and time
-  myresults1 <- RAC_difference(dat1, replicate.var = "plot",
+  myresults4 <- RAC_difference(dat3, replicate.var = "plot",
                                abundance.var = "relative_cover",
-                               species.var = "species")
+                               species.var = "species", 
+                               pool = TRUE,
+                               treatment.var = "treatment")
   
-  expect_is(myresults1, "data.frame")
-  expect_equal(nrow(myresults1), 1)
-  expect_equal(ncol(myresults1), 6)##this might need to be changes
-  expect_equal(myresults1$richness_diff, 0.1923077, tolerance = 0.00001)
-  expect_equal(myresults1$evenness_diff, 0.0002433149, tolerance = 0.000000001)
-  expect_equal(myresults1$rank_diff, 0.1449704, tolerance = 0.00001)
-  expect_equal(myresults1$species_diff, 0.4230769, tolerance = 0.00001)
+  expect_is(myresults4, "data.frame")
+  expect_equal(nrow(myresults4), 1)
+  expect_equal(ncol(myresults4), 6)##this might need to be changes
+  expect_equal(myresults4$richness_diff, 0.02439024, tolerance = 0.00001)
+  expect_equal(myresults4$evenness_diff, 0.0002291214, tolerance = 0.000000001)
+  expect_equal(myresults4$rank_diff, 0.1171921, tolerance = 0.00001)
+  expect_equal(myresults4$species_diff, 0.3658537, tolerance = 0.00001)
   
   #test that is doesn't work with missing abundance
   expect_error(RAC_difference(bdat, abundance.var = "relative_cover",
