@@ -28,4 +28,7 @@ output A dataframe containing the specificed turnover metric and year
 \description{
 A function to calculate species turnover between years
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder

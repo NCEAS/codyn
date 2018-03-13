@@ -15,4 +15,7 @@ var.ratio The variance ratio of the community
 \description{
 A function to calculate the variance ratio
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder

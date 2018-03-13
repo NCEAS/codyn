@@ -16,4 +16,7 @@ df_intersect(df1, df2, dataname = "species")
 \description{
 Create intersections.
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder

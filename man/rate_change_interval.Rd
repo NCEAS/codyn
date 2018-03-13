@@ -54,4 +54,7 @@ rate_change_interval(knz_001d,
 \references{
 Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates andpatterns of variability in ecological communities. - Oikos 91: 285-293.
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder

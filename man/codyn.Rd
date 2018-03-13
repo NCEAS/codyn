@@ -30,6 +30,10 @@ Work on this package was supported by NSF-ABI grant #1262458
  \item{\code{\link[=cyclic_shift]{temporal_torus_translation}}}{: Calculates a test statistic on a null ecological community created via cyclic shifts. \code{confint} provides mean and confidence intervals of this null distribution}
 }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 299806a... building man/ folder
 \author{
 \itemize{
  \item{Lauren Hallett \email{lauren.m.hallett@gmail.com}}
@@ -42,4 +46,7 @@ Work on this package was supported by NSF-ABI grant #1262458
  \item{Scott L. Collins \email{scollins@sevilleta.unm.edu}}
 }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder

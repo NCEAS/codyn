@@ -14,4 +14,7 @@ check_names(given, data)
 \description{
 check names of data frames
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder

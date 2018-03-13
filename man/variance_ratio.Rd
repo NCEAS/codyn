@@ -100,4 +100,7 @@ but they can be user-modified to set more stringent CIs.
                replicate = "subplot",
                average.replicates = FALSE)
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder

@@ -12,4 +12,7 @@ check_sppvar(comdat)
 \description{
 Utility function to stop calculations if the species never change in a replicate
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder

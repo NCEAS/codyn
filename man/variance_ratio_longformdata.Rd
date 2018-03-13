@@ -21,4 +21,7 @@ var.ratio The variance ratio of the community
 \description{
 A function to calculate the variance ratio from a longform dataframe
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder

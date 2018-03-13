@@ -25,4 +25,7 @@ A data frame containing a column for replicate, year, species and abundance:
 }
 }
 \keyword{datasets}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299806a... building man/ folder
