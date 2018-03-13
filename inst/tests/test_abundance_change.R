@@ -33,13 +33,10 @@ test_that("abundance_change function returns correct result", {
   
   
   expect_is(myresults1, "data.frame")
-  expect_equal(nrow(myresults1), 1)
-  expect_equal(ncol(myresults1), 7)##this might need to be changes
-  expect_equal(myresults1$richness_change, 0.15, tolerance = 0.00001)
-  expect_equal(myresults1$evenness_change, 0.0006590601, tolerance = 0.000000001)
-  expect_equal(myresults1$rank_change, 0.145, tolerance = 0.00001)
-  expect_equal(myresults1$gains, 0.1, tolerance = 0.00001)
-  expect_equal(myresults1$losses, 0.25, tolerance = 0.00001)
+  expect_equal(nrow(myresults1), 20)
+  expect_equal(ncol(myresults1), 4)##this might need to be changed
+  expect_equal(myresults1$change[1], -0.002123142, tolerance = 0.00001)
+
 
   #test that it works with replicates
   myresults2 <- abundance_change(pplots, abundance.var = "relative_cover",
@@ -47,8 +44,8 @@ test_that("abundance_change function returns correct result", {
                                     species.var = "species",
                                     time.var = "year")
   
-  expect_equal(nrow(myresults2), 54)
-  expect_equal(ncol(myresults2), 8) ##this might need to be changed
+  expect_equal(nrow(myresults2), 1148)
+  expect_equal(ncol(myresults2), 5) ##this might need to be changed
   
   #test that is doesn't work with missing abundance
   expect_error(abundance_change(bdat, abundance.var = "relative_cover",
