@@ -16,14 +16,16 @@
 #' @examples 
 #' data(pplots)
 #' #With treatment
-#'  multivariate_change(pplots, 
+#' multivariate_change(pplots,
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     treatment.var = "treatment", 
 #'                     species.var = "species", 
 #'                     abundance.var = "relative_cover")
+#' 
 #' #Without treatment
-#' multivariate_change(pplots, 
+#' df <- subset(pplots, treatment == "N1P0")
+#' multivariate_change(df, 
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     species.var = "species", 
