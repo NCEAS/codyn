@@ -58,8 +58,8 @@ test_that("community_structure function returns correct result", {
   expect_equal(ncol(myresults4), 3)
   
   #test that it works with replicates
-  myresults5 <- community_structure(dat2, abundance.var = "relative_cover",
-                                    time.var = "year")
+  myresults5 <- community_structure(dat3, abundance.var = "relative_cover",
+                                    replicate.var = "plot")
   
   expect_equal(nrow(myresults5), 2)
   expect_equal(ncol(myresults5), 3)
