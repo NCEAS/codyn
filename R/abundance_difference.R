@@ -23,7 +23,7 @@
 #' \itemize{
 #'  \item{species.var: }{A column that has same name and type as the species.var
 #'  column.}
-#'  \item{difference: }{A numeric column of the abundance differences between
+#'  \item{difference: }{A numeric column of the absolute value of abundance differences between
 #'  the two samples being compared (replicates or treatments).}
 #'  \item{replicate.var: }{A column that has same name and type as the
 #'  replicate.var column, represents the first replicate being compared. Note, a
@@ -177,7 +177,7 @@ abundance_difference <- function(df, time.var = NULL, species.var,
 # @param abundance.var the name of the abundance column
 abund_diff <- function(df, species.var, abundance.var, abundance.var2) {
 
-  df[['difference']] <- df[[abundance.var]] - df[[abundance.var2]]
+  df[['difference']] <- abs(df[[abundance.var]] - df[[abundance.var2]])
   df[c(abundance.var, abundance.var2)] <- NULL
 
   return(df)

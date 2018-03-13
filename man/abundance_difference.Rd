@@ -29,7 +29,7 @@ The abundance_difference function returns a data frame with the following attrib
 \itemize{
  \item{species.var: }{A column that has same name and type as the species.var
  column.}
- \item{difference: }{A numeric column of the abundance differences between
+ \item{difference: }{A numeric column of the absolute value of abundance differences between
  the two samples being compared (replicates or treatments).}
  \item{replicate.var: }{A column that has same name and type as the
  replicate.var column, represents the first replicate being compared. Note, a
