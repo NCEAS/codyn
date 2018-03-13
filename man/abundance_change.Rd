@@ -23,11 +23,11 @@ optional column of replicates}
 The abundance_change function returns a data frame with the following
   fields:
 \itemize{
- \item{A column with the specified replicate.var, if it is specified.}
- \item{A column with the specified time.var and a second column, with '2'
+ \item{replicate.var: }{A column with the specified replicate.var, if it is specified.}
+ \item{time.var: }{A column with the specified time.var and a second column, with '2'
  appended to the name, giving the time of the subtracted abundance.}
- \item{A column with the specified species.var.}
- \item{A numeric column of the change in abundance between consecutive
+ \item{species.var: }{A column with the specified species.var.}
+ \item{difference: }{A numeric column of the change in abundance between consecutive
  timepoints. A postive value occurs when a species increases in abundnace
  over time, and a negative value when a species decreases in abundance over
  time.}
