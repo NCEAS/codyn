@@ -26,7 +26,7 @@ The multivariate_change function returns a data frame with the following attribu
  \item{time.var: }{A characteric column that has the first of two time periods that are being compared.}
  \item{time.var2: }{A characteric column that has the second of two time periods that are being compared.}
  \item{BC_between_change: }{A numeric column that is the average pairwise Bray-Curtis dissimilarity of replicates in two consecutive time periods. 0 - The communities are similar over time. 1 - The communities are changing over time.}
- \item{BC_within_change: }{A numeric column that is change between two time periods in the average pairwise Bray-Curtis dissimilarity of replicates within a time period. A negative number indicates that time.var2 has varaiblity in community composition than time.var}
+ \item{BC_within_change: }{A numeric column that is change between two time periods in the average pairwise Bray-Curtis dissimilarity of replicates within a time period. A positive number indicates that time.var2 has greater varaiblity in community composition than time.var}
  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
 }
 }
