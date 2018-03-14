@@ -17,12 +17,11 @@
 #'  compared, separated by a dash.}
 #'  \item{richness_change: }{A numeric column that is the change in richness
 #'  between the two consecutive time peroids for a repicate divided by the total
-#'  number of species in both time periods.}
+#'  number of species in both time periods. A negative number denotes that time.var2 has more speices than time.var.}
 #'  \item{evenness_change: }{A numeric column that is the change in evenness
 #'  (measured with EQ) between the two consecutive time peroids for a repicate
-#'  divided by the total number of species in both time periods.}
-#'  \item{rank_change: }{A numeric column that is the average change in rank of
-#'  a species between the two consecutive time peroids for a repicate divided by
+#'  divided by the total number of species in both time periods. A negative number denotes that time.var2 has greater evenness than time.var.}
+#'  \item{rank_change: }{A numeric column that is the absolute value of the average change in rank #'  of a species between the two consecutive time peroids for a replicate divided by
 #'  the total number of species in both time periods. Species that are not
 #'  present in both time periods are given the S+1 rank in the sample it is
 #'  absent in, where S is the number of species in that sample.}
@@ -134,8 +133,8 @@ SERGL <- function(df, species.var, abundance.var, abundance.var2) {
   s_t2 <- S(df[[abundance.var2]])
   e_t2 <- EQ(as.numeric(df[[abundance.var2]]))
   
-  sdiff <- abs(s_t1-s_t2) / nrow(df)
-  ediff <- abs(e_t1-e_t2) / nrow(df)
+  sdiff <- (s_t1-s_t2) / nrow(df)
+  ediff <- (e_t1-e_t2) / nrow(df)
   
   # gains and lqosses
   df$gain <- ifelse(df[[abundance.var]] == 0, 1, 0)
@@ -144,7 +143,7 @@ SERGL <- function(df, species.var, abundance.var, abundance.var2) {
   gain <- sum(df$gain) / nrow(df)
   loss <- sum(df$loss) / nrow(df)
   
-  mrsc <- mean(abs(df[['rank']] - df[['rank2']]) / nrow(df))
+  mrsc <- mean(abs(df[['rank']] - df[['rank2']])) / nrow(df)
   
   metrics <- data.frame(richness_change = sdiff, evenness_change = ediff,
                         rank_change = mrsc, gains = gain, losses = loss)

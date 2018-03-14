@@ -44,11 +44,11 @@
 #'  when pool is TRUE or block.var is present, or treatment.var is specified.}
 #'  \item{richness_diff: }{A numeric column that is the difference between the
 #'  compared samples (treatments or replicates) in species richness divided by
-#'  the total number of species in both samples.}
+#'  the total number of species in both samples. A negative number denotes that replicate.var2 or treatment.var2 has more species than replicate.var or treatment.var. }
 #'  \item{evenness_diff: }{A numeric column of the difference between the
 #'  compared samples (treatments or replicates) in evenness (measured using the
-#'  EQ metric) divided by the total number of species in both samples.}
-#'  \item{rank_diff: }{A numeric column of the average difference between the
+#'  EQ metric) divided by the total number of species in both samples. A negative number denotes that replicate.var2 or treatment.var2 has higher evenness than replicate.var or treatment.var.}
+#'  \item{rank_diff: }{A numeric column of the absolute value of average difference between the
 #'  compared samples (treatments or replicates) in species' ranks divided by the
 #'  total number of species in both samples. Species that are not present in
 #'  both samples are given the S+1 rank in the sample it is absent in, where S
@@ -222,15 +222,15 @@ SERSp <- function(df, species.var, abundance.var, abundance.var2) {
   s_t2 <- S(df[[abundance.var2]])
   e_t2 <- EQ(as.numeric(df[[abundance.var2]]))
   
-  sdiff <- abs(s_t1-s_t2)/nrow(df)
-  ediff <- abs(e_t1-e_t2)/nrow(df)
+  sdiff <- (s_t1-s_t2)/nrow(df)
+  ediff <- (e_t1-e_t2)/nrow(df)
   
   #Jaccard Index or Number of species not shared  
   spdiff <- df[df[[abundance.var]] == 0|df[[abundance.var2]] == 0,]
   spdiffc <- nrow(spdiff)/nrow(df)
   
   #Mean Rank Difference
-  mrsc_diff <- mean(abs(df[['rank']]-df[['rank2']]) / nrow(df))
+  mrsc_diff <- mean(abs(df[['rank']]-df[['rank2']])) / nrow(df)
   
   metrics <- data.frame(richness_diff = sdiff, evenness_diff = ediff,
                         rank_diff = mrsc_diff, species_diff = spdiffc)
