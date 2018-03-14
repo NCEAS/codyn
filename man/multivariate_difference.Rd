@@ -8,7 +8,8 @@ multivariate_difference(df, time.var = NULL, species.var, abundance.var,
   replicate.var, treatment.var)
 }
 \arguments{
-\item{df}{A data frame containing an optional time column, species, abundance and replicate, and treatment columns}
+\item{df}{A data frame containing an optional time column, species, abundance
+and replicate, and treatment columns}
 
 \item{time.var}{The name of the optional time column}
 
@@ -32,7 +33,11 @@ The multivariate_difference function returns a data frame with the following att
 }
 }
 \description{
-Calculates the difference in composition and dispersion between treatments based off a Bray-Curtis dissimilarity matrix at a single point in time. Composition difference is the euclidean distance between the centroids of different treatments. Dispersion difference is the difference of average dispersion of each replicate to its centroid between two treatments.
+Calculates the difference in composition and dispersion between
+ treatments based off a Bray-Curtis dissimilarity matrix at a single point in
+ time. Composition difference is the euclidean distance between the centroids
+ of different treatments. Dispersion difference is the difference of average
+ dispersion of each replicate to its centroid between two treatments.
 }
 \examples{
  

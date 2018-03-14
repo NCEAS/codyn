@@ -24,7 +24,10 @@
 #'  \item{species.var: }{A column that has same name and type as the species.var
 #'  column.}
 #'  \item{difference: }{A numeric column of the abundance differences between
-#'  the two samples being compared (replicates or treatments). A numeric column of the change in abundance between consecutive timepoints. A postive value occurs when a species has greater abundance in replicate.var2 than replicate.var or treatment.var2 to treatment.var.}
+#'  the two samples being compared (replicates or treatments). A numeric column
+#'  of the change in abundance between consecutive timepoints. A postive value
+#'  occurs when a species has greater abundance in replicate.var2 than in
+#'  replicate.var and/or in treatment.var2 than in treatment.var.}
 #'  \item{replicate.var: }{A column that has same name and type as the
 #'  replicate.var column, represents the first replicate being compared. Note, a
 #'  replicate column will be returned only when pool = FALSE or block.var =
@@ -129,27 +132,46 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   if (pool) {
     # pool and rank species in each replicate
     allsp <- pool_replicates(df, time.var, species.var, abundance.var,
-                              replicate.var, treatment.var)
+      replicate.var, treatment.var)
   } else {
-    # add zeros for species absent from a replicate
-    by <- c(time.var)
-    allsp <- split_apply_combine(df, by, FUN = fill_zeros,
+    # add NA for species absent from a replicate
+    by <- c(block.var, time.var)
+    allsp <- split_apply_combine(df, by, FUN = fill_species,
       species.var, abundance.var)
   }
-  
+
+  # order cross.var if unordered factor
+  to_ordered = is.factor(df[[cross.var]]) & !is.ordered(df[[cross.var]])
+  if (to_ordered) {
+    class(allsp[[cross.var]]) <- c('ordered', class(allsp[[cross.var]]))
+  }
+    
   # cross join for pairwise comparisons
   split_by <- c(block.var, time.var)
-  merge_on <- !(names(allsp) %in% split_by)
+  merge_to <- !(names(allsp) %in% split_by)
   cross.var2 <- paste(cross.var, 2, sep = '')
+  abundance.var2 <- paste(abundance.var, 2, sep = '')
   ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
-    y <- x[merge_on]
+    y <- x[merge_to]
     cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
-    idx <- as.integer(cross[[cross.var]]) < as.integer(cross[[cross.var2]])
-    cross[idx,]
+    idx <- cross[[cross.var]] < cross[[cross.var2]]
+    cross[idx, ]
   })
 
+  # unorder cross.var if orginally unordered factor
+  if (to_ordered) {
+    class(allsp[[cross.var]]) <- class(df[[cross.var]])
+  }
+  
+  # remove rows with NA for both abundances (preferably only when introduced
+  # by fill_species)
+  idx <- is.na(ranktog[[abundance.var]])
+  idx2 <- is.na(ranktog[[abundance.var2]])
+  ranktog[idx, abundance.var] <- 0
+  ranktog[idx2, abundance.var2] <- 0
+  ranktog <- ranktog[!(idx & idx2), ]
+
   # take abundance difference
-  abundance.var2 <- paste(abundance.var, 2, sep = '')
   output <- abund_diff(ranktog, species.var, abundance.var, abundance.var2)
 
   output_order <- c(

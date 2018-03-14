@@ -151,6 +151,25 @@ fill_zeros <- function(df, species.var, abundance.var) {
   return(df)
 }
 
+#' Add missing abundances for species absent from a replicate, on the assumption
+#' that any species in the \code{species.var} column should be included for
+#' every group defined by all the remaining colums save \code{abundance.var}.
+#'
+#' @param df A dataframe with species, abundances, and at least one other column
+#'   to group by
+#' @param species.var The name of the species column from df
+#' @param abundance.var The name of the abundance column from df
+#' @return A dataframe with the same columns as df, but with \code{NA} added for
+#'   species that are present in df, but not in each group.
+fill_species <- function(df, species.var, abundance.var) {
+
+  mergevars <- !(names(df) %in% c(species.var, abundance.var))
+  complete <- merge(unique(df[mergevars]), unique(df[species.var]))
+  df <- merge(df, complete, all = TRUE)
+
+  return(df)
+}
+
 #' @title Add abundance ranks
 #' @description Rank species by abundance, by specified groupig. Species with
 #'   zero abundance receive rank S+1, where S is the total number of species in

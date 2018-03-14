@@ -1,6 +1,11 @@
 #'@title Using centriods to calcualte differences in composition and dispersion
-#'@description Calculates the difference in composition and dispersion between treatments based off a Bray-Curtis dissimilarity matrix at a single point in time. Composition difference is the euclidean distance between the centroids of different treatments. Dispersion difference is the difference of average dispersion of each replicate to its centroid between two treatments.
-#' @param df A data frame containing an optional time column, species, abundance and replicate, and treatment columns
+#'@description Calculates the difference in composition and dispersion between
+#'  treatments based off a Bray-Curtis dissimilarity matrix at a single point in
+#'  time. Composition difference is the euclidean distance between the centroids
+#'  of different treatments. Dispersion difference is the difference of average
+#'  dispersion of each replicate to its centroid between two treatments.
+#' @param df A data frame containing an optional time column, species, abundance
+#'   and replicate, and treatment columns
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
@@ -79,7 +84,10 @@ centroid_difference <- function(df, time.var = NULL, species.var,
 #
 ############################################################################
 
-# A function calculate the community compositon difference (the distance between the centriods of two treatments) and absolute dispersion difference (the absolute difference in the average dispersion of the replicates around the centriod for the two treatments).
+# A function calculate the community compositon difference (the distance between
+# the centriods of two treatments) and absolute dispersion difference (the
+# absolute difference in the average dispersion of the replicates around the
+# centriod for the two treatments).
 # @param df a dataframe
 # @param species.var the name of the species column
 # @param replicate.var the name of the replicate column
