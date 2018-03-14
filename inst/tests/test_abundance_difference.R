@@ -40,7 +40,7 @@ test_that("abundance_difference function returns correct result", {
   expect_is(myresults1, "data.frame")
   expect_equal(nrow(myresults1), 26)
   expect_equal(ncol(myresults1), 4)
-  expect_equal(myresults1$difference[1], 0.003898635, tolerance = 0.00001)
+  expect_equal(myresults1$difference[1], -0.003898635, tolerance = 0.00001)
 
   #test that it works with time
   myresults2 <- abundance_difference(pplots, abundance.var = "relative_cover",
@@ -49,7 +49,7 @@ test_that("abundance_difference function returns correct result", {
                                time.var = "year")
   
   expect_equal(nrow(myresults2), 612)
-  expect_equal(ncol(myresults2), 7)
+  expect_equal(ncol(myresults2), 5)
   
   #test that it works with time and treatment specified
   myresults2.2 <- abundance_difference(pplots, abundance.var = "relative_cover",
@@ -59,7 +59,7 @@ test_that("abundance_difference function returns correct result", {
                                      treatment.var = "treatment")
   
   expect_equal(nrow(myresults2.2), 612)
-  expect_equal(ncol(myresults2.2), 9)
+  expect_equal(ncol(myresults2.2), 7)
   
   #test the returned result with blocking and no time
   myresults3 <- abundance_difference(dat2, replicate.var = "plot",
@@ -70,7 +70,7 @@ test_that("abundance_difference function returns correct result", {
   
   expect_is(myresults3, "data.frame")
   expect_equal(nrow(myresults3), 22)
-  expect_equal(ncol(myresults3), 8)
+  expect_equal(ncol(myresults3), 7)
   expect_equal(myresults3$difference[1], 0.009784736, tolerance = 0.00001)
   
   #test that is works with blocking and time
@@ -81,7 +81,7 @@ test_that("abundance_difference function returns correct result", {
                                      treatment.var = "treatment",
                                      time.var = "year")
   expect_equal(nrow(myresults3.5), 22)
-  expect_equal(ncol(myresults3.5), 9)
+  expect_equal(ncol(myresults3.5), 8)
 
   #test the returned result with pooling and no time
   myresults4 <- abundance_difference(dat3, replicate.var = "plot",
@@ -105,7 +105,7 @@ test_that("abundance_difference function returns correct result", {
   
   expect_is(myresults4.5, "data.frame")
   expect_equal(nrow(myresults4.5), 41)
-  expect_equal(ncol(myresults4.5), 4)
+  expect_equal(ncol(myresults4.5), 5)
 
   #test that is doesn't work with missing abundance
   expect_error(abundance_difference(bdat, abundance.var = "relative_cover",

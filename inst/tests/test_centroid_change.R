@@ -33,7 +33,7 @@ test_that("centroid_change function returns correct result", {
   expect_is(myresults1, "data.frame")
   expect_equal(nrow(myresults1), 3)
   expect_equal(ncol(myresults1), 3)##this might need to be changed
-  expect_equal(myresults1$compositon_change[1], 0.1325553, tolerance = 0.00001)
+  expect_equal(myresults1$centroid_distance_change[1], 0.1325553, tolerance = 0.00001)
   expect_equal(myresults1$dispersion_change[1], 0.03804344, tolerance = 0.000001)
 
   #test that it works with treatment

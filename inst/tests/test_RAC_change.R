@@ -35,7 +35,7 @@ test_that("RAC_change function returns correct result", {
   expect_is(myresults1, "data.frame")
   expect_equal(nrow(myresults1), 1)
   expect_equal(ncol(myresults1), 7)##this might need to be changes
-  expect_equal(myresults1$richness_change, 0.15, tolerance = 0.00001)
+  expect_equal(myresults1$richness_change, -0.15, tolerance = 0.00001)
   expect_equal(myresults1$evenness_change, 0.0006590601, tolerance = 0.000000001)
   expect_equal(myresults1$rank_change, 0.145, tolerance = 0.00001)
   expect_equal(myresults1$gains, 0.1, tolerance = 0.00001)
