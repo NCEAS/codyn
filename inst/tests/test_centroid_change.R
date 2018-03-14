@@ -1,4 +1,4 @@
-context("multivariate_change")
+context("centroid_change")
 
 
 # prepare data ----------------------------------------
@@ -21,10 +21,10 @@ bdat2 <- rbind(dat1, x)
 # run tests -------------------------------------------
 
 
-test_that("multivariate_change function returns correct result", {
+test_that("centroid_change function returns correct result", {
   
   #test the returned result with default setting, no treatment
-  myresults1 <- multivariate_change(dat1, time.var = "year",
+  myresults1 <- centroid_change(dat1, time.var = "year",
                            abundance.var = "relative_cover",
                            species.var = "species",
                            replicate.var = "plot")
@@ -37,7 +37,7 @@ test_that("multivariate_change function returns correct result", {
   expect_equal(myresults1$dispersion_change[1], 0.03804344, tolerance = 0.000001)
 
   #test that it works with treatment
-  myresults2 <- multivariate_change(pplots, abundance.var = "relative_cover",
+  myresults2 <- centroid_change(pplots, abundance.var = "relative_cover",
                                     replicate.var = "plot",
                                     species.var = "species",
                                     time.var = "year",
@@ -47,13 +47,13 @@ test_that("multivariate_change function returns correct result", {
   expect_equal(ncol(myresults2), 4) ##this might need to be changed
   
   #test that is doesn't work with missing abundance
-  expect_error(multivariate_change(bdat, abundance.var = "relative_cover",
+  expect_error(centroid_change(bdat, abundance.var = "relative_cover",
                           replicate.var = "plot",
                           species.var = "species",
                           time.var = "year"), "Abundance column contains missing values")
   
   #test that is doesn't work with a repeated species
-  expect_error(multivariate_change(bdat2, abundance.var = "relative_cover",
+  expect_error(centroid_change(bdat2, abundance.var = "relative_cover",
                           replicate.var = "plot",
                           species.var = "species",
                           time.var = "year"), "In replicate 25 there is more than one record for species at the time point 2002")

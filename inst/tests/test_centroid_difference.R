@@ -1,4 +1,4 @@
-context("multivariate_difference")
+context("centroid_difference")
 
 
 # prepare data ----------------------------------------
@@ -24,10 +24,10 @@ bdat3$species[1] <- NA
 # run tests -------------------------------------------
 
 
-test_that("multivariate_difference function returns correct result", {
+test_that("centroid_difference function returns correct result", {
   
   #test the returned result with default setting, no time
-  myresults1 <- multivariate_difference(dat1, abundance.var = "relative_cover",
+  myresults1 <- centroid_difference(dat1, abundance.var = "relative_cover",
                            species.var = "species",
                            replicate.var = "plot",
                            treatment.var = "treatment")
@@ -40,7 +40,7 @@ test_that("multivariate_difference function returns correct result", {
   expect_equal(myresults1$dispersion_diff[1], 0.008186288, tolerance = 0.000001)
 
   #test that it works with time
-  myresults2 <- multivariate_difference(pplots, abundance.var = "relative_cover",
+  myresults2 <- centroid_difference(pplots, abundance.var = "relative_cover",
                                     replicate.var = "plot",
                                     species.var = "species",
                                     time.var = "year",
@@ -50,22 +50,15 @@ test_that("multivariate_difference function returns correct result", {
   expect_equal(ncol(myresults2), 6) 
   
   #test that is doesn't work with missing abundance
-  expect_error(multivariate_difference(bdat, abundance.var = "relative_cover",
+  expect_error(centroid_difference(bdat, abundance.var = "relative_cover",
                           replicate.var = "plot",
                           species.var = "species",
                           time.var = "year"), "Abundance column contains missing values")
   
   #test that is doesn't work with a repeated species
-  expect_error(multivariate_difference(bdat2, abundance.var = "relative_cover",
+  expect_error(centroid_difference(bdat2, abundance.var = "relative_cover",
                           replicate.var = "plot",
                           species.var = "species",
                           time.var = "year"), "In replicate 25 there is more than one record for species at the time point 2002")
-  
-  #test that is doesn't work with missing species name
-  expect_error(multivariate_difference(bdat3, abundance.var = "relative_cover",
-                          replicate.var = "plot",
-                          species.var = "species",
-                          time.var = "year", 
-                          treatment.var = "treatment"), "Species names are missing")
   
 })
