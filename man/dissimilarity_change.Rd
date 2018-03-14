@@ -2,7 +2,7 @@
 % Please edit documentation in R/dissimilarity_change.R
 \name{dissimilarity_change}
 \alias{dissimilarity_change}
-\title{Bray-Curtis dissimilarity of replicates between consequtive time periods and within time periods}
+\title{Bray-Curtis dissimilarity of replicates between and within time periods}
 \usage{
 dissimilarity_change(df, time.var, species.var, abundance.var, replicate.var,
   treatment.var = NULL)
@@ -25,13 +25,13 @@ The multivariate_change function returns a data frame with the following attribu
 \itemize{
  \item{time.var: }{A characteric column that has the first of two time periods that are being compared.}
  \item{time.var2: }{A characteric column that has the second of two time periods that are being compared.}
- \item{composition_change: }{A numeric column that is the euclidean distance between the centroids of two consecutive time points.}
- \item{dispersion_change: }{A numeric column that is the difference in the average dispersion of the replicates around the centriod for the two consecutive time periods. A negative value indicates replicates are converging over time (there is less dispersion at time peroid 2 than time period 1) and a postive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1.}
+ \item{BC_between_change: }{A numeric column that is the average pairwise Bray-Curtis dissimilarity of replicates in two consecutive time periods. 0 - The communities are similar over time. 1 - The communities are changing over time.}
+ \item{BC_within_change: }{A numeric column that is change between two time periods in the average pairwise Bray-Curtis dissimilarity of replicates within a time period. A negative number indicates that time.var2 has varaiblity in community composition than time.var}
  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
 }
 }
 \description{
-Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of time period 1 and time period 2. Dispersion change is the difference of average dispersion of each replicate to its centroid between consecutive time periods.
+Calculates the average changes in Bray-Curtis dissimilarity of replicates between two consecutive time periods and within time periods. Between changes the average Bray-Curtis dissimilaritiy of all pairwise comparisions of replicates between two consecutive time periods. This is a measure of how dissimilar the community composition of two time periods is. Bray-Curtis dissimilarity ranges from 0-1, where 0 are identical communities, and 1 and completelty different communiites. Within change is derived in two steps. First, the average Bray-Curtis dissimilarity of all replicates within a time period is calculated. This is a measure of how homogenous a community is within a time step is. Then, these averages are compared between two consecutive time periods.
 }
 \examples{
 data(pplots)

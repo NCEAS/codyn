@@ -2,7 +2,7 @@
 % Please edit documentation in R/dissimilarity_difference.R
 \name{dissimilarity_difference}
 \alias{dissimilarity_difference}
-\title{Bray curtis dissimilarity differences in between and within treatments}
+\title{Bray curtis dissimilarity differences of replicates between and within treatments}
 \usage{
 dissimilarity_difference(df, time.var = NULL, species.var, abundance.var,
   replicate.var, treatment.var)
@@ -25,13 +25,13 @@ The multivariate_difference function returns a data frame with the following att
 \itemize{
  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it.}
- \item{BC_between_diff: }{A numeric column that is the average pairwise Bray-Curtis dissimilarity of all pairwise comparisons of replicates in both treatments.}
- \item{BC_within_diff: }{A numeric column that is difference in the average Bray-Curtis dissimilarity of all pairwise comparisions of replicates within each treatment.}
+ \item{BC_between_diff: }{A numeric column that is the average pairwise Bray-Curtis dissimilarity of replicates in two treatments. 0 - The communities of treatments are similar. 1 - The communities of treatments are very different.}
+ \item{BC_within_diff: }{A numeric column that is difference between two treatments in the average pairwise Bray-Curtis dissimilarity of replicates within each treatment. A negative number indicates that treatment.var2 has varaiblity in community composition than treatment.var.}
  \item{time.var: }{A characteric column that has the same name and type as the time.var column, if specified.}
 }
 }
 \description{
-Calculates the average difference in Bray-Curtis dissimilarity between treatments and within treatments at a single point in time. Between differences is the average Bray-Curtis dissimilaritiy of all pairwise comparisions of replicates between two treatments. Within difference is the differecnes between two treatments of average dissimilarity of all replicates within each treatment.
+Calculates the average difference in Bray-Curtis dissimilarity of replicates treatments and within treatments at a single point in time. Between treatment differences is the average Bray-Curtis dissimilaritiy of all pairwise comparisions of replicates between two treatments. This is a measure of how dissimilar the community composition of two treatments is. Bray-Curtis dissimilarity ranges from 0-1, where 0 are identical communities, and 1 and completelty different communiites. Within difference is derived in two steps. First, the average Bray-Curtis dissimilarity of all replicates within a treatment is calculated. This is a measure of how homogenous a community is within a treatment. Then, these averages are compared between two treatments.
 }
 \examples{
  
