@@ -11,7 +11,7 @@
 #'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
 #'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it.}
 #'  \item{BC_between_diff: }{A numeric column that is the average pairwise Bray-Curtis dissimilarity of replicates in two treatments. 0 - The communities of treatments are similar. 1 - The communities of treatments are very different.}
-#'  \item{BC_within_diff: }{A numeric column that is difference between two treatments in the average pairwise Bray-Curtis dissimilarity of replicates within each treatment. A negative number indicates that treatment.var2 has varaiblity in community composition than treatment.var.}
+#'  \item{BC_within_diff: }{A numeric column that is difference between two treatments in the average pairwise Bray-Curtis dissimilarity of replicates within each treatment. A positive number indicates that treatment.var2 has varaiblity in community composition than treatment.var.}
 #'  \item{time.var: }{A characteric column that has the same name and type as the time.var column, if specified.}
 #' }
 #' @references Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson?
@@ -122,7 +122,7 @@ dissim_diff <- function(df, species.var, abundance.var, replicate.var, treatment
   #mege into get bc_within differences for each treatment
   bc_dis1 <- merge(bc_between_ave, bc_within_ave, by = treatment.var)
   bc_dis <- merge(bc_dis1, bc_within_ave, by.x = paste(treatment.var, 2, sep = ""), by.y = treatment.var)
-  bc_dis$BC_within_diff <- bc_dis$BC_dissim_within.x - bc_dis$BC_dissim_within.y
+  bc_dis$BC_within_diff <- bc_dis$BC_dissim_within.y - bc_dis$BC_dissim_within.x
   bc_dis$BC_dissim_within.x <- NULL
   bc_dis$BC_dissim_within.y <- NULL
 
