@@ -15,7 +15,7 @@
 #' \itemize{
 #'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
 #'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it.}
-#'  \item{composition_diff: }{A numeric column that is the euclidean distance between the centroids of two treatments at a single point in time.}
+#'  \item{centroid_distance_diff: }{A numeric column that is the euclidean distance between the centroids of two treatments at a single point in time.}
 #'  \item{abs_dispersion_diff: }{A numeric column that is the absolute value of the difference in the average dispersion of the replicates around the centriod for the two treatments.}
 #'  \item{trt_greater_disp: }{A column that has same type as the treatment.var column, and specifies which of the two  treatments has greater dispersion.}
 #'  \item{time.var: }{A characteric column that has the same name and type as the time.var column, if specified.}
@@ -71,7 +71,7 @@ centroid_difference <- function(df, time.var = NULL, species.var,
   output_order <- c(
     time.var,
     treatment.var, paste(treatment.var, 2, sep = ''),
-    'composition_diff', 'abs_dispersion_diff', 'trt_greater_disp')
+    'centroid_distance_diff', 'abs_dispersion_diff', 'trt_greater_disp')
   
   return(output[intersect(output_order, names(output))])
 }
@@ -124,7 +124,7 @@ mult_diff <- function(df, species.var, abundance.var, replicate.var, treatment.v
   
   colnames(cent_dist3)[1] <- paste(treatment.var, 2, sep="")
   colnames(cent_dist3)[2] <- treatment.var
-  colnames(cent_dist3)[3] <- "composition_diff"
+  colnames(cent_dist3)[3] <- "centroid_distance_diff"
   
   #collecting and labeling distances to centroid from betadisper to get a measure of dispersion and then take the mean for a treatment
   disp2 <- data.frame(treatment=species3[[treatment.var]],

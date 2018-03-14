@@ -9,7 +9,7 @@
 #' @return The multivariate_change function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
-#'  \item{composition_change: }{A numeric column that is the euclidean distance between the centroids of two consecutive time points.}
+#'  \item{centroid_distance_change: }{A numeric column that is the euclidean distance between the centroids of two consecutive time points.}
 #'  \item{dispersion_change: }{A numeric column that is the difference in the average dispersion of the replicates around the centriod for the two consecutive time periods. A negative value indicates replicates are converging over time (there is less dispersion at time peroid 2 than time period 1) and a postive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1.}
 #'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
 #' }
@@ -61,7 +61,7 @@ centroid_change <- function(df, time.var, species.var, abundance.var, replicate.
   output_order <- c(
     paste(time.var,"pair", sep="_"),
     treatment.var,
-    'composition_change', 'dispersion_change')
+    'centroid_distance_change', 'dispersion_change')
 
   return(output[intersect(output_order, names(output))])
 }
@@ -108,7 +108,7 @@ mult_change <- function(df, time.var, species.var, abundance.var, replicate.var)
   cent_dist_yrs <- data.frame(
     time1 = timestep[1:length(timestep)-1],
     time2 = timestep[2:length(timestep)],
-    composition_change = diag(
+    centroid_distance_change = diag(
       as.matrix(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist)-1)])))
   
   #collecting and labeling distances to centroid from betadisper to get a measure of dispersion and then take the mean for a year
@@ -126,7 +126,7 @@ mult_change <- function(df, time.var, species.var, abundance.var, replicate.var)
   distances <- merge(cent_dist_yrs, disp_yrs, by="time2")
   distances$time_pair<-paste(distances$time1, distances$time2, sep="-")
   
-  distances<-subset(distances, select = c("time_pair", "composition_change", "dispersion_change"))
+  distances<-subset(distances, select = c("time_pair", "centroid_distance_change", "dispersion_change"))
   colnames(distances)[1]<-paste(time.var, "pair", sep="_")
   
   return(distances)
