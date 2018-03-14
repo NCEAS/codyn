@@ -16,7 +16,7 @@ bdat$relative_cover[1] <- NA
 
 #repeat a species
 x <- c("N1P0", 25, 1, 2002, "senecio plattensis", 0.002123142)
-bdat2 <- rbind(dat1, x)
+bdat2 <- rbind(x, dat1)
 
 # run tests -------------------------------------------
 
@@ -48,14 +48,14 @@ test_that("centroid_change function returns correct result", {
   
   #test that is doesn't work with missing abundance
   expect_error(centroid_change(bdat, abundance.var = "relative_cover",
-                          replicate.var = "plot",
-                          species.var = "species",
-                          time.var = "year"), "Abundance column contains missing values")
+                               replicate.var = "plot",
+                               species.var = "species",
+                               time.var = "year"), "Abundance column contains missing values")
   
   #test that is doesn't work with a repeated species
   expect_error(centroid_change(bdat2, abundance.var = "relative_cover",
-                          replicate.var = "plot",
-                          species.var = "species",
-                          time.var = "year"), "In replicate 25 there is more than one record for species at the time point 2002")
+                               replicate.var = "plot",
+                               species.var = "species",
+                               time.var = "year"), "In replicate 25 there is more than one record for species at the time point 2002")
 
 })

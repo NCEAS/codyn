@@ -8,7 +8,7 @@ context("centroid_difference")
 data("pplots", package = "codyn") 
 
 #make a dataset with no time
-dat1 <- subset(pplots, year == 2003)
+dat1 <- subset(pplots, year == 2002)
 
 #make missing abundance
 bdat <- dat1
@@ -17,10 +17,8 @@ bdat$relative_cover[1] <- NA
 #repeat a species
 x <- c("N1P0", 25, 1, 2002, "senecio plattensis", 0.002123142)
 bdat2 <- rbind(dat1, x)
-bdat2$relative_cover <- as.numeric(bdat2$relative_cover)
-bdat2$year <- as.integer(bdat2$year)
-# run tests -------------------------------------------
 
+# run tests -------------------------------------------
 
 test_that("centroid_difference function returns correct result", {
   
@@ -34,8 +32,8 @@ test_that("centroid_difference function returns correct result", {
   expect_is(myresults1, "data.frame")
   expect_equal(nrow(myresults1), 3)
   expect_equal(ncol(myresults1), 5)
-  expect_equal(myresults1$centroid_distance_diff[1], 0.1068927, tolerance = 0.00001)
-  expect_equal(myresults1$abs_dispersion_diff[1], 0.008186288, tolerance = 0.000001)
+  expect_equal(myresults1$centroid_distance_diff[1], 0.08895478, tolerance = 0.00001)
+  expect_equal(myresults1$abs_dispersion_diff[1], 0.01123982, tolerance = 0.000001)
 
   #test that it works with time
   myresults2 <- centroid_difference(pplots, abundance.var = "relative_cover",
@@ -49,10 +47,10 @@ test_that("centroid_difference function returns correct result", {
   
   #test that is doesn't work with missing abundance
   expect_error(centroid_difference(bdat, abundance.var = "relative_cover",
-                          replicate.var = "plot",
-                          species.var = "species",
-                          time.var = "year",
-                          treatment.var = "treatment"), "Abundance column contains missing values")
+                                   replicate.var = "plot",
+                                   species.var = "species",
+                                   time.var = "year",
+                                   treatment.var = "treatment"), "Abundance column contains missing values")
   
   #test that is doesn't work with a repeated species
   expect_error(centroid_difference(bdat2, abundance.var = "relative_cover",
