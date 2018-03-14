@@ -24,7 +24,7 @@
 #'  \item{species.var: }{A column that has same name and type as the species.var
 #'  column.}
 #'  \item{difference: }{A numeric column of the abundance differences between
-#'  the two samples being compared (replicates or treatments). A negative number denotes that ap species in replicate.var2 or treatment.var2 had higher abundnace than in replicate.var or treatment.var.}
+#'  the two samples being compared (replicates or treatments). A numeric column of the change in abundance between consecutive timepoints. A postive value occurs when a species has greater abundance in replicate.var2 than replicate.var or treatment.var2 to treatment.var.}
 #'  \item{replicate.var: }{A column that has same name and type as the
 #'  replicate.var column, represents the first replicate being compared. Note, a
 #'  replicate column will be returned only when pool = FALSE or block.var =
@@ -177,7 +177,7 @@ abundance_difference <- function(df, time.var = NULL, species.var,
 # @param abundance.var the name of the abundance column
 abund_diff <- function(df, species.var, abundance.var, abundance.var2) {
 
-  df[['difference']] <- df[[abundance.var]] - df[[abundance.var2]]
+  df[['difference']] <- df[[abundance.var2]] - df[[abundance.var]]
   df[c(abundance.var, abundance.var2)] <- NULL
 
   return(df)

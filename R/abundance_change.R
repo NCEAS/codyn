@@ -16,8 +16,8 @@
 #'  appended to the name, giving the time of the subtracted abundance.}
 #'  \item{species.var: }{A column with the specified species.var.}
 #'  \item{change: }{A numeric column of the change in abundance between consecutive
-#'  timepoints. A postive value occurs when a species decreases in abundnace
-#'  over time, and a negative value when a species increases in abundance over
+#'  timepoints. A postive value occurs when a species increases in abundnace
+#'  over time, and a negative value when a species decreases in abundance over
 #'  time.}
 #' }
 #' @references Avolio et al. OUR PAPER
@@ -77,7 +77,7 @@ abundance_change <- function(df, time.var,
   output <- ranktog[idx, ]
   
   # append change column
-  output[['change']] <- output[[abundance.var]] - output[[abundance.var2]]
+  output[['change']] <- output[[abundance.var2]] - output[[abundance.var]]
   output_order <- c(
     time.var, paste(time.var, '2', sep = ''),
     replicate.var,

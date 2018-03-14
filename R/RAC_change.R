@@ -17,10 +17,11 @@
 #'  compared, separated by a dash.}
 #'  \item{richness_change: }{A numeric column that is the change in richness
 #'  between the two consecutive time peroids for a repicate divided by the total
-#'  number of species in both time periods. A negative number denotes that time.var2 has more speices than time.var.}
+#'  number of species in both time periods. A postive value occurs when a there is an increase in species richness over time, and a negative value when there is a decreases in species richness over  time.}
 #'  \item{evenness_change: }{A numeric column that is the change in evenness
 #'  (measured with EQ) between the two consecutive time peroids for a repicate
-#'  divided by the total number of species in both time periods. A negative number denotes that time.var2 has greater evenness than time.var.}
+#'  divided by the total number of species in both time periods. A postive value occurs when evenness  increases over time, and a negative value when evenness decreases in over
+#'  time.}
 #'  \item{rank_change: }{A numeric column that is the absolute value of the average change in rank #'  of a species between the two consecutive time peroids for a replicate divided by
 #'  the total number of species in both time periods. Species that are not
 #'  present in both time periods are given the S+1 rank in the sample it is
@@ -133,8 +134,8 @@ SERGL <- function(df, species.var, abundance.var, abundance.var2) {
   s_t2 <- S(df[[abundance.var2]])
   e_t2 <- EQ(as.numeric(df[[abundance.var2]]))
   
-  sdiff <- (s_t1-s_t2) / nrow(df)
-  ediff <- (e_t1-e_t2) / nrow(df)
+  sdiff <- (s_t2-s_t1) / nrow(df)
+  ediff <- (e_t2-e_t1) / nrow(df)
   
   # gains and lqosses
   df$gain <- ifelse(df[[abundance.var]] == 0, 1, 0)
