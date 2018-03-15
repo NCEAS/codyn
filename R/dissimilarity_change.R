@@ -113,8 +113,17 @@ dissim_change <- function(df, time.var, species.var, abundance.var, replicate.va
   bc_between_ave <- aggregate(myformula2, mean, data=bc_between)
   colnames(bc_between_ave)[3] <- "BC_between_change"
   
+  #select only consecutive years
+  bc_between_ave$yr1 <- as.integer(as.factor(bc_between_ave[[time.var]]))
+  bc_between_ave$yr2 <- as.integer(as.factor(bc_between_ave[[paste(time.var, 2, sep = "")]]))
+  bc_between_ave$diff <- bc_between_ave$yr2 - bc_between_ave$yr1
+  bc_between_ave2 <- subset(bc_between_ave, diff==1)
+  bc_between_ave2$yr1 <- NULL
+  bc_between_ave2$yr2 <- NULL
+  bc_between_ave2$diff <- NULL
+  
   #mege into get bc_within differences for each time comparision
-  bc_dis1 <- merge(bc_between_ave, bc_within_ave, by = time.var)
+  bc_dis1 <- merge(bc_between_ave2, bc_within_ave, by = time.var)
   bc_dis <- merge(bc_dis1, bc_within_ave, by.x = paste(time.var, 2, sep = ""), by.y = time.var)
     bc_dis$BC_within_change <- bc_dis$BC_dissim_within.y - bc_dis$BC_dissim_within.x
   
