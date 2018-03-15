@@ -143,7 +143,7 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   # order cross.var if unordered factor
   to_ordered = is.factor(df[[cross.var]]) & !is.ordered(df[[cross.var]])
   if (to_ordered) {
-    class(allsp[[cross.var]]) <- c('ordered', class(allsp[[cross.var]]))
+    class(allsp[[cross.var]]) <- c('ordered', class(df[[cross.var]]))
   }
     
   # cross join for pairwise comparisons
@@ -160,7 +160,7 @@ abundance_difference <- function(df, time.var = NULL, species.var,
 
   # unorder cross.var if orginally unordered factor
   if (to_ordered) {
-    class(allsp[[cross.var]]) <- class(df[[cross.var]])
+    class(ranktog[[cross.var]]) <- class(df[[cross.var]])
   }
   
   # remove rows with NA for both abundances (preferably only when introduced
@@ -174,6 +174,7 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   # take abundance difference
   output <- abund_diff(ranktog, species.var, abundance.var, abundance.var2)
 
+  # order and select output columns
   output_order <- c(
     time.var,
     block.var,

@@ -140,48 +140,48 @@ RAC_difference <- function(df, time.var = NULL, species.var,
   if (pool) {
     # pool and rank species in each replicate
     rankdf <- pool_replicates(df, time.var, species.var, abundance.var,
-                              replicate.var, treatment.var)
+      replicate.var, treatment.var)
   } else {
     # add zeros for species absent from a replicate within a treatment
-    if (is.null(time.var)) {
-      df <- fill_zeros(df, species.var, abundance.var) ## FIXME quietly keeps time if time.var = NULL, okay if unique by rep, but not otherwise
-    } else {
-      by <- c(time.var)
-      df <- do.call(rbind, c(
-        lapply(split(df, df[by], drop = TRUE),
-              FUN = fill_zeros, species.var, abundance.var),
-        list(make.row.names = FALSE)))
-    }
+    by <- c(block.var, time.var)
+    allsp <- split_apply_combine(df, by, FUN = fill_zeros,
+      species.var, abundance.var)
+
     # rank species in each replicate
-    by <- c(time.var, replicate.var, treatment.var, block.var)
-    rankdf <- do.call(rbind, c(
-      lapply(split(df, df[by], drop = TRUE),
-             FUN = add_ranks, species.var, abundance.var),
-      list(make.row.names = FALSE)))
+    by <- c(time.var, replicate.var, treatment.var, block.var) ## FIXME why different?
+    rankdf <- split_apply_combine(allsp, by, FUN = add_ranks,
+      species.var, abundance.var)
+  }
+  
+  # order cross.var if unordered factor
+  to_ordered = is.factor(df[[cross.var]]) & !is.ordered(df[[cross.var]])
+  if (to_ordered) {
+    class(rankdf[[cross.var]]) <- c('ordered', class(df[[cross.var]]))
   }
   
   # cross join for pairwise comparisons
-  split_by <- c(species.var, block.var, time.var)
-  merge_on <- !(names(rankdf) %in% split_by)
+  split_by <- c(block.var, time.var)
+  merge_to <- !(names(rankdf) %in% split_by)
   cross.var2 <- paste(cross.var, 2, sep = '')
-  rankdf <- lapply(split(rankdf, rankdf[split_by]),
-                   function(x) {
-                     y <- x[merge_on]
-                     cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
-                     idx <- as.integer(cross[[cross.var]])
-                     idx <- idx < as.integer(cross[[cross.var2]])
-                     cross[idx,]
-                   })
-  ranktog <- do.call(rbind, c(rankdf, list(make.row.names = FALSE)))
+  ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
+    y <- x[merge_to]
+    cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
+    idx <- cross[[cross.var]] < cross[[cross.var2]]
+    cross[idx, ]
+  })
+
+  # unorder cross.var if orginally unordered factor
+  if (to_ordered) {
+    class(ranktog[[cross.var]]) <- class(df[[cross.var]])
+  }
   
   # split on treatment pairs (and block if not null)
-  by <- c(block.var, time.var, cross.var, cross.var2)
+  split_by <- c(block.var, time.var, cross.var, cross.var2)
   abundance.var2 <- paste(abundance.var, 2, sep = '')
-  ranktog_split <- lapply(split(ranktog, ranktog[by], drop = TRUE),
-                          FUN = SERSp,
-                          species.var, abundance.var, abundance.var2)
-  output <- do.call(rbind, c(ranktog_split, list(make.row.names = FALSE)))
-  
+  output <- split_apply_combine(ranktog, split_by, FUN = SERSp,
+    species.var, abundance.var, abundance.var2)
+
+  # order and select output columns
   output_order <- c(
     time.var,
     block.var,
