@@ -48,7 +48,7 @@ test_that("abundance_difference function returns correct result", {
                                species.var = "species",
                                time.var = "year")
   
-  expect_equal(nrow(myresults2), 612)
+  expect_equal(nrow(myresults2), 13911)
   expect_equal(ncol(myresults2), 5)
   
   #test that it works with time and treatment specified
@@ -58,7 +58,7 @@ test_that("abundance_difference function returns correct result", {
                                      time.var = "year", 
                                      treatment.var = "treatment")
   
-  expect_equal(nrow(myresults2.2), 612)
+  expect_equal(nrow(myresults2.2), 13911)
   expect_equal(ncol(myresults2.2), 7)
   
   #test the returned result with blocking and no time
@@ -80,7 +80,7 @@ test_that("abundance_difference function returns correct result", {
                                      block.var = "block",
                                      treatment.var = "treatment",
                                      time.var = "year")
-  expect_equal(nrow(myresults3.5), 22)
+  expect_equal(nrow(myresults3.5), 1628)
   expect_equal(ncol(myresults3.5), 8)
 
   #test the returned result with pooling and no time
@@ -104,7 +104,7 @@ test_that("abundance_difference function returns correct result", {
                                      time.var = "year")
   
   expect_is(myresults4.5, "data.frame")
-  expect_equal(nrow(myresults4.5), 41)
+  expect_equal(nrow(myresults4.5), 546)
   expect_equal(ncol(myresults4.5), 5)
 
   #test that is doesn't work with missing abundance

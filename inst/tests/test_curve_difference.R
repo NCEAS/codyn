@@ -24,9 +24,6 @@ bdat$relative_cover[1] <- NA
 x <- c("N1P0", 25, 1, 2002, "senecio plattensis", 0.002123142)
 bdat2 <- rbind(dat1, x)
 
-#make species name missing
-bdat3 <- dat1
-bdat3$species[1] <- NA
 # run tests -------------------------------------------
 
 
@@ -39,12 +36,9 @@ test_that("curve_difference function returns correct result", {
   
   expect_is(myresults1, "data.frame")
   expect_equal(nrow(myresults1), 1)
-  expect_equal(ncol(myresults1), 6)
-  expect_equal(myresults1$richness_diff, -0.1923077, tolerance = 0.00001)
-  expect_equal(myresults1$evenness_diff, -0.0002433149, tolerance = 0.000000001)
-  expect_equal(myresults1$rank_diff, 0.1449704, tolerance = 0.00001)
-  expect_equal(myresults1$species_diff, 0.4230769, tolerance = 0.00001)
-
+  expect_equal(ncol(myresults1), 3)
+  expect_equal(myresults1$curve_diff, 0.02158507, tolerance = 0.00001)
+ 
   #test that it works with time
   myresults2 <- curve_difference(pplots, abundance.var = "relative_cover",
                                replicate.var = "plot",
@@ -52,7 +46,7 @@ test_that("curve_difference function returns correct result", {
                                time.var = "year")
   
   expect_equal(nrow(myresults2), 612)
-  expect_equal(ncol(myresults2), 7)
+  expect_equal(ncol(myresults2), 4)
   
   #test that it works with time and treatment specified
   myresults2.2 <- curve_difference(pplots, abundance.var = "relative_cover",
@@ -62,7 +56,7 @@ test_that("curve_difference function returns correct result", {
                                treatment.var = "treatment")
   
   expect_equal(nrow(myresults2.2), 612)
-  expect_equal(ncol(myresults2.2), 9)
+  expect_equal(ncol(myresults2.2), 6)
   
   #test the returned result with blocking and no time
   myresults3 <- curve_difference(dat2, replicate.var = "plot",
@@ -73,12 +67,9 @@ test_that("curve_difference function returns correct result", {
   
   expect_is(myresults3, "data.frame")
   expect_equal(nrow(myresults3), 1)
-  expect_equal(ncol(myresults3), 9)
-  expect_equal(myresults3$richness_diff, 0, tolerance = 0.00001)
-  expect_equal(myresults3$evenness_diff, 4.817085e-05, tolerance = 0.000000001)
-  expect_equal(myresults3$rank_diff, 0.1404959, tolerance = 0.00001)
-  expect_equal(myresults3$species_diff, 0.3636364, tolerance = 0.00001)
-  
+  expect_equal(ncol(myresults3), 4)
+  expect_equal(myresults3$curve_diff, 0.008164927, tolerance = 0.00001)
+
   #test that returned results with blocking and time
   myresults3.2 <- curve_difference(pplots, replicate.var = "plot",
                                abundance.var = "relative_cover",
@@ -88,7 +79,7 @@ test_that("curve_difference function returns correct result", {
                                time.var = "year")
   
   expect_equal(nrow(myresults3.2), 72)
-  expect_equal(ncol(myresults3.2), 10)
+  expect_equal(ncol(myresults3.2), 5)
   
   #test the returned result with pooling and no time
   myresults4 <- curve_difference(dat3, replicate.var = "plot",
@@ -99,11 +90,9 @@ test_that("curve_difference function returns correct result", {
   
   expect_is(myresults4, "data.frame")
   expect_equal(nrow(myresults4), 1)
-  expect_equal(ncol(myresults4), 6)
-  expect_equal(myresults4$richness_diff, 0.02439024, tolerance = 0.00001)
-  expect_equal(myresults4$evenness_diff, -0.0002291214, tolerance = 0.000000001)
-  expect_equal(myresults4$rank_diff, 0.1171921, tolerance = 0.00001)
-  expect_equal(myresults4$species_diff, 0.3658537, tolerance = 0.00001)
+  expect_equal(ncol(myresults4), 3)
+  expect_equal(myresults4$curve_diff, 0.01284473, tolerance = 0.00001)
+ 
   
   #test the returned result with pooling and time
   myresults4.2 <- curve_difference(pplots, replicate.var = "plot",
@@ -114,7 +103,7 @@ test_that("curve_difference function returns correct result", {
                                time.var = "year")
   
   expect_equal(nrow(myresults4.2), 12)
-  expect_equal(ncol(myresults4.2), 7)
+  expect_equal(ncol(myresults4.2), 4)
   
   #test that is doesn't work with missing abundance
   expect_error(curve_difference(bdat, abundance.var = "relative_cover",
@@ -127,11 +116,5 @@ test_that("curve_difference function returns correct result", {
                               replicate.var = "plot",
                               species.var = "species",
                               time.var = "year"), "In replicate 25 there is more than one record for species at the time point 2002")
-  
-  #test that is doesn't work with missing species name
-  expect_error(curve_difference(bdat3, abundance.var = "relative_cover",
-                              replicate.var = "plot",
-                              species.var = "species",
-                              time.var = "year"), "Species names are missing")
   
 })

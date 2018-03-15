@@ -31,7 +31,7 @@ test_that("dissimilarity_change function returns correct result", {
   
   
   expect_is(myresults1, "data.frame")
-  expect_equal(nrow(myresults1), 6)#this is wrong.
+  expect_equal(nrow(myresults1), 3)
   expect_equal(ncol(myresults1), 4)
   expect_equal(myresults1$BC_between_change[1], 0.3163601, tolerance = 0.00001)
   expect_equal(myresults1$BC_within_change[1], 0.060276258, tolerance = 0.000001)
@@ -43,8 +43,8 @@ test_that("dissimilarity_change function returns correct result", {
                                       time.var = "year",
                                       treatment.var = "treatment")
   
-  expect_equal(nrow(myresults2), 18)
-  expect_equal(ncol(myresults2), 5) ##this might need to be changed
+  expect_equal(nrow(myresults2), 9)
+  expect_equal(ncol(myresults2), 5) 
   
   #test that is doesn't work with missing abundance
   expect_error(dissimilarity_change(bdat, abundance.var = "relative_cover",
