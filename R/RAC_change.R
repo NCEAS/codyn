@@ -72,7 +72,7 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var =
 
   # rank species in each time and optionally replicate
   by <- c(time.var, replicate.var)
-  rankdf <- split_apply_combine(allsp, by, FUN = add_ranks, species.var, abundance.var)
+  rankdf <- split_apply_combine(allsp, by, FUN = add_ranks, abundance.var)
 
   # merge subsets on time difference of one time step
   cross.var <- time.var

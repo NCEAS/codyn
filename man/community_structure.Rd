@@ -16,7 +16,7 @@ community_structure(df, time.var = NULL, abundance.var,
 
 \item{replicate.var}{The name of the optional replicate column}
 
-\item{evenness}{The evenness metric to return:
+\item{metric}{The evenness metric to return:
 \itemize{
  \item{"EQ": }{The default metric, calculates EQ evenness from Smith and Wilson 1996}
  \item{"SimpsonEvenness": }{Calculates Simpsons' evenness.}

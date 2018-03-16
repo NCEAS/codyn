@@ -131,22 +131,23 @@ curve_difference <- function(df, time.var = NULL, species.var,
       df <- df[order(df[[time.var]]), ]
     }
     by <- c(time.var)
-    allsp <- split_apply_combine(df, by, FUN = fill_zeros, species.var, abundance.var)
+    allsp <- split_apply_combine(df, by, FUN = fill_zeros,
+      species.var, abundance.var)
 
     # specify aggregate formula from arguments
     by <- c(species.var, treatment.var, time.var)
     spave <- aggregate.data.frame(allsp[abundance.var], allsp[by], FUN = mean)
     spave <- spave[spave[[abundance.var]] != 0, ]
   
-    # rank each species by treatment and (time)
-    by <- c(time.var)
-    relrankdf1 <- split_apply_combine(spave, by, FUN = relrank,
-      species.var, abundance.var, treatment.var)
+    # rank each species by treatment and optionally time
+    by <- c(treatment.var, time.var)
+    relrankdf1 <- split_apply_combine(spave, by,
+      FUN = add_rank_abundance, abundance.var)
   } else {
     #for block samples
-    by <- c(time.var, block.var)
-    relrankdf1 <- split_apply_combine(df, by, FUN = relrank,
-      species.var, abundance.var, replicate.var)
+    by <- c(block.var, replicate.var, time.var)
+    relrankdf1 <- split_apply_combine(df, by,
+      FUN = add_rank_abundance, abundance.var)
   }
 
   # split and run curve_diff
@@ -200,27 +201,6 @@ curve_difference <- function(df, time.var = NULL, species.var,
 # should not use them.
 #
 ############################################################################
-
-# A function to rank species in a sample by replicate
-# @param df a dataframe
-# @param species.var the name of the species column
-# @param abundance.var the name of the abundance column
-# @param replicate.var the name of the replicate column
-# NOTE: when ranks are assigned by treatment and not replicate, treatment is fed into replicate.var
-relrank <- function(df, species.var, abundance.var, replicate.var) {
-
-  relrank <- subset(df, df[[abundance.var]]!=0)
-  relrank$rank <- ave(relrank[[abundance.var]], relrank[[replicate.var]],
-                      FUN = function(x) rank(-x, ties.method = "average"))
-  relrank$maxrank <- ave(relrank$rank, relrank[[replicate.var]],
-                         FUN = function(x) max(x))
-  relrank$relrank  <- relrank$rank/relrank$maxrank
-  relrank <- relrank[order(relrank[[replicate.var]], -relrank[[abundance.var]]), ]
-  relrank$cumabund <- ave(relrank[[abundance.var]], relrank[[replicate.var]],
-                          FUN = function(x) cumsum(x))
-
-  return(relrank)
-}
 
 # A function calculate the curve difference between two treatments
 # @param df a dataframe

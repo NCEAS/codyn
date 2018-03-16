@@ -41,7 +41,7 @@ pool_replicates <- function(df, time.var=NULL, species.var, abundance.var,
   
   # add ranks after splitting into (pooled) communities
   by <- c(treatment.var, time.var)
-  rankdf <- split_apply_combine(spave, by, FUN = add_ranks, species.var, abundance.var)
+  rankdf <- split_apply_combine(spave, by, FUN = add_ranks, abundance.var)
   
   return(rankdf)
   

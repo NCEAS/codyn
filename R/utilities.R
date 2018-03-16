@@ -186,7 +186,7 @@ fill_species <- function(df, species.var, abundance.var) {
 #'     is the number of species in the sample.
 #'     }
 #'   }
-add_ranks <- function(df, species.var, abundance.var) {
+add_ranks <- function(df, abundance.var) {
   
   if (nrow(df) != nrow(unique(df[names(df) != abundance.var])))
     stop('Input df has not been correctly split.')
@@ -198,6 +198,32 @@ add_ranks <- function(df, species.var, abundance.var) {
   # adjust ranks for species with zero abundance to S + 1
   df[df[['rank']] > S, 'rank'] <- S + 1
   
+  return(df)
+}
+
+#' @title Add relative abundance ranks and cumulative abundance
+#' @description Rank species by abundance within the specified grouping. The
+#'   rank of the lead abundant species is 1 and the most abundant species has
+#'   rank 1/S, where S is the number of species in the group.
+#' @param df A data frame containing a single record per species with its abundance
+#' @param abundance.var The name of the abundance column
+#' 
+#' @return The add_rank_abundance function returns a data frame with the following
+#'   additional column:
+#'   \itemize{
+#'     \item{rank: }{}
+#'     \item{relrank: }{A numeric column with the species rank divided
+#'   by the maximum rank in the group; a rank of 1 indicates the species was the
+#'   least abundant.}
+#'     \item{cumabund: }{}
+#'   }
+add_rank_abundance <- function(df, abundance.var) {
+  
+  df <- add_ranks(df, abundance.var)
+  df[['relrank']] <- df[['rank']] / max(df[['rank']])
+  df <- df[order(df[['relrank']]), ]
+  df[['cumabund']] <- cumsum(df[[abundance.var]])
+
   return(df)
 }
 

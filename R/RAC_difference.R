@@ -149,8 +149,7 @@ RAC_difference <- function(df, time.var = NULL, species.var,
 
     # rank species in each replicate
     by <- c(time.var, replicate.var, treatment.var, block.var) ## FIXME why different?
-    rankdf <- split_apply_combine(allsp, by, FUN = add_ranks,
-      species.var, abundance.var)
+    rankdf <- split_apply_combine(allsp, by, FUN = add_ranks, abundance.var)
   }
   
   # order cross.var if unordered factor

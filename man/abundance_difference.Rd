@@ -30,7 +30,10 @@ The abundance_difference function returns a data frame with the following attrib
  \item{species.var: }{A column that has same name and type as the species.var
  column.}
  \item{difference: }{A numeric column of the abundance differences between
- the two samples being compared (replicates or treatments). A numeric column of the change in abundance between consecutive timepoints. A postive value occurs when a species has greater abundance in replicate.var2 than replicate.var or treatment.var2 to treatment.var.}
+ the two samples being compared (replicates or treatments). A numeric column
+ of the change in abundance between consecutive timepoints. A postive value
+ occurs when a species has greater abundance in replicate.var2 than in
+ replicate.var and/or in treatment.var2 than in treatment.var.}
  \item{replicate.var: }{A column that has same name and type as the
  replicate.var column, represents the first replicate being compared. Note, a
  replicate column will be returned only when pool = FALSE or block.var =
