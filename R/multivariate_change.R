@@ -1,5 +1,5 @@
 #'@title Multivariate measures of community change between and within time periods
-#' @description  Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is measured one of two ways. If "centroid_distance" is specified, community composition changes is measured as the the euclidean distance between the centroids of time period 1 and time period 2. If "ave_BC_dissim" is specified compositon change is measured as the average Bray-Curtis dissimilaritiy of all pairwise comparisions of replicates between two consecutive time periods. Both composition change metrics ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since, centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted. The centroid distance between consecutive time periods depend on how mnay time periods are being measured. Average Bray-Curtis Dissimilarity is not context dependent. Dispersion change is the difference of average dispersion of each replicate to its centroid between consecutive time periods.
+#' @description  Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is measured one of two ways. If "centroid_distance" is specified, community composition change is measured as the the euclidean distance between the centroids of time period 1 and time period 2. If "ave_BC_dissim" is specified compositon change is measured as the average Bray-Curtis dissimilaritiy of all pairwise comparisions of replicates between two consecutive time periods. Both composition change metrics ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since, centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted. The centroid distance between consecutive time periods depends on how many time periods are being measured. Average Bray-Curtis dissimilarity is not context dependent. Dispersion change is the difference of average dispersion of each replicate to its centroid between consecutive time periods.
 #' @param df A data frame containing time, species, abundance and replicate columns and an optional column of treatment
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
@@ -9,7 +9,7 @@
 #' @param metric the composition change metric to return:
 #'  \itemize{
 #'  \item{"ave_BC_dissim": }{The default metric, calculates average of pairwise Bray-Curtis dissimilarity bewteen all replicates in consecutive time periods.}
-#'  \item{"centroid_distance": }{Calculates the Euclidena distance between centroids of two consecutive time periods.}
+#'  \item{"centroid_distance": }{Calculates the Euclidean distance between centroids of two consecutive time periods.}
 #'  }
 #' @return The multivariate_change function returns a data frame with the following attributes:
 #' \itemize{
@@ -69,7 +69,7 @@ multivariate_change <- function(df, time.var,
     # calculate change for each treatment
     splitvars <- treatment.var
     X <- split(df, df[splitvars])
-    out <- lapply(X, FUN = mult_change, time.var, species.var, abundance.var, replicate.var, comp_metric = composition_metric)
+    out <- lapply(X, FUN = mult_change, time.var, species.var, abundance.var, replicate.var, comp_metric = comp_metric)
     unsplit <- lapply(out, nrow)
     unsplit <- rep(names(unsplit), unsplit)
     output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
@@ -80,7 +80,7 @@ multivariate_change <- function(df, time.var,
     time.var,
     paste(time.var,"2", sep=""),
     treatment.var,
-    'BC_between_change', 'BC_within_change')
+    'BC_dissim_change', 'centroid_distance_change', 'dispersion_change')
 
   return(output[intersect(output_order, names(output))])
 }
@@ -103,6 +103,7 @@ mult_change <- function(df, time.var, species.var, abundance.var, replicate.var,
   df2<-subset(df1, select = c(time.var, species.var, abundance.var, replicate.var))
   df2$id <- paste(df2[[time.var]], df2[[replicate.var]], sep="##")
   species <- codyn:::transpose_community(df2, 'id', species.var, abundance.var)
+  species1 <- species
   species$id <- row.names(species)
   speciesid <- do.call(rbind.data.frame, strsplit(species$id, split="##"))
   colnames(speciesid)[1] <- "time_forfixxyz"
@@ -112,19 +113,21 @@ mult_change <- function(df, time.var, species.var, abundance.var, replicate.var,
   species2 <- cbind(speciesid.2, species)
   species3 <- subset(species2, select = -id)
   
+  
   #calculate bray-curtis dissmilarity
   bc <- vegdist(species3[,3:ncol(species3)], method="bray")
   
   #calculate distances of each plot to year centroid (i.e., dispersion)
-  disp <- betadisper(bc, species[[time.var]], type="centroid")
+  disp <- betadisper(bc, species3[[time.var]], type="centroid")
   
   
   #### doing compositional differences
   if(comp_metric == "ave_BC_dissim"){
+    bc1<-as.data.frame(as.matrix(vegdist(species1, method = "bray")))
     #extracting lower diagonal
-    bc2 <- as.data.frame(cbind(rownames(bc)[which(lower.tri(bc), arr.ind=T)[,1]],
-                               colnames(bc)[which(lower.tri(bc), arr.ind=T)[,2]],
-                               bc[lower.tri(bc1)]))
+    bc2 <- as.data.frame(cbind(rownames(bc1)[which(lower.tri(bc1), arr.ind=T)[,1]],
+                               colnames(bc1)[which(lower.tri(bc1), arr.ind=T)[,2]],
+                               bc1[lower.tri(bc1)]))
     c1 <- as.data.frame(do.call('rbind', strsplit(as.character(bc2$V1), "##", fixed = T)))
     c2 <- as.data.frame(do.call('rbind', strsplit(as.character(bc2$V2), "##", fixed = T)))
     
