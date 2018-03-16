@@ -4,7 +4,7 @@
 #' @param time.var The name of the optional time column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column 
-#' @param evenness The evenness metric to return:
+#' @param metric The evenness metric to return:
 #' \itemize{
 #'  \item{"EQ": }{The default metric, calculates EQ evenness from Smith and Wilson 1996}
 #'  \item{"SimpsonEvenness": }{Calculates Simpsons' evenness.}
