@@ -1,51 +1,59 @@
-#'@title Bray-Curtis dissimilarity of replicates between and within time periods
-#' @description Calculates the average changes in Bray-Curtis dissimilarity of replicates between two consecutive time periods and within time periods. Between changes the average Bray-Curtis dissimilaritiy of all pairwise comparisions of replicates between two consecutive time periods. This is a measure of how dissimilar the community composition of two time periods is. Bray-Curtis dissimilarity ranges from 0-1, where 0 are identical communities, and 1 and completelty different communiites. Within change is derived in two steps. First, the average Bray-Curtis dissimilarity of all replicates within a time period is calculated. This is a measure of how homogenous a community is within a time step is. Then, these averages are compared between two consecutive time periods.
+#'@title Multivariate measures of community change between and within time periods
+#' @description  Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is measured one of two ways. If "centroid_distance" is specified, community composition changes is measured as the the euclidean distance between the centroids of time period 1 and time period 2. If "ave_BC_dissim" is specified compositon change is measured as the average Bray-Curtis dissimilaritiy of all pairwise comparisions of replicates between two consecutive time periods. Both composition change metrics ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since, centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted. The centroid distance between consecutive time periods depend on how mnay time periods are being measured. Average Bray-Curtis Dissimilarity is not context dependent. Dispersion change is the difference of average dispersion of each replicate to its centroid between consecutive time periods.
 #' @param df A data frame containing time, species, abundance and replicate columns and an optional column of treatment
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
-#' @param treatment.var the neame of the optional treatment column
+#' @param treatment.var the name of the optional treatment column
+#' @param metric the composition change metric to return:
+#'  \itemize{
+#'  \item{"ave_BC_dissim": }{The default metric, calculates average of pairwise Bray-Curtis dissimilarity bewteen all replicates in consecutive time periods.}
+#'  \item{"centroid_distance": }{Calculates the Euclidena distance between centroids of two consecutive time periods.}
+#'  }
 #' @return The multivariate_change function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{time.var: }{A characteric column that has the first of two time periods that are being compared.}
 #'  \item{time.var2: }{A characteric column that has the second of two time periods that are being compared.}
-#'  \item{BC_between_change: }{A numeric column that is the average pairwise Bray-Curtis dissimilarity of replicates in two consecutive time periods. 0 - The communities are similar over time. 1 - The communities are changing over time.}
-#'  \item{BC_within_change: }{A numeric column that is change between two time periods in the average pairwise Bray-Curtis dissimilarity of replicates within a time period. A positive number indicates that time.var2 has greater varaiblity in community composition than time.var}
+#'  \item{centroid_distance_change: }{A numeric column that is the euclidean distance between the centroids of two consecutive time points, if "centroid_distance" is specified as the composition metric. Centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted.}
+#'  \item{BC_dissim_change: }{A numeric column that is the average pairwise Bray-Curtis dissimilarity of replicates in two consecutive time periods, if "ave_BC_dissim" is specified as the composition change metric.}
+#'  \item{dispersion_change: }{A numeric column that is the difference in the average dispersion of the replicates around the centriod for the two consecutive time periods. A negative value indicates replicates are converging over time (there is less dispersion at time peroid 2 than time period 1) and a postive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1).}
 #'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
 #' }
 #' @examples 
 #' data(pplots)
 #' #With treatment
-#' dissimilarity_change(pplots,
+#' multivariate_change(pplots,
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     treatment.var = "treatment", 
 #'                     species.var = "species", 
-#'                     abundance.var = "relative_cover")
+#'                     abundance.var = "relative_cover",
+#'                     metric = "centroid_distance") # centroid distance as composition metric
 #' 
 #' #Without treatment
 #' df <- subset(pplots, treatment == "N1P0")
-#' dissimilarity_change(df, 
+#' multivariate_change(df, 
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
 #'                     species.var = "species", 
-#'                     abundance.var = "relative_cover")
+#'                     abundance.var = "relative_cover",
+#'                     metric = "ave_BC_dissim") # Average Bray-Curtis dissimilarity as composisition metric
 #' @importFrom vegan vegdist
 #' @importFrom stats aggregate as.formula
 #' @references Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson?
 #' @export
-dissimilarity_change <- function(df, time.var, 
+multivariate_change <- function(df, time.var, 
                                  species.var, 
                                  abundance.var, 
                                  replicate.var, 
                                  treatment.var = NULL,
-                                 comp_metric = c("centroid_distance", "ave_BC_dissim")){
+                                 metric = c("centroid_distance", "ave_BC_dissim")){
   
   # verify metric choice
   metric <- match.arg(metric)
   
-  composition_metric <- get(comp_metric)
+  comp_metric <- get(metric)
   
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
@@ -91,7 +99,8 @@ dissimilarity_change <- function(df, time.var,
 # @param replicate.var the name of the replicate column
 mult_change <- function(df, time.var, species.var, abundance.var, replicate.var, comp_metric) {
   
-  df2<-subset(df, select = c(time.var, species.var, abundance.var, replicate.var))
+  df1<-df[order(df[[time.var]], df[[replicate.var]]),]
+  df2<-subset(df1, select = c(time.var, species.var, abundance.var, replicate.var))
   df2$id <- paste(df2[[time.var]], df2[[replicate.var]], sep="##")
   species <- codyn:::transpose_community(df2, 'id', species.var, abundance.var)
   species$id <- row.names(species)
@@ -154,22 +163,28 @@ mult_change <- function(df, time.var, species.var, abundance.var, replicate.var,
         as.matrix(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist)-1)])))
     
     comp <- cent_dist_yrs
+    colnames(comp)[1] <- time.var
+    colnames(comp)[2] <- paste(time.var, 2, sep="")
   }
   
   ##doing dispersion
   #collecting and labeling distances to centroid from betadisper to get a measure of dispersion and then take the mean for a year
   disp2 <- data.frame(time=species2[[time.var]],
                       dist = disp$distances)
+  colnames(disp2)[1] <-time.var
   
-  myformula <- as.formula(paste("dist", "~", "time"))
+  myformula <- as.formula(paste("dist", "~", time.var))
   disp2.2<-aggregate(myformula, mean, data=disp2)
   
-  ##subtract consecutive years (x+1 - x). A positive value indicates greater dispersion in year x+1 and a negative value indicates less dispersion in year x+1
-  disp_yrs <- data.frame(time2 = timestep[2:length(timestep)],
-                         dispersion_change = diff(disp2.2$dist))
+  ##merge together  
+  bc_dis1 <- merge(comp, disp2.2, by = time.var)
+  bc_dis <- merge(bc_dis1, disp2.2, by.x = paste(time.var, 2, sep = ""), by.y = time.var)
   
-  ###merging all together
-  distances <- merge(comp, disp_yrs, by="time2")
+  #calculate absolute difference
+  bc_dis$disp_change <- bc_dis$dist.y - bc_dis$dist.x
+  
+  bc_dis$dist.y <- NULL
+  bc_dis$dist.x <- NULL
   
   return(bc_dis)
 }
