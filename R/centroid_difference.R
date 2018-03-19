@@ -51,7 +51,7 @@ centroid_difference <- function(df, time.var = NULL, species.var,
     # check there unique species x time combinations
     check_single_onerep(df, replicate.var, species.var)
     
-    output <- mult_diff(df, species.var, abundance.var, replicate.var, treatment.var)
+    output <- mult_diff1(df, species.var, abundance.var, replicate.var, treatment.var)
     
   } else {
     
@@ -61,7 +61,7 @@ centroid_difference <- function(df, time.var = NULL, species.var,
     splitvars <- time.var
     X <- split(df, 
                df[splitvars])
-    out <- lapply(X, FUN = mult_diff, species.var, abundance.var, replicate.var, treatment.var)
+    out <- lapply(X, FUN = mult_diff1, species.var, abundance.var, replicate.var, treatment.var)
     unsplit <- lapply(out, nrow)
     unsplit <- rep(names(unsplit), unsplit)
     output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
@@ -93,7 +93,7 @@ centroid_difference <- function(df, time.var = NULL, species.var,
 # @param replicate.var the name of the replicate column
 # @param treatment.var the name of the treatment column
 
-mult_diff <- function(df, species.var, abundance.var, replicate.var, treatment.var){
+mult_diff1 <- function(df, species.var, abundance.var, replicate.var, treatment.var){
 
   #transpose data
   df2<-subset(df, select = c(species.var, abundance.var, replicate.var, treatment.var))
