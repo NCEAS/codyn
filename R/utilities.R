@@ -227,12 +227,13 @@ add_rank_abundance <- function(df, abundance.var) {
   return(df)
 }
 
-#' @title Faster split-apply-combine for data frames, when the FUN does not change
-#' the number, order, data type or levels of columns in \code{df}.
+#' @title Faster split-apply-combine for data frames, when the results of FUN
+#' are homogeneous with respect to the number, order, data type and (if
+#' applicable) levels of columns in the returned data frame.
 #' 
 #' @param df A data frame
 #' @param by The column(s) of the data frame that determine splits
-#' @param FUN The function applied to each data frame
+#' @param FUN The function applied to each data frame after splitting
 #' @param ... Additional parameters to FUN
 #' 
 #' @source \url{https://stackoverflow.com/a/9730292/687112}

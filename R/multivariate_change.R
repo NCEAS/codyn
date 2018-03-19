@@ -5,8 +5,8 @@
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
-#' @param treatment.var the name of the optional treatment column
-#' @param metric the composition change metric to return:
+#' @param treatment.var The name of the optional treatment column
+#' @param metric The composition change metric to return:
 #'  \itemize{
 #'  \item{"ave_BC_dissim": }{The default metric, calculates average of pairwise Bray-Curtis dissimilarity bewteen all replicates in consecutive time periods.}
 #'  \item{"centroid_distance": }{Calculates the Euclidean distance between centroids of two consecutive time periods.}
@@ -48,13 +48,11 @@ multivariate_change <- function(df, time.var,
                                  abundance.var, 
                                  replicate.var, 
                                  treatment.var = NULL,
-                                 metric = c("centroid_distance", "ave_BC_dissim")){
+                                 metric = c('ave_BC_dissim', 'centroid_distance')) {
   
   # verify metric choice
   metric <- match.arg(metric)
-  
-  comp_metric <- get(metric)
-  
+
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
   
@@ -67,13 +65,9 @@ multivariate_change <- function(df, time.var,
     output <- dissim_change(df, time.var, species.var, abundance.var, replicate.var)
   } else {
     # calculate change for each treatment
-    splitvars <- treatment.var
-    X <- split(df, df[splitvars])
-    out <- lapply(X, FUN = mult_change, time.var, species.var, abundance.var, replicate.var, comp_metric = comp_metric)
-    unsplit <- lapply(out, nrow)
-    unsplit <- rep(names(unsplit), unsplit)
-    output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-    output[splitvars] <- do.call(rbind, as.list(unsplit))
+    by <- c(treatment.var)
+    output <- split_apply_combine(df, by, FUN = mult_change,
+      time.var, species.var, abundance.var, replicate.var, metric = metric)
   }
     
   output_order <- c(
@@ -92,12 +86,18 @@ multivariate_change <- function(df, time.var,
 # should not use them.
 #
 ############################################################################
-# A function calculate the Bray-Curtis dissimilarity change between consequtive time periods and dispersion change (the difference in the average dispersion of the replicates around the centriod for the two consecutive time periods). For dispersion change a negative value indicates replicates are converging over time and a postive value indicates replicates are diverging over time.
+
+# A function calculate the Bray-Curtis dissimilarity change between consequtive
+# time periods and dispersion change (the difference in the average dispersion
+# of the replicates around the centriod for the two consecutive time periods).
+# For dispersion change a negative value indicates replicates are converging
+# over time and a postive value indicates replicates are diverging over time.
 # @param df a dataframe
 # @param time.var the name of the time column
 # @param species.var the name of the species column
 # @param replicate.var the name of the replicate column
-mult_change <- function(df, time.var, species.var, abundance.var, replicate.var, comp_metric) {
+mult_change <- function(df, time.var, species.var, abundance.var, replicate.var,
+                        metric) {
   
   df1<-df[order(df[[time.var]], df[[replicate.var]]),]
   df2<-subset(df1, select = c(time.var, species.var, abundance.var, replicate.var))
@@ -115,14 +115,14 @@ mult_change <- function(df, time.var, species.var, abundance.var, replicate.var,
   
   
   #calculate bray-curtis dissmilarity
-  bc <- vegdist(species3[,3:ncol(species3)], method="bray")
+  bc <- vegdist(species3[,3:ncol(species3)], method = "bray")
   
   #calculate distances of each plot to year centroid (i.e., dispersion)
-  disp <- betadisper(bc, species3[[time.var]], type="centroid")
+  disp <- betadisper(bc, species3[[time.var]], type = "centroid")
   
   
   #### doing compositional differences
-  if(comp_metric == "ave_BC_dissim"){
+  if (metric == 'ave_BC_dissim') {
     bc1<-as.data.frame(as.matrix(vegdist(species1, method = "bray")))
     #extracting lower diagonal
     bc2 <- as.data.frame(cbind(rownames(bc1)[which(lower.tri(bc1), arr.ind=T)[,1]],
@@ -154,7 +154,7 @@ mult_change <- function(df, time.var, species.var, abundance.var, replicate.var,
     
     comp <- bc_between_ave2
     
-  } else {
+  } else if (metric == 'centroid_distance') {
     #getting distances between centroids over years; these centroids are in BC space, so that's why this uses euclidean distances
     cent_dist <- as.matrix(vegdist(disp$centroids, method="euclidean"))
     
