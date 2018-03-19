@@ -46,12 +46,12 @@ centroid_change <- function(df, time.var, species.var, abundance.var, replicate.
   df <- as.data.frame(df)
 
   if (is.null(treatment.var)) {
-    output <- mult_change(df, time.var, species.var, abundance.var, replicate.var)
+    output <- mult_change1(df, time.var, species.var, abundance.var, replicate.var)
   } else {
     # calculate change for each treatment
     splitvars <- treatment.var
     X <- split(df, df[splitvars])
-    out <- lapply(X, FUN = mult_change, time.var, species.var, abundance.var, replicate.var)
+    out <- lapply(X, FUN = mult_change1, time.var, species.var, abundance.var, replicate.var)
     unsplit <- lapply(out, nrow)
     unsplit <- rep(names(unsplit), unsplit)
     output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
@@ -78,7 +78,7 @@ centroid_change <- function(df, time.var, species.var, abundance.var, replicate.
 # @param time.var the name of the time column
 # @param species.var the name of the species column
 # @param replicate.var the name of the replicate column
-mult_change <- function(df, time.var, species.var, abundance.var, replicate.var) {
+mult_change1 <- function(df, time.var, species.var, abundance.var, replicate.var) {
   #get years
   timestep <- sort(unique(df[[time.var]]))
   
