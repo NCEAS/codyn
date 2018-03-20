@@ -115,6 +115,9 @@ RAC_difference <- function(df, time.var = NULL, species.var,
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
   
+  # check no NAs in species column
+  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
+  
   # check no species are repeated
   if (is.null(time.var)){
     # check there unique species x time combinations
@@ -142,13 +145,13 @@ RAC_difference <- function(df, time.var = NULL, species.var,
     rankdf <- pool_replicates(df, time.var, species.var, abundance.var,
       replicate.var, treatment.var)
   } else {
-    # add zeros for species absent from a replicate within a treatment
+    # add NA for species absent from a replicate
     by <- c(block.var, time.var)
-    allsp <- split_apply_combine(df, by, FUN = fill_zeros,
+    allsp <- split_apply_combine(df, by, FUN = fill_species,
       species.var, abundance.var)
 
     # rank species in each replicate
-    by <- c(time.var, replicate.var, treatment.var, block.var) ## FIXME why different?
+    by <- c(block.var, time.var, treatment.var, replicate.var)
     rankdf <- split_apply_combine(allsp, by, FUN = add_ranks, abundance.var)
   }
   
@@ -173,10 +176,18 @@ RAC_difference <- function(df, time.var = NULL, species.var,
   if (to_ordered) {
     class(ranktog[[cross.var]]) <- class(df[[cross.var]])
   }
-  
+
+  # remove rows with NA for both abundances (preferably only when introduced
+  # by fill_species)
+  idx <- is.na(ranktog[[abundance.var]])
+  abundance.var2 <- paste(abundance.var, 2, sep = '')
+  idx2 <- is.na(ranktog[[abundance.var2]])
+  ranktog[idx, abundance.var] <- 0
+  ranktog[idx2, abundance.var2] <- 0
+  ranktog <- ranktog[!(idx & idx2), ]
+    
   # split on treatment pairs (and block if not null)
   split_by <- c(block.var, time.var, cross.var, cross.var2)
-  abundance.var2 <- paste(abundance.var, 2, sep = '')
   output <- split_apply_combine(ranktog, split_by, FUN = SERSp,
     species.var, abundance.var, abundance.var2)
 

@@ -55,91 +55,35 @@ curve_change <- function(df, time.var,
   }
   
   df <- subset(df, select = c(time.var, species.var, abundance.var, replicate.var))
-  relrank <- subset(df, df[[abundance.var]] != 0)
+  df <- subset(df, df[[abundance.var]] != 0)
   
-  # add relative ranks and cumulative abundance, within each time step and
-  # optionally replicate
+  # add rank abundance function within each time step and optionally replicate
   by <- c(replicate.var, time.var)
-  relrank <- split_apply_combine(relrank, by,
-    FUN = add_rank_abundance, abundance.var)
+  rankabunddf <- split_apply_combine(df, by, FUN = add_rank_abundance,
+    species.var, abundance.var)
 
-  timestep <- sort(unique(relrank[[time.var]]))
-  cc_out <- data.frame()
+  # merge subsets on time difference of one time step
+  cross.var <- time.var
+  cross.var2 <- paste(cross.var, 2, sep = '')
+  split_by <- c(replicate.var)
+  merge_on <- !(names(rankabunddf) %in% split_by)
+  output <- split_apply_combine(rankabunddf, split_by, FUN = function(x) {
+    y <- x[merge_on]
+    cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
+    f <- factor(cross[[cross.var]])
+    f2 <- factor(cross[[cross.var2]], levels = levels(f))
+    idx <- (as.integer(f2) - as.integer(f)) == 1
+    cross[idx, ]
+  })
   
-  for(i in 1:(length(timestep)-1)) {
-    subset_t1 <- relrank[relrank[[time.var]] == timestep[i],]
-    subset_t2 <- relrank[relrank[[time.var]] == timestep[i+1],]
-    subset_t12 <- rbind(subset_t1, subset_t2)
-    
-  if(is.null(replicate.var)){
-      output <- curvechange(subset_t12, time.var, relrank, cumabund)
-      cc_out <- rbind(cc_out, output)
-    } else {
-      
-      #dropping plots that were not measured both years
-      plots_t1 <- as.data.frame(unique(subset_t1[[replicate.var]]))
-      colnames(plots_t1)[1] <- replicate.var
-      
-      plots_t2 <- as.data.frame(unique(subset_t2[[replicate.var]]))
-      colnames(plots_t2)[1] <- replicate.var
-      
-      plots_bothyrs <- merge(plots_t1, plots_t2, by=replicate.var)
-      
-      subset_t12_2 <- merge(plots_bothyrs, subset_t12, by=replicate.var)
-      subset_t12_2[[replicate.var]]<-as.character(subset_t12_2[[replicate.var]])
-      
-      # doing curve change for each replicate between consecutive time periods
-      splitvars <- c(replicate.var)
-      X <- split(subset_t12_2, subset_t12_2[splitvars])
-      out <- lapply(X, FUN = curvechange, time.var, relrank, cumabund)
-      unsplit <- lapply(out, nrow)
-      unsplit <- rep(names(unsplit), unsplit)
-      output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-      output[by] <- do.call(rbind, as.list(unsplit))
-      cc_out <- rbind(cc_out, output)
-    }
-  }
-    
+  # split on treatment pairs (and block if not null)
+  output[['curve_change']] <- mapply(curve_dissim,
+    output[['rankabund']], output[['rankabund2']])
+
   output_order <- c(
-    paste(time.var,"pair", sep="_"),
+    time.var, paste(time.var, '2', sep = ''),
     replicate.var,
     'curve_change')
   
-  return(cc_out[intersect(output_order, names(cc_out))])
-  
-}
-    
-############################################################################
-#
-# Private functions: these are internal functions not intended for reuse.
-# Future package releases may change these without notice. External callers
-# should not use them.
-#
-############################################################################
-
-# A function calculate the curve changes between two time peroids
-# @param df a dataframe
-# @param time.var the name of the time column
-# @param relrank the name of the relative rank of each species in the sample
-# @param cumabund the name of the cumulative abundance of each species in the sample  
-curvechange <- function(df, time.var, relrank, cumabund) {
-
-    df <- df[order(df[[time.var]], df$cumabund),]
-  
-    timestep2 <- unique(df[[time.var]]) 
-
-    df1 <- df[df[[time.var]] == timestep2[1],]
-    df2 <- df[df[[time.var]] == timestep2[2],]
-    sf1 <- stepfun(df1$relrank, c(0, df1$cumabund))
-    sf2 <- stepfun(df2$relrank, c(0, df2$cumabund))
-    r <- sort(unique(c(0, df1$relrank, df2$relrank)))
-    h <- abs(sf1(r) - sf2(r))
-    w <- c(diff(r), 0)
-    CC <- sum(w*h)
-    time_pair <- paste(timestep2[1], timestep2[2], sep = "-")
-    
-    output <- data.frame(timepair = time_pair, curve_change = CC)
-    colnames(output)[1]<-paste(time.var, "pair", sep = "_")
-    
-    return(output)
+  return(output[intersect(output_order, names(output))])
 }

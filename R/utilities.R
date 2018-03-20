@@ -104,9 +104,9 @@ check_sppvar <- function(comdat){
 #' Utility function to calculate richness
 #' @param x Vector of abundance of each species
 S <- function(x){
-  x1 <- x[x!=0]
-  stopifnot(x1==as.numeric(x1))
-  length(x1)
+  x <- x[x > 0 & !is.na(x)]
+  stopifnot(x == as.numeric(x))
+  length(x)
 }
 
 #' Utility function to calculate EQ evenness from Smith and Wilson 1996
@@ -217,17 +217,24 @@ add_ranks <- function(df, abundance.var) {
 #'   least abundant.}
 #'     \item{cumabund: }{}
 #'   }
-add_rank_abundance <- function(df, abundance.var) {
-  
-  df <- add_ranks(df, abundance.var)
-  df[['relrank']] <- df[['rank']] / max(df[['rank']])
-  df <- df[order(df[['relrank']]), ]
-  df[['cumabund']] <- cumsum(df[[abundance.var]])
+add_rank_abundance <- function(df, species.var, abundance.var) {
 
-  return(df)
+  df <- add_ranks(df, abundance.var)
+  out <- unique(df[!(names(df) %in% c('rank', species.var, abundance.var))])
+  if (nrow(out) != 1)
+    stop('Input df has not been unambiguously split.')
+  
+  df <- df[order(df[['rank']]), ]
+  relrank <- df[['rank']] / max(df[['rank']])
+  cumabund <- cumsum(df[[abundance.var]])
+
+  out[['rankabund']] <- list(stepfun(relrank, c(0, cumabund)))
+
+  return(out)
 }
 
-#' @title Faster split-apply-combine for data frames, when the results of FUN
+#' @title A Split-Apply-Combine implementaion
+#' @description Faster split-apply-combine for data frames, when the results of FUN
 #' are homogeneous with respect to the number, order, data type and (if
 #' applicable) levels of columns in the returned data frame.
 #' 
@@ -240,7 +247,7 @@ add_rank_abundance <- function(df, abundance.var) {
 split_apply_combine <- function(df, by, FUN, ...) {
   if (is.null(by)) {
     # just apply
-    df <- FUN(df, ...)
+    out <- FUN(df, ...)
   } else {
     # split (names get in the way)
     dfs <- split(df, df[by], drop = TRUE)
@@ -248,11 +255,29 @@ split_apply_combine <- function(df, by, FUN, ...) {
     # apply
     dfs <- lapply(dfs, FUN = FUN, ...)
     # combine (flatten outer list, then flatten again across vectors from same column)
-    dfs <- unlist(dfs, recursive = FALSE, use.names = TRUE)
-    hdr <- unique(names(dfs))
+    hdr <- names(dfs[[1]])
+    dfs <- unlist(dfs, recursive = FALSE, use.names = FALSE)
     idx <- seq_along(hdr)
-    df <- lapply(idx, function(i) unlist(dfs[i == idx], FALSE, FALSE))
-    names(df) <- hdr
+    out <- lapply(idx, function(i) unlist(dfs[i == idx], FALSE, FALSE))
+    names(out) <- hdr
   }
-  as.data.frame(df)
+  idx <- sapply(out, is.list)
+  out[idx] <- lapply(out[idx], I)
+  as.data.frame(out)
 }
+
+#' @title Rank-Abundance Curve Dissimilarity
+#' A function to calculate the curve difference between two communities, given the
+#' empirical relative rank by abundance curve as a \code{stepfun}.
+#' @param sf The curve for the first community.
+#' @param sf2 The curve for the second community.
+curve_dissim <- function(sf, sf2) {
+  
+  relrank <- get('x', envir = environment(sf))
+  relrank2 <- get('x', envir = environment(sf2))
+  r <- sort(unique(c(0, relrank, relrank2)))
+  h <- abs(sf(r) - sf2(r))
+  w <- c(diff(r), 0)
+  
+  return(sum(w*h))
+} 

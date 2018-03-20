@@ -121,8 +121,6 @@ curve_difference <- function(df, time.var = NULL, species.var,
       stop("There is not one replicate per treatment in a block")
   }
 
-  # specify aggregate formula from arguments
-
   rep_trt<-unique(subset(df, select = c(replicate.var, treatment.var)))
   
   if (pool) {
@@ -141,48 +139,49 @@ curve_difference <- function(df, time.var = NULL, species.var,
   
     # rank each species by treatment and optionally time
     by <- c(treatment.var, time.var)
-    relrankdf1 <- split_apply_combine(spave, by,
-      FUN = add_rank_abundance, abundance.var)
+    rankabunddf <- split_apply_combine(spave, by, FUN = add_rank_abundance,
+      species.var, abundance.var)
   } else {
     #for block samples
     by <- c(block.var, replicate.var, time.var)
-    relrankdf1 <- split_apply_combine(df, by,
-      FUN = add_rank_abundance, abundance.var)
+    rankabunddf <- split_apply_combine(df, by, FUN = add_rank_abundance,
+        species.var, abundance.var)
   }
-
-  # split and run curve_diff
-  if (is.null(block.var) & is.null(time.var)) {
-    if (pool){
-      output <- curve_diff(relrankdf1, treatment.var, relrank, cumabund)
-    } else {
-      output <- curve_diff(relrankdf1, replicate.var, relrank, cumabund)
-    }
+  
+  # determine which variable indicates contrast for comparison
+  if (pool) {
+    cross.var <- treatment.var
+  } else if (is.null(time.var) & !is.null(block.var)) {
+    cross.var <- treatment.var
   } else {
-    splitvars <- c(time.var, block.var)
-    relrankdf1_split <- split(relrankdf1,
-                              relrankdf1[splitvars],
-                              sep = "##", drop = TRUE)
-    if (!is.null(block.var) | pool) {
-      #feed treatment into curve_diff
-      out <- lapply(relrankdf1_split,
-                    FUN = curve_diff, treatment.var, relrank, cumabund)
-    } else {
-      #feed replicate into curve_diff
-      out <- lapply(relrankdf1_split,
-                    FUN = curve_diff, replicate.var, relrank, cumabund)
-    }
-    
-    unsplit <- lapply(out, nrow)
-    unsplit <- rep(names(unsplit), unsplit)
-    output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-    output[splitvars] <- do.call(rbind, strsplit(unsplit, '##'))
+    cross.var <- replicate.var
   }
 
-  if (is.null(block.var) & !pool & !is.null(treatment.var)) {
-    # add treatment for reference
-    output <- merge(output,
-                    merge(rep_trt, rep_trt, by = NULL, suffixes = c('', '2')))
+  # order cross.var if unordered factor
+  to_ordered = is.factor(df[[cross.var]]) & !is.ordered(df[[cross.var]])
+  if (to_ordered) {
+    class(rankabunddf[[cross.var]]) <- c('ordered', class(df[[cross.var]]))
   }
+  
+  # cross join for pairwise comparisons
+  split_by <- c(block.var, time.var)
+  merge_to <- !(names(rankabunddf) %in% split_by)
+  cross.var2 <- paste(cross.var, 2, sep = '')
+  output <- split_apply_combine(rankabunddf, split_by, FUN = function(x) {
+    y <- x[merge_to]
+    cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
+    idx <- cross[[cross.var]] < cross[[cross.var2]]
+    cross[idx, ]
+  })
+  
+  # unorder cross.var if orginally unordered factor
+  if (to_ordered) {
+    class(output[[cross.var]]) <- class(df[[cross.var]])
+  }
+  
+  # split on treatment pairs (and block if not null)
+  output[['curve_diff']] <- mapply(curve_dissim,
+    output[['rankabund']], output[['rankabund2']])
   
   output_order <- c(
     time.var,
@@ -193,54 +192,3 @@ curve_difference <- function(df, time.var = NULL, species.var,
   return(output[intersect(output_order, names(output))])
 
 }
-
-############################################################################
-#
-# Private functions: these are internal functions not intended for reuse.
-# Future package releases may change these without notice. External callers
-# should not use them.
-#
-############################################################################
-
-# A function calculate the curve difference between two treatments
-# @param df a dataframe
-# @param treatment.var the name of the treatment column
-# @param relrank the name of the relative rank of each species in the sample
-# @param cumabund the name of the cumulative abundance of each species in the sample
-# NOTE: when doing on replicates not treatments, replicate is fed in as the treatment variable
-curve_diff <- function(df, treatment.var, relrank, cumabund) {
-   
-  # cross join for pairwise comparisons
-  treatment.var2 <- paste(treatment.var, 2, sep = '')
-  compare <- unique(df[treatment.var])
-  compare <- merge(compare, compare, by = NULL, suffixes = c('', '2'))
-  idx <- as.integer(compare[[treatment.var]])
-  idx <- idx < as.integer(compare[[treatment.var2]])
-  compare <- compare[idx,]
-  trt1 <- compare[[treatment.var]]
-  trt2 <- compare[[treatment.var2]]
-
-  cc_out<-data.frame() 
-   
-  for(i in 1:(length(trt1))) {
-    subset_t1 <- df[df[[treatment.var]] == trt1[i],]
-    subset_t1 <- subset_t1[order(subset_t1$cumabund),]
-    subset_t2 <- df[df[[treatment.var]] == trt2[i],]
-    subset_t2 <- subset_t2[order(subset_t2$cumabund),]
-     
-    sf1 <- stepfun(subset_t1$relrank, c(0, subset_t1$cumabund))
-    sf2 <- stepfun(subset_t2$relrank, c(0, subset_t2$cumabund))
-    r <- sort(unique(c(0, subset_t1$relrank, subset_t2$relrank)))
-    h <- abs(sf1(r) - sf2(r))
-    w <- c(diff(r), 0)
-    CC=sum(w*h)
-     
-    output <- data.frame(trt1 = trt1[i], trt2 = trt2[i], curve_diff=CC)
-    colnames(output)[1] <- treatment.var
-    colnames(output)[2] <- paste(treatment.var, 2, sep = "")
-     
-    cc_out <- rbind(cc_out, output)
-  }
-  
-  return(cc_out)
-} 

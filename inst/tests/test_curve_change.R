@@ -31,7 +31,7 @@ test_that("curve_change function returns correct result", {
   
   expect_is(myresults1, "data.frame")
   expect_equal(nrow(myresults1), 1)
-  expect_equal(ncol(myresults1), 2)##this might need to be changed
+  expect_equal(ncol(myresults1), 3)
   expect_equal(myresults1$curve_change, 0.03259107, tolerance = 0.00001)
 
 
@@ -42,7 +42,7 @@ test_that("curve_change function returns correct result", {
                                     time.var = "year")
   
   expect_equal(nrow(myresults2), 54)
-  expect_equal(ncol(myresults2), 3) ##this might need to be changed
+  expect_equal(ncol(myresults2), 4)
   
   #test that is doesn't work with missing abundance
   expect_error(curve_change(bdat, abundance.var = "relative_cover",

@@ -67,7 +67,7 @@ test_that("curve_difference function returns correct result", {
   
   expect_is(myresults3, "data.frame")
   expect_equal(nrow(myresults3), 1)
-  expect_equal(ncol(myresults3), 4)
+  expect_equal(ncol(myresults3), 6)
   expect_equal(myresults3$curve_diff, 0.008164927, tolerance = 0.00001)
 
   #test that returned results with blocking and time
@@ -79,7 +79,7 @@ test_that("curve_difference function returns correct result", {
                                time.var = "year")
   
   expect_equal(nrow(myresults3.2), 72)
-  expect_equal(ncol(myresults3.2), 5)
+  expect_equal(ncol(myresults3.2), 7)
   
   #test the returned result with pooling and no time
   myresults4 <- curve_difference(dat3, replicate.var = "plot",
