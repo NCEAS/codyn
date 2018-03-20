@@ -44,6 +44,7 @@ centroid_change <- function(df, time.var, species.var, abundance.var, replicate.
   check_single(df, time.var, species.var, replicate.var)
   
   df <- as.data.frame(df)
+  df[[treatment.var]]<-as.character(df[[treatment.var]])
 
   if (is.null(treatment.var)) {
     output <- mult_change1(df, time.var, species.var, abundance.var, replicate.var)
