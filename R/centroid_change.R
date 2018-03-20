@@ -44,11 +44,12 @@ centroid_change <- function(df, time.var, species.var, abundance.var, replicate.
   check_single(df, time.var, species.var, replicate.var)
   
   df <- as.data.frame(df)
-  df[[treatment.var]]<-as.character(df[[treatment.var]])
+
 
   if (is.null(treatment.var)) {
     output <- mult_change1(df, time.var, species.var, abundance.var, replicate.var)
   } else {
+    df[[treatment.var]]<-as.character(df[[treatment.var]])
     # calculate change for each treatment
     splitvars <- treatment.var
     X <- split(df, df[splitvars])
@@ -60,9 +61,9 @@ centroid_change <- function(df, time.var, species.var, abundance.var, replicate.
   }
     
   output_order <- c(
-    paste(time.var,"pair", sep="_"),
+    time.var, paste(time.var,"2", sep=""),
     treatment.var,
-    'centroid_distance_change', 'dispersion_change')
+    'composition_change', 'dispersion_change')
 
   return(output[intersect(output_order, names(output))])
 }
@@ -109,26 +110,28 @@ mult_change1 <- function(df, time.var, species.var, abundance.var, replicate.var
   cent_dist_yrs <- data.frame(
     time1 = timestep[1:length(timestep)-1],
     time2 = timestep[2:length(timestep)],
-    centroid_distance_change = diag(
+    composition_change = diag(
       as.matrix(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist)-1)])))
+  colnames(cent_dist_yrs)[1] <- time.var
+  colnames(cent_dist_yrs)[2] <- paste(time.var, 2, sep="")
   
   #collecting and labeling distances to centroid from betadisper to get a measure of dispersion and then take the mean for a year
   disp2 <- data.frame(time=species2[[time.var]],
                    dist = disp$distances)
+  colnames(disp2)[1] <-time.var
   
-  myformula <- as.formula(paste("dist", "~", "time"))
+  myformula <- as.formula(paste("dist", "~", time.var))
   disp2.2<-aggregate(myformula, mean, data=disp2)
   
-  ##subtract consecutive years (x+1 - x). A positive value indicates greater dispersion in year x+1 and a negative value indicates less dispersion in year x+1
-  disp_yrs <- data.frame(time2 = timestep[2:length(timestep)],
-                      dispersion_change = diff(disp2.2$dist))
+  ##merge together  
+  bc_dis1 <- merge(cent_dist_yrs, disp2.2, by = time.var)
+  bc_dis <- merge(bc_dis1, disp2.2, by.x = paste(time.var, 2, sep = ""), by.y = time.var)
   
-  #merge together change in mean and dispersion data
-  distances <- merge(cent_dist_yrs, disp_yrs, by="time2")
-  distances$time_pair<-paste(distances$time1, distances$time2, sep="-")
+  #calculate absolute difference
+  bc_dis$dispersion_change <- bc_dis$dist.y - bc_dis$dist.x
   
-  distances<-subset(distances, select = c("time_pair", "centroid_distance_change", "dispersion_change"))
-  colnames(distances)[1]<-paste(time.var, "pair", sep="_")
+  bc_dis$dist.y <- NULL
+  bc_dis$dist.x <- NULL
   
-  return(distances)
+  return(bc_dis)
 }
