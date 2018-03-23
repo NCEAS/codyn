@@ -130,9 +130,9 @@ SERGL <- function(df, species.var, abundance.var, abundance.var2) {
   
   # ricness and evenness differences
   s_t1 <- S(df[[abundance.var]])
-  e_t1 <- EQ(as.numeric(df[[abundance.var]]))
+  e_t1 <- Evar(as.numeric(df[[abundance.var]]))
   s_t2 <- S(df[[abundance.var2]])
-  e_t2 <- EQ(as.numeric(df[[abundance.var2]]))
+  e_t2 <- Evar(as.numeric(df[[abundance.var2]]))
   
   sdiff <- (s_t2-s_t1) / nrow(df)
   ediff <- (e_t2-e_t1) / nrow(df)
