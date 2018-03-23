@@ -101,7 +101,7 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var =
   output_order <- c(
     time.var, paste(time.var, 2, sep = ''),
     replicate.var,
-    'richness_change', 'evenness_change', 'rank_change', 'gains', 'losses')
+    'richness_change', 'evenness_change', 'rank_change', 'gains', 'losses', 'sppool')
   
   return(output[intersect(output_order, names(output))])
 }
