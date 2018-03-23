@@ -281,3 +281,12 @@ curve_dissim <- function(sf, sf2) {
   
   return(sum(w*h))
 } 
+# A function to calculate Evar from Smith and Wilson 1996
+# @param S the number of species in the sample
+# @param x the vector of abundances of each species
+Evar <- function(x, S = length(x)) {
+  x1 <- x[x!=0]
+  lnx <- log(x1)
+  theta <- (S - 1) / S * var(lnx)
+  return(1 - 2 / pi * atan(theta))
+} 
