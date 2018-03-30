@@ -101,7 +101,7 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var =
   output_order <- c(
     time.var, paste(time.var, 2, sep = ''),
     replicate.var,
-    'richness_change', 'evenness_change_divrich', 'evenness_change_multrich','evenness_change_norich', 'rank_change', 'gains', 'losses', 'sppool')
+    'richness_change', 'evenness_change', 'rank_change', 'gains', 'losses')
   
   return(output[intersect(output_order, names(output))])
 }
@@ -135,9 +135,7 @@ SERGL <- function(df, species.var, abundance.var, abundance.var2) {
   e_t2 <- Evar(as.numeric(df[[abundance.var2]]))
   
   sdiff <- (s_t2-s_t1) / nrow(df)
-  ediff_divrich <- (e_t2-e_t1) / nrow(df)
-  ediff_multrich <- (e_t2-e_t1) * nrow(df)
-  ediff_norich <- (e_t2-e_t1) 
+  ediff <- (e_t2-e_t1) 
   
   # gains and lqosses
   df$gain <- ifelse(df[[abundance.var]] == 0, 1, 0)
@@ -148,10 +146,7 @@ SERGL <- function(df, species.var, abundance.var, abundance.var2) {
   
   mrsc <- mean(abs(df[['rank']] - df[['rank2']])) / nrow(df)
   
-  sppool <-nrow(df)
-  
-  metrics <- data.frame(richness_change = sdiff, evenness_change_divrich = ediff_divrich, evenness_change_multrich = ediff_multrich, evenness_change_norich = ediff_norich,
-                        rank_change = mrsc, gains = gain, losses = loss, sppool = sppool)
+  metrics <- data.frame(richness_change = sdiff, evenness_change = ediff, rank_change = mrsc, gains = gain, losses = loss)
   
   return(cbind(out, metrics))
 }
