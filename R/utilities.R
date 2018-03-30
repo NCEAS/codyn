@@ -109,26 +109,6 @@ S <- function(x){
   length(x)
 }
 
-#' Utility function to calculate EQ evenness from Smith and Wilson 1996
-#' @param x Vector of abundance of each species
-#' If all abundances are equal it returns a 1
-#' @importFrom stats lm
-EQ <- function(x){
-  x1 <- x[x != 0]
-  if (length(x1) == 1) {
-    return(NA)
-  }
-  if (abs(max(x1) - min(x1)) < .Machine$double.eps^0.5) {
-    return(1)
-  }
-  r <- rank(-x1, ties.method = "average")
-  r_scale <- r/max(r)
-  x_log <- log(x1)
-  fit <- lm(r_scale~x_log)
-  b <- fit$coefficients[[2]]
-  -2/pi*atan(b)
-}
-
 #' Add zero abundances for missing species, on the assumption that any species
 #' in the \code{species.var} column should be included for every group defined
 #' by all the remaining colums save \code{abundance.var}.
@@ -281,7 +261,7 @@ curve_dissim <- function(sf, sf2) {
   
   return(sum(w*h))
 } 
-# A function to calculate Evar from Smith and Wilson 1996
+# A utility function to calculate Evar from Smith and Wilson 1996
 # @param S the number of species in the sample
 # @param x the vector of abundances of each species
 Evar <- function(x, S = length(x)) {
