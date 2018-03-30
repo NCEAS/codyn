@@ -101,13 +101,22 @@ SimpsonEvenness <- function(x, S = length(x[x != 0]), N = sum(x[x != 0]), ps = x
   (1/D)/S
 }
 
-#' A function to calculate Evar from Smith and Wilson 1996
-#' @param S the number of species in the sample
-#' @param x the vector of abundances of each species
-
-Evar <- function(x, S = length(x)) {
-  x1 <- x[x!=0]
-  lnx <- log(x1)
-  theta <- (S - 1) / S * var(lnx)
-  return(1 - 2 / pi * atan(theta))
-} 
+#' Utility function to calculate EQ evenness from Smith and Wilson 1996
+#' @param x Vector of abundance of each species
+#' If all abundances are equal it returns a 1
+#' @importFrom stats lm
+EQ <- function(x){
+  x1 <- x[x != 0]
+  if (length(x1) == 1) {
+    return(NA)
+  }
+  if (abs(max(x1) - min(x1)) < .Machine$double.eps^0.5) {
+    return(1)
+  }
+  r <- rank(-x1, ties.method = "average")
+  r_scale <- r/max(r)
+  x_log <- log(x1)
+  fit <- lm(r_scale~x_log)
+  b <- fit$coefficients[[2]]
+  -2/pi*atan(b)
+}
