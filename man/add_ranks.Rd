@@ -4,7 +4,7 @@
 \alias{add_ranks}
 \title{Add abundance ranks}
 \usage{
-add_ranks(df, species.var, abundance.var)
+add_ranks(df, abundance.var)
 }
 \arguments{
 \item{df}{A data frame containing a single record per species with its abundance}

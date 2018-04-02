@@ -5,7 +5,7 @@
 \title{Community Structure}
 \usage{
 community_structure(df, time.var = NULL, abundance.var,
-  replicate.var = NULL, metric = c("EQ", "SimpsonEvenness", "Evar"))
+  replicate.var = NULL, metric = c("Evar", "SimpsonEvenness", "EQ"))
 }
 \arguments{
 \item{df}{A data frame containing species and abundance columns and optional columns of time and/or replicate.}
@@ -18,9 +18,9 @@ community_structure(df, time.var = NULL, abundance.var,
 
 \item{metric}{The evenness metric to return:
 \itemize{
- \item{"EQ": }{The default metric, calculates EQ evenness from Smith and Wilson 1996}
- \item{"SimpsonEvenness": }{Calculates Simpsons' evenness.}
- \item{"Evar": }{Calculates Evar evenness.}
+ \item{"Evar": }{The default metric, calculates Evar evenness from Smith and Wilson 1996}
+ \item{"SimpsonEvenness": }{Calculates Simpsons' evenness}
+ \item{"EQ": }{Calculates EQ evenness from Smith and Wilson 1996}
 }}
 }
 \value{
@@ -29,9 +29,9 @@ The community_structure function returns a data frame with the following attribu
  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if specified.}
  \item{richness: }{A numeric column of species richness}
+ \item{Evar: }{A numeric column of Evar evenness if evenness = "Evar"}
  \item{EQ: }{A numeric column of EQ evenness if evenness = "EQ"}
  \item{SimpsonEvenness: }{A numeric column of Simpsons evenness if evenness = "SimpsonEveness"}
- \item{Evar: }{A numeric column of Evar evenness if evenness = "Evar"}
 }
 }
 \description{
@@ -44,7 +44,7 @@ df <- subset(pplots, plot == 25 | plot == 6)
 community_structure(df, 
                     time.var="year", 
                     replicate.var = "plot", 
-                    abundance.var = "relative_cover") # for EQ evenness metric
+                    abundance.var = "relative_cover") # for Evar evenness metric
 
 df <- subset(pplots, plot == 25 | plot == 6)
 community_structure(df,
@@ -58,12 +58,12 @@ df <- subset(pplots, plot == 25)
 community_structure(df, 
                     time.var="year", 
                     abundance.var = "relative_cover",
-                    metric = "Evar") # for Evar evenness metric
+                    metric = "EQ") # for EQ evenness metric
 
 #Example with only a single time point and no replicates
 df <- subset(pplots, plot == 25 & year == 2002)
 community_structure(df, 
-                    abundance.var = "relative_cover") # for EQ evenness metric
+                    abundance.var = "relative_cover") # for Evar evenness metric
 }
 \references{
 Smith, B. and Wilson, J. B. 1996. A consumer's guide to evnness indices. Oikos 76: 70-82.

@@ -2,15 +2,16 @@
 % Please edit documentation in R/multivariate_difference.R
 \name{multivariate_difference}
 \alias{multivariate_difference}
-\title{Multivariate measures of community differences between pairs of treatments at a single time point.}
+\title{Using dissimilarity-based metrics to calcualte differences in composition and dispersion between pairs of treatments at a single time point.}
 \usage{
-multivariate_difference(df, time.var, species.var, abundance.var, replicate.var,
-  treatment.var = NULL, metric = c("centroid_distance", "ave_BC_dissim"))
+multivariate_difference(df, time.var = NULL, species.var, abundance.var,
+  replicate.var, treatment.var)
 }
 \arguments{
-\item{df}{A data frame containing time, species, abundance and replicate columns and an optional column of treatment}
+\item{df}{A data frame containing an optional time column, species, abundance
+and replicate, and treatment columns}
 
-\item{time.var}{The name of the time column}
+\item{time.var}{The name of the optional time column}
 
 \item{species.var}{The name of the species column}
 
@@ -18,48 +19,44 @@ multivariate_difference(df, time.var, species.var, abundance.var, replicate.var,
 
 \item{replicate.var}{The name of the replicate column}
 
-\item{treatment.var}{the name of the optional treatment column}
-
-\item{metric}{the composition change metric to return:
-\itemize{
-\item{"ave_BC_dissim": }{The default metric, calculates average of pairwise Bray-Curtis dissimilarity bewteen all replicates in two treatments.}
-\item{"centroid_distance": }{Calculates the Euclidean distance between centroids of two treatments.}
-}}
+\item{treatment.var}{the name of the treatment column}
 }
 \value{
-The multivariate_change function returns a data frame with the following attributes:
+The multivariate_difference function returns a data frame with the following attributes:
 \itemize{
  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it.}
- \item{centroid_distance_diff: }{A numeric column that is the euclidean distance between the centroids of two treatments, if "centroid_distance" is specified as the composition metric. Centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted.}
- \item{BC_dissim_diff: }{A numeric column that is the average pairwise Bray-Curtis dissimilarity of two treatments, if "ave_BC_dissim" is specified as the composition change metric.}
- \item{dispersion_diff: }{A numeric column that is the difference in the average dispersion of the replicates around the centriod for the two consecutive time periods. A negative value indicates there is more dispersion in treatment than treatment2 and a postive value indicates there is more dispersion in treatment2 than treatment.}
- \item{time.var: }{A column that has same name and type as the time.var column, if time.var is specified.}
+ \item{composition_diff: }{A numeric column that is the euclidean distance between the centroids of two treatments at a single point in time.}
+ \item{abs_dispersion_diff: }{A numeric column that is the absolute value of the difference in the average dispersion of the replicates around the centriod for the two treatments.}
+ \item{trt_greater_disp: }{A column that has same type as the treatment.var column, and specifies which of the two  treatments has greater dispersion.}
+ \item{time.var: }{A characteric column that has the same name and type as the time.var column, if specified.}
 }
 }
 \description{
-Calculates the difference in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition difference is measured one of two ways. If "centroid_distance" is specified, community composition difference is measured as the the euclidean distance between the centroids of treatments. If "ave_BC_dissim" is specified compositon difference is measured as the average Bray-Curtis dissimilaritiy of all pairwise comparisions of replicates or treatments. Both composition difference metrics range from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since, centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted. The centroid distance between treatments depends on how many treatments are being compared. Average Bray-Curtis dissimilarity is not context dependent. Dispersion difference is the difference of average dispersion of each replicate to its centroid between two treatments.
+Calculates the difference in composition and dispersion between
+ treatments based off a Bray-Curtis dissimilarity matrix at a single point in
+ time. Composition difference is the euclidean distance between the centroids
+ of different treatments. ince, centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted. The centroid distance between treatments depends on how many treatments are being compared. Dispersion difference is the difference of average
+ dispersion of each replicate to its centroid between two treatments.
 }
 \examples{
+ 
 data(pplots)
-#With treatment
-multivariate_difference(pplots,
-                        time.var="year", 
+#Without time
+df <- subset(pplots, year == 2002)
+multivariate_difference(df, 
                         replicate.var = "plot", 
                         treatment.var = "treatment", 
                         species.var = "species", 
-                        abundance.var = "relative_cover",
-                        metric = "centroid_distance") # centroid distance as composition metric
-  
-#Without treatment
-df <- subset(pplots, treatment == "N1P0")
-multivariate_difference(df, 
-                        time.var="year", 
+                        abundance.var = "relative_cover")
+#With time
+multivariate_difference(pplots, 
+                        time.var = "year", 
                         replicate.var = "plot", 
                         species.var = "species", 
-                        abundance.var = "relative_cover",
-                        metric = "ave_BC_dissim") # Average Bray-Curtis dissimilarity as composisition metric
+                        abundance.var = "relative_cover", 
+                        treatment.var = "treatment")
 }
 \references{
-Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson?
+Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson?
 }

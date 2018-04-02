@@ -7,7 +7,8 @@
 curve_change(df, time.var, species.var, abundance.var, replicate.var = NULL)
 }
 \arguments{
-\item{df}{A data frame containing time, species, and abundance columns and an optional column of replicates}
+\item{df}{A data frame containing time, species, and abundance columns and an
+optional column of replicates}
 
 \item{time.var}{The name of the time column}
 
@@ -18,15 +19,23 @@ curve_change(df, time.var, species.var, abundance.var, replicate.var = NULL)
 \item{replicate.var}{The name of the optional replicate column}
 }
 \value{
-The curve_change function returns a data frame with the following attributes:
+The curve_change function returns a data frame with the following
+  attributes:
 \itemize{
- \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
- \item{curve_change: }{A numeric column of the change in curves between time points.}
- \item{replicate.var: }{A column that has same name and type as the replicate.var column, if specified.}
+ \item{time.var_pair: }{A characteric column that has the time points to be
+ compared, separated by a dash.}
+ \item{curve_change: }{A numeric column of the change in curves between time
+ points.}
+ \item{replicate.var: }{A column that has same name and type as the
+ replicate.var column, if specified.}
 }
 }
 \description{
-Calculates the area difference between two rank abundance curves between two consecutive time periods. If replicate is specified, it must be measued in both time points, otherwise it will be dropped for that time period comparision. Also, a replicate must have more than a single species in both time periods.
+Calculates the area difference between two rank abundance curves
+  between two consecutive time periods. If replicate is specified, it must be
+  measued in both time points, otherwise it will be dropped for that time
+  period comparision. Also, a replicate must have more than a single species
+  in both time periods.
 }
 \examples{
 data(pplots)

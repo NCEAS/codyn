@@ -2,10 +2,10 @@
 % Please edit documentation in R/multivariate_change.R
 \name{multivariate_change}
 \alias{multivariate_change}
-\title{Multivariate measures of community change between and within time periods}
+\title{Using dissimilarity-based metrics to calucuate changes in composition and dispersion}
 \usage{
 multivariate_change(df, time.var, species.var, abundance.var, replicate.var,
-  treatment.var = NULL, metric = c("centroid_distance", "ave_BC_dissim"))
+  treatment.var = NULL)
 }
 \arguments{
 \item{df}{A data frame containing time, species, abundance and replicate columns and an optional column of treatment}
@@ -18,27 +18,19 @@ multivariate_change(df, time.var, species.var, abundance.var, replicate.var,
 
 \item{replicate.var}{The name of the replicate column}
 
-\item{treatment.var}{the name of the optional treatment column}
-
-\item{metric}{the composition change metric to return:
-\itemize{
-\item{"ave_BC_dissim": }{The default metric, calculates average of pairwise Bray-Curtis dissimilarity bewteen all replicates in consecutive time periods.}
-\item{"centroid_distance": }{Calculates the Euclidean distance between centroids of two consecutive time periods.}
-}}
+\item{treatment.var}{the neame of the optional treatment column}
 }
 \value{
 The multivariate_change function returns a data frame with the following attributes:
 \itemize{
- \item{time.var: }{A characteric column that has the first of two time periods that are being compared.}
- \item{time.var2: }{A characteric column that has the second of two time periods that are being compared.}
- \item{centroid_distance_change: }{A numeric column that is the euclidean distance between the centroids of two consecutive time points, if "centroid_distance" is specified as the composition metric. Centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted.}
- \item{BC_dissim_change: }{A numeric column that is the average pairwise Bray-Curtis dissimilarity of replicates in two consecutive time periods, if "ave_BC_dissim" is specified as the composition change metric.}
- \item{dispersion_change: }{A numeric column that is the difference in the average dispersion of the replicates around the centriod for the two consecutive time periods. A negative value indicates replicates are converging over time (there is less dispersion at time peroid 2 than time period 1) and a postive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1).}
+ \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
+ \item{composition_change: }{A numeric column that is the euclidean distance between the centroids of two consecutive time points.}
+ \item{dispersion_change: }{A numeric column that is the difference in the average dispersion of the replicates around the centriod for the two consecutive time periods. A negative value indicates replicates are converging over time (there is less dispersion at time peroid 2 than time period 1) and a postive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1.}
  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
 }
 }
 \description{
-Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is measured one of two ways. If "centroid_distance" is specified, community composition change is measured as the the euclidean distance between the centroids of time period 1 and time period 2. If "ave_BC_dissim" is specified compositon change is measured as the average Bray-Curtis dissimilaritiy of all pairwise comparisions of replicates between two consecutive time periods. Both composition change metrics ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since, centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted. The centroid distance between consecutive time periods depends on how many time periods are being measured. Average Bray-Curtis dissimilarity is not context dependent. Dispersion change is the difference of average dispersion of each replicate to its centroid between consecutive time periods.
+Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of time period 1 and time period 2 and ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since, Composition change is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted, thus result of composition change depends on how many time periods are being measured. Dispersion change is the difference of average dispersion of each replicate to its centroid between consecutive time periods.
 }
 \examples{
 data(pplots)
@@ -48,8 +40,7 @@ multivariate_change(pplots,
                     replicate.var = "plot", 
                     treatment.var = "treatment", 
                     species.var = "species", 
-                    abundance.var = "relative_cover",
-                    metric = "centroid_distance") # centroid distance as composition metric
+                    abundance.var = "relative_cover")
 
 #Without treatment
 df <- subset(pplots, treatment == "N1P0")
@@ -57,8 +48,7 @@ multivariate_change(df,
                     time.var="year", 
                     replicate.var = "plot", 
                     species.var = "species", 
-                    abundance.var = "relative_cover",
-                    metric = "ave_BC_dissim") # Average Bray-Curtis dissimilarity as composisition metric
+                    abundance.var = "relative_cover")
 }
 \references{
 Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson?

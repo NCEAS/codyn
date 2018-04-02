@@ -2,8 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{split_apply_combine}
 \alias{split_apply_combine}
-\title{Faster split-apply-combine for data frames, when the FUN does not change
-the number, order, data type or levels of columns in \code{df}.}
+\title{A Split-Apply-Combine implementaion}
 \source{
 \url{https://stackoverflow.com/a/9730292/687112}
 }
@@ -15,7 +14,12 @@ split_apply_combine(df, by, FUN, ...)
 
 \item{by}{The column(s) of the data frame that determine splits}
 
-\item{FUN}{The function applied to each data frame}
+\item{FUN}{The function applied to each data frame after splitting}
 
 \item{...}{Additional parameters to FUN}
+}
+\description{
+Faster split-apply-combine for data frames, when the results of FUN
+are homogeneous with respect to the number, order, data type and (if
+applicable) levels of columns in the returned data frame.
 }
