@@ -27,6 +27,9 @@ bdat2 <- rbind(dat1, x)
 #make species name missing
 bdat3 <- dat1
 bdat3$species[1] <- NA
+
+#make a plot with only one species
+bdat4 <-subset(dat2, species %in% c("ambrosia psilostachya","amorpha canescens" ))
 # run tests -------------------------------------------
 
 
@@ -41,7 +44,7 @@ test_that("RAC_difference function returns correct result", {
   expect_equal(nrow(myresults1), 1)
   expect_equal(ncol(myresults1), 6)
   expect_equal(myresults1$richness_diff, -0.1923077, tolerance = 0.00001)
-  expect_equal(myresults1$evenness_diff, -0.0002433149, tolerance = 0.000000001)
+  expect_equal(myresults1$evenness_diff, -0.006326187, tolerance = 0.000000001)
   expect_equal(myresults1$rank_diff, 0.1449704, tolerance = 0.00001)
   expect_equal(myresults1$species_diff, 0.4230769, tolerance = 0.00001)
 
@@ -75,7 +78,7 @@ test_that("RAC_difference function returns correct result", {
   expect_equal(nrow(myresults3), 1)
   expect_equal(ncol(myresults3), 9)
   expect_equal(myresults3$richness_diff, 0, tolerance = 0.00001)
-  expect_equal(myresults3$evenness_diff, 4.817085e-05, tolerance = 0.000000001)
+  expect_equal(myresults3$evenness_diff, 0.001059759, tolerance = 0.000001)
   expect_equal(myresults3$rank_diff, 0.1404959, tolerance = 0.00001)
   expect_equal(myresults3$species_diff, 0.3636364, tolerance = 0.00001)
   
@@ -101,7 +104,7 @@ test_that("RAC_difference function returns correct result", {
   expect_equal(nrow(myresults4), 1)
   expect_equal(ncol(myresults4), 6)
   expect_equal(myresults4$richness_diff, 0.02439024, tolerance = 0.00001)
-  expect_equal(myresults4$evenness_diff, -0.0002291214, tolerance = 0.000000001)
+  expect_equal(myresults4$evenness_diff, -0.009393976, tolerance = 0.000001)
   expect_equal(myresults4$rank_diff, 0.1171921, tolerance = 0.00001)
   expect_equal(myresults4$species_diff, 0.3658537, tolerance = 0.00001)
   
@@ -133,5 +136,11 @@ test_that("RAC_difference function returns correct result", {
                               replicate.var = "plot",
                               species.var = "species",
                               time.var = "year"), "Species names are missing")
+  
+  #test that give warning for evenness NA
+  expect_warning(RAC_difference(bdat4, abundance.var = "relative_cover",
+                                replicate.var = "plot",
+                                species.var = "species",
+                                time.var = "year"), "Evenness_diff values contain NAs because there are plots with only one species")
   
 })

@@ -22,12 +22,15 @@ bdat <- dat1
 
 bdat$relative_cover[1] <- NA
 
+#make a plot with only 1 species
+bdat2 <- subset(dat2, species %in% c("amorpha canescens", "andropogon gerardii"))
+
 # run tests -------------------------------------------
 
 
 test_that("community_structure function returns correct result", {
   
-  #test the EQ returned with default setting
+  #test the Evar returned with default setting
   myresults1 <- community_structure(dat1, abundance.var = "relative_cover")
   
   
@@ -35,13 +38,13 @@ test_that("community_structure function returns correct result", {
   expect_equal(nrow(myresults1), 1)
   expect_equal(ncol(myresults1), 2)
   expect_equal(myresults1$richness, 18, tolerance = 0.00001)
-  expect_equal(myresults1$EQ, 0.118918, tolerance = 0.00001)
+  expect_equal(myresults1$Evar, 0.2598594, tolerance = 0.0000001)
   
-  #test the Evar returned when specified
+  #test the EQ returned when specified
   myresults2 <- community_structure(dat1, abundance.var = "relative_cover",
-                                    metric = "Evar")
+                                    metric = "EQ")
   
-  expect_equal(myresults2$Evar, 0.2598594, tolerance = 0.00001)
+  expect_equal(myresults2$EQ, 0.118918, tolerance = 0.0000001)
   
   #test the SimpsonsEvennes is returned when specified
   myresults3 <- community_structure(dat1, abundance.var = "relative_cover",
@@ -74,5 +77,8 @@ test_that("community_structure function returns correct result", {
 
   #test that is doesn't work with missing abundance
   expect_error(community_structure(bdat, abundance.var = "relative_cover"), "Abundance column contains missing values")
+  
+  #test that give warning for evenness NA
+  expect_warning(community_structure(bdat2, abundance.var = "relative_cover", time.var = "year"), "Evenness values contain NAs because there are plots with only one species")
   
 })
