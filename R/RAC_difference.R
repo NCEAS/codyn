@@ -190,6 +190,8 @@ RAC_difference <- function(df, time.var = NULL, species.var,
   split_by <- c(block.var, time.var, cross.var, cross.var2)
   output <- split_apply_combine(ranktog, split_by, FUN = SERSp,
     species.var, abundance.var, abundance.var2)
+  
+  if(any(is.na(output$evenness_diff))) warning("Evenness_diff values contain NAs because there are plots with only one species")
 
   # order and select output columns
   output_order <- c(

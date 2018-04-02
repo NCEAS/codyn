@@ -97,6 +97,8 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var =
   by <- c(replicate.var, time.var)
   output <- split_apply_combine(ranktog, by, FUN = SERGL,
     species.var, abundance.var, abundance.var2)
+  
+  if(any(is.na(output$evenness_change))) warning("Evenness_change values contain NAs because there are plots with only one species")
 
   output_order <- c(
     time.var, paste(time.var, 2, sep = ''),
