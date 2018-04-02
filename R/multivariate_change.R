@@ -41,7 +41,7 @@ multivariate_change <- function(df, time.var, species.var, abundance.var, replic
   
   # check unique species x time x replicate combinations
   check_single(df, time.var, species.var, replicate.var)
-  
+
   df <- as.data.frame(df)
 
 

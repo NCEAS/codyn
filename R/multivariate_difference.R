@@ -46,6 +46,7 @@ multivariate_difference <- function(df, time.var = NULL, species.var,
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
   
+
   if(is.null(time.var)){
     
     # check there unique species x time combinations
