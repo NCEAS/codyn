@@ -34,7 +34,7 @@ test_that("abundance_change function returns correct result", {
   
   expect_is(myresults1, "data.frame")
   expect_equal(nrow(myresults1), 20)
-  expect_equal(ncol(myresults1), 4)##this might need to be changed
+  expect_equal(ncol(myresults1), 4)
   expect_equal(myresults1$change[1], -0.002123142, tolerance = 0.00001)
 
 
@@ -45,7 +45,7 @@ test_that("abundance_change function returns correct result", {
                                     time.var = "year")
   
   expect_equal(nrow(myresults2), 1148)
-  expect_equal(ncol(myresults2), 5) ##this might need to be changed
+  expect_equal(ncol(myresults2), 5) 
   
   #test that is doesn't work with missing abundance
   expect_error(abundance_change(bdat, abundance.var = "relative_cover",
