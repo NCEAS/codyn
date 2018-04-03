@@ -234,8 +234,8 @@ SERSp <- function(df, species.var, abundance.var, abundance.var2) {
   s_r2 <- S(df[[abundance.var2]])
   e_r2 <- EQ(as.numeric(df[[abundance.var2]]))
   
-  sdiff <- abs((s_r2-s_r1))/nrow(df)
-  ediff <- abs(e_r2-e_r1)
+  sdiff <- (s_r2-s_r1)/nrow(df)
+  ediff <- e_r2-e_r1
   
   #Jaccard Index or Number of species not shared  
   spdiff <- df[df[[abundance.var]] == 0|df[[abundance.var2]] == 0,]
