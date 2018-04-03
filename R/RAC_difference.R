@@ -229,23 +229,23 @@ SERSp <- function(df, species.var, abundance.var, abundance.var2) {
   df <- subset(df, df[[abundance.var]] != 0 | df[[abundance.var2]] != 0)
   
   #ricness and evenness differences
-  s_t1 <- S(df[[abundance.var]])
-  e_t1 <- EQ(as.numeric(df[[abundance.var]]))
-  s_t2 <- S(df[[abundance.var2]])
-  e_t2 <- EQ(as.numeric(df[[abundance.var2]]))
+  s_r1 <- S(df[[abundance.var]])
+  e_r1 <- EQ(as.numeric(df[[abundance.var]]))
+  s_r2 <- S(df[[abundance.var2]])
+  e_r2 <- EQ(as.numeric(df[[abundance.var2]]))
   
-  sdiff <- (s_t2-s_t1)/nrow(df)
-  ediff <- e_t2-e_t1
+  sdiff <- abs((s_r2-s_r1))/nrow(df)
+  ediff <- abs(e_r2-e_r1)
   
   #Jaccard Index or Number of species not shared  
   spdiff <- df[df[[abundance.var]] == 0|df[[abundance.var2]] == 0,]
   spdiffc <- nrow(spdiff)/nrow(df)
   
   #Mean Rank Difference
-  mrsc_diff <- mean(abs(df[['rank']]-df[['rank2']])) / nrow(df)
+  rank_diff <- mean(abs(df[['rank']]-df[['rank2']])) / nrow(df)
   
   metrics <- data.frame(richness_diff = sdiff, evenness_diff = ediff,
-                        rank_diff = mrsc_diff, species_diff = spdiffc)
+                        rank_diff = rank_diff, species_diff = spdiffc)
   
   return(cbind(out, metrics))
 }
