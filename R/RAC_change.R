@@ -136,8 +136,8 @@ SERGL <- function(df, species.var, abundance.var, abundance.var2) {
   s_t2 <- S(df[[abundance.var2]])
   e_t2 <- Evar(as.numeric(df[[abundance.var2]]))
   
-  sdiff <- (s_t2-s_t1) / nrow(df)
-  ediff <- (e_t2-e_t1) 
+  delta_s <- (s_t2-s_t1) / nrow(df)
+  delta_e <- (e_t2-e_t1) 
   
   # gains and lqosses
   df$gain <- ifelse(df[[abundance.var]] == 0, 1, 0)
@@ -146,9 +146,9 @@ SERGL <- function(df, species.var, abundance.var, abundance.var2) {
   gain <- sum(df$gain) / nrow(df)
   loss <- sum(df$loss) / nrow(df)
   
-  mrsc <- mean(abs(df[['rank']] - df[['rank2']])) / nrow(df)
+  delta_r <- mean(abs(df[['rank']] - df[['rank2']])) / nrow(df)
   
-  metrics <- data.frame(richness_change = sdiff, evenness_change = ediff, rank_change = mrsc, gains = gain, losses = loss)
+  metrics <- data.frame(richness_change = delta_s, evenness_change = delta_e, rank_change = delta_r, gains = gain, losses = loss)
   
   return(cbind(out, metrics))
 }
