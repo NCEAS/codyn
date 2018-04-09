@@ -36,6 +36,10 @@
 #' @export
 multivariate_change <- function(df, time.var, species.var, abundance.var, replicate.var, treatment.var = NULL){
   
+  # eliminate extraneous variables
+  var <- c(time.var, species.var, abundance.var, replicate.var, treatment.var)
+  df <- subset(df, select = var)
+  
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
   
@@ -44,21 +48,11 @@ multivariate_change <- function(df, time.var, species.var, abundance.var, replic
 
   df <- as.data.frame(df)
 
-
-  if (is.null(treatment.var)) {
-    output <- mult_change(df, time.var, species.var, abundance.var, replicate.var)
-  } else {
-    df[[treatment.var]]<-as.character(df[[treatment.var]])
-    # calculate change for each treatment
-    splitvars <- treatment.var
-    X <- split(df, df[splitvars])
-    out <- lapply(X, FUN = mult_change, time.var, species.var, abundance.var, replicate.var)
-    unsplit <- lapply(out, nrow)
-    unsplit <- rep(names(unsplit), unsplit)
-    output <- do.call(rbind, c(out, list(make.row.names = FALSE)))
-    output[splitvars] <- do.call(rbind, as.list(unsplit))
-  }
-    
+  # calculate change for each treatment
+  by <- treatment.var
+  output <- split_apply_combine(df, by, FUN = mult_change, time.var,
+    species.var, abundance.var, replicate.var, treatment.var)
+  
   output_order <- c(
     time.var, paste(time.var,"2", sep=""),
     treatment.var,
@@ -74,63 +68,61 @@ multivariate_change <- function(df, time.var, species.var, abundance.var, replic
 # should not use them.
 #
 ############################################################################
-# A function calculate the community compositon change (the distance between the centriods of two consecutive time periods) and dispersion change (the difference in the average dispersion of the replicates around the centriod for the two consecutive time periods). For dispersion change a negative value indicates replicates are converging over time and a postive value indicates replicates are diverging over time.
+# A function calculate the community compositon change (the distance between the
+# centriods of two consecutive time periods) and dispersion change (the
+# difference in the average dispersion of the replicates around the centriod for
+# the two consecutive time periods). For dispersion change a negative value
+# indicates replicates are converging over time and a postive value indicates
+# replicates are diverging over time.
+#
 # @param df a dataframe
 # @param time.var the name of the time column
 # @param species.var the name of the species column
 # @param replicate.var the name of the replicate column
-mult_change <- function(df, time.var, species.var, abundance.var, replicate.var) {
+mult_change <- function(df, time.var, species.var, abundance.var,
+                        replicate.var, treatment.var) {
   #get years
   timestep <- sort(unique(df[[time.var]]))
   
   #transpose data
-  df2<-subset(df, select = c(time.var, species.var, abundance.var, replicate.var))
-  df2$id <- paste(df2[[time.var]], df2[[replicate.var]], sep="##")
-  species <- transpose_community(df2, 'id', species.var, abundance.var)
-  species$id <- row.names(species)
-  speciesid <- do.call(rbind.data.frame, strsplit(species$id, split="##"))
-  colnames(speciesid)[1] <- "time_forfixxyz"
-  colnames(speciesid)[2] <- replicate.var
-  speciesid[[time.var]]<-as.numeric(as.character(speciesid$time_forfixxyz))
-  speciesid.2 <- subset(speciesid, select = -time_forfixxyz)
-  species2 <- cbind(speciesid.2, species)
-  species3 <- subset(species2, select = -id)
-  
+  idvar = c(treatment.var, replicate.var, time.var)
+  species <- reshape(df, idvar = idvar, timevar = species.var, direction = 'wide')
+  species[is.na(species)] <- 0
+
   #calculate bray-curtis dissimilarities
-  bc <- vegdist(species3[,3:ncol(species3)], method="bray")
+  abund <- species[, -(1:length(idvar))]
+  bc <- vegdist(abund, method = "bray")
   
   #calculate distances of each plot to year centroid (i.e., dispersion)
-  disp <- betadisper(bc, species3[[time.var]], type="centroid")
+  disp <- betadisper(bc, species[[time.var]], type = "centroid")
   
-  #getting distances between centroids over years; these centroids are in BC space, so that's why this uses euclidean distances
-  cent_dist <- as.matrix(vegdist(disp$centroids, method="euclidean"))
+  #getting distances between centroids over years; these centroids are in BC
+  #space, so that's why this uses euclidean distances
+  cent_dist <- as.matrix(vegdist(disp$centroids, method = "euclidean"))
   
   ##extracting only the comparisions, year x to year x+1.
+  time.var2 <- paste(time.var, 2, sep = '')
   cent_dist_yrs <- data.frame(
-    time1 = timestep[1:length(timestep)-1],
+    time1 = timestep[1:length(timestep) - 1],
     time2 = timestep[2:length(timestep)],
     composition_change = diag(
-      as.matrix(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist)-1)])))
+      as.matrix(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist) - 1)])))
   colnames(cent_dist_yrs)[1] <- time.var
-  colnames(cent_dist_yrs)[2] <- paste(time.var, 2, sep="")
+  colnames(cent_dist_yrs)[2] <- time.var2
   
-  #collecting and labeling distances to centroid from betadisper to get a measure of dispersion and then take the mean for a year
-  disp2 <- data.frame(time=species2[[time.var]],
-                   dist = disp$distances)
-  colnames(disp2)[1] <-time.var
+  #collecting and labeling distances to centroid from betadisper to get a
+  #measure of dispersion and then take the mean for a year
+  species['dist'] <- disp['distances']
+  by <- c(treatment.var, time.var)
+  disp2 <- aggregate.data.frame(species['dist'], species[by], mean)
   
-  myformula <- as.formula(paste("dist", "~", time.var))
-  disp2.2<-aggregate(myformula, mean, data=disp2)
-  
-  ##merge together  
-  bc_dis1 <- merge(cent_dist_yrs, disp2.2, by = time.var)
-  bc_dis <- merge(bc_dis1, disp2.2, by.x = paste(time.var, 2, sep = ""), by.y = time.var)
+  #merge together  
+  bc_dis1 <- merge(cent_dist_yrs, disp2, by = time.var)
+  bc_dis <- merge(bc_dis1, disp2[c(time.var, 'dist')],
+    by.x = time.var2, by.y = time.var)
   
   #calculate absolute difference
   bc_dis$dispersion_change <- bc_dis$dist.y - bc_dis$dist.x
-  
-  bc_dis$dist.y <- NULL
-  bc_dis$dist.x <- NULL
   
   return(bc_dis)
 }

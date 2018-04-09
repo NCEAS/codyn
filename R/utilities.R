@@ -261,6 +261,7 @@ curve_dissim <- function(sf, sf2) {
   
   return(sum(w*h))
 } 
+
 # A utility function to calculate Evar from Smith and Wilson 1996
 # @param S the number of species in the sample
 # @param x the vector of abundances of each species
