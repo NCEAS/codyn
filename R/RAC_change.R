@@ -145,9 +145,7 @@ SERGL <- function(df, species.var, abundance.var, abundance.var2) {
   
   out <- c(species.var, 'rank', 'rank2', abundance.var, abundance.var2)
   out <- unique(df[!(names(df) %in% out)])
-  if (nrow(out) != 1)
-    stop('Input df has not been correctly split.')
-  
+
   # ricness and evenness differences
   s_t1 <- S(df[[abundance.var]])
   e_t1 <- Evar(as.numeric(df[[abundance.var]]))

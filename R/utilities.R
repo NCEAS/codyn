@@ -166,9 +166,6 @@ fill_species <- function(df, species.var, abundance.var) {
 #'   }
 add_ranks <- function(df, abundance.var) {
   
-  if (nrow(df) != nrow(unique(df[names(df) != abundance.var])))
-    stop('Input df has not been correctly split.')
-  
   # get species richness, note that zero abunance does not contribute to S
   S <- S(df[[abundance.var]])
   # rank from high to low abundance
@@ -199,9 +196,7 @@ add_rank_abundance <- function(df, species.var, abundance.var) {
 
   df <- add_ranks(df, abundance.var)
   out <- unique(df[!(names(df) %in% c('rank', species.var, abundance.var))])
-  if (nrow(out) != 1)
-    stop('Input df has not been unambiguously split.')
-  
+
   df <- df[order(df[['rank']]), ]
   relrank <- df[['rank']] / max(df[['rank']])
   cumabund <- cumsum(df[[abundance.var]])
