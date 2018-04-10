@@ -57,9 +57,9 @@
 multivariate_difference <- function(df, time.var = NULL, species.var,
                                     abundance.var, replicate.var, treatment.var) {
   
-  # eliminate extraneous variables
-  var <- c(time.var, species.var, abundance.var, replicate.var, treatment.var)
-  df <- subset(df, select = var)
+  # drop extraneous columns
+  args <- as.list(match.call())
+  df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
   
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")

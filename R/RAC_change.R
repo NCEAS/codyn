@@ -60,6 +60,10 @@
 #' @export
 
 RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var = NULL) {
+
+  # drop extraneous columns
+  args <- as.list(match.call())
+  df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
   
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
