@@ -2,7 +2,9 @@
 % Please edit documentation in R/multivariate_difference.R
 \name{multivariate_difference}
 \alias{multivariate_difference}
-\title{Using dissimilarity-based metrics to calcualte differences in composition and dispersion between pairs of treatments at a single time point.}
+\title{Using dissimilarity-based metrics to calcualte differences in
+ composition and dispersion between pairs of treatments at a single time
+ point.}
 \usage{
 multivariate_difference(df, time.var = NULL, species.var, abundance.var,
   replicate.var, treatment.var)
@@ -22,22 +24,34 @@ and replicate, and treatment columns}
 \item{treatment.var}{the name of the treatment column}
 }
 \value{
-The multivariate_difference function returns a data frame with the following attributes:
+The multivariate_difference function returns a data frame with the
+  following attributes:
 \itemize{
- \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
- \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it.}
- \item{composition_diff: }{A numeric column that is the euclidean distance between the centroids of two treatments at a single point in time.}
- \item{abs_dispersion_diff: }{A numeric column that is the absolute value of the difference in the average dispersion of the replicates around the centriod for the two treatments.}
- \item{trt_greater_disp: }{A column that has same type as the treatment.var column, and specifies which of the two  treatments has greater dispersion.}
- \item{time.var: }{A characteric column that has the same name and type as the time.var column, if specified.}
+ \item{treatment.var: }{A column that has same name and type as the
+ treatment.var column, if treatment.var is specified.}
+ \item{treatment.var2: }{A column that has the same type as the treatment.var
+ column, and is named treatment.var with a 2 appended to it.}
+ \item{composition_diff: }{A numeric column that is the euclidean distance
+ between the centroids of two treatments at a single point in time.}
+ \item{abs_dispersion_diff: }{A numeric column that is the absolute value of
+ the difference in the average dispersion of the replicates around the
+ centriod for the two treatments.}
+ \item{trt_greater_disp: }{A column that has same type as the treatment.var
+ column, and specifies which of the two  treatments has greater dispersion.}
+ \item{time.var: }{A characteric column that has the same name and type as
+ the time.var column, if specified.}
 }
 }
 \description{
 Calculates the difference in composition and dispersion between
  treatments based off a Bray-Curtis dissimilarity matrix at a single point in
  time. Composition difference is the euclidean distance between the centroids
- of different treatments. ince, centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted. The centroid distance between treatments depends on how many treatments are being compared. Dispersion difference is the difference of average
- dispersion of each replicate to its centroid between two treatments.
+ of different treatments. ince, centroid distance is based on plotted
+ distance between centroids, it is context dependent and depends on how many
+ centroids are being plotted. The centroid distance between treatments
+ depends on how many treatments are being compared. Dispersion difference is
+ the difference of average dispersion of each replicate to its centroid
+ between two treatments.
 }
 \examples{
  

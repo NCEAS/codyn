@@ -28,15 +28,20 @@ The RAC_change function returns a data frame with the following
  compared, separated by a dash.}
  \item{richness_change: }{A numeric column that is the change in richness
  between the two consecutive time peroids for a repicate divided by the total
- number of species in both time periods. A postive value occurs when a there is an increase in species richness over time, and a negative value when there is a decreases in species richness over  time.}
+ number of species in both time periods. A postive value occurs when a there
+ is an increase in species richness over time, and a negative value when
+ there is a decreases in species richness over  time.}
  \item{evenness_change: }{A numeric column that is the change in evenness
  (measured with EQ) between the two consecutive time peroids for a repicate
- divided by the total number of species in both time periods. A postive value occurs when evenness  increases over time, and a negative value when evenness decreases in over
- time.}
- \item{rank_change: }{A numeric column that is the absolute value of the average change in rank #'  of a species between the two consecutive time peroids for a replicate divided by
- the total number of species in both time periods. Species that are not
- present in both time periods are given the S+1 rank in the sample it is
- absent in, where S is the number of species in that sample.}
+ divided by the total number of species in both time periods. A postive value
+ occurs when evenness  increases over time, and a negative value when
+ evenness decreases in over time.}
+ \item{rank_change: }{A numeric column that is the absolute value of the
+ average change in rank #'  of a species between the two consecutive time
+ peroids for a replicate divided by the total number of species in both time
+ periods. Species that are not present in both time periods are given the S+1
+ rank in the sample it is absent in, where S is the number of species in that
+ sample.}
  \item{gains: }{A numeric column of the number of species that are present at
  time period 2 that were not present at time period 1 for a replicate divided
  by the total number of species in both time periods. This is equivelant to
