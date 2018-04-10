@@ -153,7 +153,6 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   split_by <- c(block.var, time.var)
   merge_to <- !(names(allsp) %in% split_by)
   cross.var2 <- paste(cross.var, 2, sep = '')
-  abundance.var2 <- paste(abundance.var, 2, sep = '')
   ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
     y <- x[merge_to]
     cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
@@ -169,6 +168,7 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   # remove rows with NA for both abundances (preferably only when introduced
   # by fill_species)
   idx <- is.na(ranktog[[abundance.var]])
+  abundance.var2 <- paste(abundance.var, 2, sep = '')
   idx2 <- is.na(ranktog[[abundance.var2]])
   ranktog[idx, abundance.var] <- 0
   ranktog[idx2, abundance.var2] <- 0

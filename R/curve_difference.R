@@ -104,6 +104,9 @@ curve_difference <- function(df, time.var = NULL, species.var,
   
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
+  
+  # check no NAs in species column
+  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
 
   #check no species are repeated
   if (is.null(time.var)){

@@ -75,6 +75,6 @@ test_that("RAC_change function returns correct result", {
   expect_warning(RAC_change(bdat4, abundance.var = "relative_cover",
                             replicate.var = "plot",
                             species.var = "species",
-                            time.var = "year"), "Evenness_change values contain NAs because there are plots with only one species")
+                            time.var = "year"), "evenness_change values contain NAs because there are plots with only one species")
   
 })

@@ -20,7 +20,8 @@
 #' @param pool An argument to allow abundance values to be pooled within a
 #'   treatment. The default value is "FALSE", a value of "TRUE" averages
 #'   abundance of each species within a treatment at a given time point.
-#' @return The RAC_difference function returns a data frame with the following attributes:
+#' @return The RAC_difference function returns a data frame with the following
+#'   attributes:
 #' \itemize{
 #'  \item{time.var: }{A column that has the same name and type as the time.var
 #'  column, if time.var is specified.}
@@ -44,15 +45,19 @@
 #'  when pool is TRUE or block.var is present, or treatment.var is specified.}
 #'  \item{richness_diff: }{A numeric column that is the difference between the
 #'  compared samples (treatments or replicates) in species richness divided by
-#'  the total number of species in both samples. A postive value occurs when there is greater species richness in replicate.var2 than replicate.var or treatment.var2 than treatment.var.}
+#'  the total number of species in both samples. A postive value occurs when
+#'  there is greater species richness in replicate.var2 than replicate.var or
+#'  treatment.var2 than treatment.var.}
 #'  \item{evenness_diff: }{A numeric column of the difference between the
 #'  compared samples (treatments or replicates) in evenness (measured using the
-#'  EQ metric) divided by the total number of species in both samples. A postive value occurs when there is greater evenness in replicate.var2 than replicate.var or treatment.var2 than treatment.var.}
-#'  \item{rank_diff: }{A numeric column of the absolute value of average difference between the
-#'  compared samples (treatments or replicates) in species' ranks divided by the
-#'  total number of species in both samples. Species that are not present in
-#'  both samples are given the S+1 rank in the sample it is absent in, where S
-#'  is the number of species in that sample.}
+#'  EQ metric) divided by the total number of species in both samples. A postive
+#'  value occurs when there is greater evenness in replicate.var2 than
+#'  replicate.var or treatment.var2 than treatment.var.}
+#'  \item{rank_diff: }{A numeric column of the absolute value of average
+#'  difference between the compared samples (treatments or replicates) in
+#'  species' ranks divided by the total number of species in both samples.
+#'  Species that are not present in both samples are given the S+1 rank in the
+#'  sample it is absent in, where S is the number of species in that sample.}
 #'  \item{species_diff: }{A numeric column of the number of species that are
 #'  different between the compared samples (treatments or replicates) divided by
 #'  the total number of species in both samples. This is equivelant to the
@@ -191,8 +196,10 @@ RAC_difference <- function(df, time.var = NULL, species.var,
   output <- split_apply_combine(ranktog, split_by, FUN = SERSp,
     species.var, abundance.var, abundance.var2)
   
-  if(any(is.na(output$evenness_diff))) warning("Evenness_diff values contain NAs because there are plots with only one species")
-
+  if(any(is.na(output$evenness_diff)))
+    warning(paste0("evenness_diff values contain NAs because there are plots",
+                   " with only one species"))
+  
   # order and select output columns
   output_order <- c(
     time.var,

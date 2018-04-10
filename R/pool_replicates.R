@@ -29,7 +29,7 @@ pool_replicates <- function(df, time.var=NULL, species.var, abundance.var,
   
   # add zeros for species absent from a replicate within a treatment
   if (is.null(time.var)) {
-    allsp <- fill_zeros(df, species.var, abundance.var) ## FIXME quietly keeps time if time.var = NULL, okay if unique by rep, but not otherwise
+    allsp <- fill_zeros(df, species.var, abundance.var)
   } else {
     by <- c(time.var)
     allsp <- split_apply_combine(df, by, FUN = fill_zeros, species.var, abundance.var)
@@ -37,7 +37,7 @@ pool_replicates <- function(df, time.var=NULL, species.var, abundance.var,
   
   # get averages of each species by treatment and (optionally) time
   by <- c(time.var, treatment.var, species.var)
-  spave <- aggregate.data.frame(allsp[abundance.var], allsp[by], FUN = mean) ## FIXME other vars dropped
+  spave <- aggregate.data.frame(allsp[abundance.var], allsp[by], FUN = mean)
   
   # add ranks after splitting into (pooled) communities
   by <- c(treatment.var, time.var)

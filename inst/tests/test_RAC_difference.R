@@ -141,6 +141,6 @@ test_that("RAC_difference function returns correct result", {
   expect_warning(RAC_difference(bdat4, abundance.var = "relative_cover",
                                 replicate.var = "plot",
                                 species.var = "species",
-                                time.var = "year"), "Evenness_diff values contain NAs because there are plots with only one species")
+                                time.var = "year"), "evenness_diff values contain NAs because there are plots with only one species")
   
 })

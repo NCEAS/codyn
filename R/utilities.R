@@ -121,8 +121,6 @@ S <- function(x){
 #'   species that are present in df, but not in a particular group.
 fill_zeros <- function(df, species.var, abundance.var) {
 
-  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
-  
   mergevars <- !(names(df) %in% c(species.var, abundance.var))
   full <- merge(unique(df[mergevars]), unique(df[species.var]))
   df <- merge(df, full, all = TRUE)

@@ -46,6 +46,9 @@ abundance_change <- function(df, time.var,
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
   
+  # check no NAs in species column
+  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
+  
   # check unique species x time x replicate combinations
   if(is.null(replicate.var)){
     check_single_onerep(df, time.var, species.var)
@@ -55,7 +58,7 @@ abundance_change <- function(df, time.var,
   
   # add zeros for species absent from a time period within a replicate
   by <- c(replicate.var)
-  allsp <- split_apply_combine(df, by, FUN = fill_zeros, species.var, abundance.var)
+  allsp <- split_apply_combine(df, by, FUN = fill_species, species.var, abundance.var)
 
   # merge subsets on time difference of one time step
   cross.var <- time.var
@@ -70,12 +73,16 @@ abundance_change <- function(df, time.var,
       idx <- (as.integer(f2) - as.integer(f)) == 1
       cross[idx, ]
   })
-
-  # remove species not present in either year
-  abundance.var2 <- paste(abundance.var, "2", sep = "")
-  idx <- ranktog[[abundance.var]] != 0 | ranktog[[abundance.var2]] != 0
-  output <- ranktog[idx, ]
   
+  # remove rows with NA for both abundances (preferably only when introduced
+  # by fill_species)
+  idx <- is.na(ranktog[[abundance.var]])
+  abundance.var2 <- paste(abundance.var, 2, sep = '')
+  idx2 <- is.na(ranktog[[abundance.var2]])
+  ranktog[idx, abundance.var] <- 0
+  ranktog[idx2, abundance.var2] <- 0
+  output <- ranktog[!(idx & idx2), ]
+
   # append change column
   output[['change']] <- output[[abundance.var2]] - output[[abundance.var]]
   output_order <- c(

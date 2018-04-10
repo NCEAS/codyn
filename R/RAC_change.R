@@ -17,15 +17,20 @@
 #'  compared, separated by a dash.}
 #'  \item{richness_change: }{A numeric column that is the change in richness
 #'  between the two consecutive time peroids for a repicate divided by the total
-#'  number of species in both time periods. A postive value occurs when a there is an increase in species richness over time, and a negative value when there is a decreases in species richness over  time.}
+#'  number of species in both time periods. A postive value occurs when a there
+#'  is an increase in species richness over time, and a negative value when
+#'  there is a decreases in species richness over  time.}
 #'  \item{evenness_change: }{A numeric column that is the change in evenness
 #'  (measured with EQ) between the two consecutive time peroids for a repicate
-#'  divided by the total number of species in both time periods. A postive value occurs when evenness  increases over time, and a negative value when evenness decreases in over
-#'  time.}
-#'  \item{rank_change: }{A numeric column that is the absolute value of the average change in rank #'  of a species between the two consecutive time peroids for a replicate divided by
-#'  the total number of species in both time periods. Species that are not
-#'  present in both time periods are given the S+1 rank in the sample it is
-#'  absent in, where S is the number of species in that sample.}
+#'  divided by the total number of species in both time periods. A postive value
+#'  occurs when evenness  increases over time, and a negative value when
+#'  evenness decreases in over time.}
+#'  \item{rank_change: }{A numeric column that is the absolute value of the
+#'  average change in rank #'  of a species between the two consecutive time
+#'  peroids for a replicate divided by the total number of species in both time
+#'  periods. Species that are not present in both time periods are given the S+1
+#'  rank in the sample it is absent in, where S is the number of species in that
+#'  sample.}
 #'  \item{gains: }{A numeric column of the number of species that are present at
 #'  time period 2 that were not present at time period 1 for a replicate divided
 #'  by the total number of species in both time periods. This is equivelant to
@@ -59,6 +64,9 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var =
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
   
+  # check no NAs in species column
+  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
+  
   # check unique species x time x replicate combinations
   if(is.null(replicate.var)){
     check_single_onerep(df, time.var, species.var)
@@ -68,7 +76,7 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var =
   
   # add zeros for species absent from a time period within a replicate
   by <- c(replicate.var)
-  allsp <- split_apply_combine(df, by, FUN = fill_zeros, species.var, abundance.var)
+  allsp <- split_apply_combine(df, by, FUN = fill_species, species.var, abundance.var)
 
   # rank species in each time and optionally replicate
   by <- c(time.var, replicate.var)
@@ -88,17 +96,23 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var =
     cross[idx, ]
   })
   
-  # remove species not present in either year
-  abundance.var2 <- paste(abundance.var, "2", sep = "")
-  idx <- ranktog[[abundance.var]] != 0 | ranktog[[abundance.var2]] != 0
-  ranktog <- ranktog[idx, ]
+  # remove rows with NA for both abundances (preferably only when introduced
+  # by fill_species)
+  idx <- is.na(ranktog[[abundance.var]])
+  abundance.var2 <- paste(abundance.var, 2, sep = '')
+  idx2 <- is.na(ranktog[[abundance.var2]])
+  ranktog[idx, abundance.var] <- 0
+  ranktog[idx2, abundance.var2] <- 0
+  ranktog <- ranktog[!(idx & idx2), ]
   
   # apply turnover calculation to all replicates for each time point
   by <- c(replicate.var, time.var)
   output <- split_apply_combine(ranktog, by, FUN = SERGL,
     species.var, abundance.var, abundance.var2)
   
-  if(any(is.na(output$evenness_change))) warning("Evenness_change values contain NAs because there are plots with only one species")
+  if(any(is.na(output$evenness_change)))
+    warning(paste0("evenness_change values contain NAs because there are plots",
+                   " with only one species"))
 
   output_order <- c(
     time.var, paste(time.var, 2, sep = ''),
