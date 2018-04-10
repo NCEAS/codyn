@@ -102,8 +102,8 @@ test_that("variance_ratio function returns correct result", {
     myresults2<-variance_ratio(knz_001d2,"yr", "sp", "abund", 1, "sub")
     expect_that(sum(myresults2$VR), equals(sum(myresults$VR)))
     myresults2.2<-variance_ratio(knz_001d2, "yr", "sp",  "abund", 1, "sub", average.replicates = FALSE)
-    expect_warning(variance_ratio(knz_001d2, "yr", "sp",  "abund", 1, NA, average.replicates = FALSE))
-    expect_warning(variance_ratio(knz_001d2,"yr", "sp",  "abund", 1, NA, average.replicates = TRUE))
+    expect_error(variance_ratio(knz_001d2, "yr", "sp",  "abund", 1, NA, average.replicates = FALSE))
+    expect_error(variance_ratio(knz_001d2,"yr", "sp",  "abund", 1, NA, average.replicates = TRUE))
 
     #test that it works even if there are additional unused columns
     knz_001d3<-knz_001d
