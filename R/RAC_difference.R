@@ -193,8 +193,9 @@ RAC_difference <- function(df, time.var = NULL, species.var,
   idx2 <- is.na(ranktog[[abundance.var2]])
   ranktog[idx, abundance.var] <- 0
   ranktog[idx2, abundance.var2] <- 0
-  ranktog <- ranktog[!(idx & idx2), ]
-    
+  idx <- ranktog[[abundance.var]] != 0 | ranktog[[abundance.var2]] != 0
+  ranktog <- ranktog[idx, ]
+  
   # split on treatment pairs (and block if not null)
   split_by <- c(block.var, time.var, cross.var, cross.var2)
   output <- split_apply_combine(ranktog, split_by, FUN = SERSp,

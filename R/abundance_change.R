@@ -85,7 +85,8 @@ abundance_change <- function(df, time.var,
   idx2 <- is.na(ranktog[[abundance.var2]])
   ranktog[idx, abundance.var] <- 0
   ranktog[idx2, abundance.var2] <- 0
-  output <- ranktog[!(idx & idx2), ]
+  idx <- ranktog[[abundance.var]] != 0 | ranktog[[abundance.var2]] != 0
+  output <- ranktog[idx, ]
 
   # append change column
   output[['change']] <- output[[abundance.var2]] - output[[abundance.var]]

@@ -176,7 +176,8 @@ abundance_difference <- function(df, time.var = NULL, species.var,
   idx2 <- is.na(ranktog[[abundance.var2]])
   ranktog[idx, abundance.var] <- 0
   ranktog[idx2, abundance.var2] <- 0
-  ranktog <- ranktog[!(idx & idx2), ]
+  idx <- ranktog[[abundance.var]] != 0 | ranktog[[abundance.var2]] != 0
+  ranktog <- ranktog[idx, ]
 
   # take abundance difference
   output <- abund_diff(ranktog, species.var, abundance.var, abundance.var2)
