@@ -35,34 +35,46 @@ check_names <- function(given, data) {
     }
 }
 
-#' Utility function to warn users that either multiple records exist within replicates, or that data may be spanning mutiple replicates but no replicate.var has been specified
+#' Utility function to warn users that either multiple records exist within
+#' replicates, or that data may be spanning mutiple replicates but no
+#' replicate.var has been specified
 #' @param df A dataframe containing time.var, species.var and abundance.var columns
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
-check_single_onerep <- function(df, time.var, species.var){
-  if(max(table(df[[time.var]], df[[species.var]]))>1) stop("Either data span multiple replicates with no replicate.var specified or multiple records within years for some species") }
+check_single_onerep <- function(df, time.var, species.var) {
+  counts <- table(df[[time.var]], df[[species.var]])
+  if (any(counts > 1))
+    stop(paste("Either data span multiple replicates with no replicate.var",
+               "specified or multiple records within years for some species",
+               sep = ' '))
+}
 
-#' Utility function to ensure only a single record exists for a given species within one replicate, for one time point.
+#' Utility function to ensure only a single record exists for a given species
+#' within one replicate, for one time point.
 #' @param df A dataframe containing time.var, species.var, and replicate.var columns
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df
 #' @param replicate.var The name of the replicate column from df
-
-check_single <- function(df, time.var, species.var, replicate.var){
+check_single <- function(df, time.var, species.var, replicate.var) {
   X <- split(df, df[[replicate.var]])
-  checksingle <- lapply(X, FUN = function(xx) apply(table(xx[[species.var]], xx[[time.var]]), 2, function(x) any(x>1)))
+  checksingle <- lapply(X, FUN = function(xx) {
+    apply(table(xx[[species.var]], xx[[time.var]]), 2, function(x) any(x>1))
+  })
   reptest <- unlist(lapply(checksingle, any))
   yrtest <- lapply(checksingle, which)
 
   if(any(unlist(checksingle))){
     if(length(names(reptest)[which(reptest)]) == 1){
-
-    stop(paste("In replicate", names(reptest)[which(reptest)], "there is more than one record for species at the time point", unlist(lapply(yrtest, names))))
+      stop(paste("In replicate", names(reptest)[which(reptest)],
+                 "there is more than one record for species at the time point",
+                 unlist(lapply(yrtest, names))))
+    } else {
+      toprint <- unlist(lapply(yrtest, names))
+      stop(paste0("For the following replicates in the following time points, ",
+                  "there are more than one records for species: \n",
+                  paste(names(toprint), collapse = "\t"), "\n",
+                  paste(toprint, collapse = "\t")))
     }
-      else  {
-        toprint <- unlist(lapply(yrtest, names))
-    stop("For the following replicates in the following time points, there are more than one records for species: \n", paste(names(toprint), collapse = "\t"), "\n", paste(toprint, collapse = "\t"))
-      }
   }
 }
 
@@ -212,8 +224,8 @@ add_rank_abundance <- function(df, species.var, abundance.var) {
 #' applicable) levels of columns in the returned data frame.
 #' 
 #' @param df A data frame
-#' @param by The column(s) of the data frame that determine splits
-#' @param FUN The function applied to each data frame after splitting
+#' @param by The name of column(s) in the data frame that define groups to split
+#' @param FUN The function applied to each grouped data frame after splitting
 #' @param ... Additional parameters to FUN
 #' 
 #' @source \url{https://stackoverflow.com/a/9730292/687112}

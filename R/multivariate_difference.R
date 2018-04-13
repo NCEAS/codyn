@@ -113,6 +113,14 @@ mult_diff <- function(df, time.var, species.var, abundance.var,
   bc <- vegdist(abund, method = "bray")
   
   #calculate distances of each plot to treatment centroid (i.e., dispersion)
+  if (is.null(time.var)) {
+    message('Composition and dispersion difference calculation using ',
+            nrow(species),' replicates.')
+  } else {
+    message('Composition and dispersion difference calculation using ',
+            nrow(species), ' replicates at time.var value ',
+            df[[time.var]][[1]])
+  }
   disp <- betadisper(bc, species[[treatment.var]], type = "centroid")
   
   #getting distances between treatments with euclidean distances

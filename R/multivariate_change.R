@@ -94,6 +94,14 @@ mult_change <- function(df, time.var, species.var, abundance.var,
   bc <- vegdist(abund, method = "bray")
   
   #calculate distances of each plot to year centroid (i.e., dispersion)
+  if (is.null(treatment.var)) {
+    message('Composition and dispersion change calculation using ',
+            nrow(species),' replicates.')
+  } else {
+    message('Composition and dispersion change calculation using ',
+            nrow(species), ' replicates at treatment.var value ',
+            df[[treatment.var]][[1]])
+  }
   disp <- betadisper(bc, species[[time.var]], type = "centroid")
   
   #getting distances between centroids over years; these centroids are in BC
