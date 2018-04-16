@@ -46,6 +46,7 @@
 #'                         treatment.var = "treatment", 
 #'                         species.var = "species", 
 #'                         abundance.var = "relative_cover")
+#' # There are 6 replicates for each of three treatments, thus 18 total observations.
 #' #With time
 #' multivariate_difference(pplots, 
 #'                         time.var = "year", 
@@ -53,6 +54,7 @@
 #'                         species.var = "species", 
 #'                         abundance.var = "relative_cover", 
 #'                         treatment.var = "treatment")
+#' #In each year there are 6 replicates for each of three treatments, for a total of 18 observations.
 #' @export
 multivariate_difference <- function(df, time.var = NULL, species.var,
                                     abundance.var, replicate.var, treatment.var) {
