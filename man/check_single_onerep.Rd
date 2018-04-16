@@ -2,7 +2,9 @@
 % Please edit documentation in R/utilities.R
 \name{check_single_onerep}
 \alias{check_single_onerep}
-\title{Utility function to warn users that either multiple records exist within replicates, or that data may be spanning mutiple replicates but no replicate.var has been specified}
+\title{Utility function to warn users that either multiple records exist within
+replicates, or that data may be spanning mutiple replicates but no
+replicate.var has been specified}
 \usage{
 check_single_onerep(df, time.var, species.var)
 }
@@ -14,7 +16,9 @@ check_single_onerep(df, time.var, species.var)
 \item{species.var}{The name of the species column from df}
 }
 \description{
-Utility function to warn users that either multiple records exist within replicates, or that data may be spanning mutiple replicates but no replicate.var has been specified
+Utility function to warn users that either multiple records exist within
+replicates, or that data may be spanning mutiple replicates but no
+replicate.var has been specified
 }
 <<<<<<< HEAD
 

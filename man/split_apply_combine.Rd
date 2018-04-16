@@ -12,9 +12,9 @@ split_apply_combine(df, by, FUN, ...)
 \arguments{
 \item{df}{A data frame}
 
-\item{by}{The column(s) of the data frame that determine splits}
+\item{by}{The name of column(s) in the data frame that define groups to split}
 
-\item{FUN}{The function applied to each data frame after splitting}
+\item{FUN}{The function applied to each grouped data frame after splitting}
 
 \item{...}{Additional parameters to FUN}
 }

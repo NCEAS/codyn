@@ -63,6 +63,7 @@ multivariate_difference(df,
                         treatment.var = "treatment", 
                         species.var = "species", 
                         abundance.var = "relative_cover")
+# There are 6 replicates for each of three treatments, thus 18 total observations.
 #With time
 multivariate_difference(pplots, 
                         time.var = "year", 
@@ -70,6 +71,7 @@ multivariate_difference(pplots,
                         species.var = "species", 
                         abundance.var = "relative_cover", 
                         treatment.var = "treatment")
+#In each year there are 6 replicates for each of three treatments, for a total of 18 observations.
 }
 \references{
 Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson?
