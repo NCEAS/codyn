@@ -96,10 +96,10 @@ mult_change <- function(df, time.var, species.var, abundance.var,
   #calculate distances of each plot to year centroid (i.e., dispersion)
   if (is.null(treatment.var)) {
     message('Composition and dispersion change calculation using ',
-            nrow(species),' replicates.')
+            nrow(species),' observations.')
   } else {
     message('Composition and dispersion change calculation using ',
-            nrow(species), ' replicates at treatment.var value ',
+            nrow(species), ' observations at treatment.var value ',
             df[[treatment.var]][[1]])
   }
   disp <- betadisper(bc, species[[time.var]], type = "centroid")
