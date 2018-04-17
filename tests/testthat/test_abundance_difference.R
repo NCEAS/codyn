@@ -104,7 +104,7 @@ test_that("abundance_difference function returns correct result", {
                                      time.var = "year")
   
   expect_is(myresults4.5, "data.frame")
-  expect_equal(nrow(myresults4.5), 546)
+  expect_equal(nrow(myresults4.5), 485)
   expect_equal(ncol(myresults4.5), 5)
 
   #test that is doesn't work with missing abundance

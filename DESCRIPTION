@@ -9,7 +9,9 @@ Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", rol
     person("Julie", "Ripplinger", email="julie.ripplinger@asu.edu", role=c("aut")),
     person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")),
     person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")),
-    person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
+    person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")),
+    person("Ian T.", "Carroll", email="icarroll@sesync.org", role=c("aut")),
+    person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut")))
 Date: 2016-04-26
 Description: A toolbox of ecological community dynamics metrics that are
     explicitly temporal. Functions fall into two categories: temporal diversity
