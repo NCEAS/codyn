@@ -26,7 +26,3 @@ output The specificed turnover metric
 \description{
 A function to calculate species turnover between two years
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 299806a... building man/ folder

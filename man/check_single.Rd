@@ -20,7 +20,3 @@ check_single(df, time.var, species.var, replicate.var)
 Utility function to ensure only a single record exists for a given species
 within one replicate, for one time point.
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 299806a... building man/ folder

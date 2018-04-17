@@ -20,7 +20,3 @@ Utility function to warn users that either multiple records exist within
 replicates, or that data may be spanning mutiple replicates but no
 replicate.var has been specified
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 299806a... building man/ folder

@@ -21,7 +21,3 @@ A dataframe of species abundances x time
 \description{
 Convert from a longform abundance dataframe to a time by species dataframe.
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 299806a... building man/ folder
