@@ -46,7 +46,7 @@ test_that("rank_shift loads and returns correct result", {
   	                      species.var = "species",
   	                      abundance.var = "samwise"))
 
-	#test the get_slope function
+	  #test the get_slope function
   	myresults <- rank_onerep(dat1, time.var = "year",
   	                      species.var = "species",
   	                      abundance.var = "abundance")
@@ -62,8 +62,8 @@ test_that("rank_shift loads and returns correct result", {
   	                      species.var = "sp",
   	                      abundance.var = "subplot"))
 
-	#test the rank_shift function
-  	#test that works on a single replicate
+  	#test the rank_shift function
+   	#test that works on a single replicate
   	myresults3<-rank_shift(dat1, replicate.var=NA, time.var="year", species.var="species", abundance.var="abundance")
   	expect_equal(myresults3, myresults2)
 
@@ -79,11 +79,11 @@ test_that("rank_shift loads and returns correct result", {
   	myresults6<-rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
   	expect_equal(myresults6[2,2], myresults5[2,2])
 
-	#test that works regardless of whether parameter is specified or just ordered
+	  #test that works regardless of whether parameter is specified or just ordered
   	myresults7<-rank_shift(knz_001d,  "year", "species", "abundance", "subplot")
   	expect_identical(myresults7, myresults5)
 
-	#test that works with different column orders if names specified
+	  #test that works with different column orders if names specified
   	myresults8<-rank_shift(knz_001d, abundance.var="abundance", replicate.var="subplot", species.var="species", time.var="year")
   	expect_identical(myresults8, myresults5)
 
@@ -91,7 +91,7 @@ test_that("rank_shift loads and returns correct result", {
   	myresults9<-rank_shift(knz_001d2, replicate.var="sub", time.var="yr", species.var="sp", abundance.var="abund")
   	expect_equal(myresults9[2,2], myresults5[2,2])
 
-	#test that it works even if there are additional unused columns
+  	#test that it works even if there are additional unused columns
   	knz_001d3<-knz_001d
   	knz_001d3$site<-"KNZ"
   	myresults10<-rank_shift(knz_001d3, "year", "species", "abundance", "subplot")
