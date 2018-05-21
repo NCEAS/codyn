@@ -1,7 +1,7 @@
 #' @title  Abundance Differences
 #' 
 #' @description Calculates the abundnace difference for species between two
-#'   samples. There are three ways differences can be calculated. 1) Between
+#'   samples. Differences are on abundance values provided, if relative data is used, then differences in relative abundance will be calcuated. There are three ways differences can be calculated. 1) Between
 #'   treatments within a block (note: block.var and treatment.var need to be
 #'   specified). 2) Between treatments, pooling all replicates into a single
 #'   species pool (note: pool = TRUE, treatment.var needs to be specified, and

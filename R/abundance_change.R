@@ -1,6 +1,6 @@
 #' @title Species Abundance Changes
 #' @description Calculates the abundance change for species in a replicate
-#'   between two consecutive time points.
+#'   between two consecutive time points. Changes are on abundance values provided, if relative data is used, then changes in relative abundance will be calcuated. 
 #' @param df A data frame containing time, species, and abundance columns and an
 #'   optional column of replicates
 #' @param time.var The name of the time column 
