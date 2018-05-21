@@ -34,7 +34,7 @@ The community_diversity function returns a data frame with the following attribu
 }
 }
 \description{
-Calculates Shannon's or Inverse Simpson's diversity of a community.
+Calculates Shannon's or Inverse Simpson's diversity of a community, but only one metric of diversity can be calculated at a time and must be specified.
 }
 \examples{
 data(pplots)

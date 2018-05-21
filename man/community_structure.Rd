@@ -35,7 +35,7 @@ The community_structure function returns a data frame with the following attribu
 }
 }
 \description{
-Calculates species richness and evenness of a community. Evenness may be calculated as Simpson's (1/D/S), EQ, or Evar.
+Calculates species richness and evenness of a community. Evenness may be calculated as Simpson's (1/D/S), EQ, or Evar, but only one metric of evenness can be calculated at a time and must be specified.
 }
 \examples{
 data(pplots)
