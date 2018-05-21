@@ -1,5 +1,5 @@
 #' @title Community Structure
-#' @description Calculates species richness and evenness of a community. Evenness may be calculated as Simpson's (1/D/S), EQ, or Evar.
+#' @description Calculates species richness and evenness of a community. Evenness may be calculated as Simpson's (1/D/S), EQ, or Evar, but only one metric of evenness can be calculated at a time and must be specified.
 #' @param df A data frame containing species and abundance columns and optional columns of time and/or replicate. 
 #' @param time.var The name of the optional time column 
 #' @param abundance.var The name of the abundance column 
