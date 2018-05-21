@@ -70,8 +70,8 @@ check_single <- function(df, time.var, species.var, replicate.var) {
                  unlist(lapply(yrtest, names))))
     } else {
       toprint <- unlist(lapply(yrtest, names))
-      stop(paste0("For the following replicates in the following time points, ",
-                  "there are more than one records for species: \n",
+      stop(paste0("For the following replicates at the following time points, ",
+                  "there is more than one records for species: \n",
                   paste(names(toprint), collapse = "\t"), "\n",
                   paste(toprint, collapse = "\t")))
     }
