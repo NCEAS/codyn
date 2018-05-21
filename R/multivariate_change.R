@@ -1,5 +1,5 @@
 #'@title Using dissimilarity-based metrics to calucuate changes in composition and dispersion
-#' @description Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of time period 1 and time period 2 and ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since, Composition change is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted, thus result of composition change depends on how many time periods are being measured. Dispersion change is the difference of average dispersion of each replicate to its centroid between consecutive time periods.
+#' @description Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of time period 1 and time period 2 and ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since, composition change is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted, thus result of composition change depends on how many time periods are being measured. Dispersion change is the difference of average dispersion of each replicate to its centroid between consecutive time periods.
 #' @param df A data frame containing time, species, abundance and replicate columns and an optional column of treatment
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
@@ -22,7 +22,7 @@
 #'                     treatment.var = "treatment", 
 #'                     species.var = "species", 
 #'                     abundance.var = "relative_cover")
-#' #In each year there are 6 replicates and there are 4 years of data for 3 time comparitions, thus 24 total observations in each treatment.
+#' #In each year there are 6 replicates and there are 4 years of data for 3 time comparisons, thus 24 total observations in each treatment.
 #' 
 #' #Without treatment
 #' df <- subset(pplots, treatment == "N1P0")
@@ -31,11 +31,11 @@
 #'                     replicate.var = "plot", 
 #'                     species.var = "species", 
 #'                     abundance.var = "relative_cover")
-#' #In each year there are 6 replicates and there are 4 years of data for 3 time comparitions, thus 24 total observations.
+#' #In each year there are 6 replicates and there are 4 years of data for 3 time comparisons, thus 24 total observations.
 #'
 #' @importFrom vegan vegdist betadisper
 #' @importFrom stats aggregate as.formula
-#' @references Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson?
+#' @references Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson et al. 2006.
 #' @export
 multivariate_change <- function(df, time.var, species.var, abundance.var, replicate.var, treatment.var = NULL){
   

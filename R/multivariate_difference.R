@@ -1,10 +1,10 @@
 #'@title Using dissimilarity-based metrics to calcualte differences in
 #'  composition and dispersion between pairs of treatments at a single time
-#'  point.
+#'  point
 #'@description Calculates the difference in composition and dispersion between
 #'  treatments based off a Bray-Curtis dissimilarity matrix at a single point in
 #'  time. Composition difference is the euclidean distance between the centroids
-#'  of different treatments. ince, centroid distance is based on plotted
+#'  of different treatments. Since centroid distance is based on plotted
 #'  distance between centroids, it is context dependent and depends on how many
 #'  centroids are being plotted. The centroid distance between treatments
 #'  depends on how many treatments are being compared. Dispersion difference is
@@ -34,7 +34,7 @@
 #'  \item{time.var: }{A characteric column that has the same name and type as
 #'  the time.var column, if specified.}
 #' }
-#' @references Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson?
+#' @references Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson et al. 2006
 #' @importFrom vegan vegdist betadisper
 #' @importFrom stats aggregate as.formula
 #' @examples  
