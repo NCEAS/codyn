@@ -1,4 +1,4 @@
-#' @title Curve Differences
+#' @title Curve Difference
 #' @description Calculates the area difference between two rank abundance
 #'   curves. There are three ways differences can be calculated. 1) Between all
 #'   treatments within a block (note: block.var and treatment.var need to be
