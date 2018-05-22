@@ -57,6 +57,6 @@ test_that("multivariate_difference function returns correct result", {
                                    replicate.var = "plot",
                                    species.var = "species",
                                    time.var = "year",
-                                   treatment.var = "treatment"), "In replicate 25 there is more than one record for species at the time point 2002")
+                                   treatment.var = "treatment"), "Multiple records for one or more species found at:\nyear \"2002\"\nplot \"25\"")
   
 })

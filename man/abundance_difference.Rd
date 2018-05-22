@@ -8,7 +8,8 @@ abundance_difference(df, time.var = NULL, species.var, abundance.var,
   replicate.var, treatment.var = NULL, pool = FALSE, block.var = NULL)
 }
 \arguments{
-\item{df}{A data frame containing species, abundance, replicate columns and optional time, treatment and block columns.}
+\item{df}{A data frame containing species, abundance, replicate columns and
+optional time, treatment and block columns.}
 
 \item{time.var}{The name of the optional time column}
 
@@ -20,18 +21,21 @@ abundance_difference(df, time.var = NULL, species.var, abundance.var,
 
 \item{treatment.var}{The name of the optional treatment column}
 
-\item{pool}{An argument to allow abundance values to be pooled within a treatment. The default value is "FALSE", a value of "TRUE" averages abundance of each species within a treatment at a given time point.}
+\item{pool}{An argument to allow abundance values to be pooled within a
+treatment. The default value is "FALSE", a value of "TRUE" averages the
+abundances of each species within a treatment at a given time point.}
 
 \item{block.var}{The name of the optional block column}
 }
 \value{
-The abundance_difference function returns a data frame with the following attributes:
+The abundance_difference function returns a data frame with the
+  following attributes:
 \itemize{
  \item{species.var: }{A column that has same name and type as the species.var
  column.}
  \item{difference: }{A numeric column of the abundance differences between
  the two samples being compared (replicates or treatments). A numeric column
- of the change in abundance between consecutive timepoints. A postive value
+ of the change in abundance between consecutive timepoints. A positive value
  occurs when a species has greater abundance in replicate.var2 than in
  replicate.var and/or in treatment.var2 than in treatment.var.}
  \item{replicate.var: }{A column that has same name and type as the
@@ -57,15 +61,17 @@ The abundance_difference function returns a data frame with the following attrib
 }
 }
 \description{
-Calculates the abundnace difference for species between two
-  samples. There are three ways differences can be calculated. 1) Between
-  treatments within a block (note: block.var and treatment.var need to be
-  specified). 2) Between treatments, pooling all replicates into a single
-  species pool (note: pool = TRUE, treatment.var needs to be specified, and
-  block.var = NULL). 3) All pairwise combinations between all replicates
-  (note: block.var = NULL, pool = FALSE and specifying treatment.var is
-  optional. If treatment.var is specified, the treatment that each replicate
-  belongs to will also be listed in the output).
+Calculates the abundance difference for species between two
+  samples. Differences are on abundance values provided, if relative data is
+  used, then differences in relative abundance will be calcuated. There are
+  three ways differences can be calculated. 1) Between treatments within a
+  block (note: block.var and treatment.var need to be specified). 2) Between
+  treatments, pooling all replicates into a single species pool (note: pool =
+  TRUE, treatment.var needs to be specified, and block.var = NULL). 3) All
+  pairwise combinations between all replicates (note: block.var = NULL, pool
+  = FALSE and specifying treatment.var is optional. If treatment.var is
+  specified, the treatment that each replicate belongs to will also be listed
+  in the output).
 }
 \examples{
 data(pplots)
@@ -74,7 +80,7 @@ df <- subset(pplots, year == 2002 & block < 3)
 abundance_difference(df = df,
                      species.var = "species",
                      abundance.var = "relative_cover",
-                     treatment.var = 'treatment',
+                     treatment.var = "treatment",
                      block.var = "block",
                      replicate.var = "plot")
 
@@ -83,7 +89,7 @@ df <- subset(pplots, year < 2004 & block < 3)
 abundance_difference(df = df,
                      species.var = "species",
                      abundance.var = "relative_cover",
-                     treatment.var = 'treatment',
+                     treatment.var = "treatment",
                      block.var = "block",
                      replicate.var = "plot",
                      time.var = "year")
@@ -93,7 +99,7 @@ df <- subset(pplots, year < 2004)
 abundance_difference(df = df,
                      species.var = "species",
                      abundance.var = "relative_cover",
-                     treatment.var = 'treatment',
+                     treatment.var = "treatment",
                      pool = TRUE,
                      replicate.var = "plot",
                      time.var = "year")

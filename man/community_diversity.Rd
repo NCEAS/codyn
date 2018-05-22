@@ -8,7 +8,8 @@ community_diversity(df, time.var = NULL, abundance.var,
   replicate.var = NULL, metric = c("Shannon", "InverseSimpson"))
 }
 \arguments{
-\item{df}{A data frame containing species and abundance columns and optional columns of time and/or replicate.}
+\item{df}{A data frame containing species and abundance columns and optional
+columns of time and/or replicate.}
 
 \item{time.var}{The name of the optional time column}
 
@@ -19,22 +20,22 @@ community_diversity(df, time.var = NULL, abundance.var,
 \item{metric}{The diversity metric to return:
 \itemize{
  \item{"Shannon": }{The default metric, calculates Shannon's diversity.}
- \item{"Simpson": }{Calculates inverse of Simpson's diversity.}
+ \item{"InverseSimpson": }{Calculates inverse of Simpson's diversity.}
 }}
-
-\item{species.var}{The name of the species column}
 }
 \value{
 The community_diversity function returns a data frame with the following attributes:
 \itemize{
  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
- \item{Shannon: }{A numeric column of Shannons diversity if metric = "Shannon"}
- \item{Simpson: }{A numeric column of Simpsons diversity if metric = "InverseSimpson"}
+ \item{Shannon: }{A numeric column of Shannon's diversity if metric = "Shannon"}
+ \item{InverseSimpson: }{A numeric column of the inverse of Simpson's diversity if metric = "InverseSimpson"}
 }
 }
 \description{
-Calculates Shannon's or Inverse Simpson's diversity of a community, but only one metric of diversity can be calculated at a time and must be specified.
+Calculates Shannon's or Inverse Simpson's diversity of a
+  community, but only one metric of diversity can be calculated at a time and
+  must be specified.
 }
 \examples{
 data(pplots)

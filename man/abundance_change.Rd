@@ -28,14 +28,14 @@ The abundance_change function returns a data frame with the following
  appended to the name, giving the time of the subtracted abundance.}
  \item{species.var: }{A column with the specified species.var.}
  \item{change: }{A numeric column of the change in abundance between consecutive
- timepoints. A postive value occurs when a species increases in abundnace
+ timepoints. A positive value occurs when a species increases in abundance
  over time, and a negative value when a species decreases in abundance over
  time.}
 }
 }
 \description{
 Calculates the abundance change for species in a replicate
-  between two consecutive time points.
+  between two consecutive time points. Changes are on abundance values provided, if relative data is used, then changes in relative abundance will be calcuated.
 }
 \examples{
 data(pplots)

@@ -1,8 +1,11 @@
 #' @title Community Diversity
-#' @description Calculates Shannon's or Inverse Simpson's diversity of a community, but only one metric of diversity can be calculated at a time and must be specified.  
-#' @param df A data frame containing species and abundance columns and optional columns of time and/or replicate.
+#' 
+#' @description Calculates Shannon's or Inverse Simpson's diversity of a
+#'   community, but only one metric of diversity can be calculated at a time and
+#'   must be specified.
+#' @param df A data frame containing species and abundance columns and optional
+#'   columns of time and/or replicate.
 #' @param time.var The name of the optional time column 
-#' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column 
 #' @param metric The diversity metric to return:

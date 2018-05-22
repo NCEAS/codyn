@@ -35,6 +35,20 @@ check_names <- function(given, data) {
     }
 }
 
+#' Utility function to warn users that either multiple records exist within
+#' replicates, or that data may be spanning mutiple replicates but no
+#' replicate.var has been specified
+#' @param df A dataframe containing time.var, species.var and abundance.var columns
+#' @param time.var The name of the time column from df
+#' @param species.var The name of the species column from df
+check_single_onerep <- function(df, time.var, species.var) {
+  counts <- table(df[[time.var]], df[[species.var]])
+  if (any(counts > 1))
+    stop(paste("Either data span multiple replicates with no replicate.var",
+               "specified or multiple records within years for some species",
+               sep = ' '))
+}
+
 #' Utility function to ensure only a single record exists for a given species
 #' within one replicate if replicate.var given, and for one time point if
 #' time.var given.
@@ -60,15 +74,16 @@ check_single <- function(df,
     checksingle <- apply(table(df[by]) > 1, 2:length(by), any)
     if(any(checksingle)) {
       idx <- which(checksingle, arr.ind = TRUE, useNames = FALSE)
-      if (!is.matrix(idx)) {
-        tab <- paste(by[2], names(idx), sep = '\t')
+      if (is.matrix(idx)) {
+        tab <- apply(idx, 1, function(x) mapply(`[[`, dimnames(checksingle), x))
+        tab <- capture.output(prmatrix(t(tab), rowlab = rep('', ncol(tab))))
+        tab <- paste(tab, collapse = '\n')
+      } else {
+        tab <- paste(by[2], names(idx), sep = '\n')
         nullvar <- c('replicate.var', 'time.var')[
           c(is.null(replicate.var), is.null(time.var))]
         tab <- paste(tab,
           paste0('Did you mean to specify a "', nullvar, '"?'), sep = '\n')
-      } else {
-        tab <- apply(idx, 1, function(x) mapply(`[[`, dimnames(checksingle), x))
-        tab <- paste(capture.output(tab)[-1], collapse = '\n')
       }
       stop(paste(
         'Multiple records for one or more species found at:',

@@ -2,7 +2,7 @@
 % Please edit documentation in R/curve_change.R
 \name{curve_change}
 \alias{curve_change}
-\title{Curve Changes}
+\title{Curve Change}
 \usage{
 curve_change(df, time.var, species.var, abundance.var, replicate.var = NULL)
 }
@@ -33,9 +33,8 @@ The curve_change function returns a data frame with the following
 \description{
 Calculates the area difference between two rank abundance curves
   between two consecutive time periods. If replicate is specified, it must be
-  measued in both time points, otherwise it will be dropped for that time
-  period comparision. Also, a replicate must have more than a single species
-  in both time periods.
+  measured in both time points, otherwise it will be dropped for that time
+  period comparision.
 }
 \examples{
 data(pplots)

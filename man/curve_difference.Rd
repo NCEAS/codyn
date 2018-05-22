@@ -2,7 +2,7 @@
 % Please edit documentation in R/curve_difference.R
 \name{curve_difference}
 \alias{curve_difference}
-\title{Curve Differences}
+\title{Curve Difference}
 \usage{
 curve_difference(df, time.var = NULL, species.var, abundance.var,
   replicate.var, treatment.var = NULL, pool = FALSE, block.var = NULL)
@@ -73,7 +73,7 @@ df <- subset(pplots, year == 2002 & block < 3)
 curve_difference(df = df,
                  species.var = "species",
                  abundance.var = "relative_cover",
-                 treatment.var = 'treatment',
+                 treatment.var = "treatment",
                  block.var = "block",
                  replicate.var = "plot")
 # With blocks and time
@@ -81,7 +81,7 @@ df <- subset(pplots, year < 2004 & block < 3)
 curve_difference(df = df,
                  species.var = "species",
                  abundance.var = "relative_cover",
-                 treatment.var = 'treatment',
+                 treatment.var = "treatment",
                  block.var = "block",
                  replicate.var = "plot",
                  time.var = "year")
@@ -91,7 +91,7 @@ df <- subset(pplots, year < 2004)
 curve_difference(df = df,
                  species.var = "species",
                  abundance.var = "relative_cover",
-                 treatment.var = 'treatment',
+                 treatment.var = "treatment",
                  pool = TRUE,
                  replicate.var = "plot",
                  time.var = "year")

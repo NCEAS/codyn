@@ -4,7 +4,7 @@
 \alias{fill_species}
 \title{Add missing abundances for species absent from a replicate, on the assumption
 that any species in the \code{species.var} column should be included for
-every group defined by all the remaining colums save \code{abundance.var}.}
+every group defined by all the remaining columns except \code{abundance.var}.}
 \usage{
 fill_species(df, species.var, abundance.var)
 }
@@ -23,5 +23,5 @@ A dataframe with the same columns as df, but with \code{NA} added for
 \description{
 Add missing abundances for species absent from a replicate, on the assumption
 that any species in the \code{species.var} column should be included for
-every group defined by all the remaining colums save \code{abundance.var}.
+every group defined by all the remaining columns except \code{abundance.var}.
 }

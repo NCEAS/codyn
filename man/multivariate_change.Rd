@@ -2,13 +2,15 @@
 % Please edit documentation in R/multivariate_change.R
 \name{multivariate_change}
 \alias{multivariate_change}
-\title{Using dissimilarity-based metrics to calucuate changes in composition and dispersion}
+\title{Using dissimilarity-based metrics to calucuate changes in composition
+ and dispersion}
 \usage{
 multivariate_change(df, time.var, species.var, abundance.var, replicate.var,
   treatment.var = NULL)
 }
 \arguments{
-\item{df}{A data frame containing time, species, abundance and replicate columns and an optional column of treatment}
+\item{df}{A data frame containing time, species, abundance and replicate
+columns and an optional column of treatment}
 
 \item{time.var}{The name of the time column}
 
@@ -21,16 +23,34 @@ multivariate_change(df, time.var, species.var, abundance.var, replicate.var,
 \item{treatment.var}{the neame of the optional treatment column}
 }
 \value{
-The multivariate_change function returns a data frame with the following attributes:
+The multivariate_change function returns a data frame with the
+  following attributes:
 \itemize{
- \item{time.var_pair: }{A characteric column that has the time points to be compared, separated by a dash.}
- \item{composition_change: }{A numeric column that is the euclidean distance between the centroids of two consecutive time points.}
- \item{dispersion_change: }{A numeric column that is the difference in the average dispersion of the replicates around the centriod for the two consecutive time periods. A negative value indicates replicates are converging over time (there is less dispersion at time peroid 2 than time period 1) and a postive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1.}
- \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
+ \item{time.var_pair: }{A characteric column that has the time points to be
+ compared, separated by a dash.}
+ \item{composition_change: }{A numeric column that is the euclidean distance
+ between the centroids of two consecutive time points.}
+ \item{dispersion_change: }{A numeric column that is the difference in the
+ average dispersion of the replicates around the centriod for the two
+ consecutive time periods. A negative value indicates replicates are
+ converging over time (there is less dispersion at time peroid 2 than time
+ period 1) and a postive value indicates replicates are diverging over time
+ (there is more dispersion at time period 2 than time period 1.}
+ \item{treatment.var: }{A column that has same name and type as the
+ treatment.var column, if treatment.var is specified.}
 }
 }
 \description{
-Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of time period 1 and time period 2 and ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since, Composition change is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted, thus result of composition change depends on how many time periods are being measured. Dispersion change is the difference of average dispersion of each replicate to its centroid between consecutive time periods.
+Calculates the changes in composition and dispersion based off a
+  Bray-Curtis dissimilarity matrix. Composition change is the euclidean
+  distance between the centroids of time period 1 and time period 2 and
+  ranges from 0-1, where 0 are identical communities, and 1 and completelty
+  different communities. Since, composition change is based on plotted
+  distance between centroids, it is context dependent and depends on how many
+  centroids are being plotted, thus result of composition change depends on
+  how many time periods are being measured. Dispersion change is the
+  difference of average dispersion of each replicate to its centroid between
+  consecutive time periods.
 }
 \examples{
 data(pplots)
@@ -41,7 +61,7 @@ multivariate_change(pplots,
                     treatment.var = "treatment", 
                     species.var = "species", 
                     abundance.var = "relative_cover")
-#In each year there are 6 replicates and there are 4 years of data for 3 time comparitions, thus 24 total observations in each treatment.
+#In each year there are 6 replicates and there are 4 years of data for 3 time comparisons, thus 24 total observations in each treatment.
 
 #Without treatment
 df <- subset(pplots, treatment == "N1P0")
@@ -50,9 +70,9 @@ multivariate_change(df,
                     replicate.var = "plot", 
                     species.var = "species", 
                     abundance.var = "relative_cover")
-#In each year there are 6 replicates and there are 4 years of data for 3 time comparitions, thus 24 total observations.
+#In each year there are 6 replicates and there are 4 years of data for 3 time comparisons, thus 24 total observations.
 
 }
 \references{
-Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson?
+Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson et al. 2006.
 }

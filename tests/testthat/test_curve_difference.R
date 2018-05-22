@@ -115,6 +115,6 @@ test_that("curve_difference function returns correct result", {
   expect_error(curve_difference(bdat2, abundance.var = "relative_cover",
                               replicate.var = "plot",
                               species.var = "species",
-                              time.var = "year"), "In replicate 25 there is more than one record for species at the time point 2002")
+                              time.var = "year"), "Multiple records for one or more species found at:\nyear \"2002\"\nplot \"25\"  ")
   
 })

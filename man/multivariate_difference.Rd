@@ -4,7 +4,7 @@
 \alias{multivariate_difference}
 \title{Using dissimilarity-based metrics to calcualte differences in
  composition and dispersion between pairs of treatments at a single time
- point.}
+ point}
 \usage{
 multivariate_difference(df, time.var = NULL, species.var, abundance.var,
   replicate.var, treatment.var)
@@ -46,7 +46,7 @@ The multivariate_difference function returns a data frame with the
 Calculates the difference in composition and dispersion between
  treatments based off a Bray-Curtis dissimilarity matrix at a single point in
  time. Composition difference is the euclidean distance between the centroids
- of different treatments. ince, centroid distance is based on plotted
+ of different treatments. Since centroid distance is based on plotted
  distance between centroids, it is context dependent and depends on how many
  centroids are being plotted. The centroid distance between treatments
  depends on how many treatments are being compared. Dispersion difference is
@@ -63,7 +63,8 @@ multivariate_difference(df,
                         treatment.var = "treatment", 
                         species.var = "species", 
                         abundance.var = "relative_cover")
-# There are 6 replicates for each of three treatments, thus 18 total observations.
+# There are 6 replicates for each of three treatments, thus 18 total
+observations.
 #With time
 multivariate_difference(pplots, 
                         time.var = "year", 
@@ -71,8 +72,9 @@ multivariate_difference(pplots,
                         species.var = "species", 
                         abundance.var = "relative_cover", 
                         treatment.var = "treatment")
-#In each year there are 6 replicates for each of three treatments, for a total of 18 observations.
+#In each year there are 6 replicates for each of three treatments, for a
+total of 18 observations.
 }
 \references{
-Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson?
+Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson et al. 2006
 }
