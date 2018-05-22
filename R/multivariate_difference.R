@@ -40,7 +40,7 @@
 #' @importFrom stats aggregate as.formula
 #' @examples  
 #' data(pplots)
-#' #Without time
+#' # Without time
 #' df <- subset(pplots, year == 2002)
 #' multivariate_difference(df, 
 #'                         replicate.var = "plot", 
@@ -48,16 +48,17 @@
 #'                         species.var = "species", 
 #'                         abundance.var = "relative_cover")
 #' # There are 6 replicates for each of three treatments, thus 18 total
-#' observations.
-#' #With time
+#' # observations.
+#' 
+#' # With time
 #' multivariate_difference(pplots, 
 #'                         time.var = "year", 
 #'                         replicate.var = "plot", 
 #'                         species.var = "species", 
 #'                         abundance.var = "relative_cover", 
 #'                         treatment.var = "treatment")
-#' #In each year there are 6 replicates for each of three treatments, for a
-#' total of 18 observations.
+#' # In each year there are 6 replicates for each of three treatments, for a
+#' # total of 18 observations.
 #' @export
 multivariate_difference <- function(df,
                                     time.var = NULL,

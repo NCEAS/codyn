@@ -79,7 +79,7 @@ check_single <- function(df,
         tab <- capture.output(prmatrix(t(tab), rowlab = rep('', ncol(tab))))
         tab <- paste(tab, collapse = '\n')
       } else {
-        tab <- paste(by[2], names(idx), sep = '\n')
+        tab <- paste(c(by[2], names(idx)), collapse = '\n')
         nullvar <- c('replicate.var', 'time.var')[
           c(is.null(replicate.var), is.null(time.var))]
         tab <- paste(tab,
@@ -300,7 +300,8 @@ check_args <- function(df,
                        replicate.var = NULL,
                        treatment.var = NULL,
                        pool = FALSE, 
-                       block.var = NULL) {
+                       block.var = NULL,
+                       reference.time = NULL) {
   
   # drop extraneous columns
   args <- as.list(match.call()[-1])

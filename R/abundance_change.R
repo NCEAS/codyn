@@ -38,10 +38,12 @@
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
 #' @export
-abundance_change <- function(df, time.var, 
-                                 species.var, 
-                                 abundance.var, 
-                                 replicate.var = NULL) {
+abundance_change <- function(df,
+                             time.var, 
+                             species.var, 
+                             abundance.var, 
+                             replicate.var = NULL,
+                             reference.time = NULL) {
   
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
@@ -56,14 +58,22 @@ abundance_change <- function(df, time.var,
   cross.var2 <- paste(cross.var, 2, sep = '')
   split_by <- c(replicate.var)
   merge_on <- !(names(allsp) %in% split_by)
-  ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
+  if (is.null(reference.time)) {
+    ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
       y <- x[merge_on]
       cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
       f <- factor(cross[[cross.var]])
       f2 <- factor(cross[[cross.var2]], levels = levels(f))
       idx <- (as.integer(f2) - as.integer(f)) == 1
       cross[idx, ]
-  })
+    })
+  } else {
+    ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
+      y <- x[x[[time.var]] != reference.time, merge_on]
+      x <- x[x[[time.var]] == reference.time, ]
+      merge(x, y, by = species.var, suffixes = c('', '2'))
+    })
+  }
   
   # remove rows with NA for both abundances (preferably only when introduced
   # by fill_species)
