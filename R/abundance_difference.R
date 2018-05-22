@@ -1,4 +1,4 @@
-#' @title  Abundance Differences
+#' @title Abundance Differences
 #' 
 #' @description Calculates the abundnace difference for species between two
 #'   samples. There are three ways differences can be calculated. 1) Between
@@ -10,16 +10,20 @@
 #'   optional. If treatment.var is specified, the treatment that each replicate
 #'   belongs to will also be listed in the output).
 #'   
-#' @param df A data frame containing species, abundance, replicate columns and optional time, treatment and block columns.
+#' @param df A data frame containing species, abundance, replicate columns and
+#'   optional time, treatment and block columns.
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
-#' @param pool An argument to allow abundance values to be pooled within a treatment. The default value is "FALSE", a value of "TRUE" averages abundance of each species within a treatment at a given time point.
+#' @param pool An argument to allow abundance values to be pooled within a
+#'   treatment. The default value is "FALSE", a value of "TRUE" averages
+#'   abundance of each species within a treatment at a given time point.
 #' 
-#' @return The abundance_difference function returns a data frame with the following attributes:
+#' @return The abundance_difference function returns a data frame with the
+#'   following attributes:
 #' \itemize{
 #'  \item{species.var: }{A column that has same name and type as the species.var
 #'  column.}
@@ -58,7 +62,7 @@
 #' abundance_difference(df = df,
 #'                      species.var = "species",
 #'                      abundance.var = "relative_cover",
-#'                      treatment.var = 'treatment',
+#'                      treatment.var = "treatment",
 #'                      block.var = "block",
 #'                      replicate.var = "plot")
 #' 
@@ -67,7 +71,7 @@
 #' abundance_difference(df = df,
 #'                      species.var = "species",
 #'                      abundance.var = "relative_cover",
-#'                      treatment.var = 'treatment',
+#'                      treatment.var = "treatment",
 #'                      block.var = "block",
 #'                      replicate.var = "plot",
 #'                      time.var = "year")
@@ -77,7 +81,7 @@
 #' abundance_difference(df = df,
 #'                      species.var = "species",
 #'                      abundance.var = "relative_cover",
-#'                      treatment.var = 'treatment',
+#'                      treatment.var = "treatment",
 #'                      pool = TRUE,
 #'                      replicate.var = "plot",
 #'                      time.var = "year")
@@ -99,43 +103,19 @@
 #'                      replicate.var = "plot",
 #'                      time.var = "year")
 #' @export
-abundance_difference <- function(df, time.var = NULL, species.var, 
-                                 abundance.var, replicate.var,
-                                 treatment.var = NULL, pool = FALSE, 
+abundance_difference <- function(df,
+                                 time.var = NULL,
+                                 species.var, 
+                                 abundance.var,
+                                 replicate.var,
+                                 treatment.var = NULL,
+                                 pool = FALSE, 
                                  block.var = NULL) {
   
-  # drop extraneous columns
-  args <- as.list(match.call())
-  df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
-
-  # check no NAs in abundance column
-  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
-
-  # check no NAs in species column
-  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
+  # validate function call and purge extraneous columns
+  args <- as.list(match.call()[-1])
+  df <- do.call(check_args, args, envir = parent.frame())
   
-  # check no species are repeated
-  if (is.null(time.var)){
-    # check there unique species x time combinations
-    check_single_onerep(df, replicate.var, species.var)
-  }
-  else {
-    # check unique species x time x replicate combinations
-    check_single(df, time.var, species.var, replicate.var)
-  }
-  
-  if (!is.null(block.var)) {
-    reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
-    reps_obs <- length(unique(df[[replicate.var]]))
-    if (reps_exp != reps_obs)
-      stop("There is not one replicate per treatment in a block")
-    cross.var <- treatment.var
-  } else if (pool) {
-    cross.var <- treatment.var
-  } else {
-    cross.var <- replicate.var
-  }
-
   if (pool) {
     # pool and rank species in each replicate
     allsp <- pool_replicates(df, time.var, species.var, abundance.var,
@@ -147,6 +127,15 @@ abundance_difference <- function(df, time.var = NULL, species.var,
       species.var, abundance.var)
   }
 
+  # specify which variable to use for comparison/"cross join"
+  if (!is.null(block.var)) {
+    cross.var <- treatment.var
+  } else if (pool) {
+    cross.var <- treatment.var
+  } else {
+    cross.var <- replicate.var
+  }
+  
   # order cross.var if unordered factor
   to_ordered = is.factor(df[[cross.var]]) & !is.ordered(df[[cross.var]])
   if (to_ordered) {
@@ -202,7 +191,8 @@ abundance_difference <- function(df, time.var = NULL, species.var,
 #
 ############################################################################
 
-# A function to calculate abundance differences for a species between two samples 
+# A function to calculate abundance differences for a species between two
+# samples
 # @param df a dataframe
 # @param species.var the name of the species column
 # @param abundance.var the name of the abundance column

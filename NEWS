@@ -1,3 +1,17 @@
+Version 2.0.0
+-------------
+
+NEW FUNCTIONS
+
+* RAC_change, RAC_difference: 
+* abundance_change, abundance_difference:
+* curve_change, curve_difference:
+* multivariate_change, multivariate_difference:
+* community_diversity:
+* community_structure:
+
+BUG FIXES
+
 Version 1.1.0
 -------------
 
