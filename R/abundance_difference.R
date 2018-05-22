@@ -1,6 +1,6 @@
 #' @title  Abundance Differences
 #' 
-#' @description Calculates the abundnace difference for species between two
+#' @description Calculates the abundance difference for species between two
 #'   samples. Differences are on abundance values provided, if relative data is used, then differences in relative abundance will be calcuated. There are three ways differences can be calculated. 1) Between
 #'   treatments within a block (note: block.var and treatment.var need to be
 #'   specified). 2) Between treatments, pooling all replicates into a single
@@ -17,7 +17,7 @@
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
-#' @param pool An argument to allow abundance values to be pooled within a treatment. The default value is "FALSE", a value of "TRUE" averages abundance of each species within a treatment at a given time point.
+#' @param pool An argument to allow abundance values to be pooled within a treatment. The default value is "FALSE", a value of "TRUE" averages the abundances of each species within a treatment at a given time point.
 #' 
 #' @return The abundance_difference function returns a data frame with the following attributes:
 #' \itemize{
@@ -25,7 +25,7 @@
 #'  column.}
 #'  \item{difference: }{A numeric column of the abundance differences between
 #'  the two samples being compared (replicates or treatments). A numeric column
-#'  of the change in abundance between consecutive timepoints. A postive value
+#'  of the change in abundance between consecutive timepoints. A positive value
 #'  occurs when a species has greater abundance in replicate.var2 than in
 #'  replicate.var and/or in treatment.var2 than in treatment.var.}
 #'  \item{replicate.var: }{A column that has same name and type as the
