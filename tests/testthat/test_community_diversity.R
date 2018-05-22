@@ -37,7 +37,7 @@ test_that("community_diversity function returns correct result", {
   expect_equal(myresults1$Shannon, 1.842618, tolerance = 0.00001)
 
   
-  #test the Evar returned when specified
+  #test the Simpson's returned when specified
   myresults2 <- community_diversity(dat1, abundance.var = "relative_cover",
                                     metric = "InverseSimpson")
   
