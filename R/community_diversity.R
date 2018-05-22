@@ -8,15 +8,15 @@
 #' @param metric The diversity metric to return:
 #' \itemize{
 #'  \item{"Shannon": }{The default metric, calculates Shannon's diversity.}
-#'  \item{"Simpson": }{Calculates inverse of Simpson's diversity.}
+#'  \item{"InverseSimpson": }{Calculates inverse of Simpson's diversity.}
 #' }
 #' 
 #' @return The community_diversity function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
-#'  \item{Shannon: }{A numeric column of Shannons diversity if metric = "Shannon"}
-#'  \item{Simpson: }{A numeric column of Simpsons diversity if metric = "InverseSimpson"}
+#'  \item{Shannon: }{A numeric column of Shannon's diversity if metric = "Shannon"}
+#'  \item{InverseSimpson: }{A numeric column of the inverse of Simpson's diversity if metric = "InverseSimpson"}
 #' }
 #' @examples
 #' data(pplots)
