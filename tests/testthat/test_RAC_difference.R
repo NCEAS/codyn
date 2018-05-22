@@ -129,7 +129,7 @@ test_that("RAC_difference function returns correct result", {
   expect_error(RAC_difference(bdat2, abundance.var = "relative_cover",
                               replicate.var = "plot",
                               species.var = "species",
-                              time.var = "year"), "Multiple records for one or more species found at:\nyear \"2002\"\nplot \"25\"")
+                              time.var = "year"), "Multiple records for one or more species found at:\n year   plot\n \"2002\" \"25\"")
   
   #test that is doesn't work with missing species name
   expect_error(RAC_difference(bdat3, abundance.var = "relative_cover",

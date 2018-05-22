@@ -54,6 +54,6 @@ test_that("curve_change function returns correct result", {
   expect_error(curve_change(bdat2, abundance.var = "relative_cover",
                           replicate.var = "plot",
                           species.var = "species",
-                          time.var = "year"), "Multiple records for one or more species found at:\nyear \"2002\"\nplot \"25\"")
+                          time.var = "year"), "Multiple records for one or more species found at:\n year   plot\n \"2002\" \"25\"")
   
 })

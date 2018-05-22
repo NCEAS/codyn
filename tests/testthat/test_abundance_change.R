@@ -57,7 +57,7 @@ test_that("abundance_change function returns correct result", {
   expect_error(abundance_change(bdat2, abundance.var = "relative_cover",
                           replicate.var = "plot",
                           species.var = "species",
-                          time.var = "year"), "Multiple records for one or more species found at:\nyear \"2002\"\nplot \"25\"")
+                          time.var = "year"), "Multiple records for one or more species found at:\n year   plot\n \"2002\" \"25\"")
   
   #test that is doesn't work with missing species name
   expect_error(abundance_change(bdat3, abundance.var = "relative_cover",
