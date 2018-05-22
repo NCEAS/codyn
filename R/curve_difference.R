@@ -1,4 +1,5 @@
 #' @title Curve Difference
+#' 
 #' @description Calculates the area difference between two rank abundance
 #'   curves. There are three ways differences can be calculated. 1) Between all
 #'   treatments within a block (note: block.var and treatment.var need to be
@@ -54,7 +55,7 @@
 #' curve_difference(df = df,
 #'                  species.var = "species",
 #'                  abundance.var = "relative_cover",
-#'                  treatment.var = 'treatment',
+#'                  treatment.var = "treatment",
 #'                  block.var = "block",
 #'                  replicate.var = "plot")
 #' # With blocks and time
@@ -62,7 +63,7 @@
 #' curve_difference(df = df,
 #'                  species.var = "species",
 #'                  abundance.var = "relative_cover",
-#'                  treatment.var = 'treatment',
+#'                  treatment.var = "treatment",
 #'                  block.var = "block",
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
@@ -72,7 +73,7 @@
 #' curve_difference(df = df,
 #'                  species.var = "species",
 #'                  abundance.var = "relative_cover",
-#'                  treatment.var = 'treatment',
+#'                  treatment.var = "treatment",
 #'                  pool = TRUE,
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
@@ -95,38 +96,18 @@
 #'                  time.var = "year")
 #' @importFrom stats aggregate.data.frame
 #' @export
-curve_difference <- function(df, time.var = NULL, species.var, 
-                                abundance.var, replicate.var,
-                                treatment.var = NULL, pool = FALSE, 
-                                block.var = NULL) {
-
-  # drop extraneous columns
-  args <- as.list(match.call())
-  df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
+curve_difference <- function(df,
+                             time.var = NULL,
+                             species.var, 
+                             abundance.var,
+                             replicate.var,
+                             treatment.var = NULL,
+                             pool = FALSE, 
+                             block.var = NULL) {
   
-  # check no NAs in abundance column
-  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
-  
-  # check no NAs in species column
-  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
-
-  #check no species are repeated
-  if (is.null(time.var)){
-    # check there unique species x time combinations
-    check_single_onerep(df, replicate.var, species.var)
-  } else {
-    # check unique species x time x replicate combinations
-    check_single(df, time.var, species.var, replicate.var)
-  }
-
-  if (!is.null(block.var)) {
-    reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
-    reps_obs <- length(unique(df[[replicate.var]]))
-    if (reps_exp != reps_obs)
-      stop("There is not one replicate per treatment in a block")
-  }
-
-  rep_trt<-unique(subset(df, select = c(replicate.var, treatment.var)))
+  # validate function call and purge extraneous columns
+  args <- as.list(match.call()[-1])
+  df <- do.call(check_args, args, envir = parent.frame())
   
   if (pool) {
     #add zero abundnaces for missing species to get averages
@@ -153,15 +134,15 @@ curve_difference <- function(df, time.var = NULL, species.var,
         species.var, abundance.var)
   }
   
-  # determine which variable indicates contrast for comparison
-  if (pool) {
+  # specify which variable to use for comparison/"cross join"
+  if (!is.null(block.var)) {
     cross.var <- treatment.var
-  } else if (is.null(time.var) & !is.null(block.var)) {
+  } else if (pool) {
     cross.var <- treatment.var
   } else {
     cross.var <- replicate.var
   }
-
+  
   # order cross.var if unordered factor
   to_ordered = is.factor(df[[cross.var]]) & !is.ordered(df[[cross.var]])
   if (to_ordered) {

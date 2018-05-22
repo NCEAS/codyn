@@ -35,45 +35,44 @@ check_names <- function(given, data) {
     }
 }
 
-#' Utility function to warn users that either multiple records exist within
-#' replicates, or that data may be spanning mutiple replicates but no
-#' replicate.var has been specified
-#' @param df A dataframe containing time.var, species.var and abundance.var columns
-#' @param time.var The name of the time column from df
-#' @param species.var The name of the species column from df
-check_single_onerep <- function(df, time.var, species.var) {
-  counts <- table(df[[time.var]], df[[species.var]])
-  if (any(counts > 1))
-    stop(paste("Either data span multiple replicates with no replicate.var",
-               "specified or multiple records within years for some species",
-               sep = ' '))
-}
-
 #' Utility function to ensure only a single record exists for a given species
-#' within one replicate, for one time point.
-#' @param df A dataframe containing time.var, species.var, and replicate.var columns
-#' @param time.var The name of the time column from df
+#' within one replicate if replicate.var given, and for one time point if
+#' time.var given.
+#' @param df A dataframe containing a species.var column, and optionally a
+#'   time.var and replicate.var columns
 #' @param species.var The name of the species column from df
+#' @param time.var The name of the time column from df
 #' @param replicate.var The name of the replicate column from df
-check_single <- function(df, time.var, species.var, replicate.var) {
-  X <- split(df, df[[replicate.var]])
-  checksingle <- lapply(X, FUN = function(xx) {
-    apply(table(xx[[species.var]], xx[[time.var]]), 2, function(x) any(x>1))
-  })
-  reptest <- unlist(lapply(checksingle, any))
-  yrtest <- lapply(checksingle, which)
-
-  if(any(unlist(checksingle))){
-    if(length(names(reptest)[which(reptest)]) == 1){
-      stop(paste("In replicate", names(reptest)[which(reptest)],
-                 "there is more than one record for species at the time point",
-                 unlist(lapply(yrtest, names))))
-    } else {
-      toprint <- unlist(lapply(yrtest, names))
-      stop(paste0("For the following replicates at the following time points, ",
-                  "there is more than one records for species: \n",
-                  paste(names(toprint), collapse = "\t"), "\n",
-                  paste(toprint, collapse = "\t")))
+check_single <- function(df,
+                         species.var,
+                         time.var = NULL,
+                         replicate.var = NULL) {
+  
+  if (is.null(time.var) & is.null(replicate.var)) {
+    checksingle <- table(df[species.var]) > 1
+    if (any(checksingle)) {
+      stop(paste(
+        'Multiple records for one or more species found.',
+        'Did you mean to specify a "replicate.var" or "time.var"?'))
+    }
+  } else {
+    by <- c(species.var, time.var, replicate.var)
+    checksingle <- apply(table(df[by]) > 1, 2:length(by), any)
+    if(any(checksingle)) {
+      idx <- which(checksingle, arr.ind = TRUE, useNames = FALSE)
+      if (!is.matrix(idx)) {
+        tab <- paste(by[2], names(idx), sep = '\t')
+        nullvar <- c('replicate.var', 'time.var')[
+          c(is.null(replicate.var), is.null(time.var))]
+        tab <- paste(tab,
+          paste0('Did you mean to specify a "', nullvar, '"?'), sep = '\n')
+      } else {
+        tab <- apply(idx, 1, function(x) mapply(`[[`, dimnames(checksingle), x))
+        tab <- paste(capture.output(tab)[-1], collapse = '\n')
+      }
+      stop(paste(
+        'Multiple records for one or more species found at:',
+        tab, sep = '\n'))
     }
   }
 }
@@ -143,7 +142,7 @@ fill_zeros <- function(df, species.var, abundance.var) {
 
 #' Add missing abundances for species absent from a replicate, on the assumption
 #' that any species in the \code{species.var} column should be included for
-#' every group defined by all the remaining colums save \code{abundance.var}.
+#' every group defined by all the remaining columns except \code{abundance.var}.
 #'
 #' @param df A dataframe with species, abundances, and at least one other column
 #'   to group by
@@ -275,4 +274,47 @@ Evar <- function(x, S = length(x)) {
   lnx <- log(x1)
   theta <- (S - 1) / S * var(lnx)
   return(1 - 2 / pi * atan(theta))
-} 
+}
+
+# Check for errors in the application of arguments and input data
+# for all *_difference functions.
+check_args <- function(df,
+                       time.var = NULL,
+                       species.var,
+                       abundance.var,
+                       replicate.var = NULL,
+                       treatment.var = NULL,
+                       pool = FALSE, 
+                       block.var = NULL) {
+  
+  # drop extraneous columns
+  args <- as.list(match.call())
+  df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
+  
+  # validate argument combinations
+  if (pool & (is.null(treatment.var) | !is.null(block.var)))
+    stop("Not providing a treatment.var or providing a block.var is incompatible with pooling.")
+  if ((pool | !is.null(block.var)) & is.null(treatment.var))
+    stop("Not providing a treatment.var is incompatible with pooling or providing block.var.")
+  
+  # check no NAs in abundance column
+  if (any(is.na(df[[abundance.var]])))
+    stop("Abundance column contains missing values")
+  
+  # check no NAs in species column
+  if (any(is.na(df[[species.var]])))
+    stop("Species names are missing")
+  
+  if (!is.null(block.var)) {
+    reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
+    reps_obs <- length(unique(df[[replicate.var]]))
+    if (reps_exp != reps_obs)
+      stop("There is not one replicate per treatment in a block")
+  }
+  
+  # check no species are repeated
+  check_single(df, species.var,
+    time.var = time.var, replicate.var = replicate.var)
+
+  return(df)
+}

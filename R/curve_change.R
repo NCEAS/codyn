@@ -43,25 +43,9 @@ curve_change <- function(df, time.var,
                          abundance.var, 
                          replicate.var = NULL) {
 
-  # drop extraneous columns
-  args <- as.list(match.call())
-  df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
-  
-  # check no NAs in abundance column
-  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
-  
-  # check no NAs in species column
-  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
-
-  # check unique species x time x replicate combinations
-  if(is.null(replicate.var)){
-    check_single_onerep(df, time.var, species.var)
-  } else {
-    check_single(df, time.var, species.var, replicate.var)
-  }
-  
-  df <- subset(df, select = c(time.var, species.var, abundance.var, replicate.var))
-  df <- subset(df, df[[abundance.var]] != 0)
+  # validate function call and purge extraneous columns
+  args <- as.list(match.call()[-1])
+  df <- do.call(check_args, args, envir = parent.frame())
   
   # add rank abundance function within each time step and optionally replicate
   by <- c(replicate.var, time.var)

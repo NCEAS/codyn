@@ -112,42 +112,18 @@
 #'                replicate.var = "plot",
 #'                time.var = "year")
 #' @export
-RAC_difference <- function(df, time.var = NULL, species.var, 
-                                abundance.var, replicate.var,
-                                treatment.var = NULL, pool = FALSE, 
-                                block.var = NULL) {
+RAC_difference <- function(df,
+                           time.var = NULL,
+                           species.var, 
+                           abundance.var,
+                           replicate.var,
+                           treatment.var = NULL,
+                           pool = FALSE, 
+                           block.var = NULL) {
 
-  # drop extraneous columns
-  args <- as.list(match.call())
-  df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
-  
-  # check no NAs in abundance column
-  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
-  
-  # check no NAs in species column
-  if(any(is.na(df[[species.var]]))) stop("Species names are missing")
-  
-  # check no species are repeated
-  if (is.null(time.var)){
-    # check there unique species x time combinations
-    check_single_onerep(df, replicate.var, species.var)
-  }
-  else {
-    # check unique species x time x replicate combinations
-    check_single(df, time.var, species.var, replicate.var)
-  }
-  
-  if (!is.null(block.var)) {
-    reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
-    reps_obs <- length(unique(df[[replicate.var]]))
-    if (reps_exp != reps_obs)
-      stop("There is not one replicate per treatment in a block")
-    cross.var <- treatment.var
-  } else if (pool) {
-    cross.var <- treatment.var
-  } else {
-    cross.var <- replicate.var
-  }
+  # validate function call and purge extraneous columns
+  args <- as.list(match.call()[-1])
+  df <- do.call(check_args, args, envir = parent.frame())
   
   if (pool) {
     # pool and rank species in each replicate
@@ -162,6 +138,15 @@ RAC_difference <- function(df, time.var = NULL, species.var,
     # rank species in each replicate
     by <- c(block.var, time.var, treatment.var, replicate.var)
     rankdf <- split_apply_combine(allsp, by, FUN = add_ranks, abundance.var)
+  }
+
+  # specify which variable to use for comparison/"cross join"
+  if (!is.null(block.var)) {
+    cross.var <- treatment.var
+  } else if (pool) {
+    cross.var <- treatment.var
+  } else {
+    cross.var <- replicate.var
   }
   
   # order cross.var if unordered factor

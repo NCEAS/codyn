@@ -1,6 +1,7 @@
 #'@title Using dissimilarity-based metrics to calcualte differences in
 #'  composition and dispersion between pairs of treatments at a single time
 #'  point
+#'  
 #'@description Calculates the difference in composition and dispersion between
 #'  treatments based off a Bray-Curtis dissimilarity matrix at a single point in
 #'  time. Composition difference is the euclidean distance between the centroids
@@ -46,7 +47,8 @@
 #'                         treatment.var = "treatment", 
 #'                         species.var = "species", 
 #'                         abundance.var = "relative_cover")
-#' # There are 6 replicates for each of three treatments, thus 18 total observations.
+#' # There are 6 replicates for each of three treatments, thus 18 total
+#' observations.
 #' #With time
 #' multivariate_difference(pplots, 
 #'                         time.var = "year", 
@@ -54,24 +56,19 @@
 #'                         species.var = "species", 
 #'                         abundance.var = "relative_cover", 
 #'                         treatment.var = "treatment")
-#' #In each year there are 6 replicates for each of three treatments, for a total of 18 observations.
+#' #In each year there are 6 replicates for each of three treatments, for a
+#' total of 18 observations.
 #' @export
-multivariate_difference <- function(df, time.var = NULL, species.var,
-                                    abundance.var, replicate.var, treatment.var) {
+multivariate_difference <- function(df,
+                                    time.var = NULL,
+                                    species.var,
+                                    abundance.var,
+                                    replicate.var,
+                                    treatment.var) {
   
-  # drop extraneous columns
-  args <- as.list(match.call())
-  df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
-  
-  # check no NAs in abundance column
-  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
-
-  # check unique species x time x replicate combinations
-  if(is.null(time.var)){
-    check_single_onerep(df, replicate.var, species.var)
-  } else {
-    check_single(df, time.var, species.var, replicate.var)
-  }
+  # validate function call and purge extraneous columns
+  args <- as.list(match.call()[-1])
+  df <- do.call(check_args, args, envir = parent.frame())
   
   by <- time.var
   output <- split_apply_combine(df, by, FUN = mult_diff, time.var, species.var,
@@ -107,7 +104,8 @@ mult_diff <- function(df, time.var, species.var, abundance.var,
 
   #transpose data
   idvar <- c(time.var, replicate.var, treatment.var)
-  species <- reshape(df, idvar = idvar, timevar = species.var, direction = 'wide')
+  species <- reshape(df, idvar = idvar, timevar = species.var,
+    direction = 'wide')
   species[is.na(species)] <- 0
   
   #calculate bray-curtis dissimilarities
@@ -155,7 +153,8 @@ mult_diff <- function(df, time.var, species.var, abundance.var,
     by.x = treatment.var2, by.y = treatment.var)
   
   #calculate absolute difference
-  cent_dist_disp2[[treatment.var]] <- as.character(cent_dist_disp2[[treatment.var]])
+  cent_dist_disp2[[treatment.var]] <- as.character(
+    cent_dist_disp2[[treatment.var]])
   cent_dist_disp2[[paste(treatment.var, 2, sep = "")]] <- as.character(
     cent_dist_disp2[[paste(treatment.var, 2, sep = "")]])
   
