@@ -303,7 +303,8 @@ check_args <- function(df,
                        block.var = NULL) {
   
   # drop extraneous columns
-  args <- as.list(match.call())
+  args <- as.list(match.call()[-1])
+  args <- args[!sapply(args, is.null)]
   df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
   
   # validate argument combinations
