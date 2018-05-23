@@ -57,6 +57,8 @@ check_single_onerep <- function(df, time.var, species.var) {
 #' @param species.var The name of the species column from df
 #' @param time.var The name of the time column from df
 #' @param replicate.var The name of the replicate column from df
+#' 
+#' @importFrom utils capture.output
 check_single <- function(df,
                          species.var,
                          time.var = NULL,
@@ -218,6 +220,7 @@ add_ranks <- function(df, abundance.var) {
 #'   least abundant.}
 #'     \item{cumabund: }{}
 #'   }
+#' @importFrom stats stepfun
 add_rank_abundance <- function(df, species.var, abundance.var) {
 
   df <- add_ranks(df, abundance.var)
@@ -281,9 +284,9 @@ curve_dissim <- function(sf, sf2) {
   return(sum(w*h))
 } 
 
-# A utility function to calculate Evar from Smith and Wilson 1996
-# @param S the number of species in the sample
-# @param x the vector of abundances of each species
+#' A utility function to calculate Evar from Smith and Wilson 1996
+#' @param S the number of species in the sample
+#' @param x the vector of abundances of each species
 Evar <- function(x, S = length(x)) {
   x1 <- x[x!=0]
   lnx <- log(x1)
@@ -291,8 +294,8 @@ Evar <- function(x, S = length(x)) {
   return(1 - 2 / pi * atan(theta))
 }
 
-# Check for errors in the application of arguments and input data
-# for all *_difference functions.
+#' Check for errors in the application of arguments and input data
+#' for all *_difference functions.
 check_args <- function(df,
                        time.var = NULL,
                        species.var,

@@ -37,7 +37,7 @@
 #' }
 #' @references Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson et al. 2006
 #' @importFrom vegan vegdist betadisper
-#' @importFrom stats aggregate as.formula
+#' @importFrom stats aggregate reshape
 #' @examples  
 #' data(pplots)
 #' # Without time

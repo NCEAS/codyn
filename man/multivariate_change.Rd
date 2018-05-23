@@ -61,7 +61,8 @@ multivariate_change(pplots,
                     treatment.var = "treatment", 
                     species.var = "species", 
                     abundance.var = "relative_cover")
-#In each year there are 6 replicates and there are 4 years of data for 3 time comparisons, thus 24 total observations in each treatment.
+# In each year there are 6 replicates and there are 4 years of data for 3
+# time comparisons, thus 24 total observations in each treatment.
 
 #Without treatment
 df <- subset(pplots, treatment == "N1P0")
@@ -70,9 +71,11 @@ multivariate_change(df,
                     replicate.var = "plot", 
                     species.var = "species", 
                     abundance.var = "relative_cover")
-#In each year there are 6 replicates and there are 4 years of data for 3 time comparisons, thus 24 total observations.
+# In each year there are 6 replicates and there are 4 years of data for 3
+# time comparisons, thus 24 total observations.
 
 }
 \references{
-Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson et al. 2006.
+Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson et al.
+  2006.
 }

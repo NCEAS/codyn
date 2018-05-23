@@ -42,7 +42,8 @@
 #'                     treatment.var = "treatment", 
 #'                     species.var = "species", 
 #'                     abundance.var = "relative_cover")
-#' #In each year there are 6 replicates and there are 4 years of data for 3 time comparisons, thus 24 total observations in each treatment.
+#' # In each year there are 6 replicates and there are 4 years of data for 3
+#' # time comparisons, thus 24 total observations in each treatment.
 #' 
 #' #Without treatment
 #' df <- subset(pplots, treatment == "N1P0")
@@ -51,11 +52,13 @@
 #'                     replicate.var = "plot", 
 #'                     species.var = "species", 
 #'                     abundance.var = "relative_cover")
-#' #In each year there are 6 replicates and there are 4 years of data for 3 time comparisons, thus 24 total observations.
+#' # In each year there are 6 replicates and there are 4 years of data for 3
+#' # time comparisons, thus 24 total observations.
 #'
 #' @importFrom vegan vegdist betadisper
-#' @importFrom stats aggregate as.formula
-#' @references Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson et al. 2006.
+#' @importFrom stats aggregate reshape
+#' @references Avolio et al. 2015; Avolio et al. OUR PAPER, Mari Anderson et al.
+#'   2006.
 #' @export
 multivariate_change <- function(df,
                                 time.var,
@@ -106,7 +109,8 @@ mult_change <- function(df, time.var, species.var, abundance.var,
   
   #transpose data
   idvar = c(treatment.var, replicate.var, time.var)
-  species <- reshape(df, idvar = idvar, timevar = species.var, direction = 'wide')
+  species <- reshape(df,
+    idvar = idvar, timevar = species.var, direction = 'wide')
   species[is.na(species)] <- 0
 
   #calculate bray-curtis dissimilarities
