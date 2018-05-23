@@ -177,7 +177,7 @@ curve_difference <- function(df,
     output <- split_apply_combine(rankabunddf, split_by, FUN = function(x) {
       y <- x[x[[treatment.var]] != reference.treatment, merge_to]
       x <- x[x[[treatment.var]] == reference.treatment, ]
-      merge(x, y, by = species.var, suffixes = c('', '2'))
+      merge(x, y, by = NULL, suffixes = c('', '2'))
     })
   }
 
