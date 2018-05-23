@@ -7,7 +7,7 @@
  point}
 \usage{
 multivariate_difference(df, time.var = NULL, species.var, abundance.var,
-  replicate.var, treatment.var)
+  replicate.var, treatment.var, reference.treatment = NULL)
 }
 \arguments{
 \item{df}{A data frame containing an optional time column, species, abundance
@@ -63,6 +63,17 @@ multivariate_difference(df,
                         treatment.var = "treatment", 
                         species.var = "species", 
                         abundance.var = "relative_cover")
+# There are 6 replicates for each of three treatments, thus 18 total
+# observations.
+
+# Without time and with reference treatment
+df <- subset(pplots, year == 2002)
+multivariate_difference(df, 
+                        replicate.var = "plot", 
+                        treatment.var = "treatment", 
+                        species.var = "species", 
+                        abundance.var = "relative_cover",
+                        reference.treatment = "N1P0")
 # There are 6 replicates for each of three treatments, thus 18 total
 # observations.
 

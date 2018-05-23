@@ -50,6 +50,17 @@
 #' # There are 6 replicates for each of three treatments, thus 18 total
 #' # observations.
 #' 
+#' # Without time and with reference treatment
+#' df <- subset(pplots, year == 2002)
+#' multivariate_difference(df, 
+#'                         replicate.var = "plot", 
+#'                         treatment.var = "treatment", 
+#'                         species.var = "species", 
+#'                         abundance.var = "relative_cover",
+#'                         reference.treatment = "N1P0")
+#' # There are 6 replicates for each of three treatments, thus 18 total
+#' # observations.
+#' 
 #' # With time
 #' multivariate_difference(pplots, 
 #'                         time.var = "year", 
@@ -65,7 +76,8 @@ multivariate_difference <- function(df,
                                     species.var,
                                     abundance.var,
                                     replicate.var,
-                                    treatment.var) {
+                                    treatment.var,
+                                    reference.treatment = NULL) {
   
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
@@ -73,7 +85,7 @@ multivariate_difference <- function(df,
   
   by <- time.var
   output <- split_apply_combine(df, by, FUN = mult_diff, time.var, species.var,
-    abundance.var, replicate.var, treatment.var)
+    abundance.var, replicate.var, treatment.var, reference.treatment)
   
   output_order <- c(
     time.var,
@@ -101,7 +113,7 @@ multivariate_difference <- function(df,
 # @param treatment.var the name of the treatment column
 
 mult_diff <- function(df, time.var, species.var, abundance.var,
-                      replicate.var, treatment.var) {
+                      replicate.var, treatment.var, reference.treatment) {
 
   #transpose data
   idvar <- c(time.var, replicate.var, treatment.var)
@@ -129,31 +141,40 @@ mult_diff <- function(df, time.var, species.var, abundance.var,
   
   #extracting all treatment differences
   treatment.var2 <- paste(treatment.var, 2, sep = '')
-  lt <- lower.tri(cent_dist, diag = T)
-  idx <- which(lt, arr.ind = T)
-  cent_dist2 <- as.data.frame(cbind(
-    rownames(cent_dist)[idx[,1]],
-    colnames(cent_dist)[idx[,2]],
-    cent_dist[lt]))
-  cent_dist3 <- cent_dist2[cent_dist2$V1 != cent_dist2$V2,]
-  cent_dist3[3] <- as.numeric(as.character(cent_dist3[[3]]))
+  if (is.null(reference.treatment)) {
+    lt <- lower.tri(cent_dist, diag = T)
+    idx <- which(lt, arr.ind = T)
+    cent_dist2 <- as.data.frame(cbind(
+      rownames(cent_dist)[idx[,1]],
+      colnames(cent_dist)[idx[,2]],
+      cent_dist[lt]))
+    cent_dist3 <- cent_dist2[cent_dist2$V1 != cent_dist2$V2,]
+    cent_dist3[3] <- as.numeric(as.character(cent_dist3[[3]]))
+  } else {
+    treatments <- colnames(cent_dist)
+    idx <- treatments == reference.treatment
+    cent_dist3 <- data.frame(
+      V1 = treatments[!idx],
+      V2 = treatments[idx],
+      V3 = cent_dist[which(!idx), idx])
+  }
   
   colnames(cent_dist3)[1] <- treatment.var2
   colnames(cent_dist3)[2] <- treatment.var
   colnames(cent_dist3)[3] <- "composition_diff"
   
-  #collecting and labeling distances to centroid from betadisper to get a
-  #measure of dispersion and then take the mean for a treatment
+  # collecting and labeling distances to centroid from betadisper to get a
+  # measure of dispersion and then take the mean for a treatment
   species['dist'] <- disp['distances']
   by <- c(time.var, treatment.var)
   disp2 <- aggregate.data.frame(species['dist'], species[by], mean)
   
-  #mege into get dispersion for each treatment
+  # merge into get dispersion for each treatment
   cent_dist_disp <- merge(cent_dist3, disp2, by = treatment.var)
   cent_dist_disp2 <- merge(cent_dist_disp, disp2[c(treatment.var, 'dist')],
     by.x = treatment.var2, by.y = treatment.var)
   
-  #calculate absolute difference
+  # calculate absolute difference
   cent_dist_disp2[[treatment.var]] <- as.character(
     cent_dist_disp2[[treatment.var]])
   cent_dist_disp2[[paste(treatment.var, 2, sep = "")]] <- as.character(

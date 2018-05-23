@@ -6,7 +6,7 @@
  and dispersion}
 \usage{
 multivariate_change(df, time.var, species.var, abundance.var, replicate.var,
-  treatment.var = NULL)
+  treatment.var = NULL, reference.time = NULL)
 }
 \arguments{
 \item{df}{A data frame containing time, species, abundance and replicate
@@ -54,7 +54,7 @@ Calculates the changes in composition and dispersion based off a
 }
 \examples{
 data(pplots)
-#With treatment
+# With treatment
 multivariate_change(pplots,
                     time.var="year", 
                     replicate.var = "plot", 
@@ -64,7 +64,18 @@ multivariate_change(pplots,
 # In each year there are 6 replicates and there are 4 years of data for 3
 # time comparisons, thus 24 total observations in each treatment.
 
-#Without treatment
+# With treatment and reference year
+multivariate_change(pplots,
+                    time.var="year", 
+                    replicate.var = "plot", 
+                    treatment.var = "treatment", 
+                    species.var = "species", 
+                    abundance.var = "relative_cover",
+                    reference.time = 2002)
+# In each year there are 6 replicates and there are 4 years of data for 3
+# time comparisons, thus 24 total observations in each treatment.
+
+# Without treatment
 df <- subset(pplots, treatment == "N1P0")
 multivariate_change(df, 
                     time.var="year", 

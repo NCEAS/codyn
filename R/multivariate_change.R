@@ -35,7 +35,7 @@
 #' }
 #' @examples 
 #' data(pplots)
-#' #With treatment
+#' # With treatment
 #' multivariate_change(pplots,
 #'                     time.var="year", 
 #'                     replicate.var = "plot", 
@@ -45,7 +45,18 @@
 #' # In each year there are 6 replicates and there are 4 years of data for 3
 #' # time comparisons, thus 24 total observations in each treatment.
 #' 
-#' #Without treatment
+#' # With treatment and reference year
+#' multivariate_change(pplots,
+#'                     time.var="year", 
+#'                     replicate.var = "plot", 
+#'                     treatment.var = "treatment", 
+#'                     species.var = "species", 
+#'                     abundance.var = "relative_cover",
+#'                     reference.time = 2002)
+#' # In each year there are 6 replicates and there are 4 years of data for 3
+#' # time comparisons, thus 24 total observations in each treatment.
+#' 
+#' # Without treatment
 #' df <- subset(pplots, treatment == "N1P0")
 #' multivariate_change(df, 
 #'                     time.var="year", 
@@ -65,7 +76,8 @@ multivariate_change <- function(df,
                                 species.var,
                                 abundance.var,
                                 replicate.var,
-                                treatment.var = NULL){
+                                treatment.var = NULL,
+                                reference.time = NULL){
   
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
@@ -74,7 +86,7 @@ multivariate_change <- function(df,
   # calculate change for each treatment
   by <- treatment.var
   output <- split_apply_combine(df, by, FUN = mult_change, time.var,
-    species.var, abundance.var, replicate.var, treatment.var)
+    species.var, abundance.var, replicate.var, treatment.var, reference.time)
   
   output_order <- c(
     time.var, paste(time.var,"2", sep=""),
@@ -103,7 +115,7 @@ multivariate_change <- function(df,
 # @param species.var the name of the species column
 # @param replicate.var the name of the replicate column
 mult_change <- function(df, time.var, species.var, abundance.var,
-                        replicate.var, treatment.var) {
+                        replicate.var, treatment.var, reference.time) {
   #get years
   timestep <- sort(unique(df[[time.var]]))
   
@@ -134,11 +146,19 @@ mult_change <- function(df, time.var, species.var, abundance.var,
   
   ##extracting only the comparisions, year x to year x+1.
   time.var2 <- paste(time.var, 2, sep = '')
-  cent_dist_yrs <- data.frame(
-    time1 = timestep[1:length(timestep) - 1],
-    time2 = timestep[2:length(timestep)],
-    composition_change = diag(
-      as.matrix(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist) - 1)])))
+  if (is.null(reference.time)) {
+    cent_dist_yrs <- data.frame(
+      time1 = timestep[1:length(timestep) - 1],
+      time2 = timestep[2:length(timestep)],
+      composition_change = diag(
+        as.matrix(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist) - 1)])))
+  } else {
+    idx <- timestep == reference.time
+    cent_dist_yrs <- data.frame(
+      time1 = timestep[idx],
+      time2 = timestep[!idx],
+      composition_change = cent_dist[idx, which(!idx)])
+  }
   colnames(cent_dist_yrs)[1] <- time.var
   colnames(cent_dist_yrs)[2] <- time.var2
   
