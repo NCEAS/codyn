@@ -37,11 +37,21 @@
 #'            abundance.var = "relative_cover",
 #'            replicate.var = "plot",
 #'            time.var = "year")
+#'            
+#' # With reference year
+#' df <- subset(pplots, year < 2005 & plot %in% c(6, 25, 32))
+#' curve_change(df = df,
+#'            species.var = "species",
+#'            abundance.var = "relative_cover",
+#'            replicate.var = "plot",
+#'            time.var = "year",
+#'            reference.time = 2002)
 #' @export
 curve_change <- function(df, time.var, 
                          species.var, 
                          abundance.var, 
-                         replicate.var = NULL) {
+                         replicate.var = NULL,
+                         reference.time = NULL) {
 
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
@@ -56,15 +66,23 @@ curve_change <- function(df, time.var,
   cross.var <- time.var
   cross.var2 <- paste(cross.var, 2, sep = '')
   split_by <- c(replicate.var)
-  merge_on <- !(names(rankabunddf) %in% split_by)
-  output <- split_apply_combine(rankabunddf, split_by, FUN = function(x) {
-    y <- x[merge_on]
-    cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
-    f <- factor(cross[[cross.var]])
-    f2 <- factor(cross[[cross.var2]], levels = levels(f))
-    idx <- (as.integer(f2) - as.integer(f)) == 1
-    cross[idx, ]
-  })
+  merge_to <- !(names(rankabunddf) %in% split_by)
+  if (is.null(reference.time)) {
+    output <- split_apply_combine(rankabunddf, split_by, FUN = function(x) {
+      y <- x[merge_to]
+      cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
+      f <- factor(cross[[cross.var]])
+      f2 <- factor(cross[[cross.var2]], levels = levels(f))
+      idx <- (as.integer(f2) - as.integer(f)) == 1
+      cross[idx, ]
+    })
+  } else {
+    output <- split_apply_combine(rankabunddf, split_by, FUN = function(x) {
+      y <- x[x[[time.var]] != reference.time, merge_to]
+      x <- x[x[[time.var]] == reference.time, ]
+      merge(x, y, by = NULL, suffixes = c('', '2'))
+    })
+  }
   
   # split on treatment pairs (and block if not null)
   output[['curve_change']] <- mapply(curve_dissim,

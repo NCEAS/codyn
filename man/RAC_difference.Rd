@@ -5,7 +5,8 @@
 \title{Rank Abundance Curve Differences}
 \usage{
 RAC_difference(df, time.var = NULL, species.var, abundance.var, replicate.var,
-  treatment.var = NULL, pool = FALSE, block.var = NULL)
+  treatment.var = NULL, pool = FALSE, block.var = NULL,
+  reference.treatment = NULL)
 }
 \arguments{
 \item{df}{A data frame containing a species, abundance, and replicate columns
@@ -104,6 +105,17 @@ RAC_difference(df = df,
                block.var = "block",
                replicate.var = "plot",
                time.var = "year")
+
+# With blocks, time and reference treatment
+df <- subset(pplots, year < 2004 & block < 3)
+RAC_difference(df = df,
+               species.var = "species",
+               abundance.var = "relative_cover",
+               treatment.var = 'treatment',
+               block.var = "block",
+               replicate.var = "plot",
+               time.var = "year",
+               reference.treatment = "N1P0")
 
 # Pooling by treatment with time
 df <- subset(pplots, year < 2004)

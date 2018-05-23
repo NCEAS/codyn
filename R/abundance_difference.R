@@ -78,6 +78,17 @@
 #'                      replicate.var = "plot",
 #'                      time.var = "year")
 #' 
+#' # With blocks, time and reference treatment
+#' df <- subset(pplots, year < 2004 & block < 3)
+#' abundance_difference(df = df,
+#'                      species.var = "species",
+#'                      abundance.var = "relative_cover",
+#'                      treatment.var = "treatment",
+#'                      block.var = "block",
+#'                      replicate.var = "plot",
+#'                      time.var = "year",
+#'                      reference.treatment = "N1P0")
+#'                      
 #' # Pooling by treatment with time
 #' df <- subset(pplots, year < 2004)
 #' abundance_difference(df = df,
@@ -158,7 +169,7 @@ abundance_difference <- function(df,
     })
   } else {
     ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
-      y <- x[x[[treatment.var]] != reference.treatment, merge_on]
+      y <- x[x[[treatment.var]] != reference.treatment, merge_to]
       x <- x[x[[treatment.var]] == reference.treatment, ]
       merge(x, y, by = species.var, suffixes = c('', '2'))
     })

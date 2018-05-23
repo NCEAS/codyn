@@ -4,7 +4,8 @@
 \alias{RAC_change}
 \title{Rank Abundance Curve Changes}
 \usage{
-RAC_change(df, time.var, species.var, abundance.var, replicate.var = NULL)
+RAC_change(df, time.var, species.var, abundance.var, replicate.var = NULL,
+  reference.time = NULL)
 }
 \arguments{
 \item{df}{A data frame containing time, species, and abundance columns and an
@@ -72,6 +73,16 @@ RAC_change(df = df,
            abundance.var = "relative_cover",
            replicate.var = "plot",
            time.var = "year")
+           
+# With reference year
+df <- subset(pplots, year < 2005 & plot \%in\% c(6, 25, 32))
+RAC_change(df = df,
+           species.var = "species",
+           abundance.var = "relative_cover",
+           replicate.var = "plot",
+           time.var = "year",
+           reference.time = 2002)
+
 }
 \references{
 Avolio et al.OUR PAPER

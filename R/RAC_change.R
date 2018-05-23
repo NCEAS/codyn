@@ -56,9 +56,24 @@
 #'            abundance.var = "relative_cover",
 #'            replicate.var = "plot",
 #'            time.var = "year")
+#'            
+#' # With reference year
+#' df <- subset(pplots, year < 2005 & plot %in% c(6, 25, 32))
+#' RAC_change(df = df,
+#'            species.var = "species",
+#'            abundance.var = "relative_cover",
+#'            replicate.var = "plot",
+#'            time.var = "year",
+#'            reference.time = 2002)
+#'
 #' @export
 
-RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var = NULL) {
+RAC_change <- function(df,
+                       time.var,
+                       species.var,
+                       abundance.var,
+                       replicate.var = NULL,
+                       reference.time = NULL) {
 
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
@@ -76,16 +91,23 @@ RAC_change <- function(df, time.var, species.var, abundance.var, replicate.var =
   cross.var <- time.var
   cross.var2 <- paste(cross.var, 2, sep = '')
   split_by <- c(replicate.var)
-  merge_on <- !(names(rankdf) %in% split_by)
-  ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
-    y <- x[merge_on]
-    cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
-    f <- factor(cross[[cross.var]])
-    f2 <- factor(cross[[cross.var2]], levels = levels(f))
-    idx <- (as.integer(f2) - as.integer(f)) == 1
-    cross[idx, ]
-  })
-  
+  merge_to <- !(names(rankdf) %in% split_by)
+  if (is.null(reference.time)) {
+    ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
+      y <- x[merge_to]
+      cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
+      f <- factor(cross[[cross.var]])
+      f2 <- factor(cross[[cross.var2]], levels = levels(f))
+      idx <- (as.integer(f2) - as.integer(f)) == 1
+      cross[idx, ]
+    })
+  } else {
+    ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
+      y <- x[x[[time.var]] != reference.time, merge_to]
+      x <- x[x[[time.var]] == reference.time, ]
+      merge(x, y, by = species.var, suffixes = c('', '2'))
+    })
+  }
   # remove rows with NA for both abundances (preferably only when introduced
   # by fill_species)
   idx <- is.na(ranktog[[abundance.var]])

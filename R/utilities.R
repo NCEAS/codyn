@@ -299,9 +299,10 @@ check_args <- function(df,
                        abundance.var,
                        replicate.var = NULL,
                        treatment.var = NULL,
-                       pool = FALSE, 
+                       pool = FALSE,
                        block.var = NULL,
-                       reference.time = NULL) {
+                       reference.time = NULL,
+                       reference.treatment = NULL) {
   
   # drop extraneous columns
   args <- as.list(match.call()[-1])

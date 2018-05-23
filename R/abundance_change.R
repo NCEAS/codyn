@@ -37,6 +37,15 @@
 #'                  abundance.var = "relative_cover",
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
+#'                  
+#' # With reference year
+#' df <- subset(pplots, year < 2005 & plot %in% c(6, 25, 32))
+#' abundance_change(df = df,
+#'                  species.var = "species",
+#'                  abundance.var = "relative_cover",
+#'                  replicate.var = "plot",
+#'                  time.var = "year",
+#'                  reference.time = 2002)
 #' @export
 abundance_change <- function(df,
                              time.var, 
@@ -57,10 +66,10 @@ abundance_change <- function(df,
   cross.var <- time.var
   cross.var2 <- paste(cross.var, 2, sep = '')
   split_by <- c(replicate.var)
-  merge_on <- !(names(allsp) %in% split_by)
+  merge_to <- !(names(allsp) %in% split_by)
   if (is.null(reference.time)) {
     ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
-      y <- x[merge_on]
+      y <- x[merge_to]
       cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
       f <- factor(cross[[cross.var]])
       f2 <- factor(cross[[cross.var2]], levels = levels(f))
@@ -69,7 +78,7 @@ abundance_change <- function(df,
     })
   } else {
     ranktog <- split_apply_combine(allsp, split_by, FUN = function(x) {
-      y <- x[x[[time.var]] != reference.time, merge_on]
+      y <- x[x[[time.var]] != reference.time, merge_to]
       x <- x[x[[time.var]] == reference.time, ]
       merge(x, y, by = species.var, suffixes = c('', '2'))
     })

@@ -85,6 +85,17 @@
 #'                replicate.var = "plot",
 #'                time.var = "year")
 #' 
+#' # With blocks, time and reference treatment
+#' df <- subset(pplots, year < 2004 & block < 3)
+#' RAC_difference(df = df,
+#'                species.var = "species",
+#'                abundance.var = "relative_cover",
+#'                treatment.var = 'treatment',
+#'                block.var = "block",
+#'                replicate.var = "plot",
+#'                time.var = "year",
+#'                reference.treatment = "N1P0")
+#' 
 #' # Pooling by treatment with time
 #' df <- subset(pplots, year < 2004)
 #' RAC_difference(df = df,
@@ -119,7 +130,8 @@ RAC_difference <- function(df,
                            replicate.var,
                            treatment.var = NULL,
                            pool = FALSE, 
-                           block.var = NULL) {
+                           block.var = NULL,
+                           reference.treatment = NULL) {
 
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
@@ -159,13 +171,20 @@ RAC_difference <- function(df,
   split_by <- c(block.var, time.var)
   merge_to <- !(names(rankdf) %in% split_by)
   cross.var2 <- paste(cross.var, 2, sep = '')
-  ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
-    y <- x[merge_to]
-    cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
-    idx <- cross[[cross.var]] < cross[[cross.var2]]
-    cross[idx, ]
-  })
-
+  if (is.null(reference.treatment)) {
+    ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
+      y <- x[merge_to]
+      cross <- merge(x, y, by = species.var, suffixes = c('', '2'))
+      idx <- cross[[cross.var]] < cross[[cross.var2]]
+      cross[idx, ]
+    })
+  } else {
+    ranktog <- split_apply_combine(rankdf, split_by, FUN = function(x) {
+      y <- x[x[[treatment.var]] != reference.treatment, merge_to]
+      x <- x[x[[treatment.var]] == reference.treatment, ]
+      merge(x, y, by = species.var, suffixes = c('', '2'))
+    })
+  }
   # unorder cross.var if orginally unordered factor
   if (to_ordered) {
     class(ranktog[[cross.var]]) <- class(df[[cross.var]])
