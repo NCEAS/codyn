@@ -210,6 +210,7 @@ add_ranks <- function(df, abundance.var) {
 #'   rank 1/S, where S is the number of species in the group.
 #' @param df A data frame containing a single record per species with its abundance
 #' @param abundance.var The name of the abundance column
+#' @param species.var The name of the species column
 #' 
 #' @return The add_rank_abundance function returns a data frame with the following
 #'   additional column:
@@ -269,8 +270,7 @@ split_apply_combine <- function(df, by, FUN, ...) {
 }
 
 #' @title Rank-Abundance Curve Dissimilarity
-#' A function to calculate the curve difference between two communities, given the
-#' empirical relative rank by abundance curve as a \code{stepfun}.
+#' @description A function to calculate the curve difference between two communities, given the empirical relative rank by abundance curve as a \code{stepfun}.
 #' @param sf The curve for the first community.
 #' @param sf2 The curve for the second community.
 curve_dissim <- function(sf, sf2) {
@@ -284,7 +284,8 @@ curve_dissim <- function(sf, sf2) {
   return(sum(w*h))
 } 
 
-#' A utility function to calculate Evar from Smith and Wilson 1996
+#' @title Evar
+#' @description A utility function to calculate Evar from Smith and Wilson 1996
 #' @param S the number of species in the sample
 #' @param x the vector of abundances of each species
 Evar <- function(x, S = length(x)) {
@@ -294,8 +295,19 @@ Evar <- function(x, S = length(x)) {
   return(1 - 2 / pi * atan(theta))
 }
 
-#' Check for errors in the application of arguments and input data
-#' for all *_difference functions.
+#' @title Checking for errors in arguments
+#' @description Check for errors in the application of arguments and input data for all *_difference functions.
+#' @param df The name of the dataframe
+#' @param time.var The name of the optional time column 
+#' @param species.var The name of the species column 
+#' @param abundance.var The name of the abundance column 
+#' @param replicate.var The name of the replicate column 
+#' @param treatment.var The name of the optional treatment column
+#' @param block.var The name of the optional block column
+#' @param pool The name the optional pooling appraoch
+#' @param reference.treatment The name of the optional treatment
+#' @param reference.time the name of the optional time (this might be an error)
+
 check_args <- function(df,
                        time.var = NULL,
                        species.var,

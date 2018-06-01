@@ -2,9 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{curve_dissim}
 \alias{curve_dissim}
-\title{Rank-Abundance Curve Dissimilarity
-A function to calculate the curve difference between two communities, given the
-empirical relative rank by abundance curve as a \code{stepfun}.}
+\title{Rank-Abundance Curve Dissimilarity}
 \usage{
 curve_dissim(sf, sf2)
 }
@@ -12,4 +10,7 @@ curve_dissim(sf, sf2)
 \item{sf}{The curve for the first community.}
 
 \item{sf2}{The curve for the second community.}
+}
+\description{
+A function to calculate the curve difference between two communities, given the empirical relative rank by abundance curve as a \code{stepfun}.
 }

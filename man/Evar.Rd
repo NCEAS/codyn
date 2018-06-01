@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{Evar}
 \alias{Evar}
-\title{A utility function to calculate Evar from Smith and Wilson 1996}
+\title{Evar}
 \usage{
 Evar(x, S = length(x))
 }

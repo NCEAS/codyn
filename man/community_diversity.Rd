@@ -8,8 +8,7 @@ community_diversity(df, time.var = NULL, abundance.var,
   replicate.var = NULL, metric = c("Shannon", "InverseSimpson"))
 }
 \arguments{
-\item{df}{A data frame containing species and abundance columns and optional
-columns of time and/or replicate.}
+\item{df}{A data frame containing species and abundance columns and optional columns of time and/or replicate.}
 
 \item{time.var}{The name of the optional time column}
 
@@ -33,9 +32,7 @@ The community_diversity function returns a data frame with the following attribu
 }
 }
 \description{
-Calculates Shannon's or Inverse Simpson's diversity of a
-  community, but only one metric of diversity can be calculated at a time and
-  must be specified.
+Calculates Shannon's or Inverse Simpson's diversity of a  community, but only one metric of diversity can be calculated at a time and must be specified.
 }
 \examples{
 data(pplots)
@@ -63,4 +60,7 @@ community_diversity(df,
 df <- subset(pplots, plot == 25 & year == 2002)
 community_diversity(df,
                     abundance.var = "relative_cover") # for Shannon's diversity metric
+}
+\references{
+Magurran, A.E. 2004. Measuring Biological Diversity. Blackwell Publishing, Malden MA, USA.
 }

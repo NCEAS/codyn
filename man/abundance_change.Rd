@@ -8,8 +8,7 @@ abundance_change(df, time.var, species.var, abundance.var,
   replicate.var = NULL, reference.time = NULL)
 }
 \arguments{
-\item{df}{A data frame containing time, species, and abundance columns and an
-optional column of replicates}
+\item{df}{A data frame containing time, species, and abundance columns and an optional column of replicates}
 
 \item{time.var}{The name of the time column}
 
@@ -18,24 +17,20 @@ optional column of replicates}
 \item{abundance.var}{The name of the abundance column}
 
 \item{replicate.var}{The name of the optional replicate column}
+
+\item{reference.time}{The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (e.g. first to  second year, second to third year, etc.)}
 }
 \value{
-The abundance_change function returns a data frame with the following
-  fields:
+The abundance_change function returns a data frame with the following fields:
 \itemize{
  \item{replicate.var: }{A column with the specified replicate.var, if it is specified.}
- \item{time.var: }{A column with the specified time.var and a second column, with '2'
- appended to the name, giving the time of the subtracted abundance.}
+ \item{time.var: }{A column with the specified time.var and a second column, with '2'appended to the name. Time is subsracted fro time2}
  \item{species.var: }{A column with the specified species.var.}
- \item{change: }{A numeric column of the change in abundance between consecutive
- timepoints. A positive value occurs when a species increases in abundance
- over time, and a negative value when a species decreases in abundance over
- time.}
+ \item{change: }{A numeric column of the change in abundance between  time points. A positive value occurs when a species increases in abundance over time, and a negative value when a species decreases in abundance over time.}
 }
 }
 \description{
-Calculates the abundance change for species in a replicate
-  between two consecutive time points. Changes are on abundance values provided, if relative data is used, then changes in relative abundance will be calcuated.
+Calculates the abundance change for species in a replicate between two time points. Changes are on abundance values provided, if relative data is used, then changes in relative abundance will be calcuated.
 }
 \examples{
 data(pplots)
@@ -64,5 +59,5 @@ abundance_change(df = df,
                  reference.time = 2002)
 }
 \references{
-Avolio et al. OUR PAPER
+Avolio et al. Submitted to MEE
 }

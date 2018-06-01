@@ -1,69 +1,29 @@
 #' @title Rank Abundance Curve Differences
-#' @description Calculates differences between two samples for four comparable
-#'   aspects of rank abundance curves (richness, evenness, rank, species
-#'   composition). There are three ways differences can be calculated. 1)
-#'   Between treatments within a block (note: block.var and treatment.var need
-#'   to be specified). 2) Between treatments, pooling all replicates into a
-#'   single species pool (note: pool = TRUE, treatment.var needs to be
-#'   specified, and block.var will be NULL). 3) All pairwise combinations
-#'   between all replicates (note: block.var = NULL, pool = FALSE and specifying
-#'   treatment.var is optional. If treatment.var is specified, the treatment
-#'   that each replicate belongs to will also be listed in the output).
-#' @param df A data frame containing a species, abundance, and replicate columns
-#'   and optional time, treatment, and block columns
+#' @description Calculates differences between two samples for four comparable   aspects of rank abundance curves (richness, evenness, rank, species composition). There are three ways differences can be calculated. 1) Between treatments within a block (note: block.var and treatment.var need to be specified). 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var will be NULL). 3) All pairwise combinations between all replicates (note: block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
+#' @param df A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
-#' @param pool An argument to allow abundance values to be pooled within a
-#'   treatment. The default value is "FALSE", a value of "TRUE" averages
-#'   abundance of each species within a treatment at a given time point.
+#' @param pool An argument to allow abundance values to be pooled within a treatment. The default value is "FALSE", a value of "TRUE" averages abundance of each species within a treatment at a given time point.
+#' @param reference.treatment The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisions will be made.
 #' @return The RAC_difference function returns a data frame with the following
 #'   attributes:
 #' \itemize{
-#'  \item{time.var: }{A column that has the same name and type as the time.var
-#'  column, if time.var is specified.}
-#'  \item{block.var: }{A column that has same name and type as the block.var
-#'  column, if block.var is specified.}
-#'  \item{replicate.var: }{A column that has same name and type as the
-#'  replicate.var column, represents the first replicate being compared. Note, a
-#'  replicate column will be returned only when pool is FALSE or block.var =
-#'  NULL.}
-#'  \item{replicate.var2: }{A column that has the same type as the replicate.var
-#'  column, and is named replicate.var with a 2 appended to it, represents the
-#'  second replicate being compared. Note, a replicate.var column will be
-#'  returned only when pool is FALSE and block.var = NULL.}
-#'  \item{treatment.var: }{A column that has the same name and type as the
-#'  treatment.var column, represents the first treatment being compared. A
-#'  treatment.var column will be returned when pool is TRUE or block.var is
-#'  present, or treatment.var is specified.}
-#'  \item{treatment.var2: }{A column that has the same type as the treatment.var
-#'  column, and is named treatment.var with a 2 appended to it, represents the
-#'  second treatment being compared. A treatment.var column will be returned
-#'  when pool is TRUE or block.var is present, or treatment.var is specified.}
-#'  \item{richness_diff: }{A numeric column that is the difference between the
-#'  compared samples (treatments or replicates) in species richness divided by
-#'  the total number of unique species in both samples. A positive value occurs when
-#'  there is greater species richness in replicate.var2 than replicate.var or
-#'  treatment.var2 than treatment.var.}
-#'  \item{evenness_diff: }{A numeric column of the difference between the
-#'  compared samples (treatments or replicates) in evenness (measured using the
-#'  EQ metric). A positive
-#'  value occurs when there is greater evenness in replicate.var2 than
-#'  replicate.var or treatment.var2 than treatment.var.}
-#'  \item{rank_diff: }{A numeric column of the absolute value of average
-#'  difference between the compared samples (treatments or replicates) in
-#'  species' ranks divided by the total number of unique species in both samples.
-#'  Species that are not present in both samples are given the S+1 rank in the
-#'  sample it is absent in, where S is the number of species in that sample.}
-#'  \item{species_diff: }{A numeric column of the number of species that are
-#'  different between the compared samples (treatments or replicates) divided by
-#'  the total number of species in both samples. This is equivalent to the
-#'  Jaccard Index.}
+#'  \item{time.var: }{A column that has the same name and type as the time.var  column, if time.var is specified.}
+#'  \item{block.var: }{A column that has same name and type as the block.var  column, if block.var is specified.}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var =  NULL.}
+#'  \item{replicate.var2: }{A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Note, a replicate.var column will be returned only when pool is FALSE and block.var = NULL.}
+#'  \item{treatment.var: }{A column that has the same name and type as the treatment.var column, represents the first treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
+#'  \item{treatment.var2: }{A column that has the same type as the treatment.var  column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is present, or treatment.var is specified.}
+#'  \item{richness_diff: }{A numeric column that is the difference between the compared samples (treatments or replicates) in species richness divided by the total number of unique species in both samples. A positive value occurs when there is greater species richness in replicate.var2 than replicate.var or treatment.var2 than treatment.var.}
+#'  \item{evenness_diff: }{A numeric column of the difference between the compared samples (treatments or replicates) in evenness (measured using the Evar metric). A positive value occurs when there is greater evenness in replicate.var2 than replicate.var or treatment.var2 than treatment.var.}
+#'  \item{rank_diff: }{A numeric column of the absolute value of average difference between the compared samples (treatments or replicates) in species' ranks divided by the total number of unique species in both samples.Species that are not present in both samples are given the S+1 rank in the sample it is absent in, where S is the number of species in that sample.}
+#'  \item{species_diff: }{A numeric column of the number of species that are  different between the compared samples (treatments or replicates) divided by the total number of species in both samples. This is equivalent to the Jaccard Index.}
 #' }
-#' @references Avolio et al. OUR PAPER
+#' @references Avolio et al. Submitted MEE
 #' @examples 
 #' data(pplots)
 #' # With block and no time

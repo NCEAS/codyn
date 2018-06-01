@@ -1,26 +1,18 @@
 #' @title Curve Change
-#' @description Calculates the area difference between two rank abundance curves
-#'   between two consecutive time periods. If replicate is specified, it must be
-#'   measured in both time points, otherwise it will be dropped for that time
-#'   period comparision.
-#' @param df A data frame containing time, species, and abundance columns and an
-#'   optional column of replicates
+#' @description Calculates the area difference between two rank abundance curves between two time periods. If replicate is specified, it must be measured in both time points, otherwise it will be dropped for that time period comparision.
+#' @param df A data frame containing time, species, and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column
-#'  
-#' @return The curve_change function returns a data frame with the following
-#'   attributes:
+#' @param reference.time The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (e.g. first to  second year, second to third year, etc.)
+#' @return The curve_change function returns a data frame with the following attributes:
 #' \itemize{
-#'  \item{time.var_pair: }{A characteric column that has the time points to be
-#'  compared, separated by a dash.}
-#'  \item{curve_change: }{A numeric column of the change in curves between time
-#'  points.}
-#'  \item{replicate.var: }{A column that has same name and type as the
-#'  replicate.var column, if specified.}
+#'  \item{time.var: }{A column with the specified time.var and a second column, with '2' appended to the name. Time is subtracted from time2.}
+#'  \item{curve_change: }{A numeric column of the change in curves between time points.}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if specified.}
 #' }
-#' @references Avolio et al.OUR PAPER
+#' @references Avolio et al. Submitted to MEE
 #' @examples 
 #' data(pplots)
 #' # Without replicates

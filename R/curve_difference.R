@@ -1,53 +1,27 @@
 #' @title Curve Difference
 #' 
-#' @description Calculates the area difference between two rank abundance
-#'   curves. There are three ways differences can be calculated. 1) Between all
-#'   treatments within a block (note: block.var and treatment.var need to be
-#'   specified. 2) Between treatments, pooling all replicates into a single
-#'   species pool (note: pool = TRUE, treatment.var needs to be specified, and
-#'   block.var = NULL. 3) All pairwise combinations between all replicates
-#'   (note:block.var = NULL, pool = FALSE and specifying treatment.var is
-#'   optional. If treatment.var is specified, the treatment that each replicate
-#'   belongs to will also be listed in the output).
-#' @param df A data frame containing a species, abundance, and replicate columns
-#'   and optional time, treatment, and block columns
+#' @description Calculates the area difference between two rank abundance   curves. There are three ways differences can be calculated. 1) Between all   treatments within a block (note: block.var and treatment.var need to be specified. 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var = NULL. 3) All pairwise combinations between all replicates (note:block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
+#' @param df A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var The name of the optional treatment column
-#' @param pool An argument to allow values to be pooled within treatment. The
-#'   default value is "FALSE", a value of "TRUE" takes the average abundance of
-#'   all species within a treatment at a given time point prior to comparisons.
+#' @param pool An argument to allow values to be pooled within treatment. The  default value is "FALSE", a value of "TRUE" takes the average abundance of all species within a treatment at a given time point prior to comparisons.
 #' @param block.var The name of the optional block column
+#' @param reference.treatment The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisions will be made.
 #'  
-#' @return The curve_difference function returns a data frame with the following
-#'   attributes:
+#' @return The curve_difference function returns a data frame with the following attributes:
 #' \itemize{
-#'  \item{curve_diff: }{A numeric column of the area difference in curves
-#'  between the two samples being compared (replicates or treatments).}
-#'  \item{replicate.var: }{A column that has same name and type as the
-#'  replicate.var column, represents the first replicate being compared. Note, a
-#'  replicate column will be returned only when pool is FALSE or block.var =
-#'  NULL.}
-#'  \item{replicate.var2: }{A column that has the same type as the replicate.var
-#'  column, and is named replicate.var with a 2 appended to it, represents the
-#'  second replicate being compared. Note, a replicate.var column will be
-#'  returned only when pool is FALSE and block.var = NULL.}
-#'  \item{time.var: }{A column that has the same name and type as the time.var
-#'  column, if time.var is specified.}
-#'  \item{treatment.var: }{A column that has same name and type as the
-#'  treatment.var column, represents the first treatment being compared. A
-#'  treatment.var column will be returned when pool is TRUE or block.var is
-#'  specified, or treatment.var is specified.}
-#'  \item{treatment.var2: }{A column that has the same type as the treatment.var
-#'  column, and is named treatment.var with a 2 appended to it, represents the
-#'  second treatment being compared. A treatment.var column will be returned
-#'  when pool is TRUE or block.var is specified, or treatment.var is specified.}
-#'  \item{block.var: }{A column that has same name and type as the block.var
-#'  column, if block.var is specified.}
+#'  \item{curve_diff: }{A numeric column of the area difference in curves between the two samples being compared (replicates or treatments).}
+#'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var = NULL.}
+#'  \item{replicate.var2: }{A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Note, a replicate.var column will be returned only when pool is FALSE and block.var = NULL.}
+#'  \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
+#'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, represents the first treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is specified, or treatment.var is specified.}
+#'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is specified, or treatment.var is specified.}
+#'  \item{block.var: }{A column that has same name and type as the block.var column, if block.var is specified.}
 #' }
-#' @references Avolio et al. OUR PAPER.
+#' @references Avolio et al. Submitted to MEE
 #' @examples
 #' data(pplots)
 #' # With block and no time

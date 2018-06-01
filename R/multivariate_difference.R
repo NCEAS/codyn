@@ -2,40 +2,25 @@
 #'  composition and dispersion between pairs of treatments at a single time
 #'  point
 #'  
-#'@description Calculates the difference in composition and dispersion between
-#'  treatments based off a Bray-Curtis dissimilarity matrix at a single point in
-#'  time. Composition difference is the euclidean distance between the centroids
-#'  of different treatments. Since centroid distance is based on plotted
-#'  distance between centroids, it is context dependent and depends on how many
-#'  centroids are being plotted. The centroid distance between treatments
-#'  depends on how many treatments are being compared. Dispersion difference is
-#'  the difference of average dispersion of each replicate to its centroid
-#'  between two treatments.
-#' @param df A data frame containing an optional time column, species, abundance
-#'   and replicate, and treatment columns
+#'@description Calculates the difference in composition and dispersion between  treatments based off a Bray-Curtis dissimilarity matrix at a single point in time. Composition difference is the euclidean distance between the centroids of different treatments. Since centroid distance is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted. The centroid distance between treatments depends on how many treatments are being compared. Dispersion difference is the difference of average dispersion of each replicate to its centroid between two treatments.
+#' @param df A data frame containing an optional time column, species, abundance and replicate, and treatment columns
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var the name of the treatment column
+#' @param reference.treatment The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisions will be made.
 #' @return The multivariate_difference function returns a data frame with the
 #'   following attributes:
 #' \itemize{
-#'  \item{treatment.var: }{A column that has same name and type as the
-#'  treatment.var column, if treatment.var is specified.}
-#'  \item{treatment.var2: }{A column that has the same type as the treatment.var
-#'  column, and is named treatment.var with a 2 appended to it.}
-#'  \item{composition_diff: }{A numeric column that is the euclidean distance
-#'  between the centroids of two treatments at a single point in time.}
-#'  \item{abs_dispersion_diff: }{A numeric column that is the absolute value of
-#'  the difference in the average dispersion of the replicates around the
-#'  centriod for the two treatments.}
-#'  \item{trt_greater_disp: }{A column that has same type as the treatment.var
-#'  column, and specifies which of the two  treatments has greater dispersion.}
-#'  \item{time.var: }{A characteric column that has the same name and type as
-#'  the time.var column, if specified.}
+#'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
+#'  \item{treatment.var2: }{A column that has the same type as the treatment.var  column, and is named treatment.var with a 2 appended to it.}
+#'  \item{composition_diff: }{A numeric column that is the euclidean distance  between the centroids of two treatments at a single point in time.}
+#'  \item{abs_dispersion_diff: }{A numeric column that is the absolute value of the difference in the average dispersion of the replicates around the centriod for the two treatments.}
+#'  \item{trt_greater_disp: }{A column that has same type as the treatment.var  column, and specifies which of the two  treatments has greater dispersion.}
+#'  \item{time.var: }{A characteric column that has the same name and type as the time.var column, if specified.}
 #' }
-#' @references Our Avolio et al. paper, Avolio et al. 2015, Marti Anderson et al. 2006
+#' @references Avolio et al. Submitted to MEE, Avolio et al. 2015, Marti Anderson et al. 2006
 #' @importFrom vegan vegdist betadisper
 #' @importFrom stats aggregate reshape
 #' @examples  

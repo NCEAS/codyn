@@ -2,14 +2,33 @@
 % Please edit documentation in R/utilities.R
 \name{check_args}
 \alias{check_args}
-\title{Check for errors in the application of arguments and input data
-for all *_difference functions.}
+\title{Checking for errors in arguments}
 \usage{
 check_args(df, time.var = NULL, species.var, abundance.var,
   replicate.var = NULL, treatment.var = NULL, pool = FALSE,
   block.var = NULL, reference.time = NULL, reference.treatment = NULL)
 }
+\arguments{
+\item{df}{The name of the dataframe}
+
+\item{time.var}{The name of the optional time column}
+
+\item{species.var}{The name of the species column}
+
+\item{abundance.var}{The name of the abundance column}
+
+\item{replicate.var}{The name of the replicate column}
+
+\item{treatment.var}{The name of the optional treatment column}
+
+\item{pool}{The name the optional pooling appraoch}
+
+\item{block.var}{The name of the optional block column}
+
+\item{reference.time}{the name of the optional time (this might be an error)}
+
+\item{reference.treatment}{The name of the optional treatment}
+}
 \description{
-Check for errors in the application of arguments and input data
-for all *_difference functions.
+Check for errors in the application of arguments and input data for all *_difference functions.
 }

@@ -9,6 +9,8 @@ add_rank_abundance(df, species.var, abundance.var)
 \arguments{
 \item{df}{A data frame containing a single record per species with its abundance}
 
+\item{species.var}{The name of the species column}
+
 \item{abundance.var}{The name of the abundance column}
 }
 \value{
