@@ -47,6 +47,15 @@ test_that("abundance_change function returns correct result", {
   expect_equal(nrow(myresults2), 1148)
   expect_equal(ncol(myresults2), 5) 
   
+  #test that is works with reference year
+  myresults3 <- abundance_change(pplots, abundance.var = "relative_cover",
+                                 replicate.var = "plot",
+                                 species.var = "species",
+                                 time.var = "year",
+                                 reference.time = 2002)
+  
+  expect_equal(myresults3$change[3], -0.001512000, tolerance = 0.00001)
+  
   #test that is doesn't work with missing abundance
   expect_error(abundance_change(bdat, abundance.var = "relative_cover",
                           replicate.var = "plot",

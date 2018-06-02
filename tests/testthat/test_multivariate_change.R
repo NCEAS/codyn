@@ -46,6 +46,18 @@ test_that("multivariate_change function returns correct result", {
   expect_equal(nrow(myresults2), 9)
   expect_equal(ncol(myresults2), 5)
   
+  #test that it works with treatment and reference year
+  myresults3 <- multivariate_change(pplots, abundance.var = "relative_cover",
+                                    replicate.var = "plot",
+                                    species.var = "species",
+                                    time.var = "year",
+                                    treatment.var = "treatment",
+                                    reference.time = 2002)
+  
+  expect_equal(nrow(myresults3), 9)
+  expect_equal(ncol(myresults3), 5)
+  
+  
   #test that is doesn't work with missing abundance
   expect_error(multivariate_change(bdat, abundance.var = "relative_cover",
                                replicate.var = "plot",

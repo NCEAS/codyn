@@ -58,6 +58,17 @@ test_that("curve_difference function returns correct result", {
   expect_equal(nrow(myresults2.2), 612)
   expect_equal(ncol(myresults2.2), 6)
   
+  #test that it works with time and treatment specified and reference treatment
+  myresults2.3 <- curve_difference(pplots, abundance.var = "relative_cover",
+                                   replicate.var = "plot",
+                                   species.var = "species",
+                                   time.var = "year",
+                                   treatment.var = "treatment",
+                                   reference.treatment = "N1P0")
+  
+  expect_equal(nrow(myresults2.3), 288)
+  expect_equal(ncol(myresults2.3), 6)
+  
   #test the returned result with blocking and no time
   myresults3 <- curve_difference(dat2, replicate.var = "plot",
                                abundance.var = "relative_cover",
@@ -79,6 +90,18 @@ test_that("curve_difference function returns correct result", {
                                time.var = "year")
   
   expect_equal(nrow(myresults3.2), 72)
+  expect_equal(ncol(myresults3.2), 7)
+  
+  #test that returned results with blocking and time and reference treatment
+  myresults3.2 <- curve_difference(pplots, replicate.var = "plot",
+                                   abundance.var = "relative_cover",
+                                   species.var = "species",
+                                   block.var = "block",
+                                   treatment.var = "treatment",
+                                   time.var = "year",
+                                   reference.treatment = "N1P0")
+  
+  expect_equal(nrow(myresults3.2), 48)
   expect_equal(ncol(myresults3.2), 7)
   
   #test the returned result with pooling and no time
@@ -104,6 +127,18 @@ test_that("curve_difference function returns correct result", {
   
   expect_equal(nrow(myresults4.2), 12)
   expect_equal(ncol(myresults4.2), 4)
+  
+  #test the returned result with pooling and time and reference treatment
+  myresults4.3 <- curve_difference(pplots, replicate.var = "plot",
+                                   abundance.var = "relative_cover",
+                                   species.var = "species", 
+                                   pool = TRUE,
+                                   treatment.var = "treatment",
+                                   time.var = "year",
+                                   reference.treatment = "N1P0")
+  
+  expect_equal(nrow(myresults4.3), 8)
+  expect_equal(ncol(myresults4.3), 4)
   
   #test that is doesn't work with missing abundance
   expect_error(curve_difference(bdat, abundance.var = "relative_cover",

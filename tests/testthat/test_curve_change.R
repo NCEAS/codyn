@@ -44,6 +44,17 @@ test_that("curve_change function returns correct result", {
   expect_equal(nrow(myresults2), 54)
   expect_equal(ncol(myresults2), 4)
   
+  
+  #test that it works with replicates and reference time
+  myresults3 <- curve_change(pplots, abundance.var = "relative_cover",
+                             replicate.var = "plot",
+                             species.var = "species",
+                             time.var = "year",
+                             reference.time = 2002)
+  
+  expect_equal(nrow(myresults3), 54)
+  expect_equal(ncol(myresults3), 4)
+  
   #test that is doesn't work with missing abundance
   expect_error(curve_change(bdat, abundance.var = "relative_cover",
                           replicate.var = "plot",

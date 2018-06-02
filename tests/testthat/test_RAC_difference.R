@@ -57,15 +57,26 @@ test_that("RAC_difference function returns correct result", {
   expect_equal(nrow(myresults2), 612)
   expect_equal(ncol(myresults2), 7)
   
-  #test that it works with time and treatment specified
+  #test that it works with time and treatment specified and a reference treatment
   myresults2.2 <- RAC_difference(pplots, abundance.var = "relative_cover",
                                replicate.var = "plot",
                                species.var = "species",
                                time.var = "year",
-                               treatment.var = "treatment")
+                               treatment.var = "treatment",
+                               reference.treatment = "N1P0")
   
-  expect_equal(nrow(myresults2.2), 612)
+  expect_equal(nrow(myresults2.2), 288)
   expect_equal(ncol(myresults2.2), 9)
+  
+  #test that it works with time and treatment specified
+  myresults2.3 <- RAC_difference(pplots, abundance.var = "relative_cover",
+                                 replicate.var = "plot",
+                                 species.var = "species",
+                                 time.var = "year",
+                                 treatment.var = "treatment")
+  
+  expect_equal(nrow(myresults2.3), 612)
+  expect_equal(ncol(myresults2.3), 9)
   
   #test the returned result with blocking and no time
   myresults3 <- RAC_difference(dat2, replicate.var = "plot",
@@ -82,16 +93,29 @@ test_that("RAC_difference function returns correct result", {
   expect_equal(myresults3$rank_diff, 0.1404959, tolerance = 0.00001)
   expect_equal(myresults3$species_diff, 0.3636364, tolerance = 0.00001)
   
-  #test that returned results with blocking and time
+  #test that returned results with blocking and time and reference
   myresults3.2 <- RAC_difference(pplots, replicate.var = "plot",
                                abundance.var = "relative_cover",
                                species.var = "species",
                                block.var = "block",
                                treatment.var = "treatment",
-                               time.var = "year")
+                               time.var = "year",
+                               reference.treatment = "N1P0")
   
-  expect_equal(nrow(myresults3.2), 72)
+  expect_equal(nrow(myresults3.2), 48)
   expect_equal(ncol(myresults3.2), 10)
+  
+  #test that returned results with blocking and time
+  myresults3.3 <- RAC_difference(pplots, replicate.var = "plot",
+                                 abundance.var = "relative_cover",
+                                 species.var = "species",
+                                 block.var = "block",
+                                 treatment.var = "treatment",
+                                 time.var = "year")
+  
+  expect_equal(nrow(myresults3.3), 72)
+  expect_equal(ncol(myresults3.3), 10)
+  
   
   #test the returned result with pooling and no time
   myresults4 <- RAC_difference(dat3, replicate.var = "plot",
@@ -108,16 +132,28 @@ test_that("RAC_difference function returns correct result", {
   expect_equal(myresults4$rank_diff, 0.1171921, tolerance = 0.00001)
   expect_equal(myresults4$species_diff, 0.3658537, tolerance = 0.00001)
   
-  #test the returned result with pooling and time
+  #test the returned result with pooling and time and reference treatment
   myresults4.2 <- RAC_difference(pplots, replicate.var = "plot",
                                abundance.var = "relative_cover",
                                species.var = "species", 
                                pool = TRUE,
                                treatment.var = "treatment",
-                               time.var = "year")
+                               time.var = "year",
+                               reference.treatment = "N1P0")
   
-  expect_equal(nrow(myresults4.2), 12)
+  expect_equal(nrow(myresults4.2), 8)
   expect_equal(ncol(myresults4.2), 7)
+  
+  #test the returned result with pooling and time
+  myresults4.3 <- RAC_difference(pplots, replicate.var = "plot",
+                                 abundance.var = "relative_cover",
+                                 species.var = "species", 
+                                 pool = TRUE,
+                                 treatment.var = "treatment",
+                                 time.var = "year")
+  
+  expect_equal(nrow(myresults4.3), 12)
+  expect_equal(ncol(myresults4.3), 7)
   
   #test that is doesn't work with missing abundance
   expect_error(RAC_difference(bdat, abundance.var = "relative_cover",

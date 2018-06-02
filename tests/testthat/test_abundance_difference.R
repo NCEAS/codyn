@@ -51,17 +51,28 @@ test_that("abundance_difference function returns correct result", {
   expect_equal(nrow(myresults2), 13911)
   expect_equal(ncol(myresults2), 5)
   
-  #test that it works with time and treatment specified
+  #test that it works with time, treatment, and reference specified
   myresults2.2 <- abundance_difference(pplots, abundance.var = "relative_cover",
                                      replicate.var = "plot",
                                      species.var = "species",
                                      time.var = "year", 
-                                     treatment.var = "treatment")
+                                     treatment.var = "treatment",
+                                     reference.treatment = "N1P0")
   
-  expect_equal(nrow(myresults2.2), 13911)
+  expect_equal(nrow(myresults2.2), 6682)
   expect_equal(ncol(myresults2.2), 7)
   
-  #test the returned result with blocking and no time
+  #test that it works with time, treatment only
+  myresults2.3 <- abundance_difference(pplots, abundance.var = "relative_cover",
+                                       replicate.var = "plot",
+                                       species.var = "species",
+                                       time.var = "year", 
+                                       treatment.var = "treatment")
+  
+  expect_equal(nrow(myresults2.3), 13911)
+  expect_equal(ncol(myresults2.3), 7)
+  
+  #test the returned result with blocking  and no time
   myresults3 <- abundance_difference(dat2, replicate.var = "plot",
                                abundance.var = "relative_cover",
                                species.var = "species",
@@ -73,15 +84,27 @@ test_that("abundance_difference function returns correct result", {
   expect_equal(ncol(myresults3), 7)
   expect_equal(myresults3$difference[1], 0.009784736, tolerance = 0.00001)
   
-  #test that is works with blocking and time
+  #test that is works with blocking and time and reference treatment
   myresults3.5 <- abundance_difference(pplots, replicate.var = "plot",
                                      abundance.var = "relative_cover",
                                      species.var = "species",
                                      block.var = "block",
                                      treatment.var = "treatment",
-                                     time.var = "year")
+                                     time.var = "year",
+                                     reference.treatment = "N1P0")
+  expect_equal(nrow(myresults3.5), 1110)
+  expect_equal(ncol(myresults3.5), 8)
+  
+  #test that is works with blocking and time
+  myresults3.5 <- abundance_difference(pplots, replicate.var = "plot",
+                                       abundance.var = "relative_cover",
+                                       species.var = "species",
+                                       block.var = "block",
+                                       treatment.var = "treatment",
+                                       time.var = "year")
   expect_equal(nrow(myresults3.5), 1628)
   expect_equal(ncol(myresults3.5), 8)
+  
 
   #test the returned result with pooling and no time
   myresults4 <- abundance_difference(dat3, replicate.var = "plot",
@@ -95,17 +118,31 @@ test_that("abundance_difference function returns correct result", {
   expect_equal(ncol(myresults4), 4)
   expect_equal(myresults4$difference[1], 0.0010101010, tolerance = 0.00001)
 
-  #test the returned result with pooling and time
+  #test the returned result with pooling and time and reference treatment
   myresults4.5 <- abundance_difference(pplots, replicate.var = "plot",
                                      abundance.var = "relative_cover",
                                      species.var = "species", 
                                      pool = TRUE,
                                      treatment.var = "treatment",
-                                     time.var = "year")
+                                     time.var = "year",
+                                     reference.treatment = "N1P0")
+  
+  expect_is(myresults4.5, "data.frame")
+  expect_equal(nrow(myresults4.5), 321)
+  expect_equal(ncol(myresults4.5), 5)
+  
+  #test the returned result with pooling and time
+  myresults4.5 <- abundance_difference(pplots, replicate.var = "plot",
+                                       abundance.var = "relative_cover",
+                                       species.var = "species", 
+                                       pool = TRUE,
+                                       treatment.var = "treatment",
+                                       time.var = "year")
   
   expect_is(myresults4.5, "data.frame")
   expect_equal(nrow(myresults4.5), 485)
   expect_equal(ncol(myresults4.5), 5)
+  
 
   #test that is doesn't work with missing abundance
   expect_error(abundance_difference(bdat, abundance.var = "relative_cover",
