@@ -4,7 +4,7 @@
 #' @param df A data frame containing species and abundance columns and optional columns of time and/or replicate.
 #' @param time.var The name of the optional time column 
 #' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the optional replicate column 
+#' @param replicate.var The name of the optional replicate column. If specified, replicate must be unique within the dataset and cannot be nested within treatments or blocks. 
 #' @param metric The diversity metric to return:
 #' \itemize{
 #'  \item{"Shannon": }{The default metric, calculates Shannon's diversity.}

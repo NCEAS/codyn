@@ -4,7 +4,7 @@
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the replicate column 
+#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks. 
 #' @param treatment.var the neame of the optional treatment column
 #' @param reference.time The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (e.g. first to  second year, second to third year, etc.)
 #' @return The multivariate_change function returns a data frame with the

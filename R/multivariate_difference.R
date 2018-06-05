@@ -7,7 +7,7 @@
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the replicate column 
+#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks. 
 #' @param treatment.var the name of the treatment column
 #' @param reference.treatment The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisions will be made.
 #' @return The multivariate_difference function returns a data frame with the

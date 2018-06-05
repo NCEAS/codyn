@@ -6,7 +6,7 @@
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the replicate column 
+#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks. 
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
 #' @param pool An argument to allow abundance values to be pooled within a
