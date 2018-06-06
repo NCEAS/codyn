@@ -16,15 +16,14 @@ RAC_change(df, time.var, species.var, abundance.var, replicate.var = NULL,
 
 \item{abundance.var}{The name of the abundance column}
 
-\item{replicate.var}{The name of the optional replicate column}
+\item{replicate.var}{The name of the optional replicate column. If specified, replicate must be unique within the dataset and cannot be nested within treatments or blocks.}
 
 \item{reference.time}{The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (the first and second year, second and thrid year, etc.)}
 }
 \value{
 The RAC_change function returns a data frame with the following attributes:
 \itemize{
- \item{replicate.var: }{A column that has same name and type as the
- replicate.var column, if replicate.var is specified.}
+ \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}
  \item{time.var: }{A column with the specified time.var and a second column, with '2' appended to the name. Time is subtracted from time2.}
  \item{richness_change: }{A numeric column that is the change in richness between the two time periods for a replicate divided by the total number of unique species in both time periods. A positive value occurs when a there is an increase in species richness over time, and a negative value when there is a decreases in species richness over  time.}
  \item{evenness_change: }{A numeric column that is the change in evenness(measured with Evar) between the two time periods for a replicate. A positive value occurs when evenness  increases over time, and a negative value when evenness decreases in over time.}

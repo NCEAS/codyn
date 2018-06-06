@@ -16,7 +16,7 @@ multivariate_change(df, time.var, species.var, abundance.var, replicate.var,
 
 \item{abundance.var}{The name of the abundance column}
 
-\item{replicate.var}{The name of the replicate column}
+\item{replicate.var}{The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks.}
 
 \item{treatment.var}{the neame of the optional treatment column}
 

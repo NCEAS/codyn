@@ -14,7 +14,7 @@ community_diversity(df, time.var = NULL, abundance.var,
 
 \item{abundance.var}{The name of the abundance column}
 
-\item{replicate.var}{The name of the optional replicate column}
+\item{replicate.var}{The name of the optional replicate column. If specified, replicate must be unique within the dataset and cannot be nested within treatments or blocks.}
 
 \item{metric}{The diversity metric to return:
 \itemize{
