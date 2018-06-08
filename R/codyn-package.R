@@ -37,11 +37,11 @@
 #'  \item{\code{\link[=cyclic_shift]{temporal_torus_translation}}}{: Calculates a test statistic on a null ecological community created via cyclic shifts. \code{confint} provides mean and confidence intervals of this null distribution}
 #'  \item{\code{\link[=community_structure]{community_structure}}}{: Calculates richness and evenness (using specified metric) for a replicate}
 #'  \item{\code{\link[=community_diversity]{community_diversity}}}{: Calculates diversity (using specified metric) for a replicate}
-#'  \item{\code{\link[=RAC_change]{RAC_change}}}{:Calculates changes in species richness, evenness, species’ ranks, gain, and losses for a replicate over time}
+#'  \item{\code{\link[=RAC_change]{RAC_change}}}{:Calculates changes in species richness, evenness, species' ranks, gain, and losses for a replicate over time}
 #'  \item{\code{\link[=abundance_change]{abundance_change}}}{: For each species in a replicate, calculates changes in abundance over time}
 #'  \item{\code{\link[=curve_change]{curve_change}}}{: Calculates changes in the shape of the RAC curve for each replicate over time}
 #'  \item{\code{\link[=multivariate_change]{multivariate_change}}}{: Calculates changes in community composition and dispersion over time}
-#'  \item{\code{\link[=RAC_difference]{RAC_difference}}}{: Calculates differences in species richness, evenness, species’ ranks, shared species between paired samples at a single point in time}
+#'  \item{\code{\link[=RAC_difference]{RAC_difference}}}{: Calculates differences in species richness, evenness, species' ranks, shared species between paired samples at a single point in time}
 #'  \item{\code{\link[=abundance_difference]{abundance_difference}}}{: Calculates differences in abundance for each species in paired samples at a single point in time}
 #'  \item{\code{\link[=curve_difference]{curve_difference}}}{: Calculates differences in the shape of the RAC between paired samples at a single point in time}
 #'  \item{\code{\link[=multivariate_difference]{multivariate_difference}}}{: Calculates differences in community composition and dispersion of all replicates between treatments at a single point in time}
