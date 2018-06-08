@@ -3,6 +3,8 @@ note <- sprintf("R package version %s", meta$Version)
 title <- meta$Title
 authors <- c(
     person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")),
+    person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut")),
+    person("Ian T.", "Carroll", email="icarroll@sesync.org", role=c("aut")),
     person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")),
     person("A. Andrew M.", "MacDonald", email="a.a.m.macdonald@gmail.com", role=c("aut")),
     person("Dan F. B.", "Flynn", email="flynn@fas.harvard.edu", role=c("aut")),
@@ -11,13 +13,11 @@ authors <- c(
     person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")),
     person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")),
     person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
-    person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut"))
-    person("Ian", "Carroll", email="icarroll@sesync.org", role=c("aut"))
 
 bibentry(bibtype = "Manual",
          title = paste0("{codyn}: ", title),
          author = authors,
          year = year,
          note = note,
-         url = "https://github.com/laurenmh/codyn",
+         url = "https://github.com/NCEAS/codyn",
          doi = "10.5063/F1542KJB")

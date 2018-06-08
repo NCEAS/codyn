@@ -1,25 +1,26 @@
 #' Community Dynamics Metrics
 #' @description Univariate and multivariate temporal and spatial diversity indices, rank abundance curves, and community stability metrics for ecologists.
-#' @details The functions in \code{codyn} implement metrics that are either explicitly temporal and include the option to  calculate them over multiple replicates or spatial and inlcude the option to calcualte them over multiple time points.
+#' @details The functions in \code{codyn} implement metrics that are either explicitly temporal and include the option to  calculate them over multiple replicates, or spatial and include the option to calculate them over multiple time points.
 #' Functions fall into five categories: static diversity indices, temporal diversity indices, spatial diversity indices, rank abundance curves, and community stability metrics.
 #' The diversity indices in \code{codyn} are temporal and spatial analogs to traditional diversity indices.
-#' Specifically, \code{codyn} includes functions to calculate community richness, evenness and diveristy at a given point in space and time. In addition, \code{codyn} contains fucntions to calculate species turnover, mean rank shifts, and lags in community similarity between two time points. For the components of rank abundance curves, the shape of the rank abundance curve, species abundances and multivariate metrics of community composition \code{codyn} contains function to calculate these metric either between time points or a single time point between two paired replicates.
+#' Specifically, \code{codyn} includes functions to calculate community richness, evenness and diversity at a given point in space and time. In addition, \code{codyn} contains functions to calculate species turnover, mean rank shifts, and lags in community similarity between two time points. For the components of rank abundance curves, the shape of the rank abundance curve, species abundances and multivariate metrics of community composition, \code{codyn} contains functions to calculate these metrics either between time points or a single time point between two paired replicates.
 #' The community stability metrics in \code{codyn} calculate overall stability and patterns of species covariance and synchrony over time.
 #' Finally, \code{codyn} contains vignettes that describe methods and reproduce figures from published papers to help users contextualize and apply functions to their own data.
-#' Work on this package was supported by NSF-ABI grant #1262458 and SESYNC Synthesis Postdoctoral Fellowship to MLA. 
+#' Work on this package was supported by National Science Foundation grant #1262458 to the National Center for Ecological Analysis and Synthesis (NCEAS), the University of Wisconsin, and the University of New Mexico, and a SESYNC Synthesis Postdoctoral Fellowship to MLA. 
 #'
 #' @author
 #' \itemize{
 #'  \item{Lauren Hallett \email{lauren.m.hallett@@gmail.com}}
-#'  \item{Sydney K. Jones \email{syd@@sevilleta.unm.edu}}
-#'  \item{A. Andrew A. MacDonald \email{aammacdonald@@gmail.com}}
-#'  \item{Matthew B. Jones \email{jones@@nceas.ucsb.edu}}
-#'  \item{Dan F. B. Flynn \email{flynn@@fas.harvard.edu}}
-#'  \item{Peter Slaughter \email{slaughter@@nceas.ucsb.edu}}
-#'  \item{Corinna Gries \email{cgries@@wisc.edu}}
-#'  \item{Scott L. Collins \email{scollins@@sevilleta.unm.edu}}
 #'  \item{Meghan L. Avolio \email{meghan.avolio@jhu.edu}}
 #'  \item{Ian Carroll \email{icarroll@sesync.org}}
+#'  \item{Sydney K. Jones \email{syd@@sevilleta.unm.edu}}
+#'  \item{A. Andrew A. MacDonald \email{aammacdonald@@gmail.com}}
+#'  \item{Dan F. B. Flynn \email{flynn@@fas.harvard.edu}}
+#'  \item{Peter Slaughter \email{slaughter@@nceas.ucsb.edu}}
+#'  \item{Julie Ripplinger \email{julie.ripplinger@@asu.edu}}
+#'  \item{Scott L. Collins \email{scollins@@sevilleta.unm.edu}}
+#'  \item{Corinna Gries \email{cgries@@wisc.edu}}
+#'  \item{Matthew B. Jones \email{jones@@nceas.ucsb.edu}}
 #' }
 #'
 #' @docType package
@@ -103,9 +104,9 @@ NULL
 #'   \item plot: An integer column of spatial replicates with 18 levels (6-48)
 #'   \item year: An integer column of sampling time points
 #'   \item species: A factor column of species sampled
-#'   \item relative_cover: A numeric column of relatvie cover values
-#'   \item block: An interger column of dummy blocking variable, grouping treament plots into blocks
-#'   \item treatment: A factor column of nitorgen and phosphorus treatments applied to the plots
+#'   \item relative_cover: A numeric column of relative cover values
+#'   \item block: An integer column of dummy blocking variable, grouping treatment plots into blocks
+#'   \item treatment: A factor column of nitrogen and phosphorus treatments applied to the plots
 #' }
 #'
 #' @source

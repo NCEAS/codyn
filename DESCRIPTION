@@ -1,7 +1,9 @@
 Package: codyn
 Title: Community Dynamics Metrics
-Version: 1.1.0.9500
+Version: 2.0.0
 Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")),
+    person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut")),
+    person("Ian T.", "Carroll", email="icarroll@sesync.org", role=c("aut")),
     person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")),
     person("A. Andrew M.", "MacDonald", email="a.a.m.macdonald@gmail.com", role=c("aut")),
     person("Dan F. B.", "Flynn", email="flynn@fas.harvard.edu", role=c("aut")),
@@ -9,18 +11,21 @@ Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", rol
     person("Julie", "Ripplinger", email="julie.ripplinger@asu.edu", role=c("aut")),
     person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")),
     person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")),
-    person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")),
-    person("Ian T.", "Carroll", email="icarroll@sesync.org", role=c("aut")),
-    person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut")))
-Date: 2016-04-26
-Description: A toolbox of ecological community dynamics metrics that are
-    explicitly temporal. Functions fall into two categories: temporal diversity
-    indices and community stability metrics. The diversity indices are temporal
-    analogs to traditional diversity indices such as richness and rank-abundance
-    curves. Specifically, functions are provided to calculate species turnover, mean
-    rank shifts, and lags in community similarity between time points. The community
-    stability metrics calculate overall stability and patterns of species covariance
-    and synchrony over time.
+    person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
+Date: 2018-06-07
+Description: Univariate and multivariate temporal and spatial diversity indices, 
+    rank abundance curves, and community stability metrics. The functions 
+    implement metrics that are either explicitly temporal and include the 
+    option to  calculate them over multiple replicates, or spatial and include 
+    the option to calculate them over multiple time points. Functions fall into 
+    five categories: static diversity indices, temporal diversity indices, 
+    spatial diversity indices, rank abundance curves, and community stability 
+    metrics. The diversity indices are temporal and spatial analogs to 
+    traditional diversity indices. Specifically, the package includes functions 
+    to calculate community richness, evenness and diversity at a given point in 
+    space and time. In addition, it contains functions to calculate species 
+    turnover, mean rank shifts, and lags in community similarity between two 
+    time points.
 Depends:
     R (>= 3.2.0)
 Imports:
@@ -37,8 +42,8 @@ Suggests:
     dplyr,
     rmarkdown
 License: Apache License (== 2.0)
-URL: https://github.com/laurenmh/codyn/
-BugReports: https://github.com/laurenmh/codyn/issues
+URL: https://github.com/NCEAS/codyn/
+BugReports: https://github.com/NCEAS/codyn/issues
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
