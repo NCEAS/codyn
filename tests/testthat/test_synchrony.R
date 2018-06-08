@@ -46,7 +46,7 @@ test_that("synchrony loads and returns correct result", {
 
     # test that stops if more than one record for a species within a year, in one replicate
     dat4 = rbind(dat1, dat1[nrow(dat1),])
-    expect_warning(synchrony(dat4, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA))
+    expect_error(synchrony(dat4, time.var="year", species.var="species", abundance.var="abundance", replicate.var=NA))
 
     dat5 = rbind(knz_001d, knz_001d[nrow(knz_001d),], knz_001d[1,])
 

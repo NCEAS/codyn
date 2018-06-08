@@ -14,4 +14,3 @@ check_names(given, data)
 \description{
 check names of data frames
 }
-

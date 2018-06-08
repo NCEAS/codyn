@@ -23,4 +23,3 @@ the lagged values
 Get lagged values from a distance matrix
 Get lagged values from distance matrix at value i
 }
-

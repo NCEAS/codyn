@@ -25,4 +25,3 @@ A data frame containing a column for replicate, year, species and abundance:
 }
 }
 \keyword{datasets}
-

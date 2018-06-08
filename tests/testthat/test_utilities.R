@@ -64,7 +64,7 @@ test_that("Single-record checks for species work", {
   dfa = subset(knz_001d, subplot == "A_1")
   expect_null(check_single_onerep(dfa, time.var = "year", species.var = "species"))
   dfab = subset(knz_001d, subplot == "A_1" | subplot == "A_2")
-  expect_warning(check_single_onerep(dfab, time.var = "year", species.var = "species"))
+  expect_error(check_single_onerep(dfab, time.var = "year", species.var = "species"))
   
   df2 = subset(knz_001d, subplot == "A_1")
   names(df2)=c("spp", "yr", "subplot", "abund")

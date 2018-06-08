@@ -16,4 +16,3 @@ check_numeric(df, time.var, abundance.var)
 \description{
 Utility to check for numeric abundance and time variables
 }
-

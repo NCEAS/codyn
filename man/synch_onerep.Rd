@@ -25,4 +25,3 @@ output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 
 \description{
 A function to calculate species synchrony over time within one replicate
 }
-

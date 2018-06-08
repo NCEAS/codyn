@@ -16,4 +16,3 @@ df_intersect(df1, df2, dataname = "species")
 \description{
 Create intersections.
 }
-

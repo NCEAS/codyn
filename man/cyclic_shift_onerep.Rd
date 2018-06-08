@@ -25,4 +25,3 @@ out A vector of  test statistics calculated on the null community
 \description{
 A function to calculate a non-S3 cyclic shift on one replicate
 }
-

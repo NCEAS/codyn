@@ -23,4 +23,3 @@ a slope of time lags by species distances
 Get slope
 Returns the slope of community change within one replicate.
 }
-

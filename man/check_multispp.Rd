@@ -16,4 +16,3 @@ check_multispp(df, species.var, replicate.var)
 \description{
 Utility function to stop calculations if only one species occurs in at least one replicate
 }
-

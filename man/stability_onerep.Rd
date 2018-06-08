@@ -17,4 +17,3 @@ Stability of x, calculated as the mean/sd
 \description{
 A function to calculate species synchrony over time within one replicate
 }
-

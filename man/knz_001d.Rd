@@ -27,4 +27,3 @@ A data frame containing a column for species, year, subplot and abundance:
 }
 }
 \keyword{datasets}
-

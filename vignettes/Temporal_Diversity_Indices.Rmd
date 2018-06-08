@@ -58,24 +58,22 @@ The metric was introduced by MacArthur and Wilson [-@MacArthur1963] and modified
 `turnover` requires a data frame with columns for species, time and abundance, and includes an optional argument to specify a column for spatial replicates.
 ```{r results='asis'}
 KNZ_turnover <- turnover(df = collins08, 
-                       time.var = "year", 
-                       species.var = "species", 
-                       abundance.var = "abundance", 
-                       replicate.var = "replicate")
-    kable(head(KNZ_turnover))
+                         time.var = "year", 
+                         species.var = "species", 
+                         abundance.var = "abundance", 
+                         replicate.var = "replicate")
+```
+```{r echo=FALSE}
+kable(head(KNZ_turnover))
 ```
 
-Note that if the `replicate.var` column is not specified but the dataset in fact includes replicates, `turnover` will calculate across all species present in a given time point across the dataset. For example, defaulting the `replicate.var` to `NA` while using the entire `collins08` dataset yields total turnover across the unburned and burned locations combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
+Note that if the `replicate.var` column is not specified but the dataset in fact includes replicates, calling `turnover` will result in an error. For example, forgetting to specify the `replicate.var`, allowing it to assume the default value of `NA`, yields an error because multiple abundance values are included for the same species within a single year.
 
-```{r results='asis'}
+```{r results='asis', error = TRUE}
 KNZ_turnover_agg <- turnover(df = collins08, 
                           species.var = "species",
                           time.var = "year",
-                          abundance.var = "abundance",
-                          replicate.var = NA)
-```
-```{r echo=FALSE}
-    kable(head(KNZ_turnover_agg))
+                          abundance.var = "abundance")
 ```
 
 ### Appearances and disappearances
@@ -203,8 +201,9 @@ KNZ_rankshift$year <- as.numeric(substr(KNZ_rankshift$year_pair, 6,9))
 kable(head(KNZ_rankshift))
 ```
 
-If `replicate.var` is not specified but the dataset in fact includes replicates, `rank_shift` will be calculated using all species present in the datset. For `collins08`, this would return mean rank shifts for the burned and unburned areas combined. A warning will be generated to indicate that the metric was calculated across multiple replicates.
-```{r}
+Calling `rank_shift` without specifying a `replicate.var` for a dataset that does in fact include replicates will result in an error. In the `collins08` dataset, for example, if `replicate.var = "replicate"` is not given:
+
+```{r, error = TRUE}
 KNZ_rankshift_agg <- rank_shift(df = collins08,
                         time.var = "year",
                         species.var = "species",
@@ -212,6 +211,7 @@ KNZ_rankshift_agg <- rank_shift(df = collins08,
 ```
 
 ### Rank shifts at Konza
+
 Calculating mean rank shifts highlights that the stability of communities diverged at Konza around 1992, with fewer rank shifts between species in the burned relative to the unburned area. 
 ```{r fig.width = 7, fig.height = 4}
 # Create a column with the final year from the returned time.var_pair

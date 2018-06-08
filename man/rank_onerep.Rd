@@ -21,4 +21,3 @@ a dataframe, showing years compared
 \description{
 This is a function that calculates mean rank shifts
 }
-

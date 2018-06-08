@@ -11,6 +11,8 @@ authors <- c(
     person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")),
     person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")),
     person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
+    person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut"))
+    person("Ian", "Carroll", email="icarroll@sesync.org", role=c("aut"))
 
 bibentry(bibtype = "Manual",
          title = paste0("{codyn}: ", title),
