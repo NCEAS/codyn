@@ -1,11 +1,12 @@
 # codyn - Community Dynamics Metrics
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/codyn)](http://cran.r-project.org/package=codyn)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/codyn)](http://cran.r-project.org/package=codyn)
 [![Build Status](https://travis-ci.org/laurenmh/codyn.png?branch=master)](https://travis-ci.org/laurenmh/codyn)
 
 
-- **Authors**:Lauren Hallett [lauren.m.hallett@gmail.com], Sydney K. Jones [syd@sevilleta.unm.edu], Andrew A. MacDonald [a.a.m.macdonald@gmail.com],  Dan F. B. Flynn [flynn@fas.harvard.edu], Peter Slaughter [slaughter@nceas.ucsb.edu], Julie Ripplinger [julie.ripplinger@asu.edu], Scott L. Collins [scollins@sevilleta.unm.edu], Corinna Gries [cgries@wisc.edu], Matthew B. Jones [jones@nceas.ucsb.edu]
-- [doi:10.5063/F1542KJB](http://doi.org/10.5063/F1542KJB)
+- **Authors**: Lauren Hallett [lauren.m.hallett@gmail.com], Meghan Avolio [meghan.avolio@jhu.edu], Ian Carroll [icarroll@sesync.org], Sydney K. Jones [syd@sevilleta.unm.edu], Andrew A. MacDonald [a.a.m.macdonald@gmail.com],  Dan F. B. Flynn [flynn@fas.harvard.edu], Peter Slaughter [slaughter@nceas.ucsb.edu], Julie Ripplinger [julie.ripplinger@asu.edu], Scott L. Collins [scollins@sevilleta.unm.edu], Corinna Gries [cgries@wisc.edu], Matthew B. Jones [jones@nceas.ucsb.edu]
+- Version 1.x: [doi:10.5063/F1542KJB](http://doi.org/10.5063/F1542KJB)
+- Version 2.x: [doi:10.5063/F1N877Z6](http://doi.org/10.5063/F1N877Z6)
 - **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
 - [Package source code on Github](https://github.com/laurenmh/codyn)
 - [**Submit Bugs and feature requests**](https://github.com/laurenmh/codyn/issues)
