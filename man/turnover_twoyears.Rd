@@ -21,7 +21,7 @@ turnover_twoyears(d1, d2, species.var, metric = c("total", "disappearance",
  }}
 }
 \value{
-output The specificed turnover metric
+output The specified turnover metric
 }
 \description{
 A function to calculate species turnover between two years

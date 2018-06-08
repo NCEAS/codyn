@@ -5,7 +5,7 @@
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the optional replicate column. If specified, replicate must be unique within the dataset and cannot be nested within treatments or blocks.
-#' @param reference.time The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (the first and second year, second and thrid year, etc.)
+#' @param reference.time The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (the first and second year, second and third year, etc.)
 #' @return The RAC_change function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replicate.var is specified.}

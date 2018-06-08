@@ -24,9 +24,9 @@ cyclic_shift(df, time.var, species.var, abundance.var, replicate.var = NA,
 \item{bootnumber}{Number of null simulations to run}
 }
 \value{
-The cyclic_shift function returns an S3 object of class "cyclic_shift" and param "out".
-The length of the "out" param  is the number of null iterations as specified by bootnumber.
-If multiple replicates are specified, null values are averaged among replicates for each interation, but a different cyclic shift permutation is applied to each replicate within an interation.
+The cyclic_shift function returns an S3 object of class "cyclic_shift" and parameter "out".
+The length of the "out" parameter is the number of null iterations as specified by bootnumber.
+If multiple replicates are specified, null values are averaged among replicates for each iteration, but a different cyclic shift permutation is applied to each replicate within an iteration.
 }
 \description{
 Performs a user-specified function on a null ecological community created via cyclic shift permutations (Harms et al. 2001, Hallett et al. 2014).

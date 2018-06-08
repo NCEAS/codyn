@@ -2,7 +2,7 @@
 % Please edit documentation in R/multivariate_change.R
 \name{multivariate_change}
 \alias{multivariate_change}
-\title{Using dissimilarity-based metrics to calucuate changes in composition and dispersion}
+\title{Using dissimilarity-based metrics to calculate changes in composition and dispersion}
 \usage{
 multivariate_change(df, time.var, species.var, abundance.var, replicate.var,
   treatment.var = NULL, reference.time = NULL)
@@ -18,7 +18,7 @@ multivariate_change(df, time.var, species.var, abundance.var, replicate.var,
 
 \item{replicate.var}{The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks.}
 
-\item{treatment.var}{the neame of the optional treatment column}
+\item{treatment.var}{the name of the optional treatment column}
 
 \item{reference.time}{The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (e.g. first to  second year, second to third year, etc.)}
 }
@@ -28,12 +28,12 @@ The multivariate_change function returns a data frame with the
 \itemize{
  \item{time.var: }{A column with the specified time.var and a second column, with '2' appended to the name. Time is subtracted from time2 for dispersion change.}
  \item{composition_change: }{A numeric column that is the euclidean distance between the centroids of two time points.}
- \item{dispersion_change: }{A numeric column that is the difference in the   average dispersion of the replicates around the centriod for the two time periods. A negative value indicates replicates are converging over time (there is less dispersion at time peroid 2 than time period 1) and a postive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1.}
+ \item{dispersion_change: }{A numeric column that is the difference in the   average dispersion of the replicates around the centroid for the two time periods. A negative value indicates replicates are converging over time (there is less dispersion at time period 2 than time period 1) and a positive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1.}
  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
 }
 }
 \description{
-Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of compared time periods and ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since composition change is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted, thus result of composition change depends on how many time periods are being measured. Dispersion change is the difference of average dispersion of each replicate to its centroid between time periods.
+Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of compared time periods and ranges from 0-1, where 0 are identical communities, and 1 and completely different communities. Since composition change is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted, thus result of composition change depends on how many time periods are being measured. Dispersion change is the difference of average dispersion of each replicate to its centroid between time periods.
 }
 \examples{
 data(pplots)

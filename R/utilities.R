@@ -1,4 +1,4 @@
-#' Convert from a longform abundance dataframe to a time by species dataframe.
+#' Convert from a long form abundance dataframe to a time by species dataframe.
 #'
 #' @param df A dataframe containing time.var, species.var and abundance.var columns
 #' @param time.var The name of the time column from df
@@ -36,7 +36,7 @@ check_names <- function(given, data) {
 }
 
 #' Utility function to warn users that either multiple records exist within
-#' replicates, or that data may be spanning mutiple replicates but no
+#' replicates, or that data may be spanning multiple replicates but no
 #' replicate.var has been specified
 #' @param df A dataframe containing time.var, species.var and abundance.var columns
 #' @param time.var The name of the time column from df
@@ -139,7 +139,7 @@ S <- function(x){
 
 #' Add zero abundances for missing species, on the assumption that any species
 #' in the \code{species.var} column should be included for every group defined
-#' by all the remaining colums save \code{abundance.var}.
+#' by all the remaining columns save \code{abundance.var}.
 #'
 #' @param df A dataframe with species, abundances, and at least one other column
 #'   to group by
@@ -177,7 +177,7 @@ fill_species <- function(df, species.var, abundance.var) {
 }
 
 #' @title Add abundance ranks
-#' @description Rank species by abundance, by specified groupig. Species with
+#' @description Rank species by abundance, by specified grouping. Species with
 #'   zero abundance receive rank S+1, where S is the total number of species in
 #'   the group.
 #' @param df A data frame containing a single record per species with its abundance
@@ -236,7 +236,7 @@ add_rank_abundance <- function(df, species.var, abundance.var) {
   return(out)
 }
 
-#' @title A Split-Apply-Combine implementaion
+#' @title A Split-Apply-Combine implementation
 #' @description Faster split-apply-combine for data frames, when the results of FUN
 #' are homogeneous with respect to the number, order, data type and (if
 #' applicable) levels of columns in the returned data frame.
@@ -304,7 +304,7 @@ Evar <- function(x, S = length(x)) {
 #' @param replicate.var The name of the replicate column 
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
-#' @param pool The name the optional pooling appraoch
+#' @param pool The name the optional pooling approach
 #' @param reference.treatment The name of the optional treatment
 #' @param reference.time the name of the optional time (this might be an error)
 

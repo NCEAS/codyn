@@ -1,6 +1,6 @@
 #' @title Abundance Differences
 #' 
-#' @description Calculates the abundance difference for species between two   samples. Differences are on abundance values provided, if relative data is   used, then differences in relative abundance will be calcuated. There are three ways differences can be calculated. 1) Between treatments within a block (note: block.var and treatment.var need to be specified). 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var = NULL). 3) All pairwise combinations between all replicates (note: block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
+#' @description Calculates the abundance difference for species between two   samples. Differences are on abundance values provided, if relative data is   used, then differences in relative abundance will be calculated. There are three ways differences can be calculated. 1) Between treatments within a block (note: block.var and treatment.var need to be specified). 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var = NULL). 3) All pairwise combinations between all replicates (note: block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
 #'   
 #' @param df A data frame containing species, abundance, replicate columns and   optional time, treatment and block columns.
 #' @param time.var The name of the optional time column 
@@ -12,7 +12,7 @@
 #' @param pool An argument to allow abundance values to be pooled within a
 #'   treatment. The default value is "FALSE", a value of "TRUE" averages the
 #'   abundances of each species within a treatment at a given time point.
-#' @param reference.treatment The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisions will be made.
+#' @param reference.treatment The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisons will be made.
 #' @return The abundance_difference function returns a data frame with the
 #'   following attributes:
 #' \itemize{

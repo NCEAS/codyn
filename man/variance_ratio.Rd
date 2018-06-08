@@ -42,7 +42,7 @@ The variance_ratio function returns a data frame with the following attributes:
 \description{
 Computes the ratio of the variance of aggregate species abundances
 in a community to the sum of the variances of individual, component species. A
-variance ratio = 1 indicates that species do not covary,  a variance ratio > 1
+variance ratio = 1 indicates that species do not covary, a variance ratio > 1
 indicates predominately positive covariance among species and a variance
 ratio < 1 indicates predominately negative covariance (Schluter 1984).
 

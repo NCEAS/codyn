@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{transpose_community}
 \alias{transpose_community}
-\title{Convert from a longform abundance dataframe to a time by species dataframe.}
+\title{Convert from a long form abundance dataframe to a time by species dataframe.}
 \usage{
 transpose_community(df, time.var, species.var, abundance.var)
 }
@@ -19,5 +19,5 @@ transpose_community(df, time.var, species.var, abundance.var)
 A dataframe of species abundances x time
 }
 \description{
-Convert from a longform abundance dataframe to a time by species dataframe.
+Convert from a long form abundance dataframe to a time by species dataframe.
 }

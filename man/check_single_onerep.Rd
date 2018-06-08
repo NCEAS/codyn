@@ -3,7 +3,7 @@
 \name{check_single_onerep}
 \alias{check_single_onerep}
 \title{Utility function to warn users that either multiple records exist within
-replicates, or that data may be spanning mutiple replicates but no
+replicates, or that data may be spanning multiple replicates but no
 replicate.var has been specified}
 \usage{
 check_single_onerep(df, time.var, species.var)
@@ -17,6 +17,6 @@ check_single_onerep(df, time.var, species.var)
 }
 \description{
 Utility function to warn users that either multiple records exist within
-replicates, or that data may be spanning mutiple replicates but no
+replicates, or that data may be spanning multiple replicates but no
 replicate.var has been specified
 }

@@ -4,7 +4,7 @@
 \alias{fill_zeros}
 \title{Add zero abundances for missing species, on the assumption that any species
 in the \code{species.var} column should be included for every group defined
-by all the remaining colums save \code{abundance.var}.}
+by all the remaining columns save \code{abundance.var}.}
 \usage{
 fill_zeros(df, species.var, abundance.var)
 }
@@ -23,5 +23,5 @@ A dataframe with the same columns as df, but with zeros added for
 \description{
 Add zero abundances for missing species, on the assumption that any species
 in the \code{species.var} column should be included for every group defined
-by all the remaining colums save \code{abundance.var}.
+by all the remaining columns save \code{abundance.var}.
 }

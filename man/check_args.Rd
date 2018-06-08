@@ -21,7 +21,7 @@ check_args(df, time.var = NULL, species.var, abundance.var,
 
 \item{treatment.var}{The name of the optional treatment column}
 
-\item{pool}{The name the optional pooling appraoch}
+\item{pool}{The name the optional pooling approach}
 
 \item{block.var}{The name of the optional block column}
 

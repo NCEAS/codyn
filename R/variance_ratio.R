@@ -1,7 +1,7 @@
 #' @title Variance Ratio
 #' @description Computes the ratio of the variance of aggregate species abundances
 #' in a community to the sum of the variances of individual, component species. A
-#' variance ratio = 1 indicates that species do not covary,  a variance ratio > 1
+#' variance ratio = 1 indicates that species do not covary, a variance ratio > 1
 #' indicates predominately positive covariance among species and a variance
 #' ratio < 1 indicates predominately negative covariance (Schluter 1984).
 #'
@@ -226,7 +226,7 @@ variance_ratio_matrixdata <- function(comdat){
     return(var.ratio)
 }
 
-#' A function to calculate the variance ratio from a longform dataframe
+#' A function to calculate the variance ratio from a long form dataframe
 #'
 #' @param df A dataframe containing time.var, replicate.var, species.var and abundance.var columns
 #' @param time.var The name of the time.var column from df

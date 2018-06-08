@@ -23,7 +23,7 @@ The add_ranks function returns a data frame with the following
   }
 }
 \description{
-Rank species by abundance, by specified groupig. Species with
+Rank species by abundance, by specified grouping. Species with
   zero abundance receive rank S+1, where S is the total number of species in
   the group.
 }

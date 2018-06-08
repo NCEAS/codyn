@@ -1,5 +1,5 @@
 #' @title Curve Change
-#' @description Calculates the area difference between two rank abundance curves between two time periods. If replicate is specified, it must be measured in both time points, otherwise it will be dropped for that time period comparision.
+#' @description Calculates the area difference between two rank abundance curves between two time periods. If replicate is specified, it must be measured in both time points, otherwise it will be dropped for that time period comparison.
 #' @param df A data frame containing time, species, and abundance columns and an optional column of replicates
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 

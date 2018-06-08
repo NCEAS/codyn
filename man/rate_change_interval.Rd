@@ -52,5 +52,5 @@ rate_change_interval(knz_001d,
                       replicate.var = "subplot") # across all subplots
 }
 \references{
-Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates andpatterns of variability in ecological communities. - Oikos 91: 285-293.
+Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates and patterns of variability in ecological communities. - Oikos 91: 285-293.
 }

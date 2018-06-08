@@ -29,7 +29,7 @@ The curve_change function returns a data frame with the following attributes:
 }
 }
 \description{
-Calculates the area difference between two rank abundance curves between two time periods. If replicate is specified, it must be measured in both time points, otherwise it will be dropped for that time period comparision.
+Calculates the area difference between two rank abundance curves between two time periods. If replicate is specified, it must be measured in both time points, otherwise it will be dropped for that time period comparison.
 }
 \examples{
 data(pplots)

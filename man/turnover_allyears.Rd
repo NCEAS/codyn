@@ -23,7 +23,7 @@ turnover_allyears(df, time.var, species.var, abundance.var,
   }}
 }
 \value{
-output A dataframe containing the specificed turnover metric and year
+output A dataframe containing the specified turnover metric and year
 }
 \description{
 A function to calculate species turnover between years

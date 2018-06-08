@@ -11,9 +11,9 @@
 #' @param replicate.var The name of the replicate column. Defaults to \code{NA}, indicating no replicates (i.e., data are from a single plot).
 #' @param FUN A function to calculate on the null community
 #' @param bootnumber Number of null simulations to run
-#' @return The cyclic_shift function returns an S3 object of class "cyclic_shift" and param "out".
-#' The length of the "out" param  is the number of null iterations as specified by bootnumber.
-#' If multiple replicates are specified, null values are averaged among replicates for each interation, but a different cyclic shift permutation is applied to each replicate within an interation.
+#' @return The cyclic_shift function returns an S3 object of class "cyclic_shift" and parameter "out".
+#' The length of the "out" parameter is the number of null iterations as specified by bootnumber.
+#' If multiple replicates are specified, null values are averaged among replicates for each iteration, but a different cyclic shift permutation is applied to each replicate within an iteration.
 #' @details The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' @examples
 #' # Calculate a covariance matrix on a null community

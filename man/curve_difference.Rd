@@ -25,7 +25,7 @@ curve_difference(df, time.var = NULL, species.var, abundance.var,
 
 \item{block.var}{The name of the optional block column}
 
-\item{reference.treatment}{The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisions will be made.}
+\item{reference.treatment}{The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisons will be made.}
 }
 \value{
 The curve_difference function returns a data frame with the following attributes:

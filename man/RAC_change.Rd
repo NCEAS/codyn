@@ -18,7 +18,7 @@ RAC_change(df, time.var, species.var, abundance.var, replicate.var = NULL,
 
 \item{replicate.var}{The name of the optional replicate column. If specified, replicate must be unique within the dataset and cannot be nested within treatments or blocks.}
 
-\item{reference.time}{The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (the first and second year, second and thrid year, etc.)}
+\item{reference.time}{The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (the first and second year, second and third year, etc.)}
 }
 \value{
 The RAC_change function returns a data frame with the following attributes:

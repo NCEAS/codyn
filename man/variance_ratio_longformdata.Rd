@@ -2,7 +2,7 @@
 % Please edit documentation in R/variance_ratio.R
 \name{variance_ratio_longformdata}
 \alias{variance_ratio_longformdata}
-\title{A function to calculate the variance ratio from a longform dataframe}
+\title{A function to calculate the variance ratio from a long form dataframe}
 \usage{
 variance_ratio_longformdata(df, time.var, species.var, abundance.var)
 }
@@ -19,5 +19,5 @@ variance_ratio_longformdata(df, time.var, species.var, abundance.var)
 var.ratio The variance ratio of the community
 }
 \description{
-A function to calculate the variance ratio from a longform dataframe
+A function to calculate the variance ratio from a long form dataframe
 }

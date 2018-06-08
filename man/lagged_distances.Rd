@@ -21,5 +21,5 @@ a data frame containing of time lags by species distances
 \description{
 Returns a data frame with two columns, interval and distance. The interval is
 the number of time steps between two communities, while distance is the
-euclidean distance of community change within one replicate lagged across invtervals.
+euclidean distance of community change within one replicate lagged across intervals.
 }

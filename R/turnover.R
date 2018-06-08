@@ -112,7 +112,7 @@ turnover <- function(df, time.var,
 #'  \item{appearance: }{ returns the number of appearances in the second year relative to total species richness across both years }
 #'   \item{disappearance: }{ returns the number of disappearances in the second year relative to the total species richness across both years }
 #'   }
-#' @return output A dataframe containing the specificed turnover metric and year
+#' @return output A dataframe containing the specified turnover metric and year
 turnover_allyears <- function(df, 
                               time.var, 
                               species.var, 
@@ -159,7 +159,7 @@ turnover_allyears <- function(df,
 #'  \item{appearance: }{ returns the number of appearances in the second year relative to total species richness across both years }
 #'  \item{disappearance: }{ returns the number of disappearances in the second year relative to the total species richness across both years }
 #'  }
-#' @return output The specificed turnover metric
+#' @return output The specified turnover metric
 
 turnover_twoyears <- function(d1, d2, 
                               species.var, 

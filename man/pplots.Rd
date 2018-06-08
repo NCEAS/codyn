@@ -20,9 +20,9 @@ A data frame containing a column for replicate, year, species, abundance, block 
   \item plot: An integer column of spatial replicates with 18 levels (6-48)
   \item year: An integer column of sampling time points
   \item species: A factor column of species sampled
-  \item relative_cover: A numeric column of relatvie cover values
-  \item block: An interger column of dummy blocking variable, grouping treament plots into blocks
-  \item treatment: A factor column of nitorgen and phosphorus treatments applied to the plots
+  \item relative_cover: A numeric column of relative cover values
+  \item block: An integer column of dummy blocking variable, grouping treatment plots into blocks
+  \item treatment: A factor column of nitrogen and phosphorus treatments applied to the plots
 }
 }
 \keyword{datasets}

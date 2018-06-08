@@ -1,18 +1,18 @@
-#'@title Using dissimilarity-based metrics to calucuate changes in composition and dispersion
-#' @description Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of compared time periods and ranges from 0-1, where 0 are identical communities, and 1 and completelty different communities. Since composition change is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted, thus result of composition change depends on how many time periods are being measured. Dispersion change is the difference of average dispersion of each replicate to its centroid between time periods.
+#'@title Using dissimilarity-based metrics to calculate changes in composition and dispersion
+#' @description Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of compared time periods and ranges from 0-1, where 0 are identical communities, and 1 and completely different communities. Since composition change is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted, thus result of composition change depends on how many time periods are being measured. Dispersion change is the difference of average dispersion of each replicate to its centroid between time periods.
 #' @param df A data frame containing time, species, abundance and replicate columns and an optional column of treatment
 #' @param time.var The name of the time column 
 #' @param species.var The name of the species column 
 #' @param abundance.var The name of the abundance column 
 #' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks. 
-#' @param treatment.var the neame of the optional treatment column
+#' @param treatment.var the name of the optional treatment column
 #' @param reference.time The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (e.g. first to  second year, second to third year, etc.)
 #' @return The multivariate_change function returns a data frame with the
 #'   following attributes:
 #' \itemize{
 #'  \item{time.var: }{A column with the specified time.var and a second column, with '2' appended to the name. Time is subtracted from time2 for dispersion change.}
 #'  \item{composition_change: }{A numeric column that is the euclidean distance between the centroids of two time points.}
-#'  \item{dispersion_change: }{A numeric column that is the difference in the   average dispersion of the replicates around the centriod for the two time periods. A negative value indicates replicates are converging over time (there is less dispersion at time peroid 2 than time period 1) and a postive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1.}
+#'  \item{dispersion_change: }{A numeric column that is the difference in the   average dispersion of the replicates around the centroid for the two time periods. A negative value indicates replicates are converging over time (there is less dispersion at time period 2 than time period 1) and a positive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1.}
 #'  \item{treatment.var: }{A column that has same name and type as the treatment.var column, if treatment.var is specified.}
 #' }
 #' @examples 

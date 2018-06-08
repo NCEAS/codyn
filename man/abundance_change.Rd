@@ -24,13 +24,13 @@ abundance_change(df, time.var, species.var, abundance.var,
 The abundance_change function returns a data frame with the following fields:
 \itemize{
  \item{replicate.var: }{A column with the specified replicate.var, if it is specified.}
- \item{time.var: }{A column with the specified time.var and a second column, with '2'appended to the name. Time is subsracted fro time2}
+ \item{time.var: }{A column with the specified time.var and a second column, with '2' appended to the name. Time is subtracted from time2}
  \item{species.var: }{A column with the specified species.var.}
  \item{change: }{A numeric column of the change in abundance between  time points. A positive value occurs when a species increases in abundance over time, and a negative value when a species decreases in abundance over time.}
 }
 }
 \description{
-Calculates the abundance change for species in a replicate between two time points. Changes are on abundance values provided, if relative data is used, then changes in relative abundance will be calcuated.
+Calculates the abundance change for species in a replicate between two time points. Changes are on abundance values provided, if relative data is used, then changes in relative abundance will be calculated.
 }
 \examples{
 data(pplots)

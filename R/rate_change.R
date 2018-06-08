@@ -28,7 +28,7 @@
 #' It is recommended that fit of this relationship be verified using \code{rate_change_interval},
 #' which returns the full set of community distance values and associated time lag intervals.
 #' @references
-#' Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates andpatterns of variability in ecological communities. - Oikos 91: 285-293.
+#' Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates and patterns of variability in ecological communities. - Oikos 91: 285-293.
 #' @examples
 #' data(knz_001d)
 #' rate_change(knz_001d[knz_001d$subplot=="A_1",],
@@ -108,7 +108,7 @@ rate_change <- function(df, time.var,
 #' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 #' @references
-#' Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates andpatterns of variability in ecological communities. - Oikos 91: 285-293.
+#' Collins, S. L., Micheli, F. and Hartt, L. 2000. A method to determine rates and patterns of variability in ecological communities. - Oikos 91: 285-293.
 #' @examples
 #' data(knz_001d)
 #' rate_change_interval(knz_001d[knz_001d$subplot=="A_1",], 
@@ -178,7 +178,7 @@ rate_change_interval <- function(df, time.var,
 #' Get lagged distances for a single replicate
 #' @description Returns a data frame with two columns, interval and distance. The interval is
 #' the number of time steps between two communities, while distance is the
-#' euclidean distance of community change within one replicate lagged across invtervals.
+#' euclidean distance of community change within one replicate lagged across intervals.
 #' @param df data frame to compute the slope of community change for
 #' @param time.var The name of the time column from df
 #' @param species.var The name of the species column from df

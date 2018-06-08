@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{split_apply_combine}
 \alias{split_apply_combine}
-\title{A Split-Apply-Combine implementaion}
+\title{A Split-Apply-Combine implementation}
 \source{
 \url{https://stackoverflow.com/a/9730292/687112}
 }
