@@ -2,7 +2,7 @@
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/codyn)](http://cran.r-project.org/package=codyn)
 [![Build Status](https://travis-ci.org/NCEAS/codyn.png?branch=master)](https://travis-ci.org/NCEAS/codyn)
-[Downloads](https://cranlogs.r-pkg.org/badges/grand-total/codyn)
+![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/codyn)
 
 
 - **Authors**: Lauren Hallett [lauren.m.hallett@gmail.com], Meghan Avolio [meghan.avolio@jhu.edu], Ian Carroll [icarroll@sesync.org], Sydney K. Jones [syd@sevilleta.unm.edu], Andrew A. MacDonald [a.a.m.macdonald@gmail.com],  Dan F. B. Flynn [flynn@fas.harvard.edu], Peter Slaughter [slaughter@nceas.ucsb.edu], Julie Ripplinger [julie.ripplinger@asu.edu], Scott L. Collins [scollins@sevilleta.unm.edu], Corinna Gries [cgries@wisc.edu], Matthew B. Jones [jones@nceas.ucsb.edu]
