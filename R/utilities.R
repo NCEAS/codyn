@@ -296,7 +296,8 @@ Evar <- function(x, S = length(x)) {
 }
 
 #' @title Checking for errors in arguments
-#' @description Check for errors in the application of arguments and input data for all *_difference functions.
+#' @description Check for errors in the application of arguments and input data
+#'   for all \code{*_change} and \code{*_difference} functions.
 #' @param df The name of the dataframe
 #' @param time.var The name of the optional time column 
 #' @param species.var The name of the species column 
@@ -305,8 +306,8 @@ Evar <- function(x, S = length(x)) {
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
 #' @param pool The name the optional pooling approach
-#' @param reference.treatment The name of the optional treatment
-#' @param reference.time the name of the optional time (this might be an error)
+#' @param reference.treatment The name of the optional reference treatment
+#' @param reference.time The name of the optional reference time
 
 check_args <- function(df,
                        time.var = NULL,
