@@ -2,15 +2,19 @@ Version 2.0.0
 -------------
 
 NEW FUNCTIONS
-
-* RAC_change, RAC_difference: 
-* abundance_change, abundance_difference:
-* curve_change, curve_difference:
-* multivariate_change, multivariate_difference:
-* community_diversity:
-* community_structure:
+*community_structure: Calculates richness and evenness (using specified metric) for a replicate
+*community_diversity: Calculates diversity (using specified metric) for a replicate
+*RAC_change: Calculates changes in species richness, evenness, species' ranks, gain, and losses for a replicate over time
+*abundance_change: For each species in a replicate, calculates changes in abundance over time
+*curve_change: Calculates changes in the shape of the RAC curve for each replicate over time
+*multivariate_change: Calculates changes in community composition and dispersion over time
+*RAC_difference: Calculates differences in species richness, evenness, species' ranks, shared species between paired samples at a single point in time
+*abundance_difference: Calculates differences in abundance for each species in paired samples at a single point in time
+*curve_difference: Calculates differences in the shape of the RAC between paired samples at a single point in time
+*multivariate_difference: Calculates differences in community composition and dispersion of all replicates between treatments at a single point in time
 
 BUG FIXES
+Previous warnings have been changed to errors.
 
 Version 1.1.0
 -------------
