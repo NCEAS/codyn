@@ -5,7 +5,7 @@
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/codyn)
 
 
-- **Authors**: Lauren Hallett [lauren.m.hallett@gmail.com], Meghan Avolio [meghan.avolio@jhu.edu], Ian Carroll [icarroll@sesync.org], Sydney K. Jones [syd@sevilleta.unm.edu], Andrew A. MacDonald [a.a.m.macdonald@gmail.com],  Dan F. B. Flynn [flynn@fas.harvard.edu], Peter Slaughter [slaughter@nceas.ucsb.edu], Julie Ripplinger [julie.ripplinger@asu.edu], Scott L. Collins [scollins@sevilleta.unm.edu], Corinna Gries [cgries@wisc.edu], Matthew B. Jones [jones@nceas.ucsb.edu]
+- **Authors**: Lauren Hallett [lauren.m.hallett@gmail.com], Meghan Avolio [meghan.avolio@jhu.edu], Ian T. Carroll [icarroll@sesync.org], Sydney K. Jones [syd@sevilleta.unm.edu], Andrew A. MacDonald [a.a.m.macdonald@gmail.com],  Dan F. B. Flynn [flynn@fas.harvard.edu], Peter Slaughter [slaughter@nceas.ucsb.edu], Julie Ripplinger [julie.ripplinger@asu.edu], Scott L. Collins [scollins@sevilleta.unm.edu], Corinna Gries [cgries@wisc.edu], Matthew B. Jones [jones@nceas.ucsb.edu]
 - Version 1.x: [doi:10.5063/F1542KJB](http://doi.org/10.5063/F1542KJB)
 - Version 2.x: [doi:10.5063/F1N877Z6](http://doi.org/10.5063/F1N877Z6)
 - **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
@@ -57,6 +57,5 @@ $ docker-compose run --rm r-check-devel
 ```
 
 ## Acknowledgements
-Work on this package was supported by NSF-ABI grant #1262458 to C. Gries, M. Jones, and S. Collins. Additional support
-was provided for working group collaboration by the National Center for Ecological Analysis and Synthesis, a Center funded by the University of California, Santa Barbara, and the State of California, and a SESYNC Synthesis Postdoctoral Fellowship to MLA.
+Work on this package was supported by NSF-ABI grant #1262458 to C. Gries, M. Jones, and S. Collins. Additional support was provided for working group collaboration by the National Center for Ecological Analysis and Synthesis, a Center funded by the University of California, Santa Barbara, and the State of California, and a SESYNC Synthesis Postdoctoral Fellowship to MLA.
 
