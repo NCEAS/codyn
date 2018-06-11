@@ -12,7 +12,7 @@
 #' \itemize{
 #'  \item{Lauren Hallett \email{lauren.m.hallett@@gmail.com}}
 #'  \item{Meghan L. Avolio \email{meghan.avolio@jhu.edu}}
-#'  \item{Ian Carroll \email{icarroll@sesync.org}}
+#'  \item{Ian T. Carroll \email{icarroll@sesync.org}}
 #'  \item{Sydney K. Jones \email{syd@@sevilleta.unm.edu}}
 #'  \item{A. Andrew A. MacDonald \email{aammacdonald@@gmail.com}}
 #'  \item{Dan F. B. Flynn \email{flynn@@fas.harvard.edu}}
