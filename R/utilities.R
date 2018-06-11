@@ -326,10 +326,16 @@ check_args <- function(df,
   df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
   
   # validate argument combinations
-  if (pool & (is.null(treatment.var) | !is.null(block.var)))
+  if (pool && (is.null(treatment.var) || !is.null(block.var)))
     stop("Not providing a treatment.var or providing a block.var is incompatible with pooling.")
-  if ((pool | !is.null(block.var)) & is.null(treatment.var))
+  if (is.null(treatment.var) && (pool || !is.null(block.var)))
     stop("Not providing a treatment.var is incompatible with pooling or providing block.var.")
+  if (!is.null(block.var)) {
+    reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
+    reps_obs <- length(unique(df[[replicate.var]]))
+    if (reps_exp != reps_obs)
+      stop("There is not one replicate per treatment in a block")
+  }
   
   # check no NAs in abundance column
   if (any(is.na(df[[abundance.var]])))
@@ -339,16 +345,15 @@ check_args <- function(df,
   if (any(is.na(df[[species.var]])))
     stop("Species names are missing")
   
-  if (!is.null(block.var)) {
-    reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
-    reps_obs <- length(unique(df[[replicate.var]]))
-    if (reps_exp != reps_obs)
-      stop("There is not one replicate per treatment in a block")
-  }
-  
   # check no species are repeated
   check_single(df, species.var,
     time.var = time.var, replicate.var = replicate.var)
-
+  
+  # check reference exists
+  if (!is.null(reference.time) && !is.element(reference.time, df[[time.var]]))
+    stop('The reference time could not be found in the time.var column')
+  if (!is.null(reference.treatment) && !is.element(reference.treatment, df[[treatment.var]]))
+    stop('The reference treatment could not be found in the treatment.var column')
+  
   return(df)
 }
