@@ -25,10 +25,11 @@ check_args(df, time.var = NULL, species.var, abundance.var,
 
 \item{block.var}{The name of the optional block column}
 
-\item{reference.time}{the name of the optional time (this might be an error)}
+\item{reference.time}{The name of the optional reference time}
 
-\item{reference.treatment}{The name of the optional treatment}
+\item{reference.treatment}{The name of the optional reference treatment}
 }
 \description{
-Check for errors in the application of arguments and input data for all *_difference functions.
+Check for errors in the application of arguments and input data
+  for all \code{*_change} and \code{*_difference} functions.
 }
