@@ -5,22 +5,22 @@
 #' @param species.var The name of the species column from df
 #' @param abundance.var The name of the abundance column from df
 #' @return A dataframe of species abundances x time
-transpose_community <- function(df, time.var, 
-                                species.var, 
+transpose_community <- function(df, time.var,
+                                species.var,
                                 abundance.var) {
   df <- as.data.frame(df)
-  
+
   # remove unused levels if species is a factor
   df[species.var] <- if(is.factor(df[[species.var]]) == TRUE){factor(df[[species.var]])} else {df[species.var]}
-  
+
   # sort by time and species
   df <- df[order(df[[time.var]], df[[species.var]]),]
- 
+
   # cast as a species x time dataframe; NAs to 0s
   comdat <- tapply(df[[abundance.var]], list(df[[time.var]], as.vector(df[[species.var]])), sum)
   comdat[is.na(comdat)] <- 0
   comdat <- as.data.frame(comdat)
-  
+
   # results
   return(comdat)
 }
@@ -57,13 +57,13 @@ check_single_onerep <- function(df, time.var, species.var) {
 #' @param species.var The name of the species column from df
 #' @param time.var The name of the time column from df
 #' @param replicate.var The name of the replicate column from df
-#' 
+#'
 #' @importFrom utils capture.output
 check_single <- function(df,
                          species.var,
                          time.var = NULL,
                          replicate.var = NULL) {
-  
+
   if (is.null(time.var) & is.null(replicate.var)) {
     checksingle <- table(df[species.var]) > 1
     if (any(checksingle)) {
@@ -182,7 +182,7 @@ fill_species <- function(df, species.var, abundance.var) {
 #'   the group.
 #' @param df A data frame containing a single record per species with its abundance
 #' @param abundance.var The name of the abundance column
-#' 
+#'
 #' @return The add_ranks function returns a data frame with the following
 #'   additional column:
 #'   \itemize{
@@ -193,14 +193,14 @@ fill_species <- function(df, species.var, abundance.var) {
 #'     }
 #'   }
 add_ranks <- function(df, abundance.var) {
-  
+
   # get species richness, note that zero abunance does not contribute to S
   S <- S(df[[abundance.var]])
   # rank from high to low abundance
   df[['rank']] <- rank(-df[[abundance.var]], ties.method = 'average')
   # adjust ranks for species with zero abundance to S + 1
   df[df[['rank']] > S, 'rank'] <- S + 1
-  
+
   return(df)
 }
 
@@ -211,7 +211,7 @@ add_ranks <- function(df, abundance.var) {
 #' @param df A data frame containing a single record per species with its abundance
 #' @param abundance.var The name of the abundance column
 #' @param species.var The name of the species column
-#' 
+#'
 #' @return The add_rank_abundance function returns a data frame with the following
 #'   additional column:
 #'   \itemize{
@@ -240,12 +240,12 @@ add_rank_abundance <- function(df, species.var, abundance.var) {
 #' @description Faster split-apply-combine for data frames, when the results of FUN
 #' are homogeneous with respect to the number, order, data type and (if
 #' applicable) levels of columns in the returned data frame.
-#' 
+#'
 #' @param df A data frame
 #' @param by The name of column(s) in the data frame that define groups to split
 #' @param FUN The function applied to each grouped data frame after splitting
 #' @param ... Additional parameters to FUN
-#' 
+#'
 #' @source \url{https://stackoverflow.com/a/9730292/687112}
 split_apply_combine <- function(df, by, FUN, ...) {
   if (is.null(by)) {
@@ -274,15 +274,15 @@ split_apply_combine <- function(df, by, FUN, ...) {
 #' @param sf The curve for the first community.
 #' @param sf2 The curve for the second community.
 curve_dissim <- function(sf, sf2) {
-  
+
   relrank <- get('x', envir = environment(sf))
   relrank2 <- get('x', envir = environment(sf2))
   r <- sort(unique(c(0, relrank, relrank2)))
   h <- abs(sf(r) - sf2(r))
   w <- c(diff(r), 0)
-  
+
   return(sum(w*h))
-} 
+}
 
 #' @title Evar
 #' @description A utility function to calculate Evar from Smith and Wilson 1996
@@ -299,10 +299,10 @@ Evar <- function(x, S = length(x)) {
 #' @description Check for errors in the application of arguments and input data
 #'   for all \code{*_change} and \code{*_difference} functions.
 #' @param df The name of the dataframe
-#' @param time.var The name of the optional time column 
-#' @param species.var The name of the species column 
-#' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the replicate column 
+#' @param time.var The name of the optional time column
+#' @param species.var The name of the species column
+#' @param abundance.var The name of the abundance column
+#' @param replicate.var The name of the replicate column
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
 #' @param pool The name the optional pooling approach
@@ -319,41 +319,44 @@ check_args <- function(df,
                        block.var = NULL,
                        reference.time = NULL,
                        reference.treatment = NULL) {
-  
+
   # drop extraneous columns
   args <- as.list(match.call()[-1])
   args <- args[!sapply(args, is.null)]
   df <- as.data.frame(df[as.character(args[grep('\\.var$', names(args))])])
-  
+
   # validate argument combinations
   if (pool && (is.null(treatment.var) || !is.null(block.var)))
     stop("Not providing a treatment.var or providing a block.var is incompatible with pooling.")
   if (is.null(treatment.var) && (pool || !is.null(block.var)))
     stop("Not providing a treatment.var is incompatible with pooling or providing block.var.")
+  if (grep('_difference$', sys.call(-2)[1]) && is.null(replicate.var)) {
+    stop("Providing a replicate.var is required, even if uniquely determined by treatment and block.")
+  }
   if (!is.null(block.var)) {
     reps_exp <- length(unique(df[[block.var]])) * length(unique(df[[treatment.var]]))
     reps_obs <- length(unique(df[[replicate.var]]))
     if (reps_exp != reps_obs)
       stop("There is not one replicate per treatment in a block")
   }
-  
+
   # check no NAs in abundance column
   if (any(is.na(df[[abundance.var]])))
     stop("Abundance column contains missing values")
-  
+
   # check no NAs in species column
   if (any(is.na(df[[species.var]])))
     stop("Species names are missing")
-  
+
   # check no species are repeated
   check_single(df, species.var,
     time.var = time.var, replicate.var = replicate.var)
-  
+
   # check reference exists
   if (!is.null(reference.time) && !is.element(reference.time, df[[time.var]]))
     stop('The reference time could not be found in the time.var column')
   if (!is.null(reference.treatment) && !is.element(reference.treatment, df[[treatment.var]]))
     stop('The reference treatment could not be found in the treatment.var column')
-  
+
   return(df)
 }
