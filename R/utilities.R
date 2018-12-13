@@ -330,7 +330,7 @@ check_args <- function(df,
     stop("Not providing a treatment.var or providing a block.var is incompatible with pooling.")
   if (is.null(treatment.var) && (pool || !is.null(block.var)))
     stop("Not providing a treatment.var is incompatible with pooling or providing block.var.")
-  if (grep('_difference$', sys.call(-2)[1]) && is.null(replicate.var)) {
+  if (grepl('_difference$', sys.call(-2)[1]) && is.null(replicate.var)) {
     stop("Providing a replicate.var is required, even if uniquely determined by treatment and block.")
   }
   if (!is.null(block.var)) {
