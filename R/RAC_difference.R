@@ -1,10 +1,10 @@
 #' @title Rank Abundance Curve Differences
 #' @description Calculates differences between two samples for four comparable   aspects of rank abundance curves (richness, evenness, rank, species composition). There are three ways differences can be calculated. 1) Between treatments within a block (note: block.var and treatment.var need to be specified). 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var will be NULL). 3) All pairwise combinations between all replicates (note: block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
 #' @param df A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns
-#' @param time.var The name of the optional time column 
-#' @param species.var The name of the species column 
-#' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks. 
+#' @param time.var The name of the optional time column
+#' @param species.var The name of the species column
+#' @param abundance.var The name of the abundance column
+#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks.
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
 #' @param pool An argument to allow abundance values to be pooled within a treatment. The default value is "FALSE", a value of "TRUE" averages abundance of each species within a treatment at a given time point.
@@ -24,7 +24,7 @@
 #'  \item{species_diff: }{A numeric column of the number of species that are  different between the compared samples (treatments or replicates) divided by the total number of species in both samples. This is equivalent to the Jaccard Index.}
 #' }
 #' @references Avolio et al. Submitted MEE
-#' @examples 
+#' @examples
 #' data(pplots)
 #' # With block and no time
 #' df <- subset(pplots, year == 2002 & block < 3)
@@ -44,7 +44,7 @@
 #'                block.var = "block",
 #'                replicate.var = "plot",
 #'                time.var = "year")
-#' 
+#'
 #' # With blocks, time and reference treatment
 #' df <- subset(pplots, year < 2004 & block < 3)
 #' RAC_difference(df = df,
@@ -55,7 +55,7 @@
 #'                replicate.var = "plot",
 #'                time.var = "year",
 #'                reference.treatment = "N1P0")
-#' 
+#'
 #' # Pooling by treatment with time
 #' df <- subset(pplots, year < 2004)
 #' RAC_difference(df = df,
@@ -65,7 +65,7 @@
 #'                pool = TRUE,
 #'                replicate.var = "plot",
 #'                time.var = "year")
-#' 
+#'
 #' # All pairwise replicates with treatment
 #' df <- subset(pplots, year < 2004 & plot %in% c(21, 25, 32))
 #' RAC_difference(df = df,
@@ -74,7 +74,7 @@
 #'                replicate.var = "plot",
 #'                time.var = "year",
 #'                treatment.var = "treatment")
-#' 
+#'
 #' # All pairwise replicates without treatment
 #' df <- subset(pplots, year < 2004 & plot %in% c(21, 25, 32))
 #' RAC_difference(df = df,
@@ -85,18 +85,18 @@
 #' @export
 RAC_difference <- function(df,
                            time.var = NULL,
-                           species.var, 
+                           species.var,
                            abundance.var,
                            replicate.var,
                            treatment.var = NULL,
-                           pool = FALSE, 
+                           pool = FALSE,
                            block.var = NULL,
                            reference.treatment = NULL) {
 
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
   df <- do.call(check_args, args, envir = parent.frame())
-  
+
   if (pool) {
     # pool and rank species in each replicate
     rankdf <- pool_replicates(df, time.var, species.var, abundance.var,
@@ -120,13 +120,13 @@ RAC_difference <- function(df,
   } else {
     cross.var <- replicate.var
   }
-  
+
   # order cross.var if unordered factor
-  to_ordered = is.factor(df[[cross.var]]) & !is.ordered(df[[cross.var]])
+  to_ordered = is.factor(rankdf[[cross.var]]) & !is.ordered(rankdf[[cross.var]])
   if (to_ordered) {
-    class(rankdf[[cross.var]]) <- c('ordered', class(df[[cross.var]]))
+    class(rankdf[[cross.var]]) <- c('ordered', class(rankdf[[cross.var]]))
   }
-  
+
   # cross join for pairwise comparisons
   split_by <- c(block.var, time.var)
   merge_to <- !(names(rankdf) %in% split_by)
@@ -147,7 +147,9 @@ RAC_difference <- function(df,
   }
   # unorder cross.var if orginally unordered factor
   if (to_ordered) {
-    class(ranktog[[cross.var]]) <- class(df[[cross.var]])
+    x <- class(ranktog[[cross.var]])
+    class(ranktog[[cross.var]]) <- x[x != 'ordered']
+    class(ranktog[[cross.var2]]) <- x[x != 'ordered']
   }
 
   # remove rows with NA for both abundances (preferably only when introduced
@@ -159,16 +161,16 @@ RAC_difference <- function(df,
   ranktog[idx2, abundance.var2] <- 0
   idx <- ranktog[[abundance.var]] != 0 | ranktog[[abundance.var2]] != 0
   ranktog <- ranktog[idx, ]
-  
+
   # split on treatment pairs (and block if not null)
   split_by <- c(block.var, time.var, cross.var, cross.var2)
   output <- split_apply_combine(ranktog, split_by, FUN = SERSp,
     species.var, abundance.var, abundance.var2)
-  
+
   if(any(is.na(output$evenness_diff)))
     warning(paste0("evenness_diff values contain NAs because there are plots",
                    " with only one species"))
-  
+
   # order and select output columns
   output_order <- c(
     time.var,
@@ -189,37 +191,37 @@ RAC_difference <- function(df,
 #
 ############################################################################
 
-# A function to calculate RAC difference between two samples 
+# A function to calculate RAC difference between two samples
 # @param df a dataframe
 # @param rank.var the name of the rank column at time 1
 # @param rank.var2 the name of the rank column at time 2
 # @param abundance.var the name of the abundance column at time 1
 # @param abundance.var2 the name of the abundance column at time 2
 SERSp <- function(df, species.var, abundance.var, abundance.var2) {
-  
+
   out <- c(species.var, 'rank', 'rank2', abundance.var, abundance.var2)
   out <- unique(df[!(names(df) %in% out)])
 
   df <- subset(df, df[[abundance.var]] != 0 | df[[abundance.var2]] != 0)
-  
+
   #ricness and evenness differences
   s_r1 <- S(df[[abundance.var]])
   e_r1 <- EQ(as.numeric(df[[abundance.var]]))
   s_r2 <- S(df[[abundance.var2]])
   e_r2 <- EQ(as.numeric(df[[abundance.var2]]))
-  
+
   sdiff <- (s_r2-s_r1)/nrow(df)
   ediff <- e_r2-e_r1
-  
-  #Jaccard Index or Number of species not shared  
+
+  #Jaccard Index or Number of species not shared
   spdiff <- df[df[[abundance.var]] == 0|df[[abundance.var2]] == 0,]
   spdiffc <- nrow(spdiff)/nrow(df)
-  
+
   #Mean Rank Difference
   rank_diff <- mean(abs(df[['rank']]-df[['rank2']])) / nrow(df)
-  
+
   metrics <- data.frame(richness_diff = sdiff, evenness_diff = ediff,
                         rank_diff = rank_diff, species_diff = spdiffc)
-  
+
   return(cbind(out, metrics))
 }

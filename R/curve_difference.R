@@ -1,16 +1,16 @@
 #' @title Curve Difference
-#' 
+#'
 #' @description Calculates the area difference between two rank abundance   curves. There are three ways differences can be calculated. 1) Between all   treatments within a block (note: block.var and treatment.var need to be specified. 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var = NULL. 3) All pairwise combinations between all replicates (note:block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
 #' @param df A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns
-#' @param time.var The name of the optional time column 
-#' @param species.var The name of the species column 
-#' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks. 
+#' @param time.var The name of the optional time column
+#' @param species.var The name of the species column
+#' @param abundance.var The name of the abundance column
+#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks.
 #' @param treatment.var The name of the optional treatment column
 #' @param pool An argument to allow values to be pooled within treatment. The  default value is "FALSE", a value of "TRUE" takes the average abundance of all species within a treatment at a given time point prior to comparisons.
 #' @param block.var The name of the optional block column
 #' @param reference.treatment The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisons will be made.
-#'  
+#'
 #' @return The curve_difference function returns a data frame with the following attributes:
 #' \itemize{
 #'  \item{curve_diff: }{A numeric column of the area difference in curves between the two samples being compared (replicates or treatments).}
@@ -32,7 +32,7 @@
 #'                  treatment.var = "treatment",
 #'                  block.var = "block",
 #'                  replicate.var = "plot")
-#'                  
+#'
 #' # With blocks and time
 #' df <- subset(pplots, year < 2004 & block < 3)
 #' curve_difference(df = df,
@@ -42,7 +42,7 @@
 #'                  block.var = "block",
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
-#' 
+#'
 #' # With blocks, time, and reference treatment
 #' df <- subset(pplots, year < 2004 & block < 3)
 #' curve_difference(df = df,
@@ -53,7 +53,7 @@
 #'                  replicate.var = "plot",
 #'                  time.var = "year",
 #'                  reference.treatment = "N1P0")
-#' 
+#'
 #' # Pooling by treatment with time
 #' df <- subset(pplots, year < 2004)
 #' curve_difference(df = df,
@@ -63,7 +63,7 @@
 #'                  pool = TRUE,
 #'                  replicate.var = "plot",
 #'                  time.var = "year")
-#' 
+#'
 #' # All pairwise replicates with treatment
 #' df <- subset(pplots, year < 2004 & plot %in% c(21, 25, 32))
 #' curve_difference(df = df,
@@ -72,7 +72,7 @@
 #'                  replicate.var = "plot",
 #'                  time.var = "year",
 #'                  treatment.var = "treatment")
-#' 
+#'
 #' # All pairwise replicates without treatment
 #' df <- subset(pplots, year < 2004 & plot %in% c(21, 25, 32))
 #' curve_difference(df = df,
@@ -84,18 +84,18 @@
 #' @export
 curve_difference <- function(df,
                              time.var = NULL,
-                             species.var, 
+                             species.var,
                              abundance.var,
                              replicate.var,
                              treatment.var = NULL,
-                             pool = FALSE, 
+                             pool = FALSE,
                              block.var = NULL,
                              reference.treatment = NULL) {
-  
+
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
   df <- do.call(check_args, args, envir = parent.frame())
-  
+
   if (pool) {
     #add zero abundnaces for missing species to get averages
     if (!is.null(time.var)) {
@@ -109,7 +109,7 @@ curve_difference <- function(df,
     by <- c(species.var, treatment.var, time.var)
     spave <- aggregate.data.frame(allsp[abundance.var], allsp[by], FUN = mean)
     spave <- spave[spave[[abundance.var]] != 0, ]
-  
+
     # rank each species by treatment and optionally time
     by <- c(treatment.var, time.var)
     rankabunddf <- split_apply_combine(spave, by, FUN = add_rank_abundance,
@@ -120,7 +120,7 @@ curve_difference <- function(df,
     rankabunddf <- split_apply_combine(df, by, FUN = add_rank_abundance,
         species.var, abundance.var)
   }
-  
+
   # specify which variable to use for comparison/"cross join"
   if (!is.null(block.var)) {
     cross.var <- treatment.var
@@ -129,13 +129,13 @@ curve_difference <- function(df,
   } else {
     cross.var <- replicate.var
   }
-  
+
   # order cross.var if unordered factor
-  to_ordered = is.factor(df[[cross.var]]) & !is.ordered(df[[cross.var]])
+  to_ordered = is.factor(rankabunddf[[cross.var]]) & !is.ordered(rankabunddf[[cross.var]])
   if (to_ordered) {
-    class(rankabunddf[[cross.var]]) <- c('ordered', class(df[[cross.var]]))
+    class(rankabunddf[[cross.var]]) <- c('ordered', class(rankabunddf[[cross.var]]))
   }
-  
+
   # cross join for pairwise comparisons
   split_by <- c(block.var, time.var)
   merge_to <- !(names(rankabunddf) %in% split_by)
@@ -157,13 +157,15 @@ curve_difference <- function(df,
 
   # unorder cross.var if orginally unordered factor
   if (to_ordered) {
-    class(output[[cross.var]]) <- class(df[[cross.var]])
+    x <- class(output[[cross.var]])
+    class(output[[cross.var]]) <- x[x != 'ordered']
+    class(output[[cross.var2]]) <- x[x != 'ordered']
   }
-  
+
   # split on treatment pairs (and block if not null)
   output[['curve_diff']] <- mapply(curve_dissim,
     output[['rankabund']], output[['rankabund2']])
-  
+
   output_order <- c(
     time.var,
     block.var,

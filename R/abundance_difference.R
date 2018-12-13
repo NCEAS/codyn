@@ -1,12 +1,12 @@
 #' @title Abundance Differences
-#' 
+#'
 #' @description Calculates the abundance difference for species between two   samples. Differences are on abundance values provided, if relative data is   used, then differences in relative abundance will be calculated. There are three ways differences can be calculated. 1) Between treatments within a block (note: block.var and treatment.var need to be specified). 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var = NULL). 3) All pairwise combinations between all replicates (note: block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
-#'   
+#'
 #' @param df A data frame containing species, abundance, replicate columns and   optional time, treatment and block columns.
-#' @param time.var The name of the optional time column 
-#' @param species.var The name of the species column 
-#' @param abundance.var The name of the abundance column 
-#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks. 
+#' @param time.var The name of the optional time column
+#' @param species.var The name of the species column
+#' @param abundance.var The name of the abundance column
+#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks.
 #' @param treatment.var The name of the optional treatment column
 #' @param block.var The name of the optional block column
 #' @param pool An argument to allow abundance values to be pooled within a
@@ -25,9 +25,9 @@
 #'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool = TRUE, block.var is specified, or treatment.var is specified.}
 #'  \item{block.var: }{A column that has same name and type as the block.var column, if block.var is specified.}
 #' }
-#' 
+#'
 #' @references Avolio et al. Submitted to MEE
-#' @examples 
+#' @examples
 #' data(pplots)
 #' # With block and no time
 #' df <- subset(pplots, year == 2002 & block < 3)
@@ -37,7 +37,7 @@
 #'                      treatment.var = "treatment",
 #'                      block.var = "block",
 #'                      replicate.var = "plot")
-#' 
+#'
 #' # With blocks and time
 #' df <- subset(pplots, year < 2004 & block < 3)
 #' abundance_difference(df = df,
@@ -47,7 +47,7 @@
 #'                      block.var = "block",
 #'                      replicate.var = "plot",
 #'                      time.var = "year")
-#' 
+#'
 #' # With blocks, time and reference treatment
 #' df <- subset(pplots, year < 2004 & block < 3)
 #' abundance_difference(df = df,
@@ -58,7 +58,7 @@
 #'                      replicate.var = "plot",
 #'                      time.var = "year",
 #'                      reference.treatment = "N1P0")
-#'                      
+#'
 #' # Pooling by treatment with time
 #' df <- subset(pplots, year < 2004)
 #' abundance_difference(df = df,
@@ -68,7 +68,7 @@
 #'                      pool = TRUE,
 #'                      replicate.var = "plot",
 #'                      time.var = "year")
-#' 
+#'
 #' # All pairwise replicates with treatment
 #' df <- subset(pplots, year < 2004 & plot %in% c(21, 25, 32))
 #' abundance_difference(df = df,
@@ -77,7 +77,7 @@
 #'                      replicate.var = "plot",
 #'                      time.var = "year",
 #'                      treatment.var = "treatment")
-#' 
+#'
 #' # All pairwise replicates without treatment
 #' df <- subset(pplots, year < 2004 & plot %in% c(21, 25, 32))
 #' abundance_difference(df = df,
@@ -88,18 +88,18 @@
 #' @export
 abundance_difference <- function(df,
                                  time.var = NULL,
-                                 species.var, 
+                                 species.var,
                                  abundance.var,
                                  replicate.var,
                                  treatment.var = NULL,
-                                 pool = FALSE, 
+                                 pool = FALSE,
                                  block.var = NULL,
                                  reference.treatment = NULL) {
-  
+
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
   df <- do.call(check_args, args, envir = parent.frame())
-  
+
   if (pool) {
     # pool and rank species in each replicate
     allsp <- pool_replicates(df, time.var, species.var, abundance.var,
@@ -119,13 +119,13 @@ abundance_difference <- function(df,
   } else {
     cross.var <- replicate.var
   }
-  
+
   # order cross.var if unordered factor
-  to_ordered = is.factor(df[[cross.var]]) & !is.ordered(df[[cross.var]])
+  to_ordered = is.factor(allsp[[cross.var]]) & !is.ordered(allsp[[cross.var]])
   if (to_ordered) {
-    class(allsp[[cross.var]]) <- c('ordered', class(df[[cross.var]]))
+    class(allsp[[cross.var]]) <- c('ordered', class(allsp[[cross.var]]))
   }
-    
+
   # cross join for pairwise comparisons
   split_by <- c(block.var, time.var)
   merge_to <- !(names(allsp) %in% split_by)
@@ -144,13 +144,14 @@ abundance_difference <- function(df,
       merge(x, y, by = species.var, suffixes = c('', '2'))
     })
   }
-  
 
   # unorder cross.var if orginally unordered factor
   if (to_ordered) {
-    class(ranktog[[cross.var]]) <- class(df[[cross.var]])
+    x <- class(ranktog[[cross.var]])
+    class(ranktog[[cross.var]]) <- x[x != 'ordered']
+    class(ranktog[[cross.var2]]) <- x[x != 'ordered']
   }
-  
+
   # remove rows with NA for both abundances (preferably only when introduced
   # by fill_species)
   idx <- is.na(ranktog[[abundance.var]])
