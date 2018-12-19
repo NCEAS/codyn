@@ -64,14 +64,14 @@ multivariate_change <- function(df,
   args <- as.list(match.call()[-1])
   df <- do.call(check_args, args, envir = parent.frame())
 
-  # notify user ## FIXME, too much
+  # notify user
   if (is.null(treatment.var)) {
     message('Composition and dispersion change calculation using ',
-    length(unique(df[[time.var]])),' observations.')
+    nrow(unique(df[,c(replicate.var, time.var)])),' observations.')
   } else {
     lapply(split(df, df[[treatment.var]], drop = TRUE), FUN = function(df) {
       message('Composition and dispersion change calculation using ',
-        length(unique(df[[time.var]])), ' observations at treatment.var value ',
+        nrow(unique(df[,c(replicate.var, time.var)])), ' observations at treatment.var value ',
         df[[treatment.var]][[1]])
     })
   }
@@ -166,7 +166,7 @@ find_centers <- function(df, time.var, species.var, treatment.var, replicate.var
     # return a data frame with one row with a list column containing center and
     # a numeric column containing dispersion
     centers <- species[1, c(treatment.var, time.var), drop = FALSE]
-    centers$dispersion <- mean(bcdism(a, copt$par)) ## FIXME mean of dissimilarities, right?
+    centers$dispersion <- mean(bcdism(copt$par, a)) ## FIXME mean of dissimilarities, right?
     centers$center <- list(copt$par)
     return(centers)
 }
