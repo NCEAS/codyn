@@ -64,14 +64,56 @@ multivariate_change <- function(df,
   args <- as.list(match.call()[-1])
   df <- do.call(check_args, args, envir = parent.frame())
 
-  # calculate change for each treatment
-  by <- treatment.var
-  output <- split_apply_combine(df, by, FUN = mult_change, time.var,
-    species.var, abundance.var, replicate.var, treatment.var, reference.time)
+  # notify user ## FIXME, too much
+  if (is.null(treatment.var)) {
+    message('Composition and dispersion change calculation using ',
+    length(unique(df[[time.var]])),' observations.')
+  } else {
+    lapply(split(df, df[[treatment.var]], drop = TRUE), FUN = function(df) {
+      message('Composition and dispersion change calculation using ',
+        length(unique(df[[time.var]])), ' observations at treatment.var value ',
+        df[[treatment.var]][[1]])
+    })
+  }
+
+  # calculate replicate centers and dispersion for each time [and treatment]
+  by <- c(treatment.var, time.var)
+  centers <- split_apply_combine(df, by, FUN = find_centers,
+      time.var, species.var, treatment.var, replicate.var)
+
+  # merge subsets on time difference of one time step
+  time.var2 <- paste(time.var, 2, sep = '')
+  split_by <- c(treatment.var)
+  merge_to <- !(names(centers) %in% split_by)
+  if (is.null(reference.time)) {
+      output <- split_apply_combine(centers, split_by, FUN = function(x) {
+          y <- x[merge_to]
+          cross <- merge(x, y, by = NULL, suffixes = c('', '2'))
+          f <- factor(cross[[time.var]])
+          f2 <- factor(cross[[time.var2]], levels = levels(f))
+          idx <- (as.integer(f2) - as.integer(f)) == 1
+          cross[idx, ]
+      })
+  } else {
+      output <- split_apply_combine(centers, split_by, FUN = function(x) {
+          y <- x[x[[time.var]] != reference.time, merge_to]
+          x <- x[x[[time.var]] == reference.time, ]
+          merge(x, y, by = NULL, suffixes = c('', '2'))
+      })
+  }
+
+  # compute time.var2 change from time.var
+  output$dispersion_change <- output$dispersion2 - output$dispersion
+  output$composition_change <- mapply(FUN = function(x, y) {
+    x <- data.frame(var = names(x), center2 = x)
+    y <- data.frame(var = names(y), center = y)
+    xy <- merge(x, y, all = TRUE)
+    xy[is.na(xy)] <- 0
+    bcdism(xy$center2, t(as.matrix(xy$center)))
+  }, output$center2, output$center)
 
   output_order <- c(
-    time.var, paste(time.var,"2", sep=""),
-    treatment.var,
+    time.var, time.var2, treatment.var,
     'composition_change', 'dispersion_change')
 
   return(output[intersect(output_order, names(output))])
@@ -91,71 +133,45 @@ multivariate_change <- function(df,
 # indicates replicates are converging over time and a postive value indicates
 # replicates are diverging over time.
 #
-# @param df a dataframe
-# @param time.var the name of the time column
-# @param species.var the name of the species column
-# @param replicate.var the name of the replicate column
-mult_change <- function(df, time.var, species.var, abundance.var,
-                        replicate.var, treatment.var, reference.time) {
-  #get years
-  timestep <- sort(unique(df[[time.var]]))
+find_centers <- function(df, time.var, species.var, treatment.var, replicate.var) {
 
-  #transpose data
-  idvar = c(treatment.var, replicate.var, time.var)
-  species <- reshape(df,
-    idvar = idvar, timevar = species.var, direction = 'wide')
-  species[is.na(species)] <- 0
+    # spread species out as columns
+    idvar <- c(treatment.var, replicate.var, time.var)
+    species <- reshape(df, idvar = idvar, timevar = species.var, direction = 'wide')
+    species[is.na(species)] <- 0
 
-  #calculate bray-curtis dissimilarities
-  abund <- species[, -(1:length(idvar))]
-  bc <- vegdist(abund, method = "bray")
+    # the abundance.var matrix
+    a <- species[, -(1:length(idvar))]
+    # idx <- colMeans(a) == 0
+    # a <- a[, !idx]
 
-  #calculate distances of each plot to year centroid (i.e., dispersion)
-  if (is.null(treatment.var)) {
-    message('Composition and dispersion change calculation using ',
-            nrow(species),' observations.')
-  } else {
-    message('Composition and dispersion change calculation using ',
-            nrow(species), ' observations at treatment.var value ',
-            df[[treatment.var]][[1]])
-  }
-  disp <- betadisper(bc, species[[time.var]], type = "centroid", sqrt.dist = TRUE)
+    # the sum of squared dissimilarities
+    f <- function(x) {
+        d <- bcdism(x, a)
+        return(sum(d^2))
+    }
+    # the gradient of f wrt each abundance.var, for method = 'bray' only
+    grad <- function(x) {
+        d <- bcdism(x, a)
+        s <- sign(t(x - t(a)))
+        t(s - d) %*% (1/(sum(x) + rowSums(a))*d)
+    }
+    # numerical optimization constrained for non-negative abundances
+    ## FIXME probably will error with a zero column
+    copt <- constrOptim(
+        colMeans(a), f, grad,
+        ui = diag(ncol(a)), ci = rep(0, ncol(a))
+    )
 
-  #getting distances between centroids over years; these centroids are in BC
-  #space, so that's why this uses euclidean distances
-  cent_dist <- as.matrix(vegdist(disp$centroids, method = "euclidean"))
+    # return a data frame with one row with a list column containing center and
+    # a numeric column containing dispersion
+    centers <- species[1, c(treatment.var, time.var), drop = FALSE]
+    centers$dispersion <- mean(bcdism(a, copt$par)) ## FIXME mean of dissimilarities, right?
+    centers$center <- list(copt$par)
+    return(centers)
+}
 
-  ##extracting only the comparisions, year x to year x+1.
-  time.var2 <- paste(time.var, 2, sep = '')
-  if (is.null(reference.time)) {
-    cent_dist_yrs <- data.frame(
-      time1 = timestep[1:length(timestep) - 1],
-      time2 = timestep[2:length(timestep)],
-      composition_change = diag(
-        as.matrix(cent_dist[2:nrow(cent_dist), 1:(ncol(cent_dist) - 1)])))
-  } else {
-    idx <- timestep == reference.time
-    cent_dist_yrs <- data.frame(
-      time1 = timestep[idx],
-      time2 = timestep[!idx],
-      composition_change = cent_dist[idx, which(!idx)])
-  }
-  colnames(cent_dist_yrs)[1] <- time.var
-  colnames(cent_dist_yrs)[2] <- time.var2
-
-  #collecting and labeling distances to centroid from betadisper to get a
-  #measure of dispersion and then take the mean for a year
-  species['dist'] <- disp['distances']
-  by <- c(treatment.var, time.var)
-  disp2 <- aggregate.data.frame(species['dist'], species[by], mean)
-
-  #merge together
-  bc_dis1 <- merge(cent_dist_yrs, disp2, by = time.var)
-  bc_dis <- merge(bc_dis1, disp2[c(time.var, 'dist')],
-    by.x = time.var2, by.y = time.var)
-
-  #calculate absolute difference
-  bc_dis$dispersion_change <- bc_dis$dist.y - bc_dis$dist.x
-
-  return(bc_dis)
+# bray curtis dissimilarity between each row of a and the vector x
+bcdism <- function(x, a) {
+    colSums(abs(x - t(a))) / colSums(x + t(a))
 }
