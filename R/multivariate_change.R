@@ -1,4 +1,4 @@
-#'@title Using dissimilarity-based metrics to calculate changes in composition and dispersion
+#' @title Using dissimilarity-based metrics to calculate changes in composition and dispersion
 #' @description Calculates the changes in composition and dispersion based off a Bray-Curtis dissimilarity matrix. Composition change is the euclidean distance between the centroids of compared time periods and ranges from 0-1, where 0 are identical communities, and 1 and completely different communities. Since composition change is based on plotted distance between centroids, it is context dependent and depends on how many centroids are being plotted, thus result of composition change depends on how many time periods are being measured. Dispersion change is the difference of average dispersion of each replicate to its centroid between time periods.
 #' @param df A data frame containing time, species, abundance and replicate columns and an optional column of treatment
 #' @param time.var The name of the time column
@@ -48,9 +48,9 @@
 #' # In each year there are 6 replicates and there are 4 years of data for 3
 #' # time comparisons, thus 24 total observations.
 #'
-#' @importFrom vegan vegdist betadisper
+#' @importFrom vegan vegdist
 #' @importFrom stats aggregate reshape
-#' @references Avolio et al. 2015; Avolio et al. Submitted MEE, Mari Anderson et al. 2006.
+#' @references Avolio et al. 2015; Avolio et al. Submitted MEE, Marti Anderson et al. 2006.
 #' @export
 multivariate_change <- function(df,
                                 time.var,
@@ -103,9 +103,10 @@ multivariate_change <- function(df,
   }
 
   # compute time.var2 change from time.var
-  output$dispersion_change <- output$dispersion2 - output$dispersion # FIXME risk is this could be negative?
+  output$dispersion_change <- output$dispersion2 - output$dispersion
   output$composition_change <- mapply(
-      function(x, y) norm(x-y, type = "2"), output$center2, output$center ## FIXME nope cannot use norm
+      function(x, y) {z <- x - y; sqrt(sum(z*z))},
+      output$center2, output$center
   )
 
   output_order <- c(
@@ -136,30 +137,31 @@ pca_centers <- function(df, time.var, species.var, treatment.var, replicate.var)
     species <- reshape(df, idvar = idvar, timevar = species.var, direction = 'wide')
     species[is.na(species)] <- 0
 
-    # the abundance.var matrix
-
     # the Bray-Curtis dissimilarity matrix
     a <- species[, -(1:length(idvar))]
-    d <- braycurtis(a)
+    #d <- braycurtis(a) ## FIXME To use or not to use vegan?
+    d <- as.matrix(vegdist(a, 'bray'))
 
-    # eigendecomposition of the double centered dissimilarity
+    # perform PCoA aka Torgerson-Gower Scaling, while
+    # violtating the assumption that d results from a metric
     b <- -1/2 * dblctr(d^2)
     eig <- eigen(b, symmetric = TRUE)
+    prc <- eig$vectors %*% diag(sqrt(as.complex(eig$values)))
 
-    # centroids of scores from PCA
-    t <- eig$vectors %*% diag(sqrt(eig$values + 0i))
-    centers <- aggregate(t, species[time.var], mean)
-
-    # cannot use dist function for dispersion, because anderson's method
-    # is not the euclidean distance in complex vector space
-    # rep the centers matrix, merge, subtract, then aggregate norms
-
+    # centroids and dispersion (Marti Anderson, doi:10.1111/j.1541-0420.2005.00440.x)
+    by <- c(treatment.var, time.var)
+    ctr <- aggregate(prc, species[by], mean)
+    dsp <- prc - as.matrix(merge(species[time.var], ctr)[, -(1:length(by))])
+    dsp <- sqrt(rowSums(dsp*dsp)) # not dsp*Conj(disp), not Euclidean
+    dsp <- aggregate(dsp, species[by], mean)
 
     # return a data frame with a list column containing centroids and
     # a numeric column containing dispersion
-    result <- centers[time.var]
-    result[[treatment.var]] <- species[1, treatment.var]
-    result$center <- unname(split(unname(centers[, -1]), 1:nrow(centers)))
+    result <- ctr[by]
+    result$center <- unname(split(unname(
+        as.matrix(ctr[, -(1:length(by))])
+        ), 1:nrow(ctr)))
+    result$dispersion <- dsp$x
     return(result)
 }
 
