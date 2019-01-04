@@ -105,7 +105,7 @@ multivariate_change <- function(df,
   # compute time.var2 change from time.var
   output$dispersion_change <- output$dispersion2 - output$dispersion # FIXME risk is this could be negative?
   output$composition_change <- mapply(
-      function(x, y) norm(x-y, type = "2"), output$center2, output$center
+      function(x, y) norm(x-y, type = "2"), output$center2, output$center ## FIXME nope cannot use norm
   )
 
   output_order <- c(
@@ -150,7 +150,8 @@ pca_centers <- function(df, time.var, species.var, treatment.var, replicate.var)
     t <- eig$vectors %*% diag(sqrt(eig$values + 0i))
     centers <- aggregate(t, species[time.var], mean)
 
-    # dist function for dispersion
+    # cannot use dist function for dispersion, because anderson's method
+    # is not the euclidean distance in complex vector space
     # rep the centers matrix, merge, subtract, then aggregate norms
 
 
