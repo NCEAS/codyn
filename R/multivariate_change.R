@@ -76,9 +76,9 @@ multivariate_change <- function(df,
     })
   }
 
-  # calculate replicate centers and dispersion for each time [and treatment]
-  by <- c(treatment.var, time.var)
-  centers <- split_apply_combine(df, by, FUN = find_centers,
+  # calculate replicate centers and dispersion [for treatment]
+  by <- c(treatment.var)
+  centers <- split_apply_combine(df, by, FUN = pca_centers,
       time.var, species.var, treatment.var, replicate.var)
 
   # merge subsets on time difference of one time step
@@ -103,14 +103,10 @@ multivariate_change <- function(df,
   }
 
   # compute time.var2 change from time.var
-  output$dispersion_change <- output$dispersion2 - output$dispersion
-  output$composition_change <- mapply(FUN = function(x, y) {
-    x <- data.frame(var = names(x), center2 = x)
-    y <- data.frame(var = names(y), center = y)
-    xy <- merge(x, y, all = TRUE)
-    xy[is.na(xy)] <- 0
-    bcdism(xy$center2, t(as.matrix(xy$center)))
-  }, output$center2, output$center)
+  output$dispersion_change <- output$dispersion2 - output$dispersion # FIXME risk is this could be negative?
+  output$composition_change <- mapply(
+      function(x, y) norm(x-y, type = "2"), output$center2, output$center
+  )
 
   output_order <- c(
     time.var, time.var2, treatment.var,
@@ -133,7 +129,7 @@ multivariate_change <- function(df,
 # indicates replicates are converging over time and a postive value indicates
 # replicates are diverging over time.
 #
-find_centers <- function(df, time.var, species.var, treatment.var, replicate.var) {
+pca_centers <- function(df, time.var, species.var, treatment.var, replicate.var) {
 
     # spread species out as columns
     idvar <- c(treatment.var, replicate.var, time.var)
@@ -141,37 +137,52 @@ find_centers <- function(df, time.var, species.var, treatment.var, replicate.var
     species[is.na(species)] <- 0
 
     # the abundance.var matrix
+
+    # the Bray-Curtis dissimilarity matrix
     a <- species[, -(1:length(idvar))]
-    # idx <- colMeans(a) == 0
-    # a <- a[, !idx]
+    d <- braycurtis(a)
 
-    # the sum of squared dissimilarities
-    f <- function(x) {
-        d <- bcdism(x, a)
-        return(sum(d^2))
-    }
-    # the gradient of f wrt each abundance.var, for method = 'bray' only
-    grad <- function(x) {
-        d <- bcdism(x, a)
-        s <- sign(t(x - t(a)))
-        t(s - d) %*% (1/(sum(x) + rowSums(a))*d)
-    }
-    # numerical optimization constrained for non-negative abundances
-    ## FIXME probably will error with a zero column
-    copt <- constrOptim(
-        colMeans(a), f, grad,
-        ui = diag(ncol(a)), ci = rep(0, ncol(a))
-    )
+    # eigendecomposition of the double centered dissimilarity
+    b <- -1/2 * dblctr(d^2)
+    eig <- eigen(b, symmetric = TRUE)
 
-    # return a data frame with one row with a list column containing center and
+    # centroids of scores from PCA
+    t <- eig$vectors %*% diag(sqrt(eig$values + 0i))
+    centers <- aggregate(t, species[time.var], mean)
+
+    # dist function for dispersion
+    # rep the centers matrix, merge, subtract, then aggregate norms
+
+
+    # return a data frame with a list column containing centroids and
     # a numeric column containing dispersion
-    centers <- species[1, c(treatment.var, time.var), drop = FALSE]
-    centers$dispersion <- mean(bcdism(copt$par, a)) ## FIXME mean of dissimilarities, right?
-    centers$center <- list(copt$par)
-    return(centers)
+    result <- centers[time.var]
+    result[[treatment.var]] <- species[1, treatment.var]
+    result$center <- unname(split(unname(centers[, -1]), 1:nrow(centers)))
+    return(result)
 }
 
-# bray curtis dissimilarity between each row of a and the vector x
-bcdism <- function(x, a) {
-    colSums(abs(x - t(a))) / colSums(x + t(a))
+# Calculate a full Bray Curtis dissimilarity matrix
+# @param a abundance matrix (columns are species, rows are observations) with no missing values
+# FIXME should probably implement in c
+braycurtis <- function(a) {
+    n <- nrow(a)
+    ij <- combn(n, 2)
+    d <- mapply(
+        function(i, j) {
+            apply(abs(a[i, , drop = F] - a[j, , drop = F]), 1, sum, na.rm = T)/
+                apply(abs(a[i, , drop = F] + a[j, , drop = F]), 1, sum, na.rm = T)
+        }, ij[1, ], ij[2, ])
+    class(d) <- 'dist'
+    attr(d, 'Size') <- n
+    return(as.matrix(d))
 }
+
+# Double centering of a dissimilarity matrix
+# @param d dissimilarity matrix
+dblctr <- function(d) {
+    n <- nrow(d)
+    c <- diag(1, n) - matrix(1, n, n)/n
+    return(c %*% d %*% c)
+}
+
