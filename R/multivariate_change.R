@@ -64,19 +64,7 @@ multivariate_change <- function(df,
   args <- as.list(match.call()[-1])
   df <- do.call(check_args, args, envir = parent.frame())
 
-  # notify user
-  if (is.null(treatment.var)) {
-    message('Composition and dispersion change calculation using ',
-    nrow(unique(df[,c(replicate.var, time.var)])),' observations.')
-  } else {
-    lapply(split(df, df[[treatment.var]], drop = TRUE), FUN = function(df) {
-      message('Composition and dispersion change calculation using ',
-        nrow(unique(df[,c(replicate.var, time.var)])), ' observations at treatment.var value ',
-        df[[treatment.var]][[1]])
-    })
-  }
-
-  # calculate replicate centers and dispersion [for treatment]
+  # calculate replicate centers and dispersion [by treatment]
   by <- c(treatment.var)
   centers <- split_apply_combine(df, by, FUN = pca_centers,
       time.var, species.var, treatment.var, replicate.var)
@@ -137,6 +125,16 @@ pca_centers <- function(df, time.var, species.var, treatment.var, replicate.var)
     species <- reshape(df, idvar = idvar, timevar = species.var, direction = 'wide')
     species[is.na(species)] <- 0
 
+    # update user
+    if (is.null(treatment.var)) {
+        message('Composition and dispersion change calculation using ',
+            nrow(species),' observations.')
+    } else {
+        message('Composition and dispersion change calculation using ',
+            nrow(species), ' observations at treatment.var value ',
+            df[[treatment.var]][[1]])
+    }
+
     # the Bray-Curtis dissimilarity matrix
     a <- species[, -(1:length(idvar))]
     #d <- braycurtis(a) ## FIXME To use or not to use vegan?
@@ -151,8 +149,9 @@ pca_centers <- function(df, time.var, species.var, treatment.var, replicate.var)
     # centroids and dispersion (Marti Anderson, doi:10.1111/j.1541-0420.2005.00440.x)
     by <- c(treatment.var, time.var)
     ctr <- aggregate(prc, species[by], mean)
-    dsp <- prc - as.matrix(merge(species[time.var], ctr)[, -(1:length(by))])
-    dsp <- sqrt(rowSums(dsp*dsp)) # not dsp*Conj(disp), not Euclidean
+    idx <- match(interaction(species[by]), interaction(ctr[by]))
+    dsp <- prc - ctr[idx, -(1:length(by))]
+    dsp <- sqrt(rowSums(dsp*dsp)) # not dsp*Conj(dsp), not Euclidean
     dsp <- aggregate(dsp, species[by], mean)
 
     # return a data frame with a list column containing centroids and
