@@ -353,18 +353,19 @@ dblctr <- function(d) {
     return(c %*% d %*% c)
 }
 
-# Calculate a full Bray Curtis dissimilarity matrix
-# @param a abundance matrix (columns are species, rows are observations) with no missing values
-# FIXME should probably implement in C
-braycurtis <- function(a) {
-  n <- nrow(a)
-  ij <- combn(n, 2)
-  d <- mapply(
-    function(i, j) {
-      apply(abs(a[i, , drop = F] - a[j, , drop = F]), 1, sum, na.rm = T)/
-        apply(abs(a[i, , drop = F] + a[j, , drop = F]), 1, sum, na.rm = T)
-    }, ij[1, ], ij[2, ])
-  class(d) <- 'dist'
-  attr(d, 'Size') <- n
-  return(as.matrix(d))
-}
+# # Calculate a full Bray Curtis dissimilarity matrix
+# # @param a abundance matrix (columns are species, rows are observations) with no missing values
+# # FIXME should probably implement in C
+# #' @importFrom utils combn
+# braycurtis <- function(a) {
+#   n <- nrow(a)
+#   ij <- combn(n, 2)
+#   d <- mapply(
+#     function(i, j) {
+#       apply(abs(a[i, , drop = F] - a[j, , drop = F]), 1, sum, na.rm = T)/
+#         apply(abs(a[i, , drop = F] + a[j, , drop = F]), 1, sum, na.rm = T)
+#     }, ij[1, ], ij[2, ])
+#   class(d) <- 'dist'
+#   attr(d, 'Size') <- n
+#   return(as.matrix(d))
+# }

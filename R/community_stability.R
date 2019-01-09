@@ -82,11 +82,11 @@ community_stability <- function(df, time.var,
 
 
 
-#' A function to calculate species synchrony over time within one replicate
-#'
-#' @param df A dataframe containing x column
-#' @param x The column to calculate stability on
-#' @return Stability of x, calculated as the mean/sd
+# A function to calculate species synchrony over time within one replicate
+#
+# @param df A dataframe containing x column
+# @param x The column to calculate stability on
+# @return Stability of x, calculated as the mean/sd
 stability_onerep <- function(df, x){
 
   assertthat::assert_that(assertthat::has_name(df, x))

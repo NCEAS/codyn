@@ -116,15 +116,14 @@ mean_rank_shift <- function(df, time.var,
 }
 
 
-#' Function for calculating mean rank shifts
-#'
-#'
-#' This is a function that calculates mean rank shifts
-#' @param df dataframe of Community dataset. Must be in 'long' format.
-#' @param time.var The time variable
-#' @param species.var The species variable
-#' @param abundance.var The abundance variable
-#' @return a dataframe, showing years compared
+# Function for calculating mean rank shifts
+#
+# This is a function that calculates mean rank shifts
+# @param df dataframe of Community dataset. Must be in 'long' format.
+# @param time.var The time variable
+# @param species.var The species variable
+# @param abundance.var The abundance variable
+# @return a dataframe, showing years compared
 rank_onerep <- function(df, time.var,
                      species.var,
                      abundance.var) {
@@ -162,12 +161,12 @@ rank_onerep <- function(df, time.var,
 }
 
 
-#' Create intersected data frames
-#'
-#' Create intersections.
-#' @param df1 A dataframe
-#' @param df2 A dataframe
-#' @param dataname The name of the column on which the two datasets will be joined and intersected
+# Create intersected data frames
+#
+# Create intersections.
+# @param df1 A dataframe
+# @param df2 A dataframe
+# @param dataname The name of the column on which the two datasets will be joined and intersected
 df_intersect <- function(df1, df2, dataname = "species") {
   commspp <- intersect(df1[[dataname]], df2[[dataname]])
 

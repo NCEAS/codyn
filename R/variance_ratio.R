@@ -212,10 +212,10 @@ variance_ratio <- function(df, time.var,
 #
 ############################################################################
 
-#' A function to calculate the variance ratio
-#'
-#' @param comdat A community dataframe
-#' @return var.ratio The variance ratio of the community
+# A function to calculate the variance ratio
+#
+# @param comdat A community dataframe
+# @return var.ratio The variance ratio of the community
 variance_ratio_matrixdata <- function(comdat){
     check_sppvar(comdat)
     all.cov <- stats::cov(comdat, use = "pairwise.complete.obs")
@@ -226,13 +226,13 @@ variance_ratio_matrixdata <- function(comdat){
     return(var.ratio)
 }
 
-#' A function to calculate the variance ratio from a long form dataframe
-#'
-#' @param df A dataframe containing time.var, replicate.var, species.var and abundance.var columns
-#' @param time.var The name of the time.var column from df
-#' @param species.var The name of the species.var column from df
-#' @param abundance.var The name of the abundance.var column from df
-#' @return var.ratio The variance ratio of the community
+# A function to calculate the variance ratio from a long form dataframe
+#
+# @param df A dataframe containing time.var, replicate.var, species.var and abundance.var columns
+# @param time.var The name of the time.var column from df
+# @param species.var The name of the species.var column from df
+# @param abundance.var The name of the abundance.var column from df
+# @return var.ratio The variance ratio of the community
 variance_ratio_longformdata <- function(df, time.var, species.var, abundance.var){
     com.use <- transpose_community(df, time.var, species.var, abundance.var)
     var.ratio <- variance_ratio_matrixdata(com.use)

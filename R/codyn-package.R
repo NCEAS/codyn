@@ -24,8 +24,7 @@
 #' }
 #'
 #' @docType package
-#' @name codyn
-#' @aliases codyn
+#' @name codyn-package
 #' @section Functions:
 #' \itemize{
 #'  \item{\code{\link[=turnover]{turnover}}}{: Calculates species turnover between time periods}

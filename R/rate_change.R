@@ -175,15 +175,15 @@ rate_change_interval <- function(df, time.var,
 #
 ############################################################################
 
-#' Get lagged distances for a single replicate
-#' @description Returns a data frame with two columns, interval and distance. The interval is
-#' the number of time steps between two communities, while distance is the
-#' euclidean distance of community change within one replicate lagged across intervals.
-#' @param df data frame to compute the slope of community change for
-#' @param time.var The name of the time column from df
-#' @param species.var The name of the species column from df
-#' @param abundance.var The name of the abundance column from df
-#' @return a data frame containing of time lags by species distances
+# Get lagged distances for a single replicate
+# @description Returns a data frame with two columns, interval and distance. The interval is
+# the number of time steps between two communities, while distance is the
+# euclidean distance of community change within one replicate lagged across intervals.
+# @param df data frame to compute the slope of community change for
+# @param time.var The name of the time column from df
+# @param species.var The name of the species column from df
+# @param abundance.var The name of the abundance column from df
+# @return a data frame containing of time lags by species distances
 lagged_distances <- function(df, time.var, species.var, abundance.var) {
     df <- transpose_community(df, time.var, species.var, abundance.var)
     DM <- stats::dist(df, method = "euclidean", diag = FALSE, upper = FALSE)
@@ -196,13 +196,13 @@ lagged_distances <- function(df, time.var, species.var, abundance.var) {
     return(results)
 }
 
-#' Get slope
-#' Returns the slope of community change within one replicate.
-#' @param df data frame to compute the slope of community change for
-#' @param time.var The name of the time column from df
-#' @param species.var The name of the species column from df
-#' @param abundance.var The name of the abundance column from df
-#' @return a slope of time lags by species distances
+# Get slope
+# Returns the slope of community change within one replicate.
+# @param df data frame to compute the slope of community change for
+# @param time.var The name of the time column from df
+# @param species.var The name of the species column from df
+# @param abundance.var The name of the abundance column from df
+# @return a slope of time lags by species distances
 lagged_slope <- function(df, time.var, species.var, abundance.var) {
     results <- lagged_distances(df, time.var, species.var, abundance.var)
     lm_coefficents <- stats::lm(distance ~ interval, data = results)
@@ -210,13 +210,13 @@ lagged_slope <- function(df, time.var, species.var, abundance.var) {
     return(slope)
 }
 
-#' Get lagged values from a distance matrix
-#' Get lagged values from distance matrix at value i
-#' @param i the index of the matrix to lag
-#' @param DM the distance matrix from which lagged values are drawn
-#' @param rownums number of rows in the distance matrix
-#' @param colnums number of columns in the distance matrix
-#' @return the lagged values
+# Get lagged values from a distance matrix
+# Get lagged values from distance matrix at value i
+# @param i the index of the matrix to lag
+# @param DM the distance matrix from which lagged values are drawn
+# @param rownums number of rows in the distance matrix
+# @param colnums number of columns in the distance matrix
+# @return the lagged values
 lag_i <- function(i, DM, rownums, colnums) {
     cbind(lag = i, value = DM[rownums == (colnums + i)])
 }

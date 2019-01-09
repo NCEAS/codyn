@@ -108,9 +108,9 @@ SimpsonEvenness <- function(x, S = length(x[x != 0]), N = sum(x[x != 0]), ps = x
   (1/D)/S
 }
 
-#' Utility function to calculate EQ evenness from Smith and Wilson 1996
-#' @param x Vector of abundance of each species
-#' If all abundances are equal it returns a 1
+# Utility function to calculate EQ evenness from Smith and Wilson 1996
+# If all abundances are equal it returns a 1
+# @param x Vector of abundance of each species
 #' @importFrom stats lm
 EQ <- function(x){
   x1 <- x[x != 0]

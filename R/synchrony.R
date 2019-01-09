@@ -95,16 +95,16 @@ synchrony <- function(df, time.var,
 #
 ############################################################################
 
-#' A function to calculate species synchrony over time within one replicate
-#'
-#' @param df A dataframe containing rep, time, species and abundance columns
-#' @param time.var The name of the time column from df
-#' @param species.var The name of the species column from df
-#' @param abundance.var The name of the abundance column from df
-#' @param metric The synchrony metric to return. The default, "Loreau", returns synchrony as calculated by Loreau and de Mazancourt 2008.
-#'        The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014
-#' @return output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony.
-#'        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
+# A function to calculate species synchrony over time within one replicate
+#
+# @param df A dataframe containing rep, time, species and abundance columns
+# @param time.var The name of the time column from df
+# @param species.var The name of the species column from df
+# @param abundance.var The name of the abundance column from df
+# @param metric The synchrony metric to return. The default, "Loreau", returns synchrony as calculated by Loreau and de Mazancourt 2008.
+#        The alternative, "Gross", returns synchrony as calculated by Gross et al. 2014
+# @return output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony.
+#        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
 synch_onerep <- function(df, time.var, species.var, abundance.var,
                          metric = "Loreau") {
     metric = match.arg(metric, choices = c("Loreau", "Gross")) # for partial argument matching
