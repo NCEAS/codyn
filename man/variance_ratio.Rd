@@ -5,7 +5,8 @@
 \title{Variance Ratio}
 \usage{
 variance_ratio(df, time.var, species.var, abundance.var, bootnumber,
-  replicate.var = NA, average.replicates = TRUE, level = 0.95, li, ui)
+  replicate.var = NA, average.replicates = TRUE, level = 0.95, li,
+  ui)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}

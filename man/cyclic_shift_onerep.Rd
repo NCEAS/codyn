@@ -4,7 +4,8 @@
 \alias{cyclic_shift_onerep}
 \title{A function to calculate a non-S3 cyclic shift on one replicate}
 \usage{
-cyclic_shift_onerep(df, time.var, species.var, abundance.var, FUN, bootnumber)
+cyclic_shift_onerep(df, time.var, species.var, abundance.var, FUN,
+  bootnumber)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}

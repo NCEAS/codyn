@@ -5,8 +5,8 @@
 \title{Curve Difference}
 \usage{
 curve_difference(df, time.var = NULL, species.var, abundance.var,
-  replicate.var, treatment.var = NULL, pool = FALSE, block.var = NULL,
-  reference.treatment = NULL)
+  replicate.var, treatment.var = NULL, pool = FALSE,
+  block.var = NULL, reference.treatment = NULL)
 }
 \arguments{
 \item{df}{A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns}
@@ -52,7 +52,7 @@ curve_difference(df = df,
                  treatment.var = "treatment",
                  block.var = "block",
                  replicate.var = "plot")
-                 
+
 # With blocks and time
 df <- subset(pplots, year < 2004 & block < 3)
 curve_difference(df = df,

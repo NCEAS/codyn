@@ -5,8 +5,8 @@
 \title{Abundance Differences}
 \usage{
 abundance_difference(df, time.var = NULL, species.var, abundance.var,
-  replicate.var, treatment.var = NULL, pool = FALSE, block.var = NULL,
-  reference.treatment = NULL)
+  replicate.var, treatment.var = NULL, pool = FALSE,
+  block.var = NULL, reference.treatment = NULL)
 }
 \arguments{
 \item{df}{A data frame containing species, abundance, replicate columns and   optional time, treatment and block columns.}
@@ -77,7 +77,7 @@ abundance_difference(df = df,
                      replicate.var = "plot",
                      time.var = "year",
                      reference.treatment = "N1P0")
-                     
+
 # Pooling by treatment with time
 df <- subset(pplots, year < 2004)
 abundance_difference(df = df,

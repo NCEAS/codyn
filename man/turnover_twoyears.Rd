@@ -4,8 +4,8 @@
 \alias{turnover_twoyears}
 \title{A function to calculate species turnover between two years}
 \usage{
-turnover_twoyears(d1, d2, species.var, metric = c("total", "disappearance",
-  "appearance"))
+turnover_twoyears(d1, d2, species.var, metric = c("total",
+  "disappearance", "appearance"))
 }
 \arguments{
 \item{d1}{A dataframe containing a species column from one year}

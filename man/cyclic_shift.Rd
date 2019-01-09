@@ -5,8 +5,8 @@
 \alias{temporal_torus_translation}
 \title{Cyclic Shift Permutations}
 \usage{
-cyclic_shift(df, time.var, species.var, abundance.var, replicate.var = NA,
-  FUN, bootnumber)
+cyclic_shift(df, time.var, species.var, abundance.var,
+  replicate.var = NA, FUN, bootnumber)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
