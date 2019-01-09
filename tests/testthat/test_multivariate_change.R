@@ -33,7 +33,7 @@ test_that("multivariate_change function returns correct result", {
   expect_is(myresults1, "data.frame")
   expect_equal(nrow(myresults1), 3)
   expect_equal(ncol(myresults1), 4)
-  expect_equal(myresults1$composition_change[1], 0.1325553, tolerance = 0.00001)
+  expect_equal(myresults1$composition_change[1], 0.1244439, tolerance = 0.00001)
   expect_equal(myresults1$dispersion_change[1], 0.03804344, tolerance = 0.000001)
 
   #test that it works with treatment
@@ -70,4 +70,13 @@ test_that("multivariate_change function returns correct result", {
                                species.var = "species",
                                time.var = "year"), "Multiple records for one or more species found at:\n year   plot\n \"2002\" \"25\"")
 
+  # imaginary distance generates warning
+  df <- data.frame(
+    t = rep(0:1, each = 6),
+    r = rep(0:2, each = 2),
+    s = rep(c('a', 'b'), 6),
+    a = c(0, 2, 1, 2, 1, 0, 1, 2, 1, 2, 1, 2)
+  )
+  expect_warning(multivariate_change(df,
+    time.var = 't', replicate.var = 'r', species.var = 's', abundance.var = 'a'))
 })

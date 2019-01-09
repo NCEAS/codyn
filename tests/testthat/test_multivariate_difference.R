@@ -33,7 +33,7 @@ test_that("multivariate_difference function returns correct result", {
   expect_is(myresults1, "data.frame")
   expect_equal(nrow(myresults1), 2)
   expect_equal(ncol(myresults1), 5)
-  expect_equal(myresults1$composition_diff[1], 0.08895478, tolerance = 0.00001)
+  expect_equal(myresults1$composition_diff[1], 0.07108743, tolerance = 0.00001)
   expect_equal(myresults1$abs_dispersion_diff[1], 0.01123982, tolerance = 0.000001)
 
   #test that it works with time and reference treatment

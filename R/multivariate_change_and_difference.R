@@ -262,9 +262,9 @@ multivariate_difference <- function(df,
   
   # compute time.var2 change from time.var
   output$dispersion_diff <- output$dispersion2 - output$dispersion
-  output$trt_greater_disp <- ifelse(as.numeric(output$dispersion_diff) < 0,
-    output[[treatment.var]],
-    output[[treatment.var2]])
+  idx <- as.numeric(output$dispersion_diff) < 0
+  output$trt_greater_disp <- output[[treatment.var]]
+  output$trt_greater_disp[idx] <- output[[treatment.var2]][idx]
   output$abs_dispersion_diff <- abs(output$dispersion_diff)
   output$composition_diff <- mapply(
     function(x, y) {z <- x - y; sqrt(sum(z*z))},
@@ -355,7 +355,7 @@ dblctr <- function(d) {
 
 # Calculate a full Bray Curtis dissimilarity matrix
 # @param a abundance matrix (columns are species, rows are observations) with no missing values
-# FIXME should probably implement in c
+# FIXME should probably implement in C
 braycurtis <- function(a) {
   n <- nrow(a)
   ij <- combn(n, 2)
