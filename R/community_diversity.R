@@ -47,7 +47,8 @@
 #'                     abundance.var = "relative_cover") # for Shannon's diversity metric
 #' @importFrom stats aggregate.data.frame
 #' @export
-community_diversity <- function(df,  time.var = NULL, 
+community_diversity <- function(df,
+                                time.var = NULL, 
                                 abundance.var, 
                                 replicate.var = NULL,  
                                 metric = c("Shannon", "InverseSimpson")) {
@@ -56,12 +57,12 @@ community_diversity <- function(df,  time.var = NULL,
   metric <- match.arg(metric)
   
   # check no NAs in abundance column
-  if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
+  if (any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
 
   # specify aggregate formula from arguments
-  if(is.null(replicate.var)) {
+  if (is.null(replicate.var)) {
     by <- time.var
-  } else if(is.null(time.var)) {
+  } else if (is.null(time.var)) {
     by <- replicate.var
   } else {
     by <- c(time.var, replicate.var)

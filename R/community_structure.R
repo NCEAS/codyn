@@ -85,7 +85,7 @@ community_structure <- function(df,
   
   names(comstruct) <- c(by, 'richness', metric)
 
-   return(comstruct)
+  return(comstruct)
 }
 
 

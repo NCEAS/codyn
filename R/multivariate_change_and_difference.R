@@ -114,12 +114,18 @@ multivariate_change <- function(df,
   }
 
   # compute time.var2 change from time.var
-  output$dispersion_change <- Re(output$dispersion2 - output$dispersion)
+  output$dispersion_change <- output$dispersion2 - output$dispersion
+  idx <- abs(Im(output$dispersion_change)) > sqrt(.Machine$double.eps)
+  output$dispersion_change <- Re(output$dispersion_change)
+  if (any(idx)) {
+    output$dispersion_change[idx] <- NA
+    warning('NA(s) produced during dispersion change calculation.')
+  }
   output$composition_change <- mapply(
       function(x, y) {z <- x - y; sqrt(sum(z*z))},
       output$center2, output$center
   )
-  idx <- Im(output$composition_change) != 0
+  idx <- abs(Im(output$composition_change)) > sqrt(.Machine$double.eps)
   output$composition_change <- Re(output$composition_change)
   if (any(idx)) {
     output$composition_change[idx] <- NA
@@ -234,7 +240,7 @@ multivariate_difference <- function(df,
     class(centers[[treatment.var]]) <- c('ordered', class(centers[[treatment.var]]))
   }
   
-  # merge subsets on time difference of one time step
+  # merge subsets on treatment differences [split by time]
   treatment.var2 <- paste(treatment.var, 2, sep = '')
   split_by <- c(time.var)
   merge_to <- !(names(centers) %in% split_by)
@@ -253,24 +259,30 @@ multivariate_difference <- function(df,
     })
   }
   
-  # unorder cross.var if orginally unordered factor
+  # unorder treatment.var if orginally unordered factor
   if (to_ordered) {
     x <- class(output[[treatment.var]])
     class(output[[treatment.var]]) <- x[x != 'ordered']
     class(output[[treatment.var2]]) <- x[x != 'ordered']
   }
   
-  # compute time.var2 change from time.var
+  # compute treatment.var2 differences from treatment.var
   output$dispersion_diff <- output$dispersion2 - output$dispersion
-  idx <- as.numeric(output$dispersion_diff) < 0
+  idx <- abs(Im(output$dispersion_diff)) > sqrt(.Machine$double.eps)
+  output$dispersion_diff <- Re(output$dispersion_diff)
+  if (any(idx)) {
+    output$dispersion_diff[idx] <- NA
+    warning('NA(s) produced during dispersion difference calculation.')
+  }
+  idx <- output$dispersion_diff < 0
   output$trt_greater_disp <- output[[treatment.var]]
   output$trt_greater_disp[idx] <- output[[treatment.var2]][idx]
   output$abs_dispersion_diff <- abs(output$dispersion_diff)
   output$composition_diff <- mapply(
-    function(x, y) {z <- x - y; sqrt(sum(z*z))},
+    function(x, y) {z <- x - y; sqrt(sum(z*z))}, # not dsp*Conj(dsp), not Euclidean!
     output$center2, output$center
   )
-  idx <- Im(output$composition_diff) != 0
+  idx <- abs(Im(output$composition_diff)) > sqrt(.Machine$double.eps)
   output$composition_diff <- Re(output$composition_diff)
   if (any(idx)) {
     output$composition_diff[idx] <- NA
@@ -352,20 +364,3 @@ dblctr <- function(d) {
     c <- diag(1, n) - matrix(1, n, n)/n
     return(c %*% d %*% c)
 }
-
-# # Calculate a full Bray Curtis dissimilarity matrix
-# # @param a abundance matrix (columns are species, rows are observations) with no missing values
-# # FIXME should probably implement in C
-# #' @importFrom utils combn
-# braycurtis <- function(a) {
-#   n <- nrow(a)
-#   ij <- combn(n, 2)
-#   d <- mapply(
-#     function(i, j) {
-#       apply(abs(a[i, , drop = F] - a[j, , drop = F]), 1, sum, na.rm = T)/
-#         apply(abs(a[i, , drop = F] + a[j, , drop = F]), 1, sum, na.rm = T)
-#     }, ij[1, ], ij[2, ])
-#   class(d) <- 'dist'
-#   attr(d, 'Size') <- n
-#   return(as.matrix(d))
-# }
