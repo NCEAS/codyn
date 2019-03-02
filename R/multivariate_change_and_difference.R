@@ -1,34 +1,34 @@
-#' @title Using dissimilarity-based metrics to calculate changes in composition
+#' @title Using dissimilarity-based measures to calculate changes in composition
 #'   and dispersion
+#'   
 #' @description Calculates the changes in composition and dispersion based off a
-#'   Bray-Curtis dissimilarity matrix. Composition change is the euclidean
-#'   distance between the centroids of compared time periods and ranges from
-#'   0-1, where 0 are identical communities, and 1 and completely different
-#'   communities. Since composition change is based on plotted distance between
-#'   centroids, it is context dependent and depends on how many centroids are
-#'   being plotted, thus result of composition change depends on how many time
-#'   periods are being measured. Dispersion change is the difference of average
-#'   dispersion of each replicate to its centroid between time periods.
+#'   Bray-Curtis dissimilarity matrix. Composition change is the pairwise
+#'   distance between centroids of compared time periods and ranges from 0-1,
+#'   where 0 are identical communities, and 1 and completely different
+#'   communities. Dispersion change is the difference between time periods in
+#'   the dispersion of replicates, i.e. the average distance between a replicate
+#'   and its centroid. Since composition change is based on plotted distance
+#'   between centroids, it is context dependent and depends on how many
+#'   centroids are being plotted, thus result of composition change depends on
+#'   how many time periods are being measured.
+#'   
+#' @inheritParams RAC_change
 #' @param df A data frame containing time, species, abundance and replicate
-#'   columns and an optional column of treatment
-#' @param time.var The name of the time column
-#' @param species.var The name of the species column
-#' @param abundance.var The name of the abundance column
-#' @param replicate.var The name of the replicate column. Replicate must be
-#'   unique within the dataset and cannot be nested within treatments or blocks.
-#' @param treatment.var the name of the optional treatment column
-#' @param reference.time The name of the optional time point that all other time
-#'   points should be compared to (e.g. the first year of data). If not
-#'   specified, each comparison is between consecutive time points (e.g. first
-#'   to  second year, second to third year, etc.)
+#'   columns and an optional column of treatment.
+#' @param replicate.var The name of the replicate column. Replicate identifiers
+#'   must be unique within the dataset and cannot be nested within treatments or
+#'   blocks.
+#' @param treatment.var The name of the optional treatment column.
+#' 
 #' @return The multivariate_change function returns a data frame with the
 #'   following attributes:
 #' \itemize{
 #'  \item{time.var: }{A column with the specified time.var and a second column,
 #'  with '2' appended to the name. Time is subtracted from time2 for dispersion
 #'  change.}
-#'  \item{composition_change: }{A numeric column that is the euclidean distance
-#'  between the centroids of two time points.}
+#'  \item{composition_change: }{A numeric column that is the distance
+#'  between the centroids of two time points, or NA if a real distance
+#'  could not be calculated.}
 #'  \item{dispersion_change: }{A numeric column that is the difference in the
 #'  average dispersion of the replicates around the centroid for the two time
 #'  periods. A negative value indicates replicates are converging over time
@@ -140,30 +140,27 @@ multivariate_change <- function(df,
   return(output[intersect(output_order, names(output))])
 }
 
-#' @title Using dissimilarity-based metrics to calculate differences in
+#' @title Using dissimilarity-based measures to calculate differences in
 #'   composition and dispersion between pairs of treatments at a single time
 #'   point
+#'   
 #' @description Calculates the difference in composition and dispersion between
 #'   treatments based off a Bray-Curtis dissimilarity matrix at a single point
-#'   in time. Composition difference is the euclidean distance between the
-#'   centroids of different treatments. Since centroid distance is based on
-#'   plotted distance between centroids, it is context dependent and depends on
-#'   how many centroids are being plotted. The centroid distance between
-#'   treatments depends on how many treatments are being compared. Dispersion
-#'   difference is the difference of average dispersion of each replicate to its
-#'   centroid between two treatments.
-#' @param df A data frame containing an optional time column, species, abundance
-#'   and replicate, and treatment columns
-#' @param time.var The name of the optional time column
-#' @param species.var The name of the species column
-#' @param abundance.var The name of the abundance column
-#' @param replicate.var The name of the replicate column. Replicate must be
-#'   unique within the dataset and cannot be nested within treatments or blocks.
-#' @param treatment.var the name of the treatment column
-#' @param reference.treatment The name of the optional treatment that all other
-#'   treatments will be compared to (e.g. only controls will be compared to all
-#'   other treatments). If not specified all pairwise treatment comparisons will
-#'   be made.
+#'   in time. Composition difference is the pairwise distance between centroids
+#'   of compared treatments and ranges from 0-1, where 0 are identical
+#'   communities, and 1 and completely different communities. Dispersion
+#'   difference is the difference between treatments in the dispersion of
+#'   replicates, i.e. the average distance between a replicate and its centroid.
+#'   Since composition difference is based on plotted distance between
+#'   centroids, it is context dependent and depends on how many centroids are
+#'   being plotted, thus result of composition difference depends on how many
+#'   time periods are being measured.
+#'   
+#' @inheritParams RAC_difference
+#' @param df A data frame containing a species, abundance, replicate, and
+#'   treament columns and optional time column.
+#' @param treatment.var The name of the treatment column.
+#' 
 #' @return The multivariate_difference function returns a data frame with the
 #'   following attributes:
 #' \itemize{
@@ -331,7 +328,6 @@ pca_centers <- function(df, cluster.var, species.var, split.var, replicate.var) 
 
     # the Bray-Curtis dissimilarity matrix
     a <- species[, -(1:length(idvar))]
-    #d <- braycurtis(a) ## FIXME To use or not to use vegan?
     d <- as.matrix(vegdist(a, 'bray'))
 
     # perform PCoA aka Torgerson-Gower Scaling, while

@@ -9,23 +9,31 @@ curve_difference(df, time.var = NULL, species.var, abundance.var,
   block.var = NULL, reference.treatment = NULL)
 }
 \arguments{
-\item{df}{A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns}
+\item{df}{A data frame containing a species, abundance, and replicate columns
+and optional time, treatment, and block columns.}
 
-\item{time.var}{The name of the optional time column}
+\item{time.var}{The name of the optional time column.}
 
-\item{species.var}{The name of the species column}
+\item{species.var}{The name of the species column.}
 
-\item{abundance.var}{The name of the abundance column}
+\item{abundance.var}{The name of the abundance column.}
 
-\item{replicate.var}{The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks.}
+\item{replicate.var}{The name of the replicate column. Replicate identifiers
+must be unique within the dataset and cannot be nested within treatments or
+blocks.}
 
-\item{treatment.var}{The name of the optional treatment column}
+\item{treatment.var}{The name of the optional treatment column.}
 
-\item{pool}{An argument to allow values to be pooled within treatment. The  default value is "FALSE", a value of "TRUE" takes the average abundance of all species within a treatment at a given time point prior to comparisons.}
+\item{pool}{An argument to allow abundance values to be pooled within a
+treatment. The default value is "FALSE", a value of "TRUE" averages
+abundance of each species within a treatment at a given time point.}
 
-\item{block.var}{The name of the optional block column}
+\item{block.var}{The name of the optional block column.}
 
-\item{reference.treatment}{The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisons will be made.}
+\item{reference.treatment}{The name of the optional treatment that all other
+treatments will be compared to (e.g. only controls will be compared to all
+other treatments). If not specified all pairwise treatment comparisons will
+be made.}
 }
 \value{
 The curve_difference function returns a data frame with the following attributes:
@@ -40,7 +48,15 @@ The curve_difference function returns a data frame with the following attributes
 }
 }
 \description{
-Calculates the area difference between two rank abundance   curves. There are three ways differences can be calculated. 1) Between all   treatments within a block (note: block.var and treatment.var need to be specified. 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var = NULL. 3) All pairwise combinations between all replicates (note:block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
+Calculates the area difference between two rank abundance
+  curves. There are three ways differences can be calculated. 1) Between all
+  treatments within a block (note: block.var and treatment.var need to be
+  specified. 2) Between treatments, pooling all replicates into a single
+  species pool (note: pool = TRUE, treatment.var needs to be specified, and
+  block.var = NULL. 3) All pairwise combinations between all replicates
+  (note:block.var = NULL, pool = FALSE and specifying treatment.var is
+  optional. If treatment.var is specified, the treatment that each replicate
+  belongs to will also be listed in the output).
 }
 \examples{
 data(pplots)

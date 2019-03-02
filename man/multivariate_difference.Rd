@@ -2,7 +2,7 @@
 % Please edit documentation in R/multivariate_change_and_difference.R
 \name{multivariate_difference}
 \alias{multivariate_difference}
-\title{Using dissimilarity-based metrics to calculate differences in
+\title{Using dissimilarity-based measures to calculate differences in
   composition and dispersion between pairs of treatments at a single time
   point}
 \usage{
@@ -10,19 +10,20 @@ multivariate_difference(df, time.var = NULL, species.var, abundance.var,
   replicate.var, treatment.var, reference.treatment = NULL)
 }
 \arguments{
-\item{df}{A data frame containing an optional time column, species, abundance
-and replicate, and treatment columns}
+\item{df}{A data frame containing a species, abundance, replicate, and
+treament columns and optional time column.}
 
-\item{time.var}{The name of the optional time column}
+\item{time.var}{The name of the optional time column.}
 
-\item{species.var}{The name of the species column}
+\item{species.var}{The name of the species column.}
 
-\item{abundance.var}{The name of the abundance column}
+\item{abundance.var}{The name of the abundance column.}
 
-\item{replicate.var}{The name of the replicate column. Replicate must be
-unique within the dataset and cannot be nested within treatments or blocks.}
+\item{replicate.var}{The name of the replicate column. Replicate identifiers
+must be unique within the dataset and cannot be nested within treatments or
+blocks.}
 
-\item{treatment.var}{the name of the treatment column}
+\item{treatment.var}{The name of the treatment column.}
 
 \item{reference.treatment}{The name of the optional treatment that all other
 treatments will be compared to (e.g. only controls will be compared to all
@@ -51,13 +52,15 @@ The multivariate_difference function returns a data frame with the
 \description{
 Calculates the difference in composition and dispersion between
   treatments based off a Bray-Curtis dissimilarity matrix at a single point
-  in time. Composition difference is the euclidean distance between the
-  centroids of different treatments. Since centroid distance is based on
-  plotted distance between centroids, it is context dependent and depends on
-  how many centroids are being plotted. The centroid distance between
-  treatments depends on how many treatments are being compared. Dispersion
-  difference is the difference of average dispersion of each replicate to its
-  centroid between two treatments.
+  in time. Composition difference is the pairwise distance between centroids
+  of compared treatments and ranges from 0-1, where 0 are identical
+  communities, and 1 and completely different communities. Dispersion
+  difference is the difference between treatments in the dispersion of
+  replicates, i.e. the average distance between a replicate and its centroid.
+  Since composition difference is based on plotted distance between
+  centroids, it is context dependent and depends on how many centroids are
+  being plotted, thus result of composition difference depends on how many
+  time periods are being measured.
 }
 \examples{
 data(pplots)

@@ -1,15 +1,16 @@
 #' @title Curve Difference
 #'
-#' @description Calculates the area difference between two rank abundance   curves. There are three ways differences can be calculated. 1) Between all   treatments within a block (note: block.var and treatment.var need to be specified. 2) Between treatments, pooling all replicates into a single species pool (note: pool = TRUE, treatment.var needs to be specified, and block.var = NULL. 3) All pairwise combinations between all replicates (note:block.var = NULL, pool = FALSE and specifying treatment.var is optional. If treatment.var is specified, the treatment that each replicate belongs to will also be listed in the output).
-#' @param df A data frame containing a species, abundance, and replicate columns and optional time, treatment, and block columns
-#' @param time.var The name of the optional time column
-#' @param species.var The name of the species column
-#' @param abundance.var The name of the abundance column
-#' @param replicate.var The name of the replicate column. Replicate must be unique within the dataset and cannot be nested within treatments or blocks.
-#' @param treatment.var The name of the optional treatment column
-#' @param pool An argument to allow values to be pooled within treatment. The  default value is "FALSE", a value of "TRUE" takes the average abundance of all species within a treatment at a given time point prior to comparisons.
-#' @param block.var The name of the optional block column
-#' @param reference.treatment The name of the optional treatment that all other treatments will be compared to (e.g. only controls will be compared to all other treatments). If not specified all pairwise treatment comparisons will be made.
+#' @description Calculates the area difference between two rank abundance
+#'   curves. There are three ways differences can be calculated. 1) Between all
+#'   treatments within a block (note: block.var and treatment.var need to be
+#'   specified. 2) Between treatments, pooling all replicates into a single
+#'   species pool (note: pool = TRUE, treatment.var needs to be specified, and
+#'   block.var = NULL. 3) All pairwise combinations between all replicates
+#'   (note:block.var = NULL, pool = FALSE and specifying treatment.var is
+#'   optional. If treatment.var is specified, the treatment that each replicate
+#'   belongs to will also be listed in the output).
+#' 
+#' @inheritParams RAC_difference
 #'
 #' @return The curve_difference function returns a data frame with the following attributes:
 #' \itemize{

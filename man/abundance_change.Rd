@@ -8,29 +8,43 @@ abundance_change(df, time.var, species.var, abundance.var,
   replicate.var = NULL, reference.time = NULL)
 }
 \arguments{
-\item{df}{A data frame containing time, species, and abundance columns and an optional column of replicates}
+\item{df}{A data frame containing time, species, and abundance columns and an
+optional columns of replicates.}
 
-\item{time.var}{The name of the time column}
+\item{time.var}{The name of the time column.}
 
-\item{species.var}{The name of the species column}
+\item{species.var}{The name of the species column.}
 
-\item{abundance.var}{The name of the abundance column}
+\item{abundance.var}{The name of the abundance column.}
 
-\item{replicate.var}{The name of the optional replicate column. If specified, replicate must be unique within the dataset and cannot be nested within treatments or blocks.}
+\item{replicate.var}{The name of the optional replicate column. If specified,
+replicate must be unique within the dataset and cannot be nested within
+treatments or blocks.}
 
-\item{reference.time}{The name of the optional time point that all other time points should be compared to (e.g. the first year of data). If not specified, each comparison is between consecutive time points (e.g. first to  second year, second to third year, etc.)}
+\item{reference.time}{The name of the optional time point that all other time
+points should be compared to (e.g. the first year of data). If not
+specified, each comparison is between consecutive time points (the first
+and second year, second and third year, etc.)}
 }
 \value{
-The abundance_change function returns a data frame with the following fields:
+The abundance_change function returns a data frame with a subset of
+  the following columns:
 \itemize{
- \item{replicate.var: }{A column with the specified replicate.var, if it is specified.}
- \item{time.var: }{A column with the specified time.var and a second column, with '2' appended to the name. Time is subtracted from time2}
+ \item{replicate.var: }{A column with the specified replicate.var, if it is
+ specified.}
+ \item{time.var: }{A column with the specified time.var and a second column,
+ with '2' appended to the name. Time is subtracted from time2}
  \item{species.var: }{A column with the specified species.var.}
- \item{change: }{A numeric column of the change in abundance between  time points. A positive value occurs when a species increases in abundance over time, and a negative value when a species decreases in abundance over time.}
+ \item{change: }{A numeric column of the change in abundance between  time
+ points. A positive value occurs when a species increases in abundance over
+ time, and a negative value when a species decreases in abundance over time.}
 }
 }
 \description{
-Calculates the abundance change for species in a replicate between two time points. Changes are on abundance values provided, if relative data is used, then changes in relative abundance will be calculated.
+Calculates the abundance change for species in a replicate
+  between two time points. Changes are on abundance values provided, if
+  relative data is used, then changes in relative abundance will be
+  calculated.
 }
 \examples{
 data(pplots)

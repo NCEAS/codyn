@@ -2,7 +2,7 @@
 % Please edit documentation in R/multivariate_change_and_difference.R
 \name{multivariate_change}
 \alias{multivariate_change}
-\title{Using dissimilarity-based metrics to calculate changes in composition
+\title{Using dissimilarity-based measures to calculate changes in composition
   and dispersion}
 \usage{
 multivariate_change(df, time.var, species.var, abundance.var,
@@ -10,23 +10,24 @@ multivariate_change(df, time.var, species.var, abundance.var,
 }
 \arguments{
 \item{df}{A data frame containing time, species, abundance and replicate
-columns and an optional column of treatment}
+columns and an optional column of treatment.}
 
-\item{time.var}{The name of the time column}
+\item{time.var}{The name of the time column.}
 
-\item{species.var}{The name of the species column}
+\item{species.var}{The name of the species column.}
 
-\item{abundance.var}{The name of the abundance column}
+\item{abundance.var}{The name of the abundance column.}
 
-\item{replicate.var}{The name of the replicate column. Replicate must be
-unique within the dataset and cannot be nested within treatments or blocks.}
+\item{replicate.var}{The name of the replicate column. Replicate identifiers
+must be unique within the dataset and cannot be nested within treatments or
+blocks.}
 
-\item{treatment.var}{the name of the optional treatment column}
+\item{treatment.var}{The name of the optional treatment column.}
 
 \item{reference.time}{The name of the optional time point that all other time
 points should be compared to (e.g. the first year of data). If not
-specified, each comparison is between consecutive time points (e.g. first
-to  second year, second to third year, etc.)}
+specified, each comparison is between consecutive time points (the first
+and second year, second and third year, etc.)}
 }
 \value{
 The multivariate_change function returns a data frame with the
@@ -35,8 +36,9 @@ The multivariate_change function returns a data frame with the
  \item{time.var: }{A column with the specified time.var and a second column,
  with '2' appended to the name. Time is subtracted from time2 for dispersion
  change.}
- \item{composition_change: }{A numeric column that is the euclidean distance
- between the centroids of two time points.}
+ \item{composition_change: }{A numeric column that is the distance
+ between the centroids of two time points, or NA if a real distance
+ could not be calculated.}
  \item{dispersion_change: }{A numeric column that is the difference in the
  average dispersion of the replicates around the centroid for the two time
  periods. A negative value indicates replicates are converging over time
@@ -49,14 +51,15 @@ The multivariate_change function returns a data frame with the
 }
 \description{
 Calculates the changes in composition and dispersion based off a
-  Bray-Curtis dissimilarity matrix. Composition change is the euclidean
-  distance between the centroids of compared time periods and ranges from
-  0-1, where 0 are identical communities, and 1 and completely different
-  communities. Since composition change is based on plotted distance between
-  centroids, it is context dependent and depends on how many centroids are
-  being plotted, thus result of composition change depends on how many time
-  periods are being measured. Dispersion change is the difference of average
-  dispersion of each replicate to its centroid between time periods.
+  Bray-Curtis dissimilarity matrix. Composition change is the pairwise
+  distance between centroids of compared time periods and ranges from 0-1,
+  where 0 are identical communities, and 1 and completely different
+  communities. Dispersion change is the difference between time periods in
+  the dispersion of replicates, i.e. the average distance between a replicate
+  and its centroid. Since composition change is based on plotted distance
+  between centroids, it is context dependent and depends on how many
+  centroids are being plotted, thus result of composition change depends on
+  how many time periods are being measured.
 }
 \examples{
 data(pplots)
