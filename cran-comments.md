@@ -2,9 +2,15 @@
 
 R CMD check and all tests passed on Linux, MacOS, and Windows, using the following environments:
 
-* Debian GNU/Linux R-devel r76043 (x86_64-pc-linux-gnu (64-bit)), R 3.5.2 (x86_64-pc-linux-gnu (64-bit))
-* Mac OS X 10.14.3 R 3.5.2 (x86_64-apple-darwin15.6.0 (64-bit))
-* Windows (via win-builder):
+* Debian GNU/Linux
+  * R-devel r76043 (x86_64-pc-linux-gnu (64-bit))
+  * R 3.5.2 (x86_64-pc-linux-gnu (64-bit))
+* Mac OS X 10.14.3
+  * R 3.5.2 (x86_64-apple-darwin15.6.0 (64-bit))
+* Windows (via win-builder)
+  * R-devel r76188 (x86_64-w64-mingw32 (64-bit))
+  * R 3.5.2 (x86_64-w64-mingw32 (64-bit))
+  * R-oldrelease 3.4.4 (x86_64-w64-mingw32 (64-bit))
 
 # R CMD check results
 
