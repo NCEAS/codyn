@@ -1,3 +1,16 @@
+Version 2.0.1
+-------------
+
+DOCUMENTATION
+
+* use `@inheritParams` to reduce redundancy
+
+BUG FIXES
+
+* elminate unverifiable centroid calculation in vegan::betadisper ([#306](https://github.com/vegandevs/vegan/issues/306))
+* better error message (#108)
+* fix handling of Null arguments (#95)
+
 Version 2.0.0
 -------------
 
