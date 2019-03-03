@@ -46,7 +46,7 @@
 #'  column, if block.var is specified.}
 #' }
 #'
-#' @references Avolio et al. Submitted to MEE
+#' @references Avolio et al. Submitted
 #' @examples
 #' data(pplots)
 #' # With block and no time

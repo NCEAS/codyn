@@ -96,5 +96,5 @@ multivariate_difference(pplots,
 # total of 18 observations.
 }
 \references{
-Avolio et al. Submitted to MEE, Avolio et al. 2015, Marti Anderson et al. 2006
+Avolio et al. Submitted, Avolio et al. 2015, Marti Anderson et al. 2006
 }

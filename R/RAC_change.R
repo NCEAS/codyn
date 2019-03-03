@@ -47,7 +47,7 @@
 #'  divided by the total number of unique species in both time periods. This is
 #'  equivalent to the turnover function with metric = "disappearance".}
 #' }
-#' @references Avolio et al. submitted to MEE
+#' @references Avolio et al. Submitted
 #' @examples 
 #' data(pplots)
 #' # Without replicates

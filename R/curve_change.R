@@ -17,7 +17,7 @@
 #'  \item{replicate.var: }{A column that has same name and type as the
 #'  replicate.var column, if specified.}
 #' }
-#' @references Avolio et al. Submitted to MEE
+#' @references Avolio et al. Submitted
 #' @examples 
 #' data(pplots)
 #' # Without replicates

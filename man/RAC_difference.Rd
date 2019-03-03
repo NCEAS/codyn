@@ -152,5 +152,5 @@ RAC_difference(df = df,
                time.var = "year")
 }
 \references{
-Avolio et al. Submitted MEE
+Avolio et al. Submitted
 }

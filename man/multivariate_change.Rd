@@ -96,5 +96,5 @@ multivariate_change(df,
 
 }
 \references{
-Avolio et al. 2015; Avolio et al. Submitted MEE, Marti Anderson et al. 2006.
+Avolio et al. 2015; Avolio et al. Submitted, Marti Anderson et al. 2006.
 }

@@ -72,7 +72,7 @@
 #'  the total number of species in both samples. This is equivalent to the
 #'  Jaccard Index.}
 #' }
-#' @references Avolio et al. Submitted MEE
+#' @references Avolio et al. Submitted
 #' @examples
 #' data(pplots)
 #' # With block and no time

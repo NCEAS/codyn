@@ -71,5 +71,5 @@ curve_change(df = df,
            reference.time = 2002)
 }
 \references{
-Avolio et al. Submitted to MEE
+Avolio et al. Submitted
 }

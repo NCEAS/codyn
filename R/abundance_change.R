@@ -19,7 +19,7 @@
 #'  points. A positive value occurs when a species increases in abundance over
 #'  time, and a negative value when a species decreases in abundance over time.}
 #' }
-#' @references Avolio et al. Submitted to MEE
+#' @references Avolio et al. Submitted
 #' @examples 
 #' data(pplots)
 #' # Without replicates

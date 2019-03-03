@@ -73,7 +73,7 @@
 #'
 #' @importFrom vegan vegdist
 #' @importFrom stats aggregate reshape
-#' @references Avolio et al. 2015; Avolio et al. Submitted MEE, Marti Anderson et al. 2006.
+#' @references Avolio et al. 2015; Avolio et al. Submitted, Marti Anderson et al. 2006.
 #' @export
 multivariate_change <- function(df,
                                 time.var,
@@ -178,7 +178,7 @@ multivariate_change <- function(df,
 #'  \item{time.var: }{A characteristic column that has the same name and type as
 #'  the time.var column, if specified.}
 #' }
-#' @references Avolio et al. Submitted to MEE, Avolio et al. 2015, Marti Anderson et al. 2006
+#' @references Avolio et al. Submitted, Avolio et al. 2015, Marti Anderson et al. 2006
 #' @importFrom vegan vegdist
 #' @importFrom stats aggregate reshape
 #' @examples

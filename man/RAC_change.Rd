@@ -91,5 +91,5 @@ RAC_change(df = df,
 
 }
 \references{
-Avolio et al. submitted to MEE
+Avolio et al. Submitted
 }

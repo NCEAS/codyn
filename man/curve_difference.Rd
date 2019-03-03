@@ -118,5 +118,5 @@ curve_difference(df = df,
                  time.var = "year")
 }
 \references{
-Avolio et al. Submitted to MEE
+Avolio et al. Submitted
 }

@@ -22,7 +22,7 @@
 #'  \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is specified, or treatment.var is specified.}
 #'  \item{block.var: }{A column that has same name and type as the block.var column, if block.var is specified.}
 #' }
-#' @references Avolio et al. Submitted to MEE
+#' @references Avolio et al. Submitted
 #' @examples
 #' data(pplots)
 #' # With block and no time
