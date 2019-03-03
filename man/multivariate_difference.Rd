@@ -53,14 +53,10 @@ The multivariate_difference function returns a data frame with the
 Calculates the difference in composition and dispersion between
   treatments based off a Bray-Curtis dissimilarity matrix at a single point
   in time. Composition difference is the pairwise distance between centroids
-  of compared treatments and ranges from 0-1, where 0 are identical
-  communities, and 1 and completely different communities. Dispersion
-  difference is the difference between treatments in the dispersion of
-  replicates, i.e. the average distance between a replicate and its centroid.
-  Since composition difference is based on plotted distance between
-  centroids, it is context dependent and depends on how many centroids are
-  being plotted, thus result of composition difference depends on how many
-  time periods are being measured.
+  of compared treatments and ranges from 0-1, where identical communities
+  give 0 and completely different communities give 1. Dispersion difference
+  is the difference between treatments in the dispersion of replicates, i.e.
+  the average distance between a replicate and its centroid.
 }
 \examples{
 data(pplots)

@@ -53,13 +53,10 @@ The multivariate_change function returns a data frame with the
 Calculates the changes in composition and dispersion based off a
   Bray-Curtis dissimilarity matrix. Composition change is the pairwise
   distance between centroids of compared time periods and ranges from 0-1,
-  where 0 are identical communities, and 1 and completely different
-  communities. Dispersion change is the difference between time periods in
+  where identical communities give 0 and completely different
+  communities give 1. Dispersion change is the difference between time periods in
   the dispersion of replicates, i.e. the average distance between a replicate
-  and its centroid. Since composition change is based on plotted distance
-  between centroids, it is context dependent and depends on how many
-  centroids are being plotted, thus result of composition change depends on
-  how many time periods are being measured.
+  and its centroid.
 }
 \examples{
 data(pplots)

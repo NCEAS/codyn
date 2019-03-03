@@ -1,17 +1,14 @@
 #' @title Using dissimilarity-based measures to calculate changes in composition
 #'   and dispersion
-#'   
+#'
 #' @description Calculates the changes in composition and dispersion based off a
 #'   Bray-Curtis dissimilarity matrix. Composition change is the pairwise
 #'   distance between centroids of compared time periods and ranges from 0-1,
-#'   where 0 are identical communities, and 1 and completely different
-#'   communities. Dispersion change is the difference between time periods in
+#'   where identical communities give 0 and completely different
+#'   communities give 1. Dispersion change is the difference between time periods in
 #'   the dispersion of replicates, i.e. the average distance between a replicate
-#'   and its centroid. Since composition change is based on plotted distance
-#'   between centroids, it is context dependent and depends on how many
-#'   centroids are being plotted, thus result of composition change depends on
-#'   how many time periods are being measured.
-#'   
+#'   and its centroid.
+#'
 #' @inheritParams RAC_change
 #' @param df A data frame containing time, species, abundance and replicate
 #'   columns and an optional column of treatment.
@@ -19,7 +16,7 @@
 #'   must be unique within the dataset and cannot be nested within treatments or
 #'   blocks.
 #' @param treatment.var The name of the optional treatment column.
-#' 
+#'
 #' @return The multivariate_change function returns a data frame with the
 #'   following attributes:
 #' \itemize{
@@ -131,7 +128,7 @@ multivariate_change <- function(df,
     output$composition_change[idx] <- NA
     warning('NA(s) produced during centroid change calculation.')
   }
-  
+
 
   output_order <- c(
     time.var, time.var2, treatment.var,
@@ -143,24 +140,20 @@ multivariate_change <- function(df,
 #' @title Using dissimilarity-based measures to calculate differences in
 #'   composition and dispersion between pairs of treatments at a single time
 #'   point
-#'   
+#'
 #' @description Calculates the difference in composition and dispersion between
 #'   treatments based off a Bray-Curtis dissimilarity matrix at a single point
 #'   in time. Composition difference is the pairwise distance between centroids
-#'   of compared treatments and ranges from 0-1, where 0 are identical
-#'   communities, and 1 and completely different communities. Dispersion
-#'   difference is the difference between treatments in the dispersion of
-#'   replicates, i.e. the average distance between a replicate and its centroid.
-#'   Since composition difference is based on plotted distance between
-#'   centroids, it is context dependent and depends on how many centroids are
-#'   being plotted, thus result of composition difference depends on how many
-#'   time periods are being measured.
-#'   
+#'   of compared treatments and ranges from 0-1, where identical communities
+#'   give 0 and completely different communities give 1. Dispersion difference
+#'   is the difference between treatments in the dispersion of replicates, i.e.
+#'   the average distance between a replicate and its centroid.
+#'
 #' @inheritParams RAC_difference
 #' @param df A data frame containing a species, abundance, replicate, and
 #'   treament columns and optional time column.
 #' @param treatment.var The name of the treatment column.
-#' 
+#'
 #' @return The multivariate_difference function returns a data frame with the
 #'   following attributes:
 #' \itemize{
@@ -221,11 +214,11 @@ multivariate_difference <- function(df,
                                     replicate.var,
                                     treatment.var,
                                     reference.treatment = NULL) {
-  
+
   # validate function call and purge extraneous columns
   args <- as.list(match.call()[-1])
   df <- do.call(check_args, args, envir = parent.frame())
-  
+
   # calculate replicate centers and dispersion [by treatment]
   by <- c(time.var)
   centers <- split_apply_combine(df, by, FUN = pca_centers,
@@ -236,7 +229,7 @@ multivariate_difference <- function(df,
   if (to_ordered) {
     class(centers[[treatment.var]]) <- c('ordered', class(centers[[treatment.var]]))
   }
-  
+
   # merge subsets on treatment differences [split by time]
   treatment.var2 <- paste(treatment.var, 2, sep = '')
   split_by <- c(time.var)
@@ -255,14 +248,14 @@ multivariate_difference <- function(df,
       merge(x, y, by = NULL, suffixes = c('', '2'))
     })
   }
-  
+
   # unorder treatment.var if orginally unordered factor
   if (to_ordered) {
     x <- class(output[[treatment.var]])
     class(output[[treatment.var]]) <- x[x != 'ordered']
     class(output[[treatment.var2]]) <- x[x != 'ordered']
   }
-  
+
   # compute treatment.var2 differences from treatment.var
   output$dispersion_diff <- output$dispersion2 - output$dispersion
   output$trt_greater_disp <- output[[treatment.var]]
@@ -286,11 +279,11 @@ multivariate_difference <- function(df,
     output$composition_diff[idx] <- NA
     warning('NA(s) produced during centroid difference calculation.')
   }
-  
+
   output_order <- c(
     time.var, treatment.var, treatment.var2,
     'composition_diff', 'abs_dispersion_diff', 'trt_greater_disp')
-  
+
   return(output[intersect(output_order, names(output))])
 }
 
