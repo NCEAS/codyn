@@ -11,7 +11,7 @@ r-check-stable:
   volumes:
     - .:/src/codyn
   working_dir: /src
-  command: bash /root/rcheck.sh
+  command: bash codyn/docker/rcheck.sh codyn
 r-check-devel:
   container_name: r_check_devel
   dockerfile: docker/Dockerfile-devel
@@ -19,10 +19,4 @@ r-check-devel:
   volumes:
     - .:/src/codyn
   working_dir: /src
-  links:
-    - tex
-  volumes_from:
-    - tex
-  #environment: 
-  #  - PATH: ${PATH}:/usr/local/texlive/2014/bin/x86_64-linux/
-  command: bash /root/rcheck.sh
+  command: bash codyn/docker/rcheck.sh codyn

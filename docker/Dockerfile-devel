@@ -1,13 +1,7 @@
 ## Start with the rstudio daily image, which is built on a daily R build snapshot
-FROM rocker/rstudio-daily:verse
+FROM rocker/verse:devel
 MAINTAINER Matt Jones jones@nceas.ucsb.edu
 
-RUN R --no-save --vanilla -e 'devtools::install_github("gavinsimpson/permute")'
-
-# Add the texlive path from our linked container
-ENV PATH $PATH:/usr/local/texlive/2014/bin/x86_64-linux/
-
-# Copy check script into the container
-COPY docker /root
+RUN apt-get update && apt-get install -y xvfb xauth xfonts-base
 
 CMD pwd
