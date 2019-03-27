@@ -45,7 +45,7 @@ test_that("community_stability loads and returns correct result", {
 
   #test that errors if subplot does not exist
   expect_error(stability_onerep(dat2agg, "subplot"),
-               "df does not have name subplot")
+              rexegp = "df does not have .*name.*subplot")
 
 
   #test the community_stability function
