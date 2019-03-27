@@ -1,6 +1,6 @@
 Package: codyn
 Title: Community Dynamics Metrics
-Version: 2.0.1
+Version: 2.0.2
 Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")),
     person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut")),
     person("Ian T.", "Carroll", email="icarroll@sesync.org", role=c("aut")),
@@ -12,7 +12,7 @@ Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", rol
     person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")),
     person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")),
     person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
-Date: 2019-03-03
+Date: 2019-03-27
 Description: Univariate and multivariate temporal and spatial diversity indices, 
     rank abundance curves, and community stability measures. The functions 
     implement measures that are either explicitly temporal and include the 
