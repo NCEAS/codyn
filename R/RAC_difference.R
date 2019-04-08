@@ -255,9 +255,9 @@ SERSp <- function(df, species.var, abundance.var, abundance.var2) {
 
   #ricness and evenness differences
   s_r1 <- S(df[[abundance.var]])
-  e_r1 <- EQ(as.numeric(df[[abundance.var]]))
+  e_r1 <- Evar(as.numeric(df[[abundance.var]]))
   s_r2 <- S(df[[abundance.var2]])
-  e_r2 <- EQ(as.numeric(df[[abundance.var2]]))
+  e_r2 <- Evar(as.numeric(df[[abundance.var2]]))
 
   sdiff <- (s_r2-s_r1)/nrow(df)
   ediff <- e_r2-e_r1
