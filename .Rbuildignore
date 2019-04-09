@@ -7,3 +7,4 @@ cran-comments.md
 Dockerfile
 docker-compose.yml
 docker
+^CRAN-RELEASE$
