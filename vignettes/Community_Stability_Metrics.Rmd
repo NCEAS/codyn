@@ -42,7 +42,7 @@ kable(head(knz_001d))
 
 
 ## Community stability
-The `community_stability` function aggregates species abundances within replicate and time period, and uses these values to calculate community stability as the temporal mean divided by the temporal standard deviation [@tilman1999]. It includes an optional argument to calculate community stabilty across multiple replicates, which returns a data frame with the name of the replicate column and the stability value.
+The `community_stability` function aggregates species abundances within replicate and time period, and uses these values to calculate community stability as the temporal mean divided by the temporal standard deviation [@tilman1999]. It includes an optional argument to calculate community stability across multiple replicates, which returns a data frame with the name of the replicate column and the stability value.
 ```{r results='asis'}
 KNZ_stability <- community_stability(knz_001d, 
                                    time.var = "year", 
@@ -122,7 +122,7 @@ kable(KNZ_A1_variance_ratio)
 
 - `cyclic_shift`  returns an S3 object of test statistics from a user-specified function when applied to a null community generated via a cyclic shift permutation. It requires a dataframe with a `species.var`, `time.var` and `abundance.var` column, and optional `replicate.var` column. The user-specified function should operate on a community matrix (e.g., `cov`).
 
-The length of the "out" param in the object is the number of null iterations as specified by `bootnumber`). If multiple replicates are specified, null values are averaged among replicates for each  interation, but a different cyclic shift permutation is applied to each replicate within an interation. 
+The length of the "out" param in the object is the number of null iterations as specified by `bootnumber`). If multiple replicates are specified, null values are averaged among replicates for each iteration, but a different cyclic shift permutation is applied to each replicate within an iteration. 
 
 - `confint` returns the confidence intervals from the S3 object produced by `cyclic_shift`.
 
@@ -171,7 +171,7 @@ $$ Synchrony = (1/N){{\sum_{i}Corr(x_i, \sum_{i\neq{j}}{x_j})}}$$
 This measure of synchrony is standardized from -1 (perfect asynchrony) to 1 (perfect synchrony) and is centered at 0 when species fluctuate independently. A virtue of this metric is it not sensitive to richness and has the potential for null-model significance testing. It may under-perform on short time series because it is based on correlation, and care should be taken when applying it to communities that contain very stable species (i.e., whose abundances do not change throughout the time series). 
 
 
-In `codyn`, this metric is calculated with the `Gross` option in the `synchrony` function and can be easily calculated for multpile replicates in a dataset. If a species does not vary over the course of the time series `synchrony` will issue a warning and will remove that species from the calculation.
+In `codyn`, this metric is calculated with the `Gross` option in the `synchrony` function and can be easily calculated for multiple replicates in a dataset. If a species does not vary over the course of the time series `synchrony` will issue a warning and will remove that species from the calculation.
 ```{r results='asis'}
 KNZ_synchrony_Gross <- synchrony(df = knz_001d, 
                            time.var = "year", 

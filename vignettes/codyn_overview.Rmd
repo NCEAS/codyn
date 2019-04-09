@@ -16,7 +16,7 @@ vignette: >
 As long-term datasets increase in scope and length, new analytical tools are being developed to capture patterns of species interactions over time. The package `codyn` includes recently developed metrics of ecological community dynamics. Functions in `codyn` implement metrics that are explicitly temporal, and include the option to calculate them over multiple replicates. Functions fall into two categories: temporal diversity indices and community stability metrics. 
 
 ##Temporal Diversity Indices
-Many traditional measure of community structure represent a ‘snapshot in time’ whereas ecological communities are dynamic and many are experiencing directional change with time. The diversity indices in `codyn` are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. They include:
+Many traditional measure of community structure represent a 'snapshot in time' whereas ecological communities are dynamic and many are experiencing directional change with time. The diversity indices in `codyn` are temporal analogs to traditional diversity indices such as richness and rank-abundance curves. They include:
 
 - `turnover` calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
 

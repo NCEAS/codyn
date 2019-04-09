@@ -151,7 +151,7 @@ multivariate_change <- function(df,
 #'
 #' @inheritParams RAC_difference
 #' @param df A data frame containing a species, abundance, replicate, and
-#'   treament columns and optional time column.
+#'   treatment columns and optional time column.
 #' @param treatment.var The name of the treatment column.
 #'
 #' @return The multivariate_difference function returns a data frame with the

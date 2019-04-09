@@ -11,7 +11,7 @@ multivariate_difference(df, time.var = NULL, species.var, abundance.var,
 }
 \arguments{
 \item{df}{A data frame containing a species, abundance, replicate, and
-treament columns and optional time column.}
+treatment columns and optional time column.}
 
 \item{time.var}{The name of the optional time column.}
 

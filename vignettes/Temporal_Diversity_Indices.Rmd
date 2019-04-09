@@ -17,7 +17,7 @@ vignette: >
 ## Overview
 Many measures of community structure, such as diversity indices and rank-abundance curves, represent "snapshots in time" - which do not capture the temporal dynamics of ecological systems. For example, species richness (i.e., the number of species present) is a common metric to characterize ecological communities. However, species richness may be a poor indicator of community change if there is turnover in the identity but not the number of species present over time [@Collins2008; @cleland2013]. Similarly, species rank abundances can reorder through time, even when the pool of species present remains relatively stable. Within-year rank abundance curves fail to capture this dynamic, and other tools are needed to quantify within-community reordering without masking informative temporal shifts in internal dynamics [@Collins2008]. `codyn` includes three functions to characterize temporal shifts in species identity and rank abundances over time:
 
-- `turnover` calculates total turnover as well as the proportion of species that either appear or disappear between timepoints.
+- `turnover` calculates total turnover as well as the proportion of species that either appear or disappear between time points.
 
 - `rank_shift` quantifies relative changes in species rank abundances by taking the sum difference of species ranks in consecutive time points. 
 This metric goes hand-in-hand with "rank clocks," a useful visualization tool of shifts in species ranks. 
@@ -49,7 +49,7 @@ Species turnover represents a temporal analog to species richness. It is describ
 ### Total turnover
 The function `turnover` calculates three metrics of species turnover: total turnover, appearances, and disappearances.
 
-The default metric `total` refers to total turnover, which calculates the proportion of species that differ between timepoints as:
+The default metric `total` refers to total turnover, which calculates the proportion of species that differ between time points as:
 
 $$ Total\; turnover = \frac{Species\; gained\; +\; Species\; lost}{Total\; species\; observed\; in\; both\; timepoints} $$
 
@@ -78,9 +78,9 @@ KNZ_turnover_agg <- turnover(df = collins08,
 
 ### Appearances and disappearances
 
-Total turnover incorporates both species appearances and disappearances, but sometimes it is useful to parse their relative contribution. For example, a timepoint in which many species appear may reflect a different ecological story than a timepoint in which many species drop from the system, but the total turnover in both scenarios may be similar. 
+Total turnover incorporates both species appearances and disappearances, but sometimes it is useful to parse their relative contribution. For example, a time point in which many species appear may reflect a different ecological story than a time point in which many species drop from the system, but the total turnover in both scenarios may be similar. 
 
-Specifying `metric="appearance"` will return the proportion of species that appeared relative to the total number of species observed in both timepoints. As before, spatial replicates can be specified with the `replicate` argument; setting `replicate.var=NA` will calculate across the full dataset.
+Specifying `metric="appearance"` will return the proportion of species that appeared relative to the total number of species observed in both time points. As before, spatial replicates can be specified with the `replicate` argument; setting `replicate.var=NA` will calculate across the full dataset.
 ```{r results='asis'}
 KNZ_appearance <- turnover(df = collins08, 
                         time.var = "year",
@@ -91,7 +91,7 @@ KNZ_appearance <- turnover(df = collins08,
 ```
 
 
-Similarly, specifying `metric="disappearance"` will return the proportion of species that disappeared relative to the total number of species observed in both timepoints. 
+Similarly, specifying `metric="disappearance"` will return the proportion of species that disappeared relative to the total number of species observed in both time points. 
 ```{r results='asis'}
 KNZ_disappearance <- turnover(df = collins08,
                         time.var = "year",
@@ -180,7 +180,7 @@ ggplot(aggdat, aes(year, abundance, color = species)) +
 
 ### Mean rank shifts
 
-The `rank_shift` function describes relative changes in species rank abundances, which indicate the degree of species reording between two time points. This metric is calculated as:
+The `rank_shift` function describes relative changes in species rank abundances, which indicate the degree of species reordering between two time points. This metric is calculated as:
 
 $$ MRS = {\sum_{i=1}^{N} (|R_i,t+1 - R_i,t|})/N $$
 
