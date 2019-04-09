@@ -3,6 +3,7 @@ Version 2.0.2
 
 BUG FIXES
 
+* use codyn::Evar rather than codyn::EQ in RAC_difference
 * fixes for breaking change in testthat (PR #111)
 
 Version 2.0.1
