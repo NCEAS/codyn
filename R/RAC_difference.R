@@ -262,15 +262,22 @@ SERSp <- function(df, species.var, abundance.var, abundance.var2) {
   sdiff <- (s_r2-s_r1)/nrow(df)
   ediff <- e_r2-e_r1
 
-  #Jaccard Index or Number of species not shared
-  spdiff <- df[df[[abundance.var]] == 0|df[[abundance.var2]] == 0,]
-  spdiffc <- nrow(spdiff)/nrow(df)
+  #Species diff beta -2 based on Carvalho et a. 2010 
+  a_shared <- df[df[[abundance.var]] != 0&df[[abundance.var2]] != 0,]
+  b_only <- df[df[[abundance.var]] != 0&df[[abundance.var2]] == 0,]
+  c_only <- df[df[[abundance.var]] == 0&df[[abundance.var2]] != 0,]
+  
+  a<-as.numeric(nrow(a_shared))
+  b<-as.numeric(nrow(b_only))
+  c<-as.numeric(nrow(c_only))
+  
+  spdiff<-2*(min(b,c)/(a+b+c))
 
   #Mean Rank Difference
   rank_diff <- mean(abs(df[['rank']]-df[['rank2']])) / nrow(df)
 
   measures <- data.frame(richness_diff = sdiff, evenness_diff = ediff,
-                        rank_diff = rank_diff, species_diff = spdiffc)
+                        rank_diff = rank_diff, species_diff = spdiff)
 
   return(cbind(out, measures))
 }
