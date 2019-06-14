@@ -266,7 +266,7 @@ multivariate_difference <- function(df,
     output$trt_greater_disp[idx] <- NA
     warning('NA(s) produced during dispersion difference calculation.')
   }
-  idx <- !is.na(output$dispersion_diff) & output$dispersion_diff < 0
+  idx <- !is.na(output$dispersion_diff) & output$dispersion_diff > 0
   output$trt_greater_disp[idx] <- output[[treatment.var2]][idx]
   output$abs_dispersion_diff <- abs(output$dispersion_diff)
   output$composition_diff <- mapply(
