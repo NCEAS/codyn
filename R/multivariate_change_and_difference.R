@@ -225,7 +225,9 @@ multivariate_difference <- function(df,
                                  treatment.var, species.var, time.var, replicate.var)
 
   # order treatment.var if unordered factor
-  to_ordered = is.factor(centers[[treatment.var]]) & !is.ordered(centers[[treatment.var]])
+  to_ordered <- is.factor(centers[[treatment.var]]) &
+    !is.ordered(centers[[treatment.var]]) &
+    is.null(reference.treatment)
   if (to_ordered) {
     class(centers[[treatment.var]]) <- c('ordered', class(centers[[treatment.var]]))
   }

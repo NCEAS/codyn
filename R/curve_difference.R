@@ -132,7 +132,9 @@ curve_difference <- function(df,
   }
 
   # order cross.var if unordered factor
-  to_ordered = is.factor(rankabunddf[[cross.var]]) & !is.ordered(rankabunddf[[cross.var]])
+  to_ordered = is.factor(rankabunddf[[cross.var]]) &
+    !is.ordered(rankabunddf[[cross.var]]) &
+    is.null(reference.treatment)
   if (to_ordered) {
     class(rankabunddf[[cross.var]]) <- c('ordered', class(rankabunddf[[cross.var]]))
   }

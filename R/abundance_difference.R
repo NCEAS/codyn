@@ -141,7 +141,9 @@ abundance_difference <- function(df,
   }
 
   # order cross.var if unordered factor
-  to_ordered = is.factor(allsp[[cross.var]]) & !is.ordered(allsp[[cross.var]])
+  to_ordered = is.factor(allsp[[cross.var]]) &
+    !is.ordered(allsp[[cross.var]]) &
+    is.null(reference.treatment)
   if (to_ordered) {
     class(allsp[[cross.var]]) <- c('ordered', class(allsp[[cross.var]]))
   }

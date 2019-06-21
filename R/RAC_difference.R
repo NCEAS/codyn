@@ -171,7 +171,9 @@ RAC_difference <- function(df,
   }
 
   # order cross.var if unordered factor
-  to_ordered = is.factor(rankdf[[cross.var]]) & !is.ordered(rankdf[[cross.var]])
+  to_ordered = is.factor(rankdf[[cross.var]]) &
+    !is.ordered(rankdf[[cross.var]]) &
+    is.null(reference.treatment)
   if (to_ordered) {
     class(rankdf[[cross.var]]) <- c('ordered', class(rankdf[[cross.var]]))
   }
