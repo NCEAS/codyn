@@ -326,10 +326,10 @@ pca_centers <- function(df, cluster.var, species.var, split.var, replicate.var) 
     d <- as.matrix(vegdist(a, 'bray'))
 
     # perform PCoA aka Torgerson-Gower Scaling, while
-    # violtating the assumption that d results from a metric
+    # violating the assumption that d results from a metric
     b <- -1/2 * dblctr(d^2)
     eig <- eigen(b, symmetric = TRUE)
-    prc <- eig$vectors %*% diag(sqrt(as.complex(eig$values)))
+    prc <- eig$vectors %*% diag(sqrt(as.complex(eig$values)), nrow=nrow(b))
 
     # centroids and dispersion (Marti Anderson, doi:10.1111/j.1541-0420.2005.00440.x)
     by <- c(split.var, cluster.var)
