@@ -127,7 +127,7 @@ RAC_change <- function(df,
   ranktog <- ranktog[idx, ]
   
   # apply turnover calculation to all replicates for each time point
-  by <- c(replicate.var, time.var)
+  by <- c(replicate.var, cross.var, cross.var2)
   output <- split_apply_combine(ranktog, by, FUN = SERGL,
     species.var, abundance.var, abundance.var2)
   

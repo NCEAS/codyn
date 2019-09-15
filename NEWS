@@ -1,3 +1,12 @@
+Version 2.0.3
+-------------
+
+BUG FIXES
+
+* Allow multivariate_ and abundance_difference to use `reference.treatment` with pooling.
+* Eliminate superfluous treatment.var argument.
+* Return NA for inconclusive multivariate_change and _difference results (see also vegandevs/vegan#306).
+
 Version 2.0.2
 -------------
 

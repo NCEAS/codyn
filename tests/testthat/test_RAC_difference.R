@@ -46,7 +46,7 @@ test_that("RAC_difference function returns correct result", {
   expect_equal(myresults1$richness_diff, -0.1923077, tolerance = 0.00001)
   expect_equal(myresults1$evenness_diff, -0.02459961, tolerance = 0.000000001)
   expect_equal(myresults1$rank_diff, 0.1449704, tolerance = 0.00001)
-  expect_equal(myresults1$species_diff, 0.4230769, tolerance = 0.00001)
+  expect_equal(myresults1$species_diff, 0.2307692, tolerance = 0.00001)
 
   #test that it works with time
   myresults2 <- RAC_difference(pplots, abundance.var = "relative_cover",
@@ -130,7 +130,7 @@ test_that("RAC_difference function returns correct result", {
   expect_equal(myresults4$richness_diff, 0.02439024, tolerance = 0.00001)
   expect_equal(myresults4$evenness_diff, -0.03104394, tolerance = 0.000001)
   expect_equal(myresults4$rank_diff, 0.1171921, tolerance = 0.00001)
-  expect_equal(myresults4$species_diff, 0.3658537, tolerance = 0.00001)
+  expect_equal(myresults4$species_diff, 0.3414634, tolerance = 0.00001)
   
   #test the returned result with pooling and time and reference treatment
   myresults4.2 <- RAC_difference(pplots, replicate.var = "plot",

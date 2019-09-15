@@ -1,9 +1,9 @@
 # docker run --rm -v $(pwd):/src/dev/codyn --name=codyn -it metamattj/codyn-check'
-tex:
-  container_name: texlive
-  dockerfile: docker/Dockerfile-texlive
-  build: .
-  command: sh
+#tex:
+#  container_name: texlive
+#  dockerfile: docker/Dockerfile-texlive
+#  build: .
+#  command: sh
 r-check-stable:
   container_name: r_check_stable
   dockerfile: docker/Dockerfile-stable

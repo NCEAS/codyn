@@ -171,7 +171,9 @@ RAC_difference <- function(df,
   }
 
   # order cross.var if unordered factor
-  to_ordered = is.factor(rankdf[[cross.var]]) & !is.ordered(rankdf[[cross.var]])
+  to_ordered = is.factor(rankdf[[cross.var]]) &
+    !is.ordered(rankdf[[cross.var]]) &
+    is.null(reference.treatment)
   if (to_ordered) {
     class(rankdf[[cross.var]]) <- c('ordered', class(rankdf[[cross.var]]))
   }
@@ -262,15 +264,19 @@ SERSp <- function(df, species.var, abundance.var, abundance.var2) {
   sdiff <- (s_r2-s_r1)/nrow(df)
   ediff <- e_r2-e_r1
 
-  #Jaccard Index or Number of species not shared
-  spdiff <- df[df[[abundance.var]] == 0|df[[abundance.var2]] == 0,]
-  spdiffc <- nrow(spdiff)/nrow(df)
+  #Species diff beta -2 based on Carvalho (2012; 10.1111/j.1466-8238.2011.00694.x)
+  idx <- df[[abundance.var]] != 0
+  idx2 <- df[[abundance.var2]] != 0
+  a <- sum(idx & idx2)
+  b <- sum(idx & !idx2)
+  c <- sum(!idx & idx2)
+  spdiff <- 2*(min(b, c) / (a+b+c))
 
   #Mean Rank Difference
   rank_diff <- mean(abs(df[['rank']]-df[['rank2']])) / nrow(df)
 
   measures <- data.frame(richness_diff = sdiff, evenness_diff = ediff,
-                        rank_diff = rank_diff, species_diff = spdiffc)
+                         rank_diff = rank_diff, species_diff = spdiff)
 
   return(cbind(out, measures))
 }
