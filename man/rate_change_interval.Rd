@@ -4,8 +4,13 @@
 \alias{rate_change_interval}
 \title{Differences in community composition over successive time lag intervals}
 \usage{
-rate_change_interval(df, time.var, species.var, abundance.var,
-  replicate.var = NA)
+rate_change_interval(
+  df,
+  time.var,
+  species.var,
+  abundance.var,
+  replicate.var = NA
+)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}

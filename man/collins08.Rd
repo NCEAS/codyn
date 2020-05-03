@@ -4,7 +4,9 @@
 \name{collins08}
 \alias{collins08}
 \title{Konza data from Collins et al. 2008}
-\format{A data frame with 2058 rows and 4 variables}
+\format{
+A data frame with 2058 rows and 4 variables
+}
 \source{
 Collins, Scott L., Katharine N. Suding, Elsa E. Cleland, Michael Batty, Steven C. Pennings, Katherine L. Gross, James B. Grace, Laura Gough, Joe E. Fargione, and Christopher M. Clark. (2008) "Rank clocks and plant community dynamics." Ecology 89, no. 12: 3534-41.
 }

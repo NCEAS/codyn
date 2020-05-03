@@ -4,8 +4,13 @@
 \alias{rank_shift}
 \title{Mean Rank Shifts}
 \usage{
-rank_shift(df, time.var, species.var, abundance.var,
-  replicate.var = as.character(NA))
+rank_shift(
+  df,
+  time.var,
+  species.var,
+  abundance.var,
+  replicate.var = as.character(NA)
+)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}

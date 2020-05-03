@@ -4,8 +4,14 @@
 \alias{turnover}
 \title{Species Turnover}
 \usage{
-turnover(df, time.var, species.var, abundance.var, replicate.var = NA,
-  metric = "total")
+turnover(
+  df,
+  time.var,
+  species.var,
+  abundance.var,
+  replicate.var = NA,
+  metric = "total"
+)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}

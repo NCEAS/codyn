@@ -4,8 +4,14 @@
 \alias{curve_change}
 \title{Curve Change}
 \usage{
-curve_change(df, time.var, species.var, abundance.var,
-  replicate.var = NULL, reference.time = NULL)
+curve_change(
+  df,
+  time.var,
+  species.var,
+  abundance.var,
+  replicate.var = NULL,
+  reference.time = NULL
+)
 }
 \arguments{
 \item{df}{A data frame containing time, species, and abundance columns and an

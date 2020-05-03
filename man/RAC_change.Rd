@@ -4,8 +4,14 @@
 \alias{RAC_change}
 \title{Rank Abundance Curve Changes}
 \usage{
-RAC_change(df, time.var, species.var, abundance.var,
-  replicate.var = NULL, reference.time = NULL)
+RAC_change(
+  df,
+  time.var,
+  species.var,
+  abundance.var,
+  replicate.var = NULL,
+  reference.time = NULL
+)
 }
 \arguments{
 \item{df}{A data frame containing time, species, and abundance columns and an

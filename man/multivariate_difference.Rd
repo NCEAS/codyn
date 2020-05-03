@@ -6,8 +6,15 @@
   composition and dispersion between pairs of treatments at a single time
   point}
 \usage{
-multivariate_difference(df, time.var = NULL, species.var, abundance.var,
-  replicate.var, treatment.var, reference.treatment = NULL)
+multivariate_difference(
+  df,
+  time.var = NULL,
+  species.var,
+  abundance.var,
+  replicate.var,
+  treatment.var,
+  reference.treatment = NULL
+)
 }
 \arguments{
 \item{df}{A data frame containing a species, abundance, replicate, and

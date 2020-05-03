@@ -4,8 +4,14 @@
 \alias{synchrony}
 \title{Species synchrony}
 \usage{
-synchrony(df, time.var, species.var, abundance.var, metric = "Loreau",
-  replicate.var = NA)
+synchrony(
+  df,
+  time.var,
+  species.var,
+  abundance.var,
+  metric = "Loreau",
+  replicate.var = NA
+)
 }
 \arguments{
 \item{df}{A data frame containing time, species and abundance columns and an optional column of replicates}
