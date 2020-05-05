@@ -157,7 +157,7 @@ rank_onerep <- function(df, time.var,
 
   MRS <- sapply(rankdiff, function(x) mean(x$abs_ch_rank))
 
-  data.frame(year_pair = names(MRS), MRS, row.names = NULL)
+  data.frame(year_pair = as.factor(names(MRS)), MRS, row.names = NULL)
 }
 
 

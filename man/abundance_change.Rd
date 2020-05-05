@@ -4,8 +4,14 @@
 \alias{abundance_change}
 \title{Species Abundance Changes}
 \usage{
-abundance_change(df, time.var, species.var, abundance.var,
-  replicate.var = NULL, reference.time = NULL)
+abundance_change(
+  df,
+  time.var,
+  species.var,
+  abundance.var,
+  replicate.var = NULL,
+  reference.time = NULL
+)
 }
 \arguments{
 \item{df}{A data frame containing time, species, and abundance columns and an

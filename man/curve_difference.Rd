@@ -4,9 +4,17 @@
 \alias{curve_difference}
 \title{Curve Difference}
 \usage{
-curve_difference(df, time.var = NULL, species.var, abundance.var,
-  replicate.var, treatment.var = NULL, pool = FALSE,
-  block.var = NULL, reference.treatment = NULL)
+curve_difference(
+  df,
+  time.var = NULL,
+  species.var,
+  abundance.var,
+  replicate.var,
+  treatment.var = NULL,
+  pool = FALSE,
+  block.var = NULL,
+  reference.treatment = NULL
+)
 }
 \arguments{
 \item{df}{A data frame containing a species, abundance, and replicate columns

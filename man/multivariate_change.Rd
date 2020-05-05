@@ -5,8 +5,15 @@
 \title{Using dissimilarity-based measures to calculate changes in composition
   and dispersion}
 \usage{
-multivariate_change(df, time.var, species.var, abundance.var,
-  replicate.var, treatment.var = NULL, reference.time = NULL)
+multivariate_change(
+  df,
+  time.var,
+  species.var,
+  abundance.var,
+  replicate.var,
+  treatment.var = NULL,
+  reference.time = NULL
+)
 }
 \arguments{
 \item{df}{A data frame containing time, species, abundance and replicate

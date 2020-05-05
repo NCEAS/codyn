@@ -4,7 +4,9 @@
 \name{knz_001d}
 \alias{knz_001d}
 \title{Data from Konza Prairie, watershed 001d}
-\format{A data frame with 8768 rows and 4 variables}
+\format{
+A data frame with 8768 rows and 4 variables
+}
 \source{
 Konza Prairie LTER Dataset ID: PVC02, watershed 1D
 

@@ -4,8 +4,13 @@
 \alias{community_diversity}
 \title{Community Diversity}
 \usage{
-community_diversity(df, time.var = NULL, abundance.var,
-  replicate.var = NULL, metric = c("Shannon", "InverseSimpson"))
+community_diversity(
+  df,
+  time.var = NULL,
+  abundance.var,
+  replicate.var = NULL,
+  metric = c("Shannon", "InverseSimpson")
+)
 }
 \arguments{
 \item{df}{A data frame containing species and abundance columns and optional

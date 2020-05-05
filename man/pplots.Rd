@@ -4,7 +4,9 @@
 \name{pplots}
 \alias{pplots}
 \title{Phosphorus plots data from Avolio et al. 2014}
-\format{A data frame with 1232 rows and 6 variables}
+\format{
+A data frame with 1232 rows and 6 variables
+}
 \source{
 Avolio, ML, Koerner, S, La Pierre, K, Wilcox, K, Wilson, GTW, Smith, MD, Collins, S. 2014. Changes in plant community composition, not diversity, to a decade of nitrogen and phosphorus additions drive changes in aboveground productivity in a tallgrass prairie. Journal of Ecology. 102: 1649-1660.
 }

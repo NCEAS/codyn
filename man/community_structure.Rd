@@ -4,8 +4,13 @@
 \alias{community_structure}
 \title{Community Structure}
 \usage{
-community_structure(df, time.var = NULL, abundance.var,
-  replicate.var = NULL, metric = c("Evar", "SimpsonEvenness", "EQ"))
+community_structure(
+  df,
+  time.var = NULL,
+  abundance.var,
+  replicate.var = NULL,
+  metric = c("Evar", "SimpsonEvenness", "EQ")
+)
 }
 \arguments{
 \item{df}{A data frame containing species and abundance columns and optional
