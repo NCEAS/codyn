@@ -3,8 +3,7 @@
 R CMD check and all tests passed on Linux, MacOS, and Windows, using the following environments:
 
 * Mac OS X 10.14.6
-  * R 3.6.1 (x86_64-apple-darwin15.6.0 (64-bit))
-  * R 3.5.3 (x86_64-apple-darwin15.6.0 (64-bit))
+  * R 3.6.2 (x86_64-apple-darwin15.6.0 (64-bit))
 * Via R-hub
   * Ubuntu Linux 16.04 LTS, R-release, GCC
   * Windows Server 2008 R2 SP1, R-release, 32/64 bit
