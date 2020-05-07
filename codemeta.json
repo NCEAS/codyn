@@ -9,7 +9,7 @@
   "codeRepository": "https://github.com/NCEAS/codyn/",
   "issueTracker": "https://github.com/NCEAS/codyn/issues",
   "license": "https://spdx.org/licenses/Apache-2.0",
-  "version": "2.0.4",
+  "version": "2.0.4.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
