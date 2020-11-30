@@ -1,6 +1,6 @@
 Package: codyn
 Title: Community Dynamics Metrics
-Version: 2.0.4.9000
+Version: 2.0.4.9001
 Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")),
     person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut")),
     person("Ian T.", "Carroll", email="carroll.ian@gmail.com", role=c("aut")),
@@ -26,7 +26,8 @@ Description: Univariate and multivariate temporal and spatial diversity indices,
     space and time. In addition, it contains functions to calculate species 
     turnover, mean rank shifts, and lags in community similarity between two 
     time points. Details of the methods are available in
-    Hallett et al. (2016) https://doi.org/10.1111/2041-210X.12569.
+    Hallett et al. (2016) https://doi.org/10.1111/2041-210X.12569 and Avolio 
+    et al. (2019) https://doi.org/10.1002/ecs2.2881.
 Depends:
     R (>= 3.2.0)
 Imports:

@@ -1,6 +1,10 @@
 Version 2.0.5
 -------------
 
+DOCUMENTATION
+
+* Added references to Hallett et al. (2016) and Avolio et al. (2019) to DESCRIPTION and README
+
 BUG FIXES
 
 * Resolved silent error (no longer silent in R 4.1) from failure to use output

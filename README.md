@@ -31,6 +31,12 @@ time points.
 For an overview of __codyn__, see:
     
 - Hallett et al. (2016) *codyn: An R package of community dynamics metrics*. Methods in Ecology and Evolution. http://doi.org/10.1111/2041-210X.12569
+- Hallett LM, Jones SK, MacDonald AAA, Jones MB, Flynn DFB, Ripplinger J, Slaughter P, Gries C, Collins SL (2016) *codyn: An R package of community dynamics metrics.* Methods in Ecology and Evolution, 7(10):1146–1151. https://doi.org/10.1111/2041-210X.12569
+
+For a description of the newer spatial methods in __codyn__:
+
+- Avolio ML, Carroll IT, Collins SL, Houseman GR, Hallett LM, Isbell F, Koerner SE, Komatsu KJ, Smith MD, Wilcox KR (2019) *A comprehensive approach to analyzing community dynamics using rank abundance curves.* Ecosphere, 10(10):e02881. https://doi.org/10.1002/ecs2.2881
+
 
 ## Installation
 From CRAN, the package can be installed using standard tools:
