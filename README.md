@@ -44,22 +44,21 @@ From CRAN, the package can be installed using standard tools:
 install.packages("codyn")
 ```
 
-## Automated R CMD check with Docker
+## Automated R CMD check with Docker via rhub
 
-To simplify the process of running `R CMD check` on the package, the source distribution on GitHub includes configuration
-files to use [Docker](https://www.docker.com/) to download and build standard Debian-based images for the current release of 
-R and the current development branch of R. Assuming you already have docker and docker-compose installed, these Docker 
-configuration files allow a clean environment to be built and tested with a single command.  Checks can be run against the 
-current stable release of R using:
+To simplify the process of running `R CMD check` on the package, one can easily run the build and tests using
+the [`rhub`](https://github.com/r-hub/rhub) package. Use `rhub::platforms()` to get a list of platforms that can be used to build and test.
 
-```bash
-$ docker-compose run --rm r-check-stable
+```r
+library(rhub)
+chks <- check(platform = c("debian-gcc-devel", "fedora-gcc-devel"), show_status = FALSE)
 ```
 
-and the checks can be run against the current unstable development version of R using:
+and the checks can be run locally using rhub as well using a docker container:
 
-```bash
-$ docker-compose run --rm r-check-devel
+```r
+library(rhub)
+local_check_linux(image="rhub/fedora-gcc-devel")
 ```
 
 ## Acknowledgements
