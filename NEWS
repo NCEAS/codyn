@@ -1,3 +1,11 @@
+Version 2.0.5
+-------------
+
+BUG FIXES
+
+* Resolved silent error (no longer silent in R 4.1) from failure to use output
+  of `match.arg` (#122).
+
 Version 2.0.4
 -------------
 

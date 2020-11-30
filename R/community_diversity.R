@@ -66,7 +66,7 @@ community_diversity <- function(df,
                                 metric = c("Shannon", "InverseSimpson")) {
   
   # verify measure choice
-  measure <- match.arg(metric)
+  metric <- match.arg(metric)
   
   # check no NAs in abundance column
   if (any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
@@ -81,9 +81,9 @@ community_diversity <- function(df,
   }
 
   # get function for chosen measure, and calculate output
-  diversity <- get(measure)
+  diversity <- get(metric)
   comdiv <- aggregate.data.frame(df[abundance.var], df[by], FUN = diversity)
-  names(comdiv) <- c(by, measure)
+  names(comdiv) <- c(by, metric)
   
   return(comdiv)
 }
