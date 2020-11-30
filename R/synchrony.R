@@ -106,8 +106,8 @@ synchrony <- function(df, time.var,
 # @return output The degree of species synchrony. If "Loreau", 1 is perfect synchrony and 0 is perfect asynchrony.
 #        If "Gross", 1 is perfect synchrony and -1 is perfect asynchrony.
 synch_onerep <- function(df, time.var, species.var, abundance.var,
-                         metric = "Loreau") {
-    metric = match.arg(metric, choices = c("Loreau", "Gross")) # for partial argument matching
+                         metric = c("Loreau", "Gross")) {
+    metric = match.arg(metric) # for partial argument matching
 
     #remove any species that were never present.
     df <- subset(df, abundance.var > 0)

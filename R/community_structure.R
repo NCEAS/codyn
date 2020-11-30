@@ -71,7 +71,7 @@ community_structure <- function(df,
                                 metric = c("Evar", "SimpsonEvenness", "EQ")) {
 
   # verify measure choice
-  measure <- match.arg(metric)
+  metric <- match.arg(metric)
   
   # check no NAs in abundance column
   if(any(is.na(df[[abundance.var]]))) stop("Abundance column contains missing values")
@@ -95,7 +95,7 @@ community_structure <- function(df,
     warning("Evenness values contain NAs because there are plots with only one species")
   }
   
-  names(comstruct) <- c(by, 'richness', measure)
+  names(comstruct) <- c(by, 'richness', metric)
 
   return(comstruct)
 }
