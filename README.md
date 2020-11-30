@@ -30,7 +30,6 @@ time points.
 
 For an overview of __codyn__, see:
     
-- Hallett et al. (2016) *codyn: An R package of community dynamics metrics*. Methods in Ecology and Evolution. http://doi.org/10.1111/2041-210X.12569
 - Hallett LM, Jones SK, MacDonald AAA, Jones MB, Flynn DFB, Ripplinger J, Slaughter P, Gries C, Collins SL (2016) *codyn: An R package of community dynamics metrics.* Methods in Ecology and Evolution, 7(10):1146–1151. https://doi.org/10.1111/2041-210X.12569
 
 For a description of the newer spatial methods in __codyn__:
