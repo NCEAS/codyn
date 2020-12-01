@@ -3,7 +3,7 @@ Title: Community Dynamics Metrics
 Version: 2.0.5
 Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut"), comment=c(ORCID = "0000-0002-0718-0257")),
     person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut"), comment=c(ORCID = "0000-0002-2649-9159")),
-    person("Ian T.", "Carroll", email="carroll.ian@gmail.com", role=c("aut")),
+    person("Ian T.", "Carroll", email="carroll.ian@gmail.com", role=c("aut"), comment=c(ORCID = "0000-0002-3616-810X")),
     person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")),
     person("A. Andrew M.", "MacDonald", email="a.a.m.macdonald@gmail.com", role=c("aut"), comment=c(ORCID = "0000-0003-1162-169X")),
     person("Dan F. B.", "Flynn", email="flynn@fas.harvard.edu", role=c("aut"), comment=c(ORCID = "0000-0002-2978-5257")),

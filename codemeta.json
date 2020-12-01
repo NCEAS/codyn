@@ -35,7 +35,8 @@
       "@type": "Person",
       "givenName": "Ian T.",
       "familyName": "Carroll",
-      "email": "carroll.ian@gmail.com"
+      "email": "carroll.ian@gmail.com",
+      "@id": "https://orcid.org/0000-0002-3616-810X"
     },
     {
       "@type": "Person",
