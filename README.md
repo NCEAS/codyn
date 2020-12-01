@@ -60,6 +60,6 @@ library(rhub)
 local_check_linux(image="rhub/fedora-gcc-devel")
 ```
 
-## Acknowledgements
+## Acknowledgments
 Work on this package was supported by NSF-ABI grant #1262458 to C. Gries, M. Jones, and S. Collins. Additional support was provided for working group collaboration by the National Center for Ecological Analysis and Synthesis, a Center funded by the University of California, Santa Barbara, and the State of California, and a SESYNC Synthesis Postdoctoral Fellowship to MLA.
 
