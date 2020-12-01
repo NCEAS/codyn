@@ -4,31 +4,32 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "codyn",
-  "description": "Univariate and multivariate temporal and spatial diversity indices, \n    rank abundance curves, and community stability measures. The functions \n    implement measures that are either explicitly temporal and include the \n    option to calculate them over multiple replicates, or spatial and include \n    the option to calculate them over multiple time points. Functions fall into \n    five categories: static diversity indices, temporal diversity indices, \n    spatial diversity indices, rank abundance curves, and community stability \n    measures. The diversity indices are temporal and spatial analogs to \n    traditional diversity indices. Specifically, the package includes functions \n    to calculate community richness, evenness and diversity at a given point in \n    space and time. In addition, it contains functions to calculate species \n    turnover, mean rank shifts, and lags in community similarity between two \n    time points.",
+  "description": "Univariate and multivariate temporal and spatial diversity indices, \n    rank abundance curves, and community stability measures. The functions \n    implement measures that are either explicitly temporal and include the \n    option to calculate them over multiple replicates, or spatial and include \n    the option to calculate them over multiple time points. Functions fall into \n    five categories: static diversity indices, temporal diversity indices, \n    spatial diversity indices, rank abundance curves, and community stability \n    measures. The diversity indices are temporal and spatial analogs to \n    traditional diversity indices. Specifically, the package includes functions \n    to calculate community richness, evenness and diversity at a given point in \n    space and time. In addition, it contains functions to calculate species \n    turnover, mean rank shifts, and lags in community similarity between two \n    time points. Details of the methods are available in\n    Hallett et al. (2016) <doi:10.1111/2041-210X.12569> and Avolio \n    et al. (2019) <doi:10.1002/ecs2.2881>.",
   "name": "codyn: Community Dynamics Metrics",
   "codeRepository": "https://github.com/NCEAS/codyn/",
   "issueTracker": "https://github.com/NCEAS/codyn/issues",
   "license": "https://spdx.org/licenses/Apache-2.0",
-  "version": "2.0.4.9000",
+  "version": "2.0.5",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "4.0.0",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.0 (2020-04-24)",
+  "runtimePlatform": "R version 4.0.3 (2020-10-10)",
   "author": [
     {
       "@type": "Person",
       "givenName": "Lauren",
       "familyName": "Hallett",
-      "email": "lauren.m.hallett@gmail.com"
+      "email": "lauren.m.hallett@gmail.com",
+      "@id": "https://orcid.org/0000-0002-0718-0257"
     },
     {
       "@type": "Person",
       "givenName": "Meghan L.",
       "familyName": "Avolio",
-      "email": "meghan.avolio@jhu.edu"
+      "email": "meghan.avolio@jhu.edu",
+      "@id": "https://orcid.org/0000-0002-2649-9159"
     },
     {
       "@type": "Person",
@@ -46,43 +47,50 @@
       "@type": "Person",
       "givenName": "A. Andrew M.",
       "familyName": "MacDonald",
-      "email": "a.a.m.macdonald@gmail.com"
+      "email": "a.a.m.macdonald@gmail.com",
+      "@id": "https://orcid.org/0000-0003-1162-169X"
     },
     {
       "@type": "Person",
       "givenName": "Dan F. B.",
       "familyName": "Flynn",
-      "email": "flynn@fas.harvard.edu"
+      "email": "flynn@fas.harvard.edu",
+      "@id": "https://orcid.org/0000-0002-2978-5257"
     },
     {
       "@type": "Person",
       "givenName": "Peter",
       "familyName": "Slaughter",
-      "email": "slaughter@nceas.ucsb.edu"
+      "email": "slaughter@nceas.ucsb.edu",
+      "@id": "https://orcid.org/0000-0002-2192-403X"
     },
     {
       "@type": "Person",
       "givenName": "Julie",
       "familyName": "Ripplinger",
-      "email": "julie.ripplinger@asu.edu"
+      "email": "julie.ripplinger@asu.edu",
+      "@id": "https://orcid.org/0000-0002-2771-6637"
     },
     {
       "@type": "Person",
       "givenName": "Scott L.",
       "familyName": "Collins",
-      "email": "scollins@sevilleta.unm.edu"
+      "email": "scollins@sevilleta.unm.edu",
+      "@id": "https://orcid.org/0000-0002-0193-2892"
     },
     {
       "@type": "Person",
       "givenName": "Corinna",
       "familyName": "Gries",
-      "email": "cgries@wisc.edu"
+      "email": "cgries@wisc.edu",
+      "@id": "https://orcid.org/0000-0002-9091-6543"
     },
     {
       "@type": "Person",
       "givenName": "Matthew B.",
       "familyName": "Jones",
-      "email": "jones@nceas.ucsb.edu"
+      "email": "jones@nceas.ucsb.edu",
+      "@id": "https://orcid.org/0000-0003-0077-4738"
     }
   ],
   "maintainer": [
@@ -90,7 +98,8 @@
       "@type": "Person",
       "givenName": "Matthew B.",
       "familyName": "Jones",
-      "email": "jones@nceas.ucsb.edu"
+      "email": "jones@nceas.ucsb.edu",
+      "@id": "https://orcid.org/0000-0003-0077-4738"
     }
   ],
   "softwareSuggestions": [
@@ -242,7 +251,7 @@
   ],
   "releaseNotes": "https://github.com/NCEAS/codyn/blob/master/NEWS",
   "readme": "https://github.com/NCEAS/codyn/blob/master/README.md",
-  "fileSize": "113.242KB",
+  "fileSize": "455.779KB",
   "contIntegration": "https://travis-ci.org/NCEAS/codyn",
   "developmentStatus": "https://www.repostatus.org/#active",
   "citation": [
@@ -317,9 +326,22 @@
         }
       ],
       "name": "{codyn}: ",
-      "identifier": "https://doi.org/10.5063/F1N877Z6",
+      "identifier": "doi:10.5063/F1N877Z6",
       "url": "https://github.com/NCEAS/codyn",
       "@id": "https://doi.org/10.5063/F1N877Z6"
     }
-  ]
+  ],
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
+  "funder": {
+     "@type": "Organization",
+     "name": "National Science Foundation",
+     "identifier": "https://doi.org/10.13039/100000001",
+     "url": "https://nsf.gov/"
+  },
+  "relatedLink": "https://CRAN.R-project.org/package=codyn"
 }
