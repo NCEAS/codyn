@@ -1,7 +1,7 @@
 # codyn - Community Dynamics Metrics
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/codyn)](https://cran.r-project.org/package=codyn)
-[![Build Status](https://travis-ci.org/NCEAS/codyn.png?branch=master)](https://travis-ci.org/NCEAS/codyn)
+[![Build Status](https://travis-ci.com/NCEAS/codyn.png?branch=master)](https://travis-ci.com/NCEAS/codyn)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/codyn)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
