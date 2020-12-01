@@ -6,9 +6,9 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 - **Authors**: Lauren Hallett [lauren.m.hallett@gmail.com], Meghan Avolio [meghan.avolio@jhu.edu], Ian T. Carroll [carroll.ian@gmail.com], Sydney K. Jones [syd@sevilleta.unm.edu], Andrew A. MacDonald [a.a.m.macdonald@gmail.com],  Dan F. B. Flynn [flynn@fas.harvard.edu], Peter Slaughter [slaughter@nceas.ucsb.edu], Julie Ripplinger [julie.ripplinger@asu.edu], Scott L. Collins [scollins@sevilleta.unm.edu], Corinna Gries [cgries@wisc.edu], Matthew B. Jones [jones@nceas.ucsb.edu]
-- Version 1.x: [doi:10.5063/F1542KJB](http://doi.org/10.5063/F1542KJB)
-- Version 2.x: [doi:10.5063/F1N877Z6](http://doi.org/10.5063/F1N877Z6)
-- **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
+- Version 1.x: [doi:10.5063/F1542KJB](https://doi.org/10.5063/F1542KJB)
+- Version 2.x: [doi:10.5063/F1N877Z6](https://doi.org/10.5063/F1N877Z6)
+- **License**: [Apache 2](https://opensource.org/licenses/Apache-2.0)
 - [Package source code on Github](https://github.com/NCEAS/codyn)
 - [**Submit Bugs and feature requests**](https://github.com/NCEAS/codyn/issues)
 

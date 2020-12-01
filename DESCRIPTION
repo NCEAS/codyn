@@ -1,17 +1,17 @@
 Package: codyn
 Title: Community Dynamics Metrics
 Version: 2.0.5
-Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut")),
-    person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut")),
+Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut"), comment=c(ORCID = "0000-0002-0718-0257")),
+    person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut"), comment=c(ORCID = "0000-0002-2649-9159")),
     person("Ian T.", "Carroll", email="carroll.ian@gmail.com", role=c("aut")),
     person("Sydney K.", "Jones", email="syd@sevilleta.unm.edu", role=c("aut")),
-    person("A. Andrew M.", "MacDonald", email="a.a.m.macdonald@gmail.com", role=c("aut")),
-    person("Dan F. B.", "Flynn", email="flynn@fas.harvard.edu", role=c("aut")),
-    person("Peter", "Slaughter", email="slaughter@nceas.ucsb.edu", role=c("aut")),
-    person("Julie", "Ripplinger", email="julie.ripplinger@asu.edu", role=c("aut")),
-    person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut")),
-    person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut")),
-    person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre")))
+    person("A. Andrew M.", "MacDonald", email="a.a.m.macdonald@gmail.com", role=c("aut"), comment=c(ORCID = "0000-0003-1162-169X")),
+    person("Dan F. B.", "Flynn", email="flynn@fas.harvard.edu", role=c("aut"), comment=c(ORCID = "0000-0002-2978-5257")),
+    person("Peter", "Slaughter", email="slaughter@nceas.ucsb.edu", role=c("aut"), comment=c(ORCID = "0000-0002-2192-403X")),
+    person("Julie", "Ripplinger", email="julie.ripplinger@asu.edu", role=c("aut"), comment=c(ORCID = "0000-0002-2771-6637")),
+    person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut"), comment=c(ORCID = "0000-0002-0193-2892")),
+    person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut"), comment=c(ORCID = "0000-0002-9091-6543")),
+    person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre"), comment=c(ORCID = "0000-0003-0077-4738")))
 Date: 2020-11-30
 Description: Univariate and multivariate temporal and spatial diversity indices, 
     rank abundance curves, and community stability measures. The functions 
@@ -26,8 +26,8 @@ Description: Univariate and multivariate temporal and spatial diversity indices,
     space and time. In addition, it contains functions to calculate species 
     turnover, mean rank shifts, and lags in community similarity between two 
     time points. Details of the methods are available in
-    Hallett et al. (2016) https://doi.org/10.1111/2041-210X.12569 and Avolio 
-    et al. (2019) https://doi.org/10.1002/ecs2.2881.
+    Hallett et al. (2016) <doi:10.1111/2041-210X.12569> and Avolio 
+    et al. (2019) <doi:10.1002/ecs2.2881>.
 Depends:
     R (>= 3.2.0)
 Imports:
