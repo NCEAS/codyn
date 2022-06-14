@@ -20,8 +20,8 @@
 #' }
 #' 
 #' @details
-#' The input data frame needs to contain columns for time, species and
-#' abundance; time.var, species.var and abundance.var are used to indicate which
+#' The input data frame needs to contain columns for time and
+#' abundance; time.var and abundance.var are used to indicate which
 #' columns contain those variables. If multiple replicates are included in the
 #' data frame, that column should be specified with replicate.var. Each
 #' replicate should reflect a single experimental unit - there should be a
