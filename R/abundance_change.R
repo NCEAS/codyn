@@ -7,19 +7,16 @@
 #'   
 #' @inheritParams RAC_change
 #' 
-#' @return The abundance_change function returns a data frame with a subset of
+#' @return The `abundance_change()` function returns a data frame with a subset of
 #'   the following columns:
-#' \itemize{
-#'  \item{replicate.var: }{A column with the specified replicate.var, if it is
-#'  specified.}
-#'  \item{time.var: }{A column with the specified time.var and a second column,
-#'  with '2' appended to the name. Time is subtracted from time2}
-#'  \item{species.var: }{A column with the specified species.var.}
-#'  \item{change: }{A numeric column of the change in abundance between  time
-#'  points. A positive value occurs when a species increases in abundance over
-#'  time, and a negative value when a species decreases in abundance over time.}
-#' }
-#' @references Avolio et al. Submitted
+#' - **replicate.var**: A column with the specified `replicate.var`, if it is
+#'   specified.
+#' - **time.var**: A column with the specified `time.var` and a second column,
+#'   with '2' appended to the name. Time is subtracted from time2.
+#' - **species.var**: A column with the specified `species.var`.
+#' - **change**: A numeric column of the change in abundance between time
+#'   points. A positive value occurs when a species increases in abundance over
+#'   time, and a negative value when a species decreases in abundance over time.#' @references Avolio et al. Submitted
 #' @examples 
 #' data(pplots)
 #' # Without replicates

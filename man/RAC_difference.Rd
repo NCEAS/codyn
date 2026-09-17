@@ -44,49 +44,46 @@ other treatments). If not specified all pairwise treatment comparisons will
 be made.}
 }
 \value{
-The RAC_difference function returns a data frame with the following
+The `RAC_difference()` function returns a data frame with the following
   attributes:
-\itemize{
- \item{time.var: }{A column that has the same name and type as the time.var
- column, if time.var is specified.}
- \item{block.var: }{A column that has same name and type as the block.var
- column, if block.var is specified.}
- \item{replicate.var: }{A column that has same name and type as the
- replicate.var column, represents the first replicate being compared. Note, a
- replicate column will be returned only when pool is FALSE or block.var =
- NULL.}
- \item{replicate.var2: }{A column that has the same type as the replicate.var
- column, and is named replicate.var with a 2 appended to it, represents the
- second replicate being compared. Note, a replicate.var column will be
- returned only when pool is FALSE and block.var = NULL.}
- \item{treatment.var: }{A column that has the same name and type as the
- treatment.var column, represents the first treatment being compared. A
- treatment.var column will be returned when pool is TRUE or block.var is
- present, or treatment.var is specified.}
- \item{treatment.var2: }{A column that has the same type as the treatment.var
- column, and is named treatment.var with a 2 appended to it, represents the
- second treatment being compared. A treatment.var column will be returned
- when pool is TRUE or block.var is present, or treatment.var is specified.}
- \item{richness_diff: }{A numeric column that is the difference between the
- compared samples (treatments or replicates) in species richness divided by
- the total number of unique species in both samples. A positive value occurs
- when there is greater species richness in replicate.var2 than replicate.var
- or treatment.var2 than treatment.var.}
- \item{evenness_diff: }{A numeric column of the difference between the
- compared samples (treatments or replicates) in evenness (measured by Evar).
- A positive value occurs when there is greater evenness in replicate.var2
- than replicate.var or treatment.var2 than treatment.var.}
- \item{rank_diff: }{A numeric column of the absolute value of average
- difference between the compared samples (treatments or replicates) in
- species' ranks divided by the total number of unique species in both
- samples.Species that are not present in both samples are given the S+1 rank
- in the sample it is absent in, where S is the number of species in that
- sample.}
- \item{species_diff: }{A numeric column of the number of species that are
- different between the compared samples (treatments or replicates) divided by
- the total number of species in both samples. This is equivalent to the
- Jaccard Index.}
-}
+- **time.var**: A column that has the same name and type as the `time.var`
+  column, if `time.var` is specified.
+- **block.var**: A column that has same name and type as the `block.var`
+  column, if `block.var` is specified.
+- **replicate.var**: A column that has same name and type as the
+  `replicate.var` column, represents the first replicate being compared. Note, a
+  replicate column will be returned only when `pool = FALSE` or `block.var = NULL`.
+- **replicate.var2**: A column that has the same type as the `replicate.var`
+  column, and is named `replicate.var` with a '2' appended to it, represents the
+  second replicate being compared. Note, a `replicate.var` column will be
+  returned only when `pool = FALSE` and `block.var = NULL`.
+- **treatment.var**: A column that has the same name and type as the
+  `treatment.var` column, represents the first treatment being compared. A
+  `treatment.var` column will be returned when `pool = TRUE` or `block.var` is
+  present, or `treatment.var` is specified.
+- **treatment.var2**: A column that has the same type as the `treatment.var`
+  column, and is named `treatment.var` with a '2' appended to it, represents the
+  second treatment being compared. A `treatment.var` column will be returned
+  when `pool = TRUE` or `block.var` is present, or `treatment.var` is specified.
+- **richness_diff**: A numeric column that is the difference between the
+  compared samples (treatments or replicates) in species richness divided by
+  the total number of unique species in both samples. A positive value occurs
+  when there is greater species richness in `replicate.var2` than `replicate.var`
+  or `treatment.var2` than `treatment.var`.
+- **evenness_diff**: A numeric column of the difference between the
+  compared samples (treatments or replicates) in evenness (measured by Evar).
+  A positive value occurs when there is greater evenness in `replicate.var2`
+  than `replicate.var` or `treatment.var2` than `treatment.var`.
+- **rank_diff**: A numeric column of the absolute value of average
+  difference between the compared samples (treatments or replicates) in
+  species' ranks divided by the total number of unique species in both
+  samples. Species that are not present in both samples are given the S+1 rank
+  in the sample it is absent in, where S is the number of species in that
+  sample.
+- **species_diff**: A numeric column of the number of species that are
+  different between the compared samples (treatments or replicates) divided by
+  the total number of species in both samples. This is equivalent to the
+  Jaccard Index.#' @references Avolio et al. Submitted
 }
 \description{
 Calculates differences between two samples for four comparable
@@ -158,7 +155,4 @@ RAC_difference(df = df,
                abundance.var = "relative_cover",
                replicate.var = "plot",
                time.var = "year")
-}
-\references{
-Avolio et al. Submitted
 }

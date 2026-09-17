@@ -40,21 +40,12 @@ be made.}
 \value{
 The multivariate_difference function returns a data frame with the
   following attributes:
-\itemize{
- \item{treatment.var: }{A column that has same name and type as the
- treatment.var column, if treatment.var is specified.}
- \item{treatment.var2: }{A column that has the same type as the treatment.var
- column, and is named treatment.var with a 2 appended to it.}
- \item{composition_diff: }{A numeric column that is the euclidean distance
- between the centroids of two treatments at a single point in time.}
- \item{abs_dispersion_diff: }{A numeric column that is the absolute value of
- the difference in the average dispersion of the replicates around the
- centroid for the two treatments.}
- \item{trt_greater_disp: }{A column that has same type as the treatment.var
- column, and specifies which of the two  treatments has greater dispersion.}
- \item{time.var: }{A characteristic column that has the same name and type as
- the time.var column, if specified.}
-}
+ - **treatment.var**: A column that has same name and type as the treatment.var column, if treatment.var is specified.
+ - **treatment.var2**: A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it.
+ - **composition_diff**: A numeric column that is the euclidean distance between the centroids of two treatments at a single point in time.
+ - **abs_dispersion_diff**: A numeric column that is the absolute value of the difference in the average dispersion of the replicates around the centroid for the two treatments.
+ - **trt_greater_disp**: A column that has same type as the treatment.var column, and specifies which of the two  treatments has greater dispersion.
+ - **time.var**: A characteristic column that has the same name and type as the time.var column, if specified.
 }
 \description{
 Calculates the difference in composition and dispersion between

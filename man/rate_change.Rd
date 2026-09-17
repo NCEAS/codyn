@@ -20,10 +20,8 @@ rate_change(df, time.var, species.var, abundance.var, replicate.var = NA)
 \value{
 The \code{rate_change} function returns a numeric rate change value unless a replication column is specified in the input data frame.
 If replication is specified, the function returns a data frame with the following attributes:
-\itemize{
- \item{rate_change: }{A numeric column with the synchrony values.}
- \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
-}
+ - **rate_change**: A numeric column with the synchrony values.
+ - **replicate.var**: A column that shares the same name and type as the replicate.var column in the input data frame.
 }
 \description{
 Calculates the slope of the differences in species composition within a community over increasing time

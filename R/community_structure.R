@@ -12,26 +12,21 @@
 #'   replicate must be unique within the dataset and cannot be nested within
 #'   treatments or blocks.
 #' @param metric The measure of evenness to return:
-#' \itemize{
-#'  \item{"Evar": }{The default measure, calculates evenness as Evar from Smith and
-#'  Wilson 1996}
-#'  \item{"SimpsonEvenness": }{Calculates Simpson's evenness}
-#'  \item{"EQ": }{Calculates evenness as EQ from Smith and Wilson 1996}
-#' }
+#' - `"Evar"`: The default measure, calculates evenness as Evar from Smith and
+#'   Wilson 1996.
+#' - `"SimpsonEvenness"`: Calculates Simpson's evenness.
+#' - `"EQ"`: Calculates evenness as EQ from Smith and Wilson 1996.
 #'  
-#' @return The community_structure function returns a data frame with the
+#' @return The `community_structure()` function returns a data frame with the
 #'   following attributes:
-#' \itemize{
-#'  \item{time.var: }{A column that has the same name and type as the time.var
-#'  column, if time.var is specified.}
-#'  \item{replicate.var: }{A column that has same name and type as the
-#'  replicate.var column, if specified.}
-#'  \item{richness: }{A numeric column of species richness}
-#'  \item{Evar: }{A numeric column of Evar if evenness = "Evar"}
-#'  \item{EQ: }{A numeric column of EQ if evenness = "EQ"}
-#'  \item{SimpsonEvenness: }{A numeric column of Simpson's evenness if evenness =
-#'  "SimpsonEveness"}
-#' }
+#' - **time.var**: A column that has the same name and type as the `time.var`
+#'   column, if `time.var` is specified.
+#' - **replicate.var**: A column that has same name and type as the
+#'   `replicate.var` column, if specified.
+#' - **richness**: A numeric column of species richness.
+#' - **Evar**: A numeric column of Evar if `metric = "Evar"`.
+#' - **EQ**: A numeric column of EQ if `metric = "EQ"`.
+#' - **SimpsonEvenness**: A numeric column of Simpson's evenness if `metric = "SimpsonEvenness"`.#'
 #' @references Smith, B. and Wilson, J. B. 1996. A consumer's guide to evenness
 #'   indices. Oikos 76: 70-82.
 #' @examples

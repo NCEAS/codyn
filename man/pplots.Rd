@@ -18,13 +18,11 @@ A dataset of tallgrass prairie plant composition in a nitrogen and phosphorus ad
 }
 \details{
 A data frame containing a column for replicate, year, species, abundance, block and treatment :
-\itemize{
-  \item plot: An integer column of spatial replicates with 18 levels (6-48)
-  \item year: An integer column of sampling time points
-  \item species: A factor column of species sampled
-  \item relative_cover: A numeric column of relative cover values
-  \item block: An integer column of dummy blocking variable, grouping treatment plots into blocks
-  \item treatment: A factor column of nitrogen and phosphorus treatments applied to the plots
-}
+- **plot**: An integer column of spatial replicates with 18 levels (6-48)
+- **year**: An integer column of sampling time points
+- **species**: A factor column of species sampled
+- **relative_cover**: A numeric column of relative cover values
+- **block**: An integer column of dummy blocking variable, grouping treatment plots into blocks
+- **treatment**: A factor column of nitrogen and phosphorus treatments applied to the plots
 }
 \keyword{datasets}

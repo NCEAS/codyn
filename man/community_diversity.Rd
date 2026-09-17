@@ -25,24 +25,20 @@ replicate must be unique within the dataset and cannot be nested within
 treatments or blocks.}
 
 \item{metric}{The diversity measure to return:
-\itemize{
- \item{"Shannon": }{The default measure, calculates Shannon's diversity.}
- \item{"InverseSimpson": }{Calculates inverse of Simpson's diversity.}
-}}
+- `"Shannon"`: The default measure, calculates Shannon's diversity.
+- `"InverseSimpson"`: Calculates inverse of Simpson's diversity.}
 }
 \value{
-The community_diversity function returns a data frame with the
+The `community_diversity()` function returns a data frame with the
   following attributes:
-\itemize{
- \item{time.var: }{A column that has the same name and type as the time.var
- column, if time.var is specified.}
- \item{replicate.var: }{A column that has same name and type as the
- replicate.var column, if replicate.var is specified.}
- \item{Shannon: }{A numeric column of Shannon's diversity if metric =
- "Shannon"}
- \item{InverseSimpson: }{A numeric column of the inverse of Simpson's
- diversity if metric = "InverseSimpson"}
-}
+- **time.var**: A column that has the same name and type as the `time.var`
+  column, if `time.var` is specified.
+- **replicate.var**: A column that has same name and type as the
+  `replicate.var` column, if `replicate.var` is specified.
+- **Shannon**: A numeric column of Shannon's diversity if `metric = "Shannon"`.
+- **InverseSimpson**: A numeric column of the inverse of Simpson's
+  diversity if `metric = "InverseSimpson"`.#' @references Magurran, A.E. 2004. Measuring Biological Diversity. Blackwell
+  Publishing, Malden MA, USA.
 }
 \description{
 Calculates Shannon's or Inverse Simpson's diversity of a
@@ -75,8 +71,4 @@ community_diversity(df,
 df <- subset(pplots, plot == 25 & year == 2002)
 community_diversity(df,
                     abundance.var = "relative_cover") # for Shannon's diversity measure
-}
-\references{
-Magurran, A.E. 2004. Measuring Biological Diversity. Blackwell
-  Publishing, Malden MA, USA.
 }

@@ -9,16 +9,12 @@
 #' @param abundance.var The name of the abundance column
 #' @param replicate.var The name of the optional replicate column
 #' @param metric The synchrony metric to return:
-#' \itemize{
-#'  \item{"Loreau": }{The default metric, calculates synchrony following Loreau and de Mazancourt (2008).}
-#'  \item{"Gross": }{Calculates synchrony following Gross et al. (2014).}
-#' }
+#'  - **Loreau**: The default metric, calculates synchrony following Loreau and de Mazancourt (2008).
+#'  - **Gross**: Calculates synchrony following Gross et al. (2014).
 #' @return The \code{synchrony} function returns a numeric synchrony value unless a replication column is specified in the input data frame.
 #' If replication is specified, the function returns a data frame with the following attributes:
-#' \itemize{
-#'  \item{synchrony: }{A numeric column with the synchrony values.}
-#'  \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
-#' }
+#'  - **synchrony**: A numeric column with the synchrony values.
+#'  - **replicate.var**: A column that shares the same name and type as the replicate.var column in the input data frame.
 #' @details
 #' The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 #' If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.

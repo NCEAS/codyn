@@ -25,19 +25,15 @@ turnover(
 \item{replicate.var}{The name of the optional replicate column}
 
 \item{metric}{The turnover metric to return:
-\itemize{
- \item{total: }{The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods.}
- \item{appearance: }{Calculates the number of species that appeared in the second time period relative to total species richness across both time periods.}
- \item{disappearance: }{Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods.}
-}}
+- **total**: The default metric, calculates summed appearances and disappearances relative to total species richness across both time periods.
+- **appearance**: Calculates the number of species that appeared in the second time period relative to total species richness across both time periods.
+- **disappearance**: Calculates the number of species that disappeared in the second time period relative to total species richness across both time periods.}
 }
 \value{
 The turnover function returns a data frame with the following attributes:
-\itemize{
- \item{turnover: }{A numeric column with the turnover values. The name of this column is the same as the specified metric (default is "total").}
- \item{time.var: }{A column containing the second time point; the name and type of this column is the same as the time.var column in the input dataframe.}
- \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
-}
+ - **turnover**: A numeric column with the turnover values. The name of this column is the same as the specified metric (default is "total").
+ - **time.var**: A column containing the second time point; the name and type of this column is the same as the time.var column in the input dataframe.
+ - **replicate.var**: A column that has same name and type as the replicate.var column, if replication is specified.
 }
 \description{
 Computes species turnover between time periods as the proportion of species either gained or lost relative to the total number of species observed across both time periods.

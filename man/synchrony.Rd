@@ -23,20 +23,16 @@ synchrony(
 \item{abundance.var}{The name of the abundance column}
 
 \item{metric}{The synchrony metric to return:
-\itemize{
- \item{"Loreau": }{The default metric, calculates synchrony following Loreau and de Mazancourt (2008).}
- \item{"Gross": }{Calculates synchrony following Gross et al. (2014).}
-}}
+- **Loreau**: The default metric, calculates synchrony following Loreau and de Mazancourt (2008).
+- **Gross**: Calculates synchrony following Gross et al. (2014).}
 
 \item{replicate.var}{The name of the optional replicate column}
 }
 \value{
 The \code{synchrony} function returns a numeric synchrony value unless a replication column is specified in the input data frame.
 If replication is specified, the function returns a data frame with the following attributes:
-\itemize{
- \item{synchrony: }{A numeric column with the synchrony values.}
- \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
-}
+ - **synchrony**: A numeric column with the synchrony values.
+ - **replicate.var**: A column that shares the same name and type as the replicate.var column in the input data frame.
 }
 \description{
 Calculates the degree synchrony in species abundances within a community over time.

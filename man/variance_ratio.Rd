@@ -41,13 +41,11 @@ across replicates; if false returns the variance ratio and CI for each replicate
 }
 \value{
 The variance_ratio function returns a data frame with the following attributes:
-\itemize{
- \item{VR: }{A numeric column with the actual variance ratio value.}
- \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
- \item{upperCI: }{A numeric column with the highest confidence interval value.}
- \item{nullmean: }{A numeric column with the average null variance ratio value.}
- \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
-}
+ - **VR**: A numeric column with the actual variance ratio value.
+ - **lowerCI**: A numeric column with the lowest confidence interval value.
+ - **upperCI**: A numeric column with the highest confidence interval value.
+ - **nullmean**: A numeric column with the average null variance ratio value.
+ - **replicate.var**: A column that has same name and type as the replicate.var column, if replication is specified.
 }
 \description{
 Computes the ratio of the variance of aggregate species abundances

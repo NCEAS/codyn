@@ -21,11 +21,9 @@ The community_stability function returns a numeric stability value
   unless a replication column is specified in the input data frame. If
   replication is specified, the function returns a data frame with the
   following columns:
-\itemize{
- \item{stability: }{A numeric column with the stability values.}
- \item{replicate.var: }{A column that shares the same name and type as the
- replicate.var column in the input data frame.}
-}
+ - **stability**: A numeric column with the stability values.
+ - **replicate.var**: A column that shares the same name and type as the
+ replicate.var column in the input data frame.
 }
 \description{
 Calculates the stability of the overall community over time as

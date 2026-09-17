@@ -25,11 +25,9 @@ mean_rank_shift(
 }
 \value{
 mean_rank_shift returns a data frame with the following columns:
-\itemize{
- \item{time.var_pair: }{A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".}
- \item{MRS: }{A numeric column with the mean rank shift values.}
- \item{replicate.var: }{A column that has same name and type as the replicate.var column, if replication is specified.}
-}
+ - **time.var_pair**: A factor column that returns the two time periods being compared, separated by a dash. The name of this column is the same as the time.var column in the input dataframe followed by "_pair".
+ - **MRS**: A numeric column with the mean rank shift values.
+ - **replicate.var**: A column that has same name and type as the replicate.var column, if replication is specified.
 }
 \description{
 A measure of the relative change in species rank abundances, which indicates shifts in relative abundances over time (Collins et al. 2008).

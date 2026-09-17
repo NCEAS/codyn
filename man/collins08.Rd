@@ -19,11 +19,9 @@ site over time at the Konza Prairie LTER, Manhattan Kansas (Collins et al. 2008)
 }
 \details{
 A data frame containing a column for replicate, year, species and abundance:
-\itemize{
-  \item replicate: A factor column of spatial replicates with two levels ("annually burned" and "unburned")
-  \item year: An integer column of sampling time points
-  \item species: A factor column of species sampled
-  \item abundance: A numeric column of abundance values
-}
+- **replicate**: A factor column of spatial replicates with two levels ("annually burned" and "unburned")
+- **year**: An integer column of sampling time points
+- **species**: A factor column of species sampled
+- **abundance**: A numeric column of abundance values
 }
 \keyword{datasets}

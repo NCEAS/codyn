@@ -90,11 +90,9 @@ cyclic_shift <- function(df, time.var,
 #' @param level the confidence level required.
 #' @param ... further arguments to \code{quantile}
 #' @return A dataframe with the following columns:
-#' \itemize{
-#'  \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
-#'  \item{upperCI: }{A numeric column with the highest confidence interval value.}
-#'  \item{nullMean: }{A numeric column with the average value of the specified test statistic when calculated on a null community.}
-#' }
+#' - **lowerCI**: A numeric column with the lowest confidence interval value.
+#' - **upperCI**: A numeric column with the highest confidence interval value.
+#' - **nullMean**: A numeric column with the average value of the specified test statistic when calculated on a null community.
 #' @examples
 #' # Calculate a covariance matrix on a null community
 #' data(knz_001d)

@@ -17,11 +17,9 @@
 }
 \value{
 A dataframe with the following columns:
-\itemize{
- \item{lowerCI: }{A numeric column with the lowest confidence interval value.}
- \item{upperCI: }{A numeric column with the highest confidence interval value.}
- \item{nullMean: }{A numeric column with the average value of the specified test statistic when calculated on a null community.}
-}
+- **lowerCI**: A numeric column with the lowest confidence interval value.
+- **upperCI**: A numeric column with the highest confidence interval value.
+- **nullMean**: A numeric column with the average value of the specified test statistic when calculated on a null community.
 }
 \description{
 Calculates confidence intervals for the S3 object produced by \code{cyclic_shift}

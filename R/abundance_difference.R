@@ -14,38 +14,34 @@
 #'
 #' @inheritParams RAC_difference
 #'   
-#' @return The abundance_difference function returns a data frame with a subset
+#' @return The `abundance_difference()` function returns a data frame with a subset
 #'   of the following columns:
-#' \itemize{
-#'  \item{species.var: }{A column that has same name and type as the species.var
-#'  column.}
-#'  \item{difference: }{A numeric column of the abundance differences between
-#'  the two samples being compared (replicates or treatments). A numeric column
-#'  of the change in abundance between consecutive timepoints. A positive value
-#'  occurs when a species has greater abundance in replicate.var2 than in
-#'  replicate.var and/or in treatment.var2 than in treatment.var.}
-#'  \item{replicate.var: }{A column that has same name and type as the
-#'  replicate.var column, represents the first replicate being compared. Note, a
-#'  replicate column will be returned only when pool = FALSE or block.var =
-#'  NULL.}
-#'  \item{replicate.var2: }{A column that has the same type as the replicate.var
-#'  column, and is named replicate.var with a 2 appended to it, represents the
-#'  second replicate being compared. Note, a replicate.var column will be
-#'  returned only when pool = FALSE and block.var = NULL.}
-#'  \item{time.var: }{A column that has the same name and type as the time.var
-#'  column, if time.var is specified.}
-#'  \item{treatment.var: }{A column that has same name and type as the
-#'  treatment.var column, represents the first treatment being compared. A
-#'  treatment.var column will be returned when pool = TRUE, block.var is
-#'  specified, or treatment.var is specified.}
-#'  \item{treatment.var2: }{A column that has the same type as the treatment.var
-#'  column, and is named treatment.var with a 2 appended to it, represents the
-#'  second treatment being compared. A treatment.var column will be returned
-#'  when pool = TRUE, block.var is specified, or treatment.var is specified.}
-#'  \item{block.var: }{A column that has same name and type as the block.var
-#'  column, if block.var is specified.}
-#' }
-#'
+#' - **species.var**: A column that has same name and type as the `species.var`
+#'   column.
+#' - **difference**: A numeric column of the abundance differences between
+#'   the two samples being compared (replicates or treatments). A numeric column
+#'   of the change in abundance between consecutive timepoints. A positive value
+#'   occurs when a species has greater abundance in `replicate.var2` than in
+#'   `replicate.var` and/or in `treatment.var2` than in `treatment.var`.
+#' - **replicate.var**: A column that has same name and type as the
+#'   `replicate.var` column, represents the first replicate being compared. Note, a
+#'   replicate column will be returned only when `pool = FALSE` or `block.var = NULL`.
+#' - **replicate.var2**: A column that has the same type as the `replicate.var`
+#'   column, and is named `replicate.var` with a 2 appended to it, represents the
+#'   second replicate being compared. Note, a `replicate.var` column will be
+#'   returned only when `pool = FALSE` and `block.var = NULL`.
+#' - **time.var**: A column that has the same name and type as the `time.var`
+#'   column, if `time.var` is specified.
+#' - **treatment.var**: A column that has same name and type as the
+#'   `treatment.var` column, represents the first treatment being compared. A
+#'   `treatment.var` column will be returned when `pool = TRUE`, `block.var` is
+#'   specified, or `treatment.var` is specified.
+#' - **treatment.var2**: A column that has the same type as the `treatment.var`
+#'   column, and is named `treatment.var` with a 2 appended to it, represents the
+#'   second treatment being compared. A `treatment.var` column will be returned
+#'   when `pool = TRUE`, `block.var` is specified, or `treatment.var` is specified.
+#' - **block.var**: A column that has same name and type as the `block.var`
+#'   column, if `block.var` is specified.
 #' @references Avolio et al. Submitted
 #' @examples
 #' data(pplots)

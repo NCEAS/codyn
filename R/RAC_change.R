@@ -17,37 +17,34 @@
 #'   specified, each comparison is between consecutive time points (the first
 #'   and second year, second and third year, etc.)
 #'   
-#' @return The RAC_change function returns a data frame with a subset of the
+#' @return The `RAC_change()` function returns a data frame with a subset of the
 #'   following columns:
-#' \itemize{
-#'  \item{replicate.var: }{A column that has same name and type as the
-#'  replicate.var column, if replicate.var is specified.}
-#'  \item{time.var: }{A column with the specified time.var and a second column,
-#'  with '2' appended to the name. Time is subtracted from time2.}
-#'  \item{richness_change: }{A numeric column that is the change in richness
-#'  between the two time periods for a replicate divided by the total number of
-#'  unique species in both time periods. A positive value occurs when a there is
-#'  an increase in species richness over time, and a negative value when there
-#'  is a decreases in species richness over  time.}
-#'  \item{evenness_change: }{A numeric column that is the change in
-#'  evenness(measured with Evar) between the two time periods for a replicate. A
-#'  positive value occurs when evenness  increases over time, and a negative
-#'  value when evenness decreases in over time.}
-#'  \item{rank_change: }{A numeric column that is the absolute value of the
-#'  average change in species ranks between the two time periods for a replicate
-#'  divided by the total number of unique species in both time periods. Species
-#'  that are not present in both time periods are given the S+1 rank in the
-#'  sample it is absent in, where S is the number of species in that sample.}
-#'  \item{gains: }{A numeric column of the number of species that are present at
-#'  time period 2 that were not present at time period 1 for a replicate divided
-#'  by the total number of unique species in both time periods. This is
-#'  equivalent to the turnover function with metric = "appearances".}
-#'  \item{losses: }{A numeric column of the number of species that are not
-#'  present at time period 2 but were  present at time period 1 for a replicate
-#'  divided by the total number of unique species in both time periods. This is
-#'  equivalent to the turnover function with metric = "disappearance".}
-#' }
-#' @references Avolio et al. Submitted
+#' - **replicate.var**: A column that has same name and type as the
+#'   replicate.var column, if `replicate.var` is specified.
+#' - **time.var**: A column with the specified `time.var` and a second column,
+#'   with '2' appended to the name. Time is subtracted from time2.
+#' - **richness_change**: A numeric column that is the change in richness
+#'   between the two time periods for a replicate divided by the total number of
+#'   unique species in both time periods. A positive value occurs when there is
+#'   an increase in species richness over time, and a negative value when there
+#'   is a decrease in species richness over time.
+#' - **evenness_change**: A numeric column that is the change in
+#'   evenness (measured with Evar) between the two time periods for a replicate. A
+#'   positive value occurs when evenness increases over time, and a negative
+#'   value when evenness decreases over time.
+#' - **rank_change**: A numeric column that is the absolute value of the
+#'   average change in species ranks between the two time periods for a replicate
+#'   divided by the total number of unique species in both time periods. Species
+#'   that are not present in both time periods are given the S+1 rank in the
+#'   sample it is absent in, where S is the number of species in that sample.
+#' - **gains**: A numeric column of the number of species that are present at
+#'   time period 2 that were not present at time period 1 for a replicate divided
+#'   by the total number of unique species in both time periods. This is
+#'   equivalent to the `turnover()` function with `metric = "appearances"`.
+#' - **losses**: A numeric column of the number of species that are not
+#'   present at time period 2 but were present at time period 1 for a replicate
+#'   divided by the total number of unique species in both time periods. This is
+#'   equivalent to the `turnover()` function with `metric = "disappearance"`.#' @references Avolio et al. Submitted
 #' @examples 
 #' data(pplots)
 #' # Without replicates

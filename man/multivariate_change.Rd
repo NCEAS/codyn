@@ -39,22 +39,10 @@ and second year, second and third year, etc.)}
 \value{
 The multivariate_change function returns a data frame with the
   following attributes:
-\itemize{
- \item{time.var: }{A column with the specified time.var and a second column,
- with '2' appended to the name. Time is subtracted from time2 for dispersion
- change.}
- \item{composition_change: }{A numeric column that is the distance
- between the centroids of two time points, or NA if a real distance
- could not be calculated.}
- \item{dispersion_change: }{A numeric column that is the difference in the
- average dispersion of the replicates around the centroid for the two time
- periods. A negative value indicates replicates are converging over time
- (there is less dispersion at time period 2 than time period 1) and a
- positive value indicates replicates are diverging over time (there is more
- dispersion at time period 2 than time period 1.}
- \item{treatment.var: }{A column that has same name and type as the
- treatment.var column, if treatment.var is specified.}
-}
+ - **time.var**: A column with the specified time.var and a second column, with '2' appended to the name. Time is subtracted from time2 for dispersion change.
+ - **composition_change**: A numeric column that is the distance between the centroids of two time points, or NA if a real distance could not be calculated.
+ - **dispersion_change**: A numeric column that is the difference in the average dispersion of the replicates around the centroid for the two time periods. A negative value indicates replicates are converging over time (there is less dispersion at time period 2 than time period 1) and a positive value indicates replicates are diverging over time (there is more dispersion at time period 2 than time period 1.
+ - **treatment.var**: A column that has same name and type as the treatment.var column, if treatment.var is specified.
 }
 \description{
 Calculates the changes in composition and dispersion based off a

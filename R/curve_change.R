@@ -9,14 +9,12 @@
 #'   
 #' @return The curve_change function returns a data frame with the following
 #'   attributes:
-#' \itemize{
-#'  \item{time.var: }{A column with the specified time.var and a second column,
-#'  with '2' appended to the name. Time is subtracted from time2.}
-#'  \item{curve_change: }{A numeric column of the change in curves between time
-#'  points.}
-#'  \item{replicate.var: }{A column that has same name and type as the
-#'  replicate.var column, if specified.}
-#' }
+#'  - **time.var**: A column with the specified time.var and a second column,
+#'  with '2' appended to the name. Time is subtracted from time2.
+#'  - **curve_change**: A numeric column of the change in curves between time
+#'  points.
+#'  - **replicate.var**: A column that has same name and type as the
+#'  replicate.var column, if specified.
 #' @references Avolio et al. Submitted
 #' @examples 
 #' data(pplots)

@@ -45,15 +45,13 @@ be made.}
 }
 \value{
 The curve_difference function returns a data frame with the following attributes:
-\itemize{
- \item{curve_diff: }{A numeric column of the area difference in curves between the two samples being compared (replicates or treatments).}
- \item{replicate.var: }{A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var = NULL.}
- \item{replicate.var2: }{A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Note, a replicate.var column will be returned only when pool is FALSE and block.var = NULL.}
- \item{time.var: }{A column that has the same name and type as the time.var column, if time.var is specified.}
- \item{treatment.var: }{A column that has same name and type as the treatment.var column, represents the first treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is specified, or treatment.var is specified.}
- \item{treatment.var2: }{A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is specified, or treatment.var is specified.}
- \item{block.var: }{A column that has same name and type as the block.var column, if block.var is specified.}
-}
+ - **curve_diff**: A numeric column of the area difference in curves between the two samples being compared (replicates or treatments).
+ - **replicate.var**: A column that has same name and type as the replicate.var column, represents the first replicate being compared. Note, a replicate column will be returned only when pool is FALSE or block.var = NULL.
+ - **replicate.var2**: A column that has the same type as the replicate.var column, and is named replicate.var with a 2 appended to it, represents the second replicate being compared. Note, a replicate.var column will be returned only when pool is FALSE and block.var = NULL.
+ - **time.var**: A column that has the same name and type as the time.var column, if time.var is specified.
+ - **treatment.var**: A column that has same name and type as the treatment.var column, represents the first treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is specified, or treatment.var is specified.
+ - **treatment.var2**: A column that has the same type as the treatment.var column, and is named treatment.var with a 2 appended to it, represents the second treatment being compared. A treatment.var column will be returned when pool is TRUE or block.var is specified, or treatment.var is specified.
+ - **block.var**: A column that has same name and type as the block.var column, if block.var is specified.
 }
 \description{
 Calculates the area difference between two rank abundance

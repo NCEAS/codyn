@@ -24,12 +24,10 @@ rate_change_interval(
 \item{replicate.var}{The name of the optional replicate column}
 }
 \value{
-The \code{rate_change_interval} function returns a data frame with the following attributes:
-\itemize{
- \item{interval: }{A numeric column containing the interval length between time periods.}
- \item{distance: }{A numeric column containing the Euclidean distances.}
- \item{replicate.var: }{A column that shares the same name and type as the replicate.var column in the input data frame.}
-}
+The `rate_change_interval` function returns a data frame with the following attributes:
+ - **interval**: A numeric column containing the interval length between time periods.
+ - **distance**: A numeric column containing the Euclidean distances.
+ - **replicate.var**: A column that shares the same name and type as the replicate.var column in the input data frame.
 The input data frame needs to contain columns for time, species and abundance; time.var, species.var and abundance.var are used to indicate which columns contain those variables.
 If multiple replicates are included in the data frame, that column should be specified with replicate.var. Each replicate should reflect a single experimental unit - there must be a single abundance value per species within each time point and replicate.
 }

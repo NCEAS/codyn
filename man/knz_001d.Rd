@@ -21,11 +21,9 @@ prairie site in the Konza Prairie LTER, Manhattan KS (Watershed 001d).
 }
 \details{
 A data frame containing a column for species, year, subplot and abundance:
-\itemize{
-  \item species: A factor column of species sampled
-  \item year: An integer column of sampling time points
-  \item subplot: A factor column of spatial replicates with 20 levels
-  \item abundance: A numeric column of abundance values
-}
+- **species**: A factor column of species sampled
+- **year**: An integer column of sampling time points
+- **subplot**: A factor column of spatial replicates with 20 levels
+- **abundance**: A numeric column of abundance values
 }
 \keyword{datasets}
