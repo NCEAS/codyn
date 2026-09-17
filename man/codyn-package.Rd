@@ -2,6 +2,7 @@
 % Please edit documentation in R/codyn-package.R
 \docType{package}
 \name{codyn-package}
+\alias{codyn}
 \alias{codyn-package}
 \title{Community Dynamics Metrics}
 \description{
@@ -40,6 +41,14 @@ Work on this package was supported by National Science Foundation grant #1262458
 }
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/NCEAS/codyn/}
+  \item Report bugs at \url{https://github.com/NCEAS/codyn/issues}
+}
+
+}
 \author{
 \itemize{
  \item{Lauren Hallett \email{lauren.m.hallett@gmail.com}}
@@ -55,3 +64,4 @@ Work on this package was supported by National Science Foundation grant #1262458
  \item{Matthew B. Jones \email{jones@nceas.ucsb.edu}}
 }
 }
+\keyword{internal}

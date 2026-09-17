@@ -1,6 +1,6 @@
 Package: codyn
 Title: Community Dynamics Metrics
-Version: 2.0.5
+Version: 2.0.6
 Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", role=c("aut"), comment=c(ORCID = "0000-0002-0718-0257")),
     person("Meghan L.", "Avolio", email="meghan.avolio@jhu.edu", role=c("aut"), comment=c(ORCID = "0000-0002-2649-9159")),
     person("Ian T.", "Carroll", email="carroll.ian@gmail.com", role=c("aut"), comment=c(ORCID = "0000-0002-3616-810X")),
@@ -12,7 +12,7 @@ Authors@R: c(person("Lauren", "Hallett", email="lauren.m.hallett@gmail.com", rol
     person("Scott L.", "Collins", email="scollins@sevilleta.unm.edu", role=c("aut"), comment=c(ORCID = "0000-0002-0193-2892")),
     person("Corinna", "Gries", email="cgries@wisc.edu", role=c("aut"), comment=c(ORCID = "0000-0002-9091-6543")),
     person("Matthew B.", "Jones", email="jones@nceas.ucsb.edu", role=c("aut", "cre"), comment=c(ORCID = "0000-0003-0077-4738")))
-Date: 2020-11-30
+Date: 2026-09-17
 Description: Univariate and multivariate temporal and spatial diversity indices, 
     rank abundance curves, and community stability measures. The functions 
     implement measures that are either explicitly temporal and include the 
@@ -50,4 +50,4 @@ URL: https://github.com/NCEAS/codyn/
 BugReports: https://github.com/NCEAS/codyn/issues
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+Config/roxygen2/version: 8.1.0
