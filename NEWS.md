@@ -1,61 +1,69 @@
+# codyn 2.0.6
+
+## BUG FIXES
+
+- Fixed roxygen documentation errors by switching to RMarkdown syntax (Issue #135)
+- Fixed package documentation to use `_PACKAGE`  (Issue #135)
+- Fixed docs for community_stability (Issue #128)
+
 # codyn 2.0.5
 
 ## DOCUMENTATION
 
-* Added references to Hallett et al. (2016) and Avolio et al. (2019) to DESCRIPTION and README
+- Added references to Hallett et al. (2016) and Avolio et al. (2019) to DESCRIPTION and README
 
 ## BUG FIXES
 
-* Resolved silent error (no longer silent in R 4.1) from failure to use output
+- Resolved silent error (no longer silent in R 4.1) from failure to use output
   of `match.arg` (#122).
 
 # codyn 2.0.4
 
 ## BUG FIXES
 
-* Adapt to R 4.0 breaking change for string to factor conversion (PR # 118)
+- Adapt to R 4.0 breaking change for string to factor conversion (PR # 118)
 
 # codyn 2.0.3
 
 ## BUG FIXES
 
-* Allow multivariate_ and abundance_difference to use `reference.treatment` with pooling.
-* Eliminate superfluous treatment.var argument.
-* Return NA for inconclusive multivariate_change and _difference results (see also vegandevs/vegan#306).
+- Allow multivariate_ and abundance_difference to use `reference.treatment` with pooling.
+- Eliminate superfluous treatment.var argument.
+- Return NA for inconclusive multivariate_change and _difference results (see also vegandevs/vegan#306).
 
 # codyn 2.0.2
 
 ## BUG FIXES
 
-* use codyn::Evar rather than codyn::EQ in RAC_difference
-* fixes for breaking change in testthat (PR #111)
+- use codyn::Evar rather than codyn::EQ in RAC_difference
+- fixes for breaking change in testthat (PR #111)
 
 # codyn 2.0.1
 
 ## DOCUMENTATION
 
-* use `@inheritParams` to reduce redundancy
+- use `@inheritParams` to reduce redundancy
 
 ## BUG FIXES
 
-* elminate unverifiable centroid calculation in vegan::betadisper ([#306](https://github.com/vegandevs/vegan/issues/306))
-* better error message (#108)
-* fix handling of Null arguments (#95)
+- eliminate unverifiable centroid calculation in vegan::betadisper ([#306](https://github.com/vegandevs/vegan/issues/306))
+- better error message (#108)
+- fix handling of Null arguments (#95)
 
 # codyn 2.0.0
 
 ## NEW FUNCTIONS
 
-* community_structure: Calculates richness and evenness (using specified metric) for a replicate
-* community_diversity: Calculates diversity (using specified metric) for a replicate
-* RAC_change: Calculates changes in species richness, evenness, species' ranks, gain, and losses for a replicate over time
-* abundance_change: For each species in a replicate, calculates changes in abundance over time
-* curve_change: Calculates changes in the shape of the RAC curve for each replicate over time
-* multivariate_change: Calculates changes in community composition and dispersion over time
-* RAC_difference: Calculates differences in species richness, evenness, species' ranks, shared species between paired samples at a single point in time
-* abundance_difference: Calculates differences in abundance for each species in paired samples at a single point in time
-* curve_difference: Calculates differences in the shape of the RAC between paired samples at a single point in time
-* multivariate_difference: Calculates differences in community composition and dispersion of all replicates between treatments at a single point in time
+- community_structure: Calculates richness and evenness (using specified metric) for a replicate
+- community_diversity: Calculates diversity (using specified metric) for a replicate
+- RAC_change: Calculates changes in species richness, evenness, species' ranks, gain, and losses for a replicate over time
+- abundance_change: For each species in a replicate, calculates changes in abundance over time
+- curve_change: Calculates changes in the shape of the RAC curve for each replicate over time
+- multivariate_change: Calculates changes in community composition and dispersion over time
+- RAC_difference: Calculates differences in species richness, evenness, species' ranks, shared species between paired samples at a single point in time
+- abundance_difference: Calculates differences in abundance for each species in paired samples at a single point in time
+- curve_difference: Calculates differences in the shape of the RAC between paired samples at a single point in time
+- multivariate_difference: Calculates differences in community composition and dispersion of all replicates between treatments at a single point in time
 
 ## BUG FIXES
 
@@ -65,40 +73,40 @@ Previous warnings have been changed to errors.
 
 ## NEW FEATURES
 
-* Add S3 class for cyclic_shift *#66)
-* add an alias for `temporal_torus_translation` (#65)
+- Add S3 class for cyclic_shift #66)
+- add an alias for `temporal_torus_translation` (#65)
 
 ## BUG FIXES
 
-* selectively import from stats and assertthat (#64)
-* adjustments to coding consistency (#63)
-* import 'stats' and 'permute' package methods (#69)
-* Improved function and parameter names
+- selectively import from stats and assertthat (#64)
+- adjustments to coding consistency (#63)
+- import 'stats' and 'permute' package methods (#69)
+- Improved function and parameter names
 
 # codyn 1.0.1
 
 ## BUG FIXES
 
-* Fixed bug to ensure data frames are ordered before unlisting (#58)
-* Fixed bug in temporal_torus_translation to correctly recognize numeric data (#59)
-* Fixed bug in synchrony (Gross) with only 1 spp in a plot (#60)
-* Fixed bug in calculating variance ratio if species counts are constant (#61)
+- Fixed bug to ensure data frames are ordered before unlisting (#58)
+- Fixed bug in temporal_torus_translation to correctly recognize numeric data (#59)
+- Fixed bug in synchrony (Gross) with only 1 spp in a plot (#60)
+- Fixed bug in calculating variance ratio if species counts are constant (#61)
 
 # codyn 1.0.0
 
 ## NEW FEATURES
 
-* Initial version (see help topic for 'codyn', e.g. "?codyn")
-* Includes functions for temporal community dynamics analysis
+- Initial version (see help topic for 'codyn', e.g. "?codyn")
+- Includes functions for temporal community dynamics analysis
 
 ## NEW FUNCTIONS
 
-* turnover: Calculates species turnover between time periods
-* mean_rank_shift: Calculates the mean relative change in species rank abundances 
-* rate_change: Calculates the rate change in a community over time
-* rate_change_interval: Produces a data frame containing differences in species composition between samples at increasing time intervals
-* community_stability: Calculates community stability over time
-* variance_ratio: Computes the ratio of the variance of aggregate species abundances in a community
-* synchrony: Calculates the degree synchrony in species abundances
-* temporal_torus_translation: Calculates a null test statistic using a temporal modification of the torus translation
-* temporal_torus_translation_CI: Returns confidence intervals calculated from a temporal modification of the torus translation
+- turnover: Calculates species turnover between time periods
+- mean_rank_shift: Calculates the mean relative change in species rank abundances 
+- rate_change: Calculates the rate change in a community over time
+- rate_change_interval: Produces a data frame containing differences in species composition between samples at increasing time intervals
+- community_stability: Calculates community stability over time
+- variance_ratio: Computes the ratio of the variance of aggregate species abundances in a community
+- synchrony: Calculates the degree synchrony in species abundances
+- temporal_torus_translation: Calculates a null test statistic using a temporal modification of the torus translation
+- temporal_torus_translation_CI: Returns confidence intervals calculated from a temporal modification of the torus translation
