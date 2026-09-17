@@ -2,8 +2,8 @@
 
 R CMD check and all tests passed on Linux, MacOS, and Windows, using the following environments:
 
-* Mac OS X 10.14.6
-  * R 4.0.3 (x86_64-apple-darwin17.0 (64-bit))
+* Mac OS X 15.7.3
+  * R 4.6.1 (aarch64-apple-darwin24.6.0 (64-bit))
 * Ubuntu
   * R 4.0.2 (2020-06-22) (x86_64-pc-linux-gnu (64-bit))
 * Via R-hub

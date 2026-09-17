@@ -43,7 +43,8 @@ Suggests:
     reshape2,
     devtools,
     dplyr,
-    rmarkdown
+    rmarkdown,
+    spelling
 Encoding: UTF-8
 License: Apache License (== 2.0)
 URL: https://github.com/NCEAS/codyn/
