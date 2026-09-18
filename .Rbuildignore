@@ -10,3 +10,4 @@ docker
 ^CRAN-RELEASE$
 CONTRIBUTING.md
 ^codemeta\.json$
+^\.github

@@ -4,17 +4,14 @@ R CMD check and all tests passed on Linux, MacOS, and Windows, using the followi
 
 * Mac OS X 15.7.3
   * R 4.6.1 (aarch64-apple-darwin24.6.0 (64-bit))
-* Ubuntu
-  * R 4.0.2 (2020-06-22) (x86_64-pc-linux-gnu (64-bit))
 * Via R-hub
-  * R Under development (unstable) (2020-11-27 r79522) debian-gcc-devel
-  * R Under development (unstable) (2020-10-24 r79367) fedora-clang-devel
-  * R Under development (unstable) (2020-10-24 r79367) fedora-gcc-devel
-  * R Under development (unstable) (2020-10-24 r79367) ubuntu-gcc-devel
+  * Ubuntu 13.3.0-6ubuntu2~24.04.1 (R 4.6.1) (2020-11-27 r79522) x86_64-pc-linux-gnu
+  * Ubuntu 24.04.5 LTS (R-devel (unstable) (2026-09-16 r90549)) x86_64-pc-linux-gnu
+  * Windows Server 2022 x64 (build 26100) (R-devel (unstable) (2026-09-16 r90549 ucrt)) x86_64-w64-mingw32
+  * macOS Sequoia 15.7.9 (R-devel (unstable) (2026-09-16 r90549)) x86_64-apple-darwin20
 * Via win_builder
-  * R 4.0.3 (2020-10-10) (x86_64-w64-mingw32 (64-bit))
-  * R 3.6.3 (2020-02-29) (x86_64-w64-mingw32 (64-bit))
-  * R Under development (unstable) (2020-11-27 r79522) (x86_64-w64-mingw32 (64-bit))
+  * Windows Server 2022 x64 (build 20348) (R 4.6.1 (2026-06-24 ucrt)) x86_64-w64-mingw32
+  * Windows Server 2022 x64 (build 20348) (R-devel (unstable) (2026-09-16 r90549 ucrt)) x86_64-w64-mingw32
 
 # R CMD check results
 
