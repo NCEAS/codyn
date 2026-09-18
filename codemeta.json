@@ -1,21 +1,25 @@
 {
-  "@context": [
-    "https://doi.org/10.5063/schema/codemeta-2.0"
-  ],
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "codyn",
-  "description": "Univariate and multivariate temporal and spatial diversity indices, \n    rank abundance curves, and community stability measures. The functions \n    implement measures that are either explicitly temporal and include the \n    option to calculate them over multiple replicates, or spatial and include \n    the option to calculate them over multiple time points. Functions fall into \n    five categories: static diversity indices, temporal diversity indices, \n    spatial diversity indices, rank abundance curves, and community stability \n    measures. The diversity indices are temporal and spatial analogs to \n    traditional diversity indices. Specifically, the package includes functions \n    to calculate community richness, evenness and diversity at a given point in \n    space and time. In addition, it contains functions to calculate species \n    turnover, mean rank shifts, and lags in community similarity between two \n    time points. Details of the methods are available in\n    Hallett et al. (2016) <doi:10.1111/2041-210X.12569> and Avolio \n    et al. (2019) <doi:10.1002/ecs2.2881>.",
+  "description": "Univariate and multivariate temporal and spatial diversity indices, rank abundance curves, and community stability measures. The functions implement measures that are either explicitly temporal and include the option to calculate them over multiple replicates, or spatial and include the option to calculate them over multiple time points. Functions fall into five categories: static diversity indices, temporal diversity indices, spatial diversity indices, rank abundance curves, and community stability measures. The diversity indices are temporal and spatial analogs to traditional diversity indices. Specifically, the package includes functions to calculate community richness, evenness and diversity at a given point in space and time. In addition, it contains functions to calculate species turnover, mean rank shifts, and lags in community similarity between two time points. Details of the methods are available in Hallett et al. (2016) <doi:10.1111/2041-210X.12569> and Avolio et al. (2019) <doi:10.1002/ecs2.2881>.",
   "name": "codyn: Community Dynamics Metrics",
   "codeRepository": "https://github.com/NCEAS/codyn/",
   "issueTracker": "https://github.com/NCEAS/codyn/issues",
   "license": "https://spdx.org/licenses/Apache-2.0",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.3 (2020-10-10)",
+  "runtimePlatform": "R version 4.6.1 (2026-06-24)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
   "author": [
     {
       "@type": "Person",
@@ -199,16 +203,28 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "spelling",
+      "name": "spelling",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=spelling"
     }
   ],
-  "softwareRequirements": [
-    {
+  "softwareRequirements": {
+    "1": {
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
       "version": ">= 3.2.0"
     },
-    {
+    "2": {
       "@type": "SoftwareApplication",
       "identifier": "assertthat",
       "name": "assertthat",
@@ -220,12 +236,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=assertthat"
     },
-    {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "permute",
       "name": "permute",
@@ -237,7 +253,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=permute"
     },
-    {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "vegan",
       "name": "vegan",
@@ -248,16 +264,14 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=vegan"
-    }
-  ],
-  "releaseNotes": "https://github.com/NCEAS/codyn/blob/master/NEWS",
-  "readme": "https://github.com/NCEAS/codyn/blob/master/README.md",
-  "fileSize": "455.779KB",
-  "contIntegration": "https://travis-ci.org/NCEAS/codyn",
-  "developmentStatus": "https://www.repostatus.org/#active",
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "444.307KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
+      "datePublished": "2026",
       "author": [
         {
           "@type": "Person",
@@ -326,23 +340,17 @@
           "email": "jones@nceas.ucsb.edu"
         }
       ],
-      "name": "{codyn}: ",
-      "identifier": "doi:10.5063/F1N877Z6",
+      "name": "{codyn}: Community Dynamics Metrics",
+      "identifier": "10.5063/F1N877Z6",
       "url": "https://github.com/NCEAS/codyn",
-      "@id": "https://doi.org/10.5063/F1N877Z6"
+      "description": "R package version 2.0.6",
+      "@id": "https://doi.org/10.5063/F1N877Z6",
+      "sameAs": "https://doi.org/10.5063/F1N877Z6"
     }
   ],
-  "provider": {
-    "@id": "https://cran.r-project.org",
-    "@type": "Organization",
-    "name": "Comprehensive R Archive Network (CRAN)",
-    "url": "https://cran.r-project.org"
-  },
-  "funder": {
-     "@type": "Organization",
-     "name": "National Science Foundation",
-     "identifier": "https://doi.org/10.13039/100000001",
-     "url": "https://nsf.gov/"
-  },
+  "releaseNotes": "https://github.com/NCEAS/codyn/blob/main/NEWS.md",
+  "readme": "https://github.com/NCEAS/codyn/blob/main/README.md",
+  "contIntegration": "https://github.com/NCEAS/codyn/actions/workflows/rhub.yaml",
+  "developmentStatus": "https://www.repostatus.org/#active",
   "relatedLink": "https://CRAN.R-project.org/package=codyn"
 }
