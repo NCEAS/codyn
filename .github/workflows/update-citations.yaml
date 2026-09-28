@@ -1,6 +1,6 @@
 # Refresh the list of publications citing codyn from OpenAlex and open a pull
 # request when it changes. The DOIs searched are configured in
-# data-raw/citation-sources.yml.
+# pkgdown/citations/citation-sources.yml.
 on:
   schedule:
     - cron: "0 6 1 * *"
@@ -33,7 +33,7 @@ jobs:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
         run: |
           echo "Automated update found no changes." > "$CITATION_SUMMARY"
-          Rscript data-raw/update_citations.R
+          Rscript pkgdown/citations/update_citations.R
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v7

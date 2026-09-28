@@ -1,6 +1,7 @@
-# Configuration for data-raw/update_citations.R, which compiles the list of
-# publications that cite codyn from OpenAlex (https://openalex.org) and writes
-# it as BibTeX for the "Publications using codyn" article on the pkgdown site.
+# Configuration for pkgdown/citations/update_citations.R, which compiles the
+# list of publications that cite codyn from OpenAlex (https://openalex.org) and
+# writes it as BibTeX for the "Publications using codyn" article on the pkgdown
+# site.
 #
 # When a new version of codyn is released with a new DOI, add it to `dois`
 # below with `kind: software`; the next scheduled run of the update-citations
