@@ -32,10 +32,10 @@ format_references <- function(entries) {
 }
 ```
 
-codyn has been cited by **`r n_pubs` publications**. The list is compiled
-automatically from [OpenAlex](https://openalex.org) and includes every work that
-cites one of the papers or software releases describing codyn:
+This list of **`r n_pubs` publications** includes the papers describing codyn
+and every work that cites one of those papers or a codyn software release:
 `r paste0("[", dois, "](https://doi.org/", dois, ")", collapse = ", ")`.
+It is compiled automatically from [OpenAlex](https://openalex.org).
 It was last updated on `r retrieved` and is refreshed monthly.
 
 OpenAlex does not index everything, so theses, reports and some journals may be

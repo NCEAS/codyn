@@ -3,20 +3,28 @@
 # it as BibTeX for the "Publications using codyn" article on the pkgdown site.
 #
 # When a new version of codyn is released with a new DOI, add it to `dois`
-# below; the next scheduled run of the update-citations workflow will pick it up.
+# below with `kind: software`; the next scheduled run of the update-citations
+# workflow will pick it up.
 
 # DOIs of works that describe codyn. A publication is included if it cites
-# any of these.
+# any of these. Each DOI has a `kind`:
+#   paper     a publication describing codyn; it is also listed itself
+#   software  a software release; only used to find citing works
 dois:
   - doi: 10.1111/2041-210X.12569
+    kind: paper
     description: Hallett et al. (2016) Methods in Ecology and Evolution paper
   - doi: 10.1002/ecs2.2881
+    kind: paper
     description: Avolio et al. (2019) Ecosphere paper on rank abundance curves
   - doi: 10.5063/F1542KJB
+    kind: software
     description: codyn software, version 1.x
   - doi: 10.5063/F1N877Z6
+    kind: software
     description: codyn software, version 2.x
   - doi: 10.32614/CRAN.package.codyn
+    kind: software
     description: codyn CRAN package
 
 # Citing works published before this year are dropped. codyn was first
@@ -34,6 +42,14 @@ exclude_types:
 # OpenAlex work IDs (e.g. W1234567890) to leave out because OpenAlex wrongly
 # links them to codyn. Add an entry with a short note when one turns up.
 exclude_works: []
+
+# Corrections to OpenAlex metadata, by OpenAlex work ID. Each entry replaces
+# BibTeX fields (e.g. title, pages, journal, year) for that work.
+corrections:
+  W2325650867:  # Hallett et al. (2016); OpenAlex has "codyn : An r package"
+    title: "codyn: An R package of community dynamics metrics"
+  W2980390489:  # Avolio et al. (2019); OpenAlex lacks the article number
+    pages: e02881
 
 # Where to write the BibTeX file, relative to the package root.
 output: vignettes/articles/citing-pubs.bib

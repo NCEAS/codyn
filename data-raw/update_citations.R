@@ -1,7 +1,8 @@
 # Compile the list of publications that cite codyn and write it as BibTeX.
 #
 # Reads the DOIs and filters from data-raw/citation-sources.yml, asks OpenAlex
-# (https://openalex.org) for every work citing any of those DOIs, drops false
+# (https://openalex.org) for every work citing any of those DOIs, adds the
+# papers describing codyn themselves (but not the software releases), drops false
 # matches and preprints of papers that were later published, and writes the
 # result to the BibTeX file named in the config. The file is only rewritten
 # when the set of publications changes, so scheduled runs produce no diff when
@@ -45,20 +46,20 @@ openalex_get <- function(path, query = list(), tries = 4) {
   stop("OpenAlex request failed: ", url, "\n", conditionMessage(res))
 }
 
-resolve_doi <- function(doi) {
-  work <- openalex_get(paste0("/works/doi:", doi), list(select = "id,display_name"))
-  sub("^https://openalex.org/", "", work$id)
+work_fields <- paste(c("id", "doi", "title", "publication_year", "type",
+                       "authorships", "primary_location", "biblio"), collapse = ",")
+
+fetch_doi <- function(doi) {
+  openalex_get(paste0("/works/doi:", doi), list(select = work_fields))
 }
 
 fetch_citing <- function(ids) {
-  fields <- c("id", "doi", "title", "publication_year", "type", "authorships",
-              "primary_location", "biblio")
   works <- list()
   cursor <- "*"
   while (!is.null(cursor)) {
     page <- openalex_get("/works", list(
       filter = paste0("cites:", paste(ids, collapse = "|")),
-      select = paste(fields, collapse = ","),
+      select = work_fields,
       `per-page` = "200",
       cursor = cursor
     ))
@@ -94,7 +95,7 @@ ascii_name <- function(x) {
   gsub("[^A-Za-z]", "", x)
 }
 
-work_to_bibtex <- function(w) {
+work_to_bibtex <- function(w, corrections = list()) {
   id <- sub("^https://openalex.org/", "", w$id)
   authors <- vapply(w$authorships, function(a) {
     clean_text(a$raw_author_name %||% a$author$display_name %||% "")
@@ -137,30 +138,43 @@ work_to_bibtex <- function(w) {
     url = if (is.null(w$doi)) w$primary_location$landing_page_url
   )
   fields[[container]] <- source
+  fix <- corrections[[id]]
+  if (!is.null(fix$title)) fix$title <- paste0("{", clean_text(fix$title), "}")
+  fields[names(fix)] <- fix
   fields <- Filter(function(v) !is.null(v) && nzchar(v), lapply(fields, as.character))
   body <- paste0("  ", names(fields), " = {", unlist(fields), "}", collapse = ",\n")
-  list(key = key, year = w$publication_year, title = clean_text(w$title),
+  list(key = key, year = w$publication_year, title = clean_text(fix$title %||% w$title),
        text = paste0("@", entry_type, "{", key, ",\n", body, "\n}"))
 }
 
 main <- function() {
   config <- read_yaml(config_path)
   dois <- vapply(config$dois, function(d) d$doi, "")
+  kinds <- vapply(config$dois, function(d) d$kind %||% "", "")
+  if (!all(kinds %in% c("paper", "software"))) {
+    stop("Each DOI in ", config_path, " needs `kind: paper` or `kind: software`: ",
+         paste(dois[!kinds %in% c("paper", "software")], collapse = ", "))
+  }
 
   message("Resolving ", length(dois), " DOIs in OpenAlex")
-  source_ids <- vapply(dois, resolve_doi, "")
-  for (i in seq_along(dois)) message("  ", dois[i], " -> ", source_ids[i])
+  sources <- lapply(dois, fetch_doi)
+  source_ids <- sub("^https://openalex.org/", "", vapply(sources, function(w) w$id, ""))
+  for (i in seq_along(dois)) message("  ", dois[i], " (", kinds[i], ") -> ", source_ids[i])
 
-  works <- fetch_citing(source_ids)
-  message("Retrieved ", length(works), " citing works")
+  # The papers describing codyn are listed along with the works citing them;
+  # software releases are only used to find citing works.
+  citing <- fetch_citing(source_ids)
+  message("Retrieved ", length(citing), " citing works")
+  citing_ids <- sub("^https://openalex.org/", "", vapply(citing, function(w) w$id, ""))
+  works <- c(sources[kinds == "paper"], citing[!citing_ids %in% source_ids])
 
   ids <- sub("^https://openalex.org/", "", vapply(works, function(w) w$id, ""))
   type <- vapply(works, function(w) w$type %||% "other", "")
   year <- vapply(works, function(w) as.integer(w$publication_year %||% NA), 1L)
-  keep <- !(ids %in% c(source_ids, unlist(config$exclude_works))) &
+  keep <- !(ids %in% unlist(config$exclude_works)) &
     !(type %in% unlist(config$exclude_types)) &
     !is.na(year) & year >= config$min_year
-  message("Dropped ", sum(!keep), " works that are excluded, too old, or codyn itself")
+  message("Dropped ", sum(!keep), " works that are excluded or too old")
   works <- works[keep]
   type <- type[keep]
 
@@ -175,7 +189,7 @@ main <- function() {
   message("Dropped ", sum(dup), " duplicate records (mostly preprints of published papers)")
   works <- works[!dup]
 
-  entries <- lapply(works, work_to_bibtex)
+  entries <- lapply(works, work_to_bibtex, corrections = config$corrections %||% list())
   entries <- entries[order(-vapply(entries, `[[`, 1, "year"),
                            vapply(entries, `[[`, "", "key"))]
   keys <- vapply(entries, `[[`, "", "key")
