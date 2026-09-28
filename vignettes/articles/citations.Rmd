@@ -1,7 +1,5 @@
 ---
 title: "Publications using codyn"
-bibliography: citing-pubs.bib
-nocite: '@*'
 ---
 
 ```{r setup, include = FALSE}
@@ -12,8 +10,26 @@ header_value <- function(name) {
 n_pubs <- sum(grepl("^@", bib))
 retrieved <- format(as.Date(header_value("Retrieved")), "%B %d, %Y")
 dois <- strsplit(header_value("Sources"), ", ")[[1]]
-years <- as.integer(sub("^\\s*year = \\{(\\d{4})\\},?$", "\\1",
-                        grep("^\\s*year = ", bib, value = TRUE)))
+
+# Split the BibTeX file into one string per entry, with its publication year.
+entry_start <- cumsum(grepl("^@", bib))
+entries <- vapply(split(bib, entry_start)[-1], paste, "", collapse = "\n")
+years <- as.integer(sub("(?s).*\\n\\s*year = \\{(\\d{4})\\}.*", "\\1", entries, perl = TRUE))
+
+# Format a set of BibTeX entries as an HTML reference list using pandoc's
+# citeproc, the same way a bibliography in an R Markdown document is formatted.
+format_references <- function(entries) {
+  bib_file <- tempfile(fileext = ".bib")
+  md_file <- tempfile(fileext = ".md")
+  html_file <- tempfile(fileext = ".html")
+  writeLines(entries, bib_file, useBytes = TRUE)
+  writeLines(c("---", "nocite: '@*'", "---"), md_file)
+  rmarkdown::pandoc_convert(md_file, to = "html", from = "markdown",
+                            output = html_file,
+                            options = c("--citeproc", paste0("--bibliography=", bib_file)))
+  html <- readLines(html_file, encoding = "UTF-8")
+  sub('id="refs" ', "", html, fixed = TRUE)
+}
 ```
 
 codyn has been cited by **`r n_pubs` publications**. The list is compiled
@@ -38,5 +54,12 @@ Publications citing codyn each year (`r format(Sys.Date(), "%Y")` is a partial y
 
 ## Publications
 
-::: {#refs}
-:::
+Listed by year, newest first, and alphabetically by author within each year.
+
+```{r references, echo = FALSE, results = "asis"}
+for (year in sort(unique(years), decreasing = TRUE)) {
+  cat("\n### ", year, " {#year-", year, "}\n\n```{=html}\n", sep = "")
+  cat(format_references(entries[years == year]), sep = "\n")
+  cat("\n```\n")
+}
+```
