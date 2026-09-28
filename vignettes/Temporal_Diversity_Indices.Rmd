@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: biblio.bib
 vignette: >
-  %\VignetteIndexEntry{Temporal diversity indices}
+  %\VignetteIndexEntry{Temporal Diversity Indices}
   %\VignetteEngine{knitr::rmarkdown}
   %\SweaveUTF8
   %\VignetteEncoding{UTF-8}
