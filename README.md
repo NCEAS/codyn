@@ -9,6 +9,7 @@
 - Version 1.x: [doi:10.5063/F1542KJB](https://doi.org/10.5063/F1542KJB)
 - Version 2.x: [doi:10.5063/F1N877Z6](https://doi.org/10.5063/F1N877Z6)
 - **License**: [Apache 2](https://opensource.org/licenses/Apache-2.0)
+- [Package website](https://nceas.github.io/codyn/), including [publications that cite codyn](https://nceas.github.io/codyn/articles/citations.html)
 - [Package source code on Github](https://github.com/NCEAS/codyn)
 - [**Submit Bugs and feature requests**](https://github.com/NCEAS/codyn/issues)
 

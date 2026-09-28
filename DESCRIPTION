@@ -47,7 +47,7 @@ Suggests:
     spelling
 Encoding: UTF-8
 License: Apache License (== 2.0)
-URL: https://github.com/NCEAS/codyn/
+URL: https://github.com/NCEAS/codyn/, https://nceas.github.io/codyn/
 BugReports: https://github.com/NCEAS/codyn/issues
 LazyData: true
 VignetteBuilder: knitr

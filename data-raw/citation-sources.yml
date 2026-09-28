@@ -1,0 +1,39 @@
+# Configuration for data-raw/update_citations.R, which compiles the list of
+# publications that cite codyn from OpenAlex (https://openalex.org) and writes
+# it as BibTeX for the "Publications using codyn" article on the pkgdown site.
+#
+# When a new version of codyn is released with a new DOI, add it to `dois`
+# below; the next scheduled run of the update-citations workflow will pick it up.
+
+# DOIs of works that describe codyn. A publication is included if it cites
+# any of these.
+dois:
+  - doi: 10.1111/2041-210X.12569
+    description: Hallett et al. (2016) Methods in Ecology and Evolution paper
+  - doi: 10.1002/ecs2.2881
+    description: Avolio et al. (2019) Ecosphere paper on rank abundance curves
+  - doi: 10.5063/F1542KJB
+    description: codyn software, version 1.x
+  - doi: 10.5063/F1N877Z6
+    description: codyn software, version 2.x
+  - doi: 10.32614/CRAN.package.codyn
+    description: codyn CRAN package
+
+# Citing works published before this year are dropped. codyn was first
+# released in 2015, so anything earlier is a false match in OpenAlex.
+min_year: 2015
+
+# OpenAlex work types to leave out of the list.
+exclude_types:
+  - paratext
+  - erratum
+  - retraction
+  - peer-review
+  - supplementary-materials
+
+# OpenAlex work IDs (e.g. W1234567890) to leave out because OpenAlex wrongly
+# links them to codyn. Add an entry with a short note when one turns up.
+exclude_works: []
+
+# Where to write the BibTeX file, relative to the package root.
+output: vignettes/articles/citing-pubs.bib

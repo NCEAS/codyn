@@ -1,0 +1,23 @@
+url: https://nceas.github.io/codyn/
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [reference, articles, citations, news]
+    right: [search, github]
+  components:
+    citations:
+      text: Publications
+      href: articles/citations.html
+
+articles:
+- title: Using codyn
+  navbar: ~
+  contents:
+  - codyn_overview
+  - Temporal_Diversity_Indices
+  - Community_Stability_Metrics
+- title: About codyn
+  contents:
+  - articles/citations

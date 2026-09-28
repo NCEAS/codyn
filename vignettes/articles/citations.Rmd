@@ -1,0 +1,42 @@
+---
+title: "Publications using codyn"
+bibliography: citing-pubs.bib
+nocite: '@*'
+---
+
+```{r setup, include = FALSE}
+bib <- readLines("citing-pubs.bib", encoding = "UTF-8")
+header_value <- function(name) {
+  sub(paste0("^% ", name, ": "), "", grep(paste0("^% ", name, ": "), bib, value = TRUE))
+}
+n_pubs <- sum(grepl("^@", bib))
+retrieved <- format(as.Date(header_value("Retrieved")), "%B %d, %Y")
+dois <- strsplit(header_value("Sources"), ", ")[[1]]
+years <- as.integer(sub("^\\s*year = \\{(\\d{4})\\},?$", "\\1",
+                        grep("^\\s*year = ", bib, value = TRUE)))
+```
+
+codyn has been cited by **`r n_pubs` publications**. The list is compiled
+automatically from [OpenAlex](https://openalex.org) and includes every work that
+cites one of the papers or software releases describing codyn:
+`r paste0("[", dois, "](https://doi.org/", dois, ")", collapse = ", ")`.
+It was last updated on `r retrieved` and is refreshed monthly.
+
+OpenAlex does not index everything, so theses, reports and some journals may be
+missing. If your work uses codyn and isn't listed, please
+[open an issue](https://github.com/NCEAS/codyn/issues). The list is also
+available as a
+[BibTeX file](https://github.com/NCEAS/codyn/blob/main/vignettes/articles/citing-pubs.bib).
+
+```{r by-year, echo = FALSE, fig.width = 7, fig.height = 3.5, fig.alt = "Bar chart of the number of publications citing codyn in each year."}
+counts <- table(factor(years, levels = seq(min(years), max(years))))
+par(mar = c(3, 4, 1, 1), las = 1)
+barplot(counts, col = "#4a7ab5", border = NA, ylab = "Publications")
+```
+
+Publications citing codyn each year (`r format(Sys.Date(), "%Y")` is a partial year).
+
+## Publications
+
+::: {#refs}
+:::

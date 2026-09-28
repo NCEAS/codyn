@@ -1,3 +1,9 @@
+# codyn (development version)
+
+## DOCUMENTATION
+
+- Added a pkgdown website with a list of publications that cite codyn, compiled monthly from OpenAlex (Issue #136)
+
 # codyn 2.0.6
 
 ## BUG FIXES

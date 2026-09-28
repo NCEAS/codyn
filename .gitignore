@@ -5,3 +5,4 @@ codyn.Rproj
 inst/doc/*
 *.html
 vignettes/*.R
+docs

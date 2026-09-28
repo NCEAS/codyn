@@ -11,3 +11,8 @@ docker
 CONTRIBUTING.md
 ^codemeta\.json$
 ^\.github
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^data-raw$
+^vignettes/articles$
