@@ -90,7 +90,9 @@ as well as various classes of corrupt or bad data.  All tests should pass before
 the `develop` branch is merged to master, and all tests should pass before the `master`
 branch is tagged as a release.
 
-**Continuous integration**. We can use Travis for some of our repositories.
+**Continuous integration**. GitHub Actions workflows in `.github/workflows` run
+`R CMD check` across platforms via R-hub (started manually), build and deploy
+the pkgdown website, and refresh the list of publications citing codyn.
 
 ## Code style
 
