@@ -1,6 +1,15 @@
-# Refresh the list of publications citing codyn from OpenAlex and open a pull
-# request when it changes. The DOIs searched are configured in
+# Refresh the list of publications citing codyn from OpenAlex and commit it to
+# main when it changes. The DOIs searched are configured in
 # pkgdown/citations/citation-sources.yml.
+#
+# The commit is pushed with a token from the NCEAS GitHub App, which is allowed
+# to bypass main's branch protection. Pushes made with the default
+# GITHUB_TOKEN would be blocked and would not trigger the pkgdown workflow;
+# pushes made with the app's token do both, so the site is rebuilt.
+#
+# Requires:
+#   vars.NCEAS_BOT_CLIENT_ID       the app's Client ID (organization variable)
+#   secrets.NCEAS_BOT_PRIVATE_KEY  the app's private key (organization secret)
 on:
   schedule:
     - cron: "0 6 1 * *"
@@ -14,10 +23,20 @@ jobs:
   update-citations:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
     steps:
+      - name: Get NCEAS bot token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.NCEAS_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.NCEAS_BOT_PRIVATE_KEY }}
+          permission-contents: write
+
       - uses: actions/checkout@v6
+        with:
+          ref: main
+          token: ${{ steps.app-token.outputs.token }}
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -29,18 +48,26 @@ jobs:
 
       - name: Update citations
         env:
-          CITATION_SUMMARY: ${{ runner.temp }}/citation-summary.md
+          CITATION_SUMMARY: ${{ runner.temp }}/citation-summary.txt
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
-        run: |
-          echo "Automated update found no changes." > "$CITATION_SUMMARY"
-          Rscript pkgdown/citations/update_citations.R
+        run: Rscript pkgdown/citations/update_citations.R
 
-      - name: Open pull request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          branch: auto/update-citations
-          delete-branch: true
-          commit-message: Update list of publications citing codyn
-          title: Update list of publications citing codyn
-          body-path: ${{ runner.temp }}/citation-summary.md
-          add-paths: vignettes/articles/citing-pubs.bib
+      - name: Commit and push changes
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          SUMMARY: ${{ runner.temp }}/citation-summary.txt
+        run: |
+          bib=vignettes/articles/citing-pubs.bib
+          if git diff --quiet -- "$bib"; then
+            echo "No changes to the list of publications."
+            exit 0
+          fi
+          user_id=$(gh api "/users/${APP_SLUG}[bot]" --jq .id)
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${user_id}+${APP_SLUG}[bot]@users.noreply.github.com"
+          git add "$bib"
+          { echo "Update list of publications citing codyn"; echo; cat "$SUMMARY"; } > "$RUNNER_TEMP/message.txt"
+          git commit --cleanup=verbatim -F "$RUNNER_TEMP/message.txt"
+          git pull --rebase origin main
+          git push origin HEAD:main

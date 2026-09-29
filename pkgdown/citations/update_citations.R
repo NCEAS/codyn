@@ -1,9 +1,9 @@
 # Compile the list of publications that cite codyn and write it as BibTeX.
 #
-# Reads the DOIs and filters from pkgdown/citations/citation-sources.yml, asks OpenAlex
-# (https://openalex.org) for every work citing any of those DOIs, adds the
-# papers describing codyn themselves (but not the software releases), drops false
-# matches and preprints of papers that were later published, and writes the
+# Reads the DOIs and filters from pkgdown/citations/citation-sources.yml, asks
+# OpenAlex (https://openalex.org) for every work citing any of those DOIs, adds
+# the papers describing codyn themselves (but not the software releases), drops
+# false matches and preprints of papers that were later published, and writes the
 # result to the BibTeX file named in the config. The file is only rewritten
 # when the set of publications changes, so scheduled runs produce no diff when
 # nothing new has been published.
@@ -14,7 +14,8 @@
 # Optional environment variables:
 #   OPENALEX_API_KEY   OpenAlex API key, sent with each request if set
 #   OPENALEX_MAILTO    contact email for the OpenAlex polite pool
-#   CITATION_SUMMARY   path of a Markdown file to write a summary of changes to
+#   CITATION_SUMMARY   path of a file to write a plain-text summary of changes
+#                      to, used as the body of the workflow's commit message
 
 library(yaml)
 library(jsonlite)
@@ -229,22 +230,20 @@ main <- function() {
   summary_path <- Sys.getenv("CITATION_SUMMARY")
   if (nzchar(summary_path)) {
     lines <- c(
-      "Automated update of the publications citing codyn, from OpenAlex.",
-      "",
-      paste0("- Total publications: ", length(entries)),
-      paste0("- Added: ", length(added)),
-      paste0("- Removed: ", length(removed)),
+      paste0("Total publications: ", length(entries), " (", length(added),
+             " added, ", length(removed), " removed)"),
       ""
     )
     if (length(added)) {
-      lines <- c(lines, "### Added", "",
-                 vapply(added, function(e) paste0("- ", e$year, ": ", e$title), ""), "")
+      lines <- c(lines, "Added:", vapply(added, function(e) {
+        paste0("- ", e$year, ": ", e$title, " (", sub(".*_", "", e$key), ")")
+      }, ""), "")
     }
     if (length(removed)) {
-      lines <- c(lines, "### Removed", "", paste0("- `", removed, "`"), "")
+      lines <- c(lines, "Removed:", paste0("- ", removed), "")
     }
-    lines <- c(lines, "Check the list for false matches before merging; add any to",
-               "`exclude_works` in `pkgdown/citations/citation-sources.yml`.")
+    lines <- c(lines, "To remove a false match, add its OpenAlex ID to exclude_works",
+               "in pkgdown/citations/citation-sources.yml.")
     writeLines(lines, summary_path)
   }
 }
